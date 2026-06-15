@@ -3,6 +3,7 @@ import { redirect } from '@tanstack/react-router'
 import type { User } from '@/stores/auth-store'
 
 export function requireAuth(locationHref: string) {
+    if (import.meta.env.VITE_DEV_AUTO_LOGIN === 'true') return
     const isAuth = useAuthStore.getState().isAuthenticated
     const token = useAuthStore.getState().token
 

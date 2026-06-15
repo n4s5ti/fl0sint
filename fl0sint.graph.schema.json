@@ -1,0 +1,440 @@
+{
+  "version": "1.0",
+  "name": "fl0sint.graph.schema",
+  "description": "Flowsint graph schema \u2014 B2C investigation model with Individual anchors and prospect datapoint nodes",
+  "node_types": {
+    "anchor": {
+      "Individual": {
+        "label": "individual",
+        "description": "Investigation subject \u2014 canonical starting data (first_name, last_name, email, employer, etc.)",
+        "properties": {
+          "required": [
+            "full_name",
+            "first_name",
+            "last_name"
+          ],
+          "optional": [
+            "email",
+            "phone",
+            "employer",
+            "address",
+            "city",
+            "state",
+            "zip",
+            "estimated_age",
+            "nodeLabel"
+          ]
+        },
+        "rules": [
+          "Never link Individual to Individual",
+          "All prospect nodes fan out from Individual",
+          "Only pre-existing sheet data lives on Individual"
+        ]
+      }
+    },
+    "prospect_datapoints": {
+      "SocialAccount": {
+        "label": "socialaccount",
+        "description": "Social media profile \u2014 facebook, instagram, linkedin, twitter, etc.",
+        "maps_to_sheet_columns": [
+          "facebook",
+          "instagram",
+          "linkedin",
+          "twitter"
+        ],
+        "discriminator_field": "platform",
+        "properties": {
+          "required": [
+            "platform",
+            "profile_url"
+          ],
+          "optional": [
+            "username",
+            "display_name",
+            "bio",
+            "followers_count",
+            "following_count",
+            "verified",
+            "location"
+          ],
+          "metadata": [
+            "source_tool",
+            "source_input",
+            "source_sketch_id",
+            "evidence_level",
+            "hit_count",
+            "source_tools"
+          ]
+        },
+        "relations": {
+          "from_individual": "HAS_SOCIAL_ACCOUNT",
+          "cross_validation": "SAME_AS"
+        }
+      },
+      "Phone": {
+        "label": "phone",
+        "description": "Phone number \u2014 mobile, landline, VoIP",
+        "maps_to_sheet_columns": [
+          "phone"
+        ],
+        "discriminator_field": "type",
+        "properties": {
+          "required": [
+            "number"
+          ],
+          "optional": [
+            "type",
+            "carrier",
+            "country_code",
+            "area_code",
+            "line_type",
+            "is_valid"
+          ],
+          "metadata": [
+            "source_tool",
+            "source_input",
+            "source_sketch_id",
+            "evidence_level",
+            "hit_count"
+          ]
+        },
+        "relations": {
+          "from_individual": "HAS_PHONE"
+        }
+      },
+      "Email": {
+        "label": "email",
+        "description": "Email address discovered by enricher",
+        "maps_to_sheet_columns": [
+          "email_address"
+        ],
+        "properties": {
+          "required": [
+            "email"
+          ],
+          "optional": [
+            "is_valid",
+            "is_disposable",
+            "provider"
+          ],
+          "metadata": [
+            "source_tool",
+            "source_input",
+            "source_sketch_id",
+            "evidence_level"
+          ]
+        },
+        "relations": {
+          "from_individual": "HAS_EMAIL"
+        }
+      },
+      "Username": {
+        "label": "username",
+        "description": "Username or handle on any platform",
+        "maps_to_sheet_columns": [
+          "username",
+          "platform_handle"
+        ],
+        "properties": {
+          "required": [
+            "value"
+          ],
+          "optional": [
+            "platform",
+            "last_seen"
+          ],
+          "metadata": [
+            "source_tool",
+            "source_input",
+            "source_sketch_id",
+            "evidence_level"
+          ]
+        },
+        "relations": {
+          "from_individual": "HAS_USERNAME"
+        }
+      },
+      "Address": {
+        "label": "address",
+        "description": "Physical address \u2014 street, city, state, zip",
+        "maps_to_sheet_columns": [
+          "address",
+          "city",
+          "state",
+          "zip"
+        ],
+        "properties": {
+          "optional": [
+            "street",
+            "city",
+            "state",
+            "zip",
+            "country",
+            "full_address"
+          ],
+          "metadata": [
+            "source_tool",
+            "source_input",
+            "source_sketch_id",
+            "evidence_level"
+          ]
+        },
+        "relations": {
+          "from_individual": "HAS_ADDRESS"
+        }
+      },
+      "Gravatar": {
+        "label": "gravatar",
+        "description": "Gravatar profile image/avatar",
+        "maps_to_sheet_columns": [
+          "avatar",
+          "profile_image"
+        ],
+        "properties": {
+          "optional": [
+            "profile_url",
+            "hash",
+            "display_name"
+          ],
+          "metadata": [
+            "source_tool",
+            "source_input",
+            "source_sketch_id",
+            "evidence_level"
+          ]
+        },
+        "relations": {
+          "from_individual": "HAS_GRAVATAR"
+        }
+      }
+    },
+    "intermediate_pivot": {
+      "description": "B2B/infrastructure types \u2014 DO NOT USE for B2C investigations. These create noise (website nodes, domain nodes) that do not map to sheet columns.",
+      "types": [
+        "Domain",
+        "Ip",
+        "ASN",
+        "CIDR",
+        "Port",
+        "DNSRecord",
+        "Whois",
+        "Website",
+        "WebTracker",
+        "Organization",
+        "SSLCertificate",
+        "CryptoWallet",
+        "CryptoNFT",
+        "CryptoWalletTransaction",
+        "Leak",
+        "Breach",
+        "Device",
+        "Malware",
+        "ReputationScore",
+        "RiskProfile",
+        "Weapon"
+      ]
+    },
+    "operational": {
+      "description": "Internal tracking types \u2014 not prospect datapoints.",
+      "types": [
+        "Scan",
+        "Analysis",
+        "Session",
+        "Phrase",
+        "Message",
+        "Document",
+        "File",
+        "Script",
+        "Log"
+      ]
+    }
+  },
+  "relationship_types": {
+    "prospect_edges": {
+      "HAS_SOCIAL_ACCOUNT": {
+        "from": "individual",
+        "to": "socialaccount"
+      },
+      "HAS_PHONE": {
+        "from": "individual",
+        "to": "phone"
+      },
+      "HAS_EMAIL": {
+        "from": "individual",
+        "to": "email"
+      },
+      "HAS_USERNAME": {
+        "from": "individual",
+        "to": "username"
+      },
+      "HAS_ADDRESS": {
+        "from": "individual",
+        "to": "address"
+      },
+      "HAS_GRAVATAR": {
+        "from": "individual",
+        "to": "gravatar"
+      }
+    },
+    "cross_validation": {
+      "SAME_AS": {
+        "description": "Two prospect nodes from different tools represent the same entity \u2014 enables E3 cross-verification",
+        "between": "same node type"
+      }
+    },
+    "intermediate": {
+      "description": "Pivot-chain edges \u2014 only for B2B or domain investigations. Skip for B2C.",
+      "types": [
+        "HAS_DOMAIN",
+        "HAS_WHOIS",
+        "REGISTERED_BY",
+        "HAS_IP",
+        "HAS_ASN",
+        "HAS_SUBDOMAIN"
+      ]
+    }
+  },
+  "evidence_levels": {
+    "E0": {
+      "label": "Guessed",
+      "description": "Unvalidated idea",
+      "auto_write": false
+    },
+    "E1": {
+      "label": "Plausible",
+      "description": "Logical inference, not validated",
+      "auto_write": false
+    },
+    "E2": {
+      "label": "Single-source verified",
+      "description": "Confirmed by one tool or source",
+      "auto_write": true
+    },
+    "E3": {
+      "label": "Cross-verified",
+      "description": "Confirmed by 2+ independent tools returning same data",
+      "auto_write": true
+    }
+  },
+  "confidence_scoring": {
+    "base": 0.65,
+    "boost_per_extra_tool": 0.15,
+    "cap": 0.95,
+    "formula": "min(0.95, 0.65 + 0.15 * (hit_count - 1))"
+  },
+  "graph_node_model": {
+    "GraphNode": {
+      "id": "str | None",
+      "nodeLabel": "str \u2014 THE CANDIDATE VALUE (e.g., carveralan, +15551234567, https://facebook.com/user)",
+      "nodeType": "str \u2014 THE FLOWSINT TYPE (e.g., username, phone, socialaccount)",
+      "nodeProperties": "Any \u2014 typed fields + metadata (source_tool, source_input, evidence_level, hit_count)",
+      "nodeMetadata": {
+        "created_at": "datetime"
+      },
+      "x": "float \u2014 canvas position",
+      "y": "float \u2014 canvas position",
+      "nodeShape": "circle (default) | square (document types)"
+    },
+    "GraphEdge": {
+      "id": "str",
+      "source": "str \u2014 source node id",
+      "target": "str \u2014 target node id",
+      "label": "str \u2014 RELATIONSHIP TYPE",
+      "type": "str | None",
+      "weight": "float | None",
+      "confidence_level": "float | str | None"
+    }
+  },
+  "enricher_to_sheet_mapping": {
+    "description": "Which enrichers to run for B2C investigations vs B2B",
+    "b2c_enrichers": {
+      "email_to_username": {
+        "output": "username",
+        "sheet_column": "platform_handle"
+      },
+      "individual_to_organization": {
+        "output": "organization",
+        "sheet_column": "employer"
+      },
+      "individual-to-socials-blackbird": {
+        "output": "socialaccount",
+        "sheet_column": "facebook/instagram/linkedin"
+      },
+      "person-lookup": {
+        "output": "individual",
+        "sheet_column": "phone/address"
+      },
+      "thatsthem-lookup": {
+        "output": "individual",
+        "sheet_column": "phone/address"
+      },
+      "spokeo-lookup": {
+        "output": "individual",
+        "sheet_column": "phone/address"
+      },
+      "fastpeoplesearch-lookup": {
+        "output": "individual",
+        "sheet_column": "phone/address"
+      },
+      "truecaller-lookup": {
+        "output": "individual",
+        "sheet_column": "phone"
+      },
+      "email-to-social-fb-email-search": {
+        "output": "socialaccount",
+        "sheet_column": "facebook"
+      },
+      "email-to-social-fb-identify": {
+        "output": "socialaccount",
+        "sheet_column": "facebook"
+      },
+      "email-to-social-recover-fb-account": {
+        "output": "socialaccount",
+        "sheet_column": "facebook"
+      },
+      "email-to-social-lullar": {
+        "output": "socialaccount",
+        "sheet_column": "social_profile"
+      },
+      "email-to-social-epieos": {
+        "output": "socialaccount",
+        "sheet_column": "social_profile"
+      },
+      "email-to-social-idcrawl": {
+        "output": "socialaccount",
+        "sheet_column": "social_profile"
+      },
+      "email-to-social-slash": {
+        "output": "socialaccount",
+        "sheet_column": "social_profile"
+      },
+      "email-to-social-linkedin": {
+        "output": "socialaccount",
+        "sheet_column": "linkedin"
+      }
+    },
+    "b2b_enrichers": {
+      "description": "Domain, IP, ASN, WHOIS, network infrastructure \u2014 skip for B2C",
+      "skip": [
+        "domain_to_ip",
+        "domain_to_asn",
+        "domain_to_whois",
+        "domain_to_whois_history",
+        "domain_to_history",
+        "domain_to_tls",
+        "ip_to_asn",
+        "ip_to_domain",
+        "ip_to_infos",
+        "asn_to_cidrs",
+        "cidr_to_ips",
+        "domain_to_subdomains",
+        "domain_to_website",
+        "website_to_crawler"
+      ]
+    }
+  },
+  "neo4j_merge_key": {
+    "description": "Nodes are merged on (nodeLabel, nodeType, sketch_id) \u2014 same candidate value from different tools converges to one node",
+    "query": "MERGE (n:{node_type} {nodeLabel: , sketch_id: }) ON CREATE SET n.created_at = "
+  }
+}

@@ -33,6 +33,7 @@ try:
     from aioquic.h3.connection import H3Connection
     from aioquic.h3.events import HeadersReceived, DataReceived
     from aioquic.quic.configuration import QuicConfiguration
+    from aioquic.quic import events as quic_events
 
     HAS_QUIC = True
 except ImportError:
@@ -238,25 +239,32 @@ class WebsiteToText(Enricher):
                 class _H3(QuicConnectionProtocol):
                     def __init__(self, *args, **kwargs):
                         super().__init__(*args, **kwargs)
-                        self.http = None
-
-                    def on_connected(self):
-                        self.http = H3Connection(self._quic)
-                        sid = self._quic.get_next_available_stream_id()
-                        self.http.send_headers(
-                            stream_id=sid,
-                            headers=[
-                                (b":method", b"GET"),
-                                (b":scheme", b"https"),
-                                (b":authority", host.encode()),
-                                (b":path", path.encode()),
-                            ],
-                        )
+                        self._h3 = None
+                        self._sent = False
 
                     def quic_event_received(self, event):
-                        if not self.http:
+                        if isinstance(event, quic_events.HandshakeCompleted) and not self._sent:
+                            self._sent = True
+                            self._h3 = H3Connection(self._quic)
+                            sid = self._quic.get_next_available_stream_id()
+                            self._h3.send_headers(
+                                stream_id=sid,
+                                headers=[
+                                    (b":method", b"GET"),
+                                    (b":scheme", b"https"),
+                                    (b":authority", host.encode()),
+                                    (b":path", path.encode()),
+                                ],
+                            )
                             return
-                        for ev in self.http.handle_events():
+
+                        if isinstance(event, quic_events.ConnectionTerminated):
+                            stream_ended.set()
+                            return
+
+                        if not self._h3:
+                            return
+                        for ev in self._h3.handle_event(event):
                             if isinstance(ev, HeadersReceived):
                                 status = dict(ev.headers).get(b":status", b"0")
                                 if status == b"200":

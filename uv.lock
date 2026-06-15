@@ -1248,8 +1248,16 @@ dependencies = [
     { name = "python-multipart" },
 ]
 
+[package.optional-dependencies]
+gpu = [
+    { name = "cudf-cu13" },
+    { name = "cupy-cuda13x" },
+]
+
 [package.metadata]
 requires-dist = [
+    { name = "cudf-cu13", marker = "extra == 'gpu'", specifier = ">=26.6.0" },
+    { name = "cupy-cuda13x", marker = "extra == 'gpu'", specifier = ">=14.1.1" },
     { name = "docker", specifier = ">=7.1.0,<8.0.0" },
     { name = "flowsint-api", editable = "flowsint-api" },
     { name = "flowsint-core", editable = "flowsint-core" },
@@ -1258,6 +1266,7 @@ requires-dist = [
     { name = "pydantic", extras = ["email"], specifier = ">=2.11.7,<3.0.0" },
     { name = "python-multipart", specifier = ">=0.0.20,<0.0.21" },
 ]
+provides-extras = ["gpu"]
 
 [[package]]
 name = "flowsint-api"

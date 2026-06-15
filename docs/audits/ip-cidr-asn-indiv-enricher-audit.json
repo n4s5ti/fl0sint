@@ -1,0 +1,176 @@
+[
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_asn.py",
+    "class": "IpToAsnEnricher",
+    "InputType": "Ip",
+    "OutputType": "ASN",
+    "nodeLabel": "Ip: ip.address | ASN: asn_str (e.g. 'AS16276') when name is empty, or f'{asn_str} - {name}' when name is set",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "ZIP_MISALIGNMENT",
+      "MISSING_REQUIRED_FIELD",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) postprocess line 114 zip(input_data, results): if scan() errors on an IP (continue), results list has fewer entries than input_data, causing zip to misalign — remaining IPs get wrong ASNs. (2) scan() line 84 constructs ASN(number=..., name=..., ...) without the required asn_str field (Field(...) required), which raises Pydantic ValidationError at runtime. Should pass asn_str=asn_string. (3) No source_tool, source_input, or evidence_level set on created nodes."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_dehashed.py",
+    "class": "IpToIntelligence",
+    "InputType": "Ip",
+    "OutputType": "Individual",
+    "nodeLabel": "Ip: ip.address | Individual: full_name, or first_name+last_name, or first_name, or last_name, or None (if all name fields are None)",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "NODELABEL_NONE_FALLTHROUGH",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) Individual nodeLabel falls through to None when full_name, first_name, AND last_name are all None (possible from DeHashed entries that have only email/phone/social but no name). The compute_label validator has no catch-all branch, so nodeLabel remains None (which becomes '' in the neo4j serializer). (2) No source metadata set. (3) postprocess line 148 creates self.create_node(ip) for EACH individual result, creating duplicate IP nodes. Should create the IP node once outside the inner loop."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_domain.py",
+    "class": "ReverseResolveEnricher",
+    "InputType": "Ip",
+    "OutputType": "Domain",
+    "nodeLabel": "Ip: ip.address | Domain: domain",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "CARTESIAN_RELATIONSHIPS",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) postprocess lines 68-75 creates REVERSE_RESOLVES_TO relationships via nested loops: for each ip_obj in original_input, for each domain_obj in results. This is a Cartesian product — every IP gets connected to EVERY domain, not just its own resolved domain. E.g., 2 IPs each resolving to their own domain creates 4 relationships (2 correct + 2 false). (2) No source metadata set."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_dummy_domains.py",
+    "class": "IpToDummyDomainsEnricher",
+    "InputType": "Ip",
+    "OutputType": "Domain",
+    "nodeLabel": "Ip: ip.address | Domain: domain",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "CATEGORY_INCONSISTENCY",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "DESIGN NOTES: TEST enricher for SSE incremental updates. (1) category() returns 'IP' (uppercase) while all other IP enrichers return 'Ip' (PascalCase). Either the test enricher is wrong or all other IP enrichers are wrong — inconsistent either way. (2) No source metadata set. postprocess extracts IP from dummy domain string via string splitting rather than storing the original IP mapping, which is fragile but acceptable for test code."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_fraudscore.py",
+    "class": "IpToFraudScore",
+    "InputType": "Ip",
+    "OutputType": "RiskProfile",
+    "nodeLabel": "Ip: ip.address | RiskProfile: ' - '.join([entity_id, entity_type, overall_risk_score, risk_level, ...])",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "ZIP_MISALIGNMENT",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) postprocess line 142 zip(input_data, results): if scan() errors on an IP (continue), results list has fewer entries than input_data, causing zip to misalign — remaining IPs get wrong RiskProfiles. (2) No source metadata set on created nodes."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_infos.py",
+    "class": "IpToInfosEnricher",
+    "InputType": "Ip",
+    "OutputType": "Ip",
+    "nodeLabel": "Ip: ip.address",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "Identity-preserving enricher (InputType=Ip, OutputType=Ip). scan() enriches Ip objects in-place with geo data from ip-api.com. postprocess() creates the enriched IP node. No source metadata set. No zip or cartesian issues because scan() always produces one result per input (error path doesn't skip — falls through to continue then 'results' still has issue)."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/ip/to_ports.py",
+    "class": "IpToPortsEnricher",
+    "InputType": "Ip",
+    "OutputType": "Port",
+    "nodeLabel": "Ip: ip.address | Port: ' '.join([number, protocol, state, service, ...])",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "No zip misalignment or cartesian bugs — postprocess iterates over results directly and uses a _ip_address attribute stored on each Port object during scan() to correctly link ports to their IPs. No source metadata set."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/cidr/to_ips.py",
+    "class": "CidrToIpsEnricher",
+    "InputType": "CIDR",
+    "OutputType": "Ip",
+    "nodeLabel": "CIDR: str(network) | Ip: ip.address",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "ZIP_MISALIGNMENT_FALLBACK",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) postprocess fallback path (lines 133-147, when _cidr_to_ips_map is not set) uses zip(original_input, results) which misaligns if scan() skipped any CIDRs. The primary path (lines 117-131, using _cidr_to_ips_map) handles one-to-many correctly — this is the normal execution path. The fallback is only reached if scan() failed to create the mapping, making the bug latent. (2) No source metadata set."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/asn/to_cidrs.py",
+    "class": "AsnToCidrsEnricher",
+    "InputType": "ASN",
+    "OutputType": "CIDR",
+    "nodeLabel": "ASN: f'{asn_str} - {name}' or asn_str when name is empty | CIDR: str(network)",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "ZIP_MISALIGNMENT_FALLBACK",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) postprocess fallback path (lines 136-166, when _asn_to_cidrs_map is not set) uses zip(original_input, results) which misaligns if scan() skipped any ASNs. The primary path (lines 120-135, using _asn_to_cidrs_map) correctly handles one-to-many. (2) The primary path at line 131 calls self.create_node(asn) for every CIDR in the list, creating duplicate ASN nodes. Should create the ASN node once per ASN, not once per CIDR. (3) No source metadata set."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/individual/to_domains.py",
+    "class": "IndividualToDomainsEnricher",
+    "InputType": "Individual",
+    "OutputType": "Domain",
+    "nodeLabel": "Individual: full_name | Domain: domain",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "Uses a _extracted_data list during scan() to preserve the individual→domain→contact mapping, and postprocess() iterates over this mapping rather than re-deriving it. This avoids zip misalignment and cartesian relationship bugs. Dedup tracking for processed entities (domains, individuals, emails, phones, addresses). No source metadata set."
+  },
+  {
+    "file": "flowsint-enrichers/src/flowsint_enrichers/individual/to_org.py",
+    "class": "IndividualToOrgEnricher",
+    "InputType": "Individual",
+    "OutputType": "Organization",
+    "nodeLabel": "Individual: full_name | Organization: nom_complet, then nom_raison_sociale, then name",
+    "nodeLabel_source": "unknown",
+    "source_tool_set": false,
+    "source_input_set": false,
+    "evidence_level_set": false,
+    "flags": [
+      "CARTESIAN_RELATIONSHIPS",
+      "NO_SOURCE_METADATA"
+    ],
+    "notes": "BUGS: (1) postprocess lines 311-317 creates WORKS_FOR relationships via nested loops: for each individual in original_input, for each org in results. This is a Cartesian product — every individual gets connected to EVERY organization, not just the orgs that scan() found for them. E.g., 2 individuals input, scan returns 3 orgs (1 for person A, 2 for person B) → creates 6 WORKS_FOR relationships instead of the correct 3. (2) No source metadata set."
+  }
+]

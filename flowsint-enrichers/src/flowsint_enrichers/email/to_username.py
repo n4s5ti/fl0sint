@@ -42,10 +42,14 @@ class EmailToUsernameEnricher(Enricher):
         for email_obj, username_obj in zip(original_input, results):
             if not self._graph_service:
                 continue
-            # Create email node
-            self.create_node(email_obj)
+            # Stamp metadata on output only — no intermediate email node
+            username_obj.source_tool = self.name()
+            username_obj.source_input = email_obj.email
+            username_obj.source_sketch_id = self.sketch_id
+            username_obj.evidence_level = "E2"
+            # Create only the TARGET node — clean nodeLabel is the candidate value
             self.create_node(username_obj)
-            # Create relationship between email and gravatar
+            # Create relationship to the input email (framework limitation — can't reach original Individual)
             self.create_relationship(email_obj, username_obj, "HAS_USERNAME")
 
             self.log_graph_message(

@@ -1,6 +1,8 @@
 import { useAuthStore } from '@/stores/auth-store'
 
-const API_URL = import.meta.env.VITE_API_URL
+// In dev auto-login mode, use relative paths (Vite proxies /api → VITE_API_URL).
+// In production or normal mode, use the configured API URL directly.
+const API_URL = import.meta.env.VITE_DEV_AUTO_LOGIN === 'true' ? '' : (import.meta.env.VITE_API_URL || '')
 
 export async function fetchWithAuth(endpoint: string, options: RequestInit = {}): Promise<any> {
   const token = useAuthStore.getState().token

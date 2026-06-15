@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
     },
     react({
       babel: {
-        plugins: ["babel-plugin-react-compiler"]
+        plugins: []  // babel-plugin-react-compiler disabled in dev (needs React Refresh setup)
       }
     })
     ],
@@ -37,6 +37,7 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       open: true,
+      allowedHosts: [".cyprus-ling.ts.net", "n4s5ti.cyprus-ling.ts.net", "localhost"],
       proxy: {
         '/api': {
           target: apiUrl,

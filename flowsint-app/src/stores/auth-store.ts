@@ -61,6 +61,14 @@ export const useAuthStore = create<AuthState>()(
 
 // Initialize auth state from session storage on app load
 if (typeof window !== 'undefined') {
+  // Dev auto-login: force authenticated state regardless of storage
+  if (import.meta.env.VITE_DEV_AUTO_LOGIN === 'true') {
+    useAuthStore.setState({
+      token: 'dev-token',
+      user: { id: 'dev', username: 'dev', email: 'admin@flowsint.dev', first_name: 'Dev', last_name: 'Admin' },
+      isAuthenticated: true,
+    })
+  } else {
   const storedAuth = localStorage.getItem('auth-storage')
   if (storedAuth) {
     try {
@@ -73,5 +81,6 @@ if (typeof window !== 'undefined') {
       // Clear corrupted storage
       localStorage.removeItem('auth-storage')
     }
+  }
   }
 }

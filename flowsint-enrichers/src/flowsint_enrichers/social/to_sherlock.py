@@ -41,7 +41,7 @@ class SherlockEnricher(Enricher):
                     ["sherlock", username.value, "-o", str(output_file)],
                     capture_output=True,
                     text=True,
-                    timeout=100,
+                    timeout=300,
                 )
 
                 if result.returncode != 0:
