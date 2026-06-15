@@ -46,6 +46,34 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
+        if connection.dialect.name == "sqlite":
+            # Historical migrations contain PostgreSQL-only DDL (ARRAY, ENUM,
+            # ALTER ... USING, etc.). For the embedded SQLite edition, treat
+            # the current SQLAlchemy metadata as a squashed baseline.
+            target_metadata.create_all(connection)
+            heads = context.script.get_heads()
+            if len(heads) != 1:
+                raise RuntimeError(
+                    f"Expected one Alembic head for SQLite baseline, got {heads}"
+                )
+            version_table = (
+                context.config.get_main_option("version_table") or "alembic_version"
+            )
+            connection.exec_driver_sql(
+                f"CREATE TABLE IF NOT EXISTS {version_table} "
+                "(version_num VARCHAR(32) NOT NULL)"
+            )
+            existing = connection.exec_driver_sql(
+                f"SELECT version_num FROM {version_table}"
+            ).fetchone()
+            if existing is None:
+                connection.exec_driver_sql(
+                    f"INSERT INTO {version_table} (version_num) VALUES (?)",
+                    (heads[0],),
+                )
+            connection.commit()
+            return
+
         context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()

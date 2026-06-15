@@ -14,9 +14,12 @@ COPY . .
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 
-RUN yarn build
+RUN test -d node_modules/motion-utils && \
+    test -d node_modules/zustand && \
+    test -d node_modules/@radix-ui/react-select && \
+    yarn build
 
-FROM nginx:1.27-alpine AS production
+FROM docker.io/library/nginx:1.27-alpine AS production
 
 LABEL org.opencontainers.image.source="https://github.com/reconurge/flowsint"
 LABEL org.opencontainers.image.description="Flowsint Frontend"

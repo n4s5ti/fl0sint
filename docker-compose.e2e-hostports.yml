@@ -1,0 +1,18 @@
+services:
+  api:
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-flowsint}:${POSTGRES_PASSWORD:-flowsint}@host.containers.internal:5433/${POSTGRES_DB:-flowsint}
+      - NEO4J_URI_BOLT=bolt://host.containers.internal:7687
+      - REDIS_URL=redis://host.containers.internal:6379/0
+      - ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://100.119.117.43:5173,http://hetzner-graph.cyprus-ling.ts.net:5173
+  celery:
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-flowsint}:${POSTGRES_PASSWORD:-flowsint}@host.containers.internal:5433/${POSTGRES_DB:-flowsint}
+      - NEO4J_URI_BOLT=bolt://host.containers.internal:7687
+      - REDIS_URL=redis://host.containers.internal:6379/0
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A flowsint_core.core.celery inspect ping --timeout=10 || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 30s
