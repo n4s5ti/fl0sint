@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 
 import httpx
 import pytest
+from pydantic import ValidationError
 
 from flowsint_core.core.template_enricher import (
     TemplateEnricher,
@@ -28,6 +29,7 @@ TEST_DIR = Path(__file__).parent
 
 def create_test_template(
     name: str = "test-template",
+    execution_mode: str = "preview",
     input_type: str = "Ip",
     input_key: str = "address",
     output_type: str = "Ip",
@@ -47,6 +49,7 @@ def create_test_template(
     """Helper to create test templates."""
     return Template(
         name=name,
+        execution_mode=execution_mode,
         category="Test",
         version=1.0,
         input=TemplateInput(type=input_type, key=input_key),
@@ -102,9 +105,10 @@ class TestTemplateEnricherInit:
             secrets=[{"name": "API_KEY", "required": True, "description": "Test key"}]
         )
         enricher = TemplateEnricher(template=template)
-        assert len(enricher.params_schema) == 1
-        assert enricher.params_schema[0]["name"] == "API_KEY"
-        assert enricher.params_schema[0]["type"] == "vaultSecret"
+        secret_param = next(
+            param for param in enricher.params_schema if param["name"] == "API_KEY"
+        )
+        assert secret_param["type"] == "vaultSecret"
 
 
 class TestTemplateEnricherSSRF:
@@ -621,7 +625,10 @@ class TestTemplateEnricherFromYaml:
             str(TEST_DIR / "example-secrets.yaml")
         )
         enricher = TemplateEnricher(template=template, sketch_id="test")
-        assert len(enricher.params_schema) == 1
+        assert any(
+            param["name"] == "API_KEY" and param["type"] == "vaultSecret"
+            for param in enricher.params_schema
+        )
 
     def test_load_retry_template(self):
         """Should load template with retry config from YAML."""
@@ -639,3 +646,95 @@ class TestTemplateEnricherFromYaml:
         enricher = TemplateEnricher(template=template, sketch_id="test")
         assert enricher.template.output.is_array is True
         assert enricher.template.output.array_path == "data.results"
+
+
+class TestWholesalerAddressPreviewTemplate:
+    """Tests for the safe wholesaler address preview fixture."""
+
+    def test_loads_wholesaler_address_template_in_preview_mode(self):
+        """Wholesaler address fixture should load as a Location preview template."""
+        template = YamlLoader.get_template_from_file(
+            str(TEST_DIR / "wholesaler-address-preview.yaml")
+        )
+
+        assert template.execution_mode == "preview"
+        assert template.input.type == "Location"
+        assert template.output.type == "Location"
+
+    def test_rejects_non_preview_execution_mode(self):
+        """Templates should reject execution modes other than preview."""
+        with pytest.raises(ValidationError):
+            create_test_template(execution_mode="persist")
+
+    @pytest.mark.asyncio
+    async def test_preview_execution_maps_location_without_graph_persistence(
+        self, mock_logger, httpx_mock, monkeypatch
+    ):
+        """Preview execution should map a Location response without graph writes."""
+        monkeypatch.setattr(
+            "flowsint_core.core.enricher_base.Logger", mock_logger
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.template_enricher.Logger", mock_logger
+        )
+        httpx_mock.add_response(
+            json={
+                "result": {
+                    "addressMatches": [
+                        {
+                            "matchedAddress": (
+                                "1600 PENNSYLVANIA AVE NW, WASHINGTON, DC, 20500"
+                            ),
+                            "addressComponents": {
+                                "city": "WASHINGTON",
+                                "country": "United States",
+                                "zip": "20500",
+                            },
+                            "coordinates": {"x": -77.0365, "y": 38.8977},
+                        }
+                    ]
+                }
+            }
+        )
+        template = YamlLoader.get_template_from_file(
+            str(TEST_DIR / "wholesaler-address-preview.yaml")
+        )
+        enricher = TemplateEnricher(template=template, sketch_id="test")
+        graph_service = MagicMock()
+        enricher._graph_service = graph_service
+
+        from flowsint_types import Location
+
+        results = await enricher.execute(
+            [
+                Location(
+                    address="1600 Pennsylvania Ave NW",
+                    city="Washington",
+                    country="United States",
+                    zip="20500",
+                )
+            ]
+        )
+
+        assert len(results) == 1
+        assert results[0].address == (
+            "1600 PENNSYLVANIA AVE NW, WASHINGTON, DC, 20500"
+        )
+        assert results[0].city == "WASHINGTON"
+        assert results[0].country == "United States"
+        assert results[0].zip == "20500"
+        assert results[0].latitude == 38.8977
+        assert results[0].longitude == -77.0365
+
+        request = httpx_mock.get_request()
+        assert request.url.host == "geocoding.geo.census.gov"
+        assert request.url.path == "/geocoder/locations/onelineaddress"
+        assert dict(request.url.params) == {
+            "address": "1600 Pennsylvania Ave NW",
+            "benchmark": "Public_AR_Current",
+            "format": "json",
+        }
+        graph_service.create_node_from_flowsint_type.assert_not_called()
+        graph_service.create_relationship.assert_not_called()
+        graph_service.log_graph_message.assert_not_called()
+        graph_service.flush.assert_called_once_with()

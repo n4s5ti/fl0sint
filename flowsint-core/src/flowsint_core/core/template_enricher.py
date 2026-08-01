@@ -419,8 +419,8 @@ class TemplateEnricher(Enricher):
         # Render headers
         headers = YamlLoader.render_dict(dict(req.headers), values, sanitize=False)
 
-        # Render params
-        params = YamlLoader.render_dict(dict(req.params), values)
+        # httpx serializes query values; pre-encoding here would encode them twice.
+        params = YamlLoader.render_dict(dict(req.params), values, sanitize=False)
 
         # Render body if present
         body = None
@@ -534,15 +534,10 @@ class TemplateEnricher(Enricher):
 
         return results
 
-    def postprocess(self, results: List[Any], input_data: List[Any] = []) -> List[Any]:
-        """Log results and return them."""
-        for input, output in zip(input_data, results):
-            self.create_node(input)
-            self.create_node(output)
-            self.create_relationship(input, output, "HAS_SOCIAL_ACCOUNT")
-            self.log_graph_message(
-                f"[{self.template.name.upper()}] {input.nodeLabel} -> {output.nodeLabel}"
-            )
+    def postprocess(
+        self, results: List[Any], input_data: Optional[List[Any]] = None
+    ) -> List[Any]:
+        """Return preview results without mutating the graph."""
         return results
 
     def get_raw_response(self) -> Dict[str, Any] | None:

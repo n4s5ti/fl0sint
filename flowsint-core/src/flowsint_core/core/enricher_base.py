@@ -26,9 +26,9 @@ def build_params_model(params_schema: list) -> BaseModel:
 
     for param in params_schema:
         name = param["name"]
-        type = str  # You can later enhance this to support int, bool, etc.
-        required = param.get("required", False)
         param_type = param.get("type", "string")
+        field_type = bool if param_type == "bool" else str
+        required = param.get("required", False)
 
         # Vault secrets are always optional in Pydantic validation
         # Required validation happens after vault resolution
@@ -38,7 +38,7 @@ def build_params_model(params_schema: list) -> BaseModel:
             default = ... if required else param.get("default")
 
         fields[name] = (
-            Optional[type],
+            Optional[field_type],
             Field(default=default, description=param.get("description", "")),
         )
 
@@ -183,7 +183,7 @@ class Enricher(ABC):
                     resolved[param_name] = param["default"]
             else:
                 # For non-vault params, use the provided value or default
-                if param_name in self.params and self.params[param_name]:
+                if param_name in self.params and self.params[param_name] is not None:
                     resolved[param_name] = self.params[param_name]
                 elif param.get("default") is not None:
                     resolved[param_name] = param["default"]

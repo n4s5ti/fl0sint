@@ -140,6 +140,10 @@ class Template(BaseModel):
     description: Optional[str] = Field(None, description="Description of the template")
     category: str = Field(..., description="Category of the template")
     version: float = Field(..., description="Version of the template")
+    execution_mode: Literal["preview"] = Field(
+        default="preview",
+        description="Generic templates only preview/map responses and do not persist graph data.",
+    )
     input: TemplateInput = Field(
         ...,
         description="Input format of the template, with key to use (default to nodeLabel)",
