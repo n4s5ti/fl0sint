@@ -44,13 +44,20 @@ Example template:
 """
 
 import asyncio
+import hashlib
 import xml.etree.ElementTree as ET
-from typing import Any, Dict, List, Optional
+from contextlib import asynccontextmanager
+from typing import Any, AsyncIterator, Dict, List, Optional
 
 import httpx
 from flowsint_types import FlowsintType, get_type
 
 from flowsint_core.core.enricher_base import Enricher
+from flowsint_core.core.execution import (
+    EvidenceEnvelope,
+    OutcomeStatus,
+    RedactedDiagnostic,
+)
 from flowsint_core.core.logger import Logger
 from flowsint_core.templates.loader.yaml_loader import (
     SSRFError,
@@ -109,6 +116,7 @@ class TemplateEnricher(Enricher):
         self.request = self.template.request
         self._resolved_secrets: Dict[str, str] = {}
         self.raw_response: Dict[str, Any] | None = None
+        self._last_response_artifact_sha256: str | None = None
 
     @staticmethod
     def _build_params_schema_from_template(template: Template) -> List[Dict[str, Any]]:
@@ -124,6 +132,10 @@ class TemplateEnricher(Enricher):
                 }
             )
         return schema
+
+    @classmethod
+    def get_params_schema_for_template(cls, template: Template) -> List[Dict[str, Any]]:
+        return cls._build_params_schema_from_template(template)
 
     def _detect_type(self, input_type: str) -> type[FlowsintType]:
         """Resolve a type name to its FlowsintType class."""
@@ -333,6 +345,9 @@ class TemplateEnricher(Enricher):
                         )
                         await asyncio.sleep(wait_time)
                         continue
+                self._last_response_artifact_sha256 = hashlib.sha256(
+                    response.content
+                ).hexdigest()
                 try:
                     body = response.json()
                 except Exception:
@@ -406,15 +421,14 @@ class TemplateEnricher(Enricher):
         # Render URL with template values
         url = YamlLoader.render_template(req.url, values)
 
-        # Validate URL is safe (SSRF protection)
         try:
             validate_url_safe(url)
-        except SSRFError as e:
+        except SSRFError:
             Logger.info(
                 self.sketch_id,
-                {"message": f"SSRF protection blocked request to {url}: {e}"},
+                {"message": "SSRF protection blocked a template request."},
             )
-            raise TemplateEnricherError(f"Blocked URL: {e}")
+            raise
 
         # Render headers
         headers = YamlLoader.render_dict(dict(req.headers), values, sanitize=False)
@@ -456,10 +470,10 @@ class TemplateEnricher(Enricher):
                 for item in items:
                     try:
                         results.append(self._build_mapped_result(item))
-                    except Exception as e:
+                    except Exception:
                         Logger.info(
                             self.sketch_id,
-                            {"message": f"Failed to map array item: {e}"},
+                            {"message": "Failed to map a template array response item."},
                         )
             else:
                 Logger.info(
@@ -473,6 +487,79 @@ class TemplateEnricher(Enricher):
             results.append(self._build_mapped_result(data))
 
         return results
+
+    @asynccontextmanager
+    async def _structured_execution_context(self) -> AsyncIterator[httpx.AsyncClient]:
+        async with httpx.AsyncClient() as client:
+            yield client
+
+    async def _process_single_input_structured(
+        self, input_obj: Any, context: httpx.AsyncClient
+    ) -> List[Any]:
+        self._last_response_artifact_sha256 = None
+        return await self._process_single_input(context, input_obj)
+
+    def _build_structured_evidence(
+        self, input_obj: Any, input_ref: str
+    ) -> tuple[EvidenceEnvelope, ...]:
+        evidence = self.template.evidence
+        artifact_sha256 = self._last_response_artifact_sha256
+        return (
+            EvidenceEnvelope(
+                input_ref=input_ref,
+                request_url_pattern=self.request.url,
+                artifact_sha256=artifact_sha256,
+                artifact_reference=(
+                    f"body:sha256:{artifact_sha256}"
+                    if artifact_sha256 is not None
+                    else None
+                ),
+                source_rights=evidence.source_rights,
+                schema_version=evidence.schema_version,
+                parser_version=evidence.parser_version,
+                confidence=evidence.confidence,
+                verification_state=evidence.verification_state,
+            ),
+        )
+
+    def _classify_structured_exception(
+        self, error: Exception
+    ) -> RedactedDiagnostic:
+        if isinstance(error, SSRFError):
+            return RedactedDiagnostic(
+                code="ssrf_blocked",
+                safe_message="The template request was blocked by safety controls.",
+                retryable=False,
+            )
+        if isinstance(error, TemplateRenderError):
+            return RedactedDiagnostic(
+                code="template_render_error",
+                safe_message="The template could not be rendered.",
+                retryable=False,
+            )
+        if isinstance(error, TemplateEnricherError):
+            return RedactedDiagnostic(
+                code="template_processing_error",
+                safe_message="The template response could not be processed.",
+                retryable=False,
+            )
+        return super()._classify_structured_exception(error)
+
+    def _classify_structured_success(
+        self,
+        outputs: tuple[Any, ...],
+        evidence: tuple[EvidenceEnvelope, ...],
+    ) -> tuple[OutcomeStatus, RedactedDiagnostic | None]:
+        if outputs and self.template.evidence.source_rights == "unspecified":
+            return (
+                OutcomeStatus.HOLD,
+                RedactedDiagnostic(
+                    code="source_rights_unspecified",
+                    safe_message="Source rights must be specified before outputs can be retained.",
+                    retryable=False,
+                ),
+            )
+        return super()._classify_structured_success(outputs, evidence)
 
     async def scan(self, values: List[Any]) -> List[Any]:
         """

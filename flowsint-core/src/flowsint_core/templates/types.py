@@ -135,6 +135,43 @@ class TemplateHttpResponse(BaseModel):
     )
 
 
+class TemplateEvidenceConfig(BaseModel):
+    """Retainable provenance metadata for structured template execution."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    source_rights: str = Field(
+        default="unspecified",
+        min_length=1,
+        max_length=128,
+        description="Rights basis for retaining outputs from this source",
+    )
+    schema_version: str = Field(
+        default="1",
+        min_length=1,
+        max_length=64,
+        description="Schema version used to interpret retained evidence",
+    )
+    parser_version: str = Field(
+        default="1",
+        min_length=1,
+        max_length=64,
+        description="Parser version used to produce retained evidence",
+    )
+    confidence: float = Field(
+        default=1.0,
+        ge=0.0,
+        le=1.0,
+        description="Confidence in the extracted evidence",
+    )
+    verification_state: str = Field(
+        default="unverified",
+        min_length=1,
+        max_length=64,
+        description="Verification state of the source evidence",
+    )
+
+
 class Template(BaseModel):
     name: str = Field(..., description="Name of the template")
     description: Optional[str] = Field(None, description="Description of the template")
@@ -157,6 +194,10 @@ class Template(BaseModel):
     output: TemplateOutput = Field(
         ...,
         description="Output type of the template.",
+    )
+    evidence: TemplateEvidenceConfig = Field(
+        default_factory=TemplateEvidenceConfig,
+        description="Provenance metadata retained with structured execution evidence",
     )
     # Optional configurations
     secrets: List[TemplateSecret] = Field(

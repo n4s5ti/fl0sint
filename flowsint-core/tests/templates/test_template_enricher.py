@@ -1,5 +1,6 @@
 """Tests for TemplateEnricher."""
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Optional
@@ -9,6 +10,7 @@ import httpx
 import pytest
 from pydantic import ValidationError
 
+from flowsint_core.core.execution import OutcomeStatus
 from flowsint_core.core.template_enricher import (
     TemplateEnricher,
     TemplateEnricherError,
@@ -16,6 +18,7 @@ from flowsint_core.core.template_enricher import (
 from flowsint_core.templates.loader.yaml_loader import SSRFError, YamlLoader
 from flowsint_core.templates.types import (
     Template,
+    TemplateEvidenceConfig,
     TemplateHttpRequest,
     TemplateHttpResponse,
     TemplateInput,
@@ -660,6 +663,7 @@ class TestWholesalerAddressPreviewTemplate:
         assert template.execution_mode == "preview"
         assert template.input.type == "Location"
         assert template.output.type == "Location"
+        assert template.evidence.source_rights == "test-only"
 
     def test_rejects_non_preview_execution_mode(self):
         """Templates should reject execution modes other than preview."""
@@ -738,3 +742,153 @@ class TestWholesalerAddressPreviewTemplate:
         graph_service.create_relationship.assert_not_called()
         graph_service.log_graph_message.assert_not_called()
         graph_service.flush.assert_called_once_with()
+
+
+class TestTemplateEnricherStructuredExecution:
+    """Structured execution must retain per-input outcomes and redacted evidence."""
+
+    @pytest.mark.asyncio
+    async def test_structured_execution_keeps_failure_and_sibling_success(
+        self, mock_logger, httpx_mock, monkeypatch
+    ):
+        raw_failure_body = b'{"error":"raw-body-secret"}'
+        raw_success_body = b'{"ip":"1.1.1.1"}'
+        httpx_mock.add_response(
+            url="https://sensitive.example/8.8.8.8",
+            status_code=404,
+            content=raw_failure_body,
+        )
+        httpx_mock.add_response(
+            url="https://sensitive.example/1.1.1.1",
+            content=raw_success_body,
+            headers={"Content-Type": "application/json"},
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.enricher_base.Logger", mock_logger
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.template_enricher.Logger", mock_logger
+        )
+        template = create_test_template(url="https://sensitive.example/{{address}}")
+        template = template.model_copy(
+            update={
+                "evidence": TemplateEvidenceConfig(
+                    source_rights="test-only",
+                    schema_version="1",
+                    parser_version="1",
+                    confidence=1.0,
+                    verification_state="verified",
+                )
+            }
+        )
+        enricher = TemplateEnricher(template=template, sketch_id="test")
+        enricher._graph_service = MagicMock()
+
+        from flowsint_types import Ip
+
+        result = await enricher.execute_structured(
+            [Ip(address="8.8.8.8"), Ip(address="1.1.1.1")]
+        )
+
+        assert [outcome.status for outcome in result.outcomes] == [
+            OutcomeStatus.FAILURE,
+            OutcomeStatus.SUCCESS,
+        ]
+        assert len(result.outcomes[0].outputs) == 0
+        assert len(result.outcomes[1].outputs) == 1
+        assert [len(outcome.evidence) for outcome in result.outcomes] == [1, 1]
+        failure_evidence = result.outcomes[0].evidence[0]
+        assert failure_evidence.request_url_pattern == template.request.url
+        assert failure_evidence.artifact_sha256 == hashlib.sha256(
+            raw_failure_body
+        ).hexdigest()
+        assert failure_evidence.artifact_reference == (
+            f"body:sha256:{failure_evidence.artifact_sha256}"
+        )
+        diagnostic_json = result.outcomes[0].diagnostic.model_dump_json()
+        assert "8.8.8.8" not in diagnostic_json
+        assert "sensitive.example" not in diagnostic_json
+        assert "raw-body-secret" not in diagnostic_json
+        assert "https://sensitive.example/8.8.8.8" not in result.model_dump_json()
+        assert result.outcomes[0].diagnostic.retryable is False
+
+    @pytest.mark.asyncio
+    async def test_structured_timeout_is_retryable_and_redacted(
+        self, mock_logger, httpx_mock, monkeypatch
+    ):
+        def raise_timeout(request):
+            raise httpx.TimeoutException("timeout-secret")
+
+        httpx_mock.add_callback(raise_timeout)
+        monkeypatch.setattr(
+            "flowsint_core.core.enricher_base.Logger", mock_logger
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.template_enricher.Logger", mock_logger
+        )
+        enricher = TemplateEnricher(
+            template=create_test_template(
+                retry=TemplateRetryConfig(max_retries=0)
+            ),
+            sketch_id="test",
+        )
+        enricher._graph_service = MagicMock()
+
+        from flowsint_types import Ip
+
+        result = await enricher.execute_structured([Ip(address="8.8.8.8")])
+
+        diagnostic = result.outcomes[0].diagnostic
+        assert result.outcomes[0].status is OutcomeStatus.FAILURE
+        assert diagnostic.code == "timeout"
+        assert diagnostic.retryable is True
+        assert "timeout-secret" not in diagnostic.model_dump_json()
+
+    @pytest.mark.asyncio
+    async def test_unspecified_source_rights_hold_successful_outputs(
+        self, mock_logger, httpx_mock, monkeypatch
+    ):
+        httpx_mock.add_response(
+            content=b'{"ip":"8.8.8.8"}',
+            headers={"Content-Type": "application/json"},
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.enricher_base.Logger", mock_logger
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.template_enricher.Logger", mock_logger
+        )
+        enricher = TemplateEnricher(template=create_test_template(), sketch_id="test")
+        enricher._graph_service = MagicMock()
+
+        from flowsint_types import Ip
+
+        result = await enricher.execute_structured([Ip(address="8.8.8.8")])
+
+        outcome = result.outcomes[0]
+        assert outcome.status is OutcomeStatus.HOLD
+        assert len(outcome.outputs) == 1
+        assert outcome.diagnostic.code == "source_rights_unspecified"
+
+    @pytest.mark.asyncio
+    async def test_legacy_execute_remains_flattened(
+        self, mock_logger, httpx_mock, monkeypatch
+    ):
+        httpx_mock.add_response(json={"ip": "8.8.8.8"})
+        httpx_mock.add_response(json={"ip": "1.1.1.1"})
+        monkeypatch.setattr(
+            "flowsint_core.core.enricher_base.Logger", mock_logger
+        )
+        monkeypatch.setattr(
+            "flowsint_core.core.template_enricher.Logger", mock_logger
+        )
+        enricher = TemplateEnricher(template=create_test_template(), sketch_id="test")
+        enricher._graph_service = MagicMock()
+
+        from flowsint_types import Ip
+
+        results = await enricher.execute(
+            [Ip(address="8.8.8.8"), Ip(address="1.1.1.1")]
+        )
+
+        assert [result.address for result in results] == ["8.8.8.8", "1.1.1.1"]

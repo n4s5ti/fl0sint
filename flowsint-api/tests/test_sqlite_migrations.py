@@ -50,7 +50,7 @@ def _upgrade_sqlite(db_path: Path) -> None:
     engine = create_engine(f"sqlite:///{db_path}")
     with engine.connect() as connection:
         version = connection.execute(text("SELECT version_num FROM alembic_version")).scalar()
-    assert version == "a1f2b3c4d5e6"
+    assert version == "c3f4e5d6a7b8"
 
 
 def test_alembic_head_bootstraps_empty_sqlite_database(tmp_path: Path) -> None:

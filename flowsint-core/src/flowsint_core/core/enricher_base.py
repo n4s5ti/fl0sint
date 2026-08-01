@@ -1,10 +1,20 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from contextlib import asynccontextmanager
+from typing import Any, AsyncIterator, Dict, List, Optional
 
+import httpx
 from pydantic import BaseModel, Field, TypeAdapter, ValidationError, create_model
 from pydantic.config import ConfigDict
 
 from ..utils import resolve_type
+from .execution import (
+    EvidenceEnvelope,
+    InputOutcome,
+    OutcomeStatus,
+    RedactedDiagnostic,
+    StructuredExecutionResult,
+    canonical_input_hash,
+)
 from .graph import GraphService, create_graph_service
 from .logger import Logger
 from .vault import VaultProtocol
@@ -358,6 +368,43 @@ class Enricher(ABC):
         # If the value is None, return the default instead (allows fallback to env vars)
         return value if value is not None else default
 
+    def _input_validation_context(self) -> tuple[TypeAdapter | None, str | None]:
+        if self.InputType is NotImplemented:
+            return None, None
+
+        base_type = self.InputType
+        adapter = TypeAdapter(base_type)
+        primary_field = None
+        if issubclass(base_type, BaseModel):
+            for name, field in base_type.model_fields.items():
+                if field.json_schema_extra and field.json_schema_extra.get("primary"):
+                    primary_field = name
+                    break
+            if primary_field is None:
+                for name, field in base_type.model_fields.items():
+                    if field.is_required():
+                        primary_field = name
+                        break
+                if primary_field is None:
+                    primary_field = next(iter(base_type.model_fields.keys()))
+        return adapter, primary_field
+
+    def _validate_single_input(
+        self,
+        item: Any,
+        *,
+        adapter: TypeAdapter | None = None,
+        primary_field: str | None = None,
+    ) -> Any:
+        """Validate one input using the same conversion rules as ``preprocess``."""
+        if self.InputType is NotImplemented:
+            return item
+        if adapter is None:
+            adapter, primary_field = self._input_validation_context()
+        if isinstance(item, str) and primary_field:
+            item = {primary_field: item}
+        return adapter.validate_python(item)
+
     def preprocess(self, values: List) -> List:
         """
         Generic preprocess that validates and converts input using InputType.
@@ -371,33 +418,16 @@ class Enricher(ABC):
         if self.InputType is NotImplemented:
             return values
 
-        base_type = self.InputType
-        adapter = TypeAdapter(base_type)
-
-        primary_field = None
-        if issubclass(base_type, BaseModel):
-            for name, field in base_type.model_fields.items():
-                if field.json_schema_extra and field.json_schema_extra.get("primary"):
-                    primary_field = name
-                    break
-            if primary_field is None:
-                # fallback : premier champ requis ou premier champ disponible
-                for name, field in base_type.model_fields.items():
-                    if field.is_required():
-                        primary_field = name
-                        break
-                if primary_field is None:
-                    primary_field = next(iter(base_type.model_fields.keys()))
-
+        adapter, primary_field = self._input_validation_context()
         cleaned = []
 
         for item in values:
             try:
-                if isinstance(item, str) and primary_field:
-                    item = {primary_field: item}
-
-                validated = adapter.validate_python(item)
-                cleaned.append(validated)
+                cleaned.append(
+                    self._validate_single_input(
+                        item, adapter=adapter, primary_field=primary_field
+                    )
+                )
             except Exception:
                 continue
 
@@ -410,6 +440,186 @@ class Enricher(ABC):
             )
             return values
         return cleaned
+
+    @asynccontextmanager
+    async def _structured_execution_context(self) -> AsyncIterator[Any]:
+        """Provide optional shared resources for structured per-input processing."""
+        yield None
+
+    async def _process_single_input_structured(
+        self, input_obj: Any, context: Any
+    ) -> List[Any]:
+        """Process one validated input; subclasses can preserve richer grouping."""
+        return await self.scan([input_obj])
+
+    def _build_structured_evidence(
+        self, input_obj: Any, input_ref: str
+    ) -> tuple[EvidenceEnvelope, ...]:
+        """Return retainable evidence captured while processing one input."""
+        return ()
+
+    def _classify_structured_exception(
+        self, error: Exception
+    ) -> RedactedDiagnostic:
+        """Classify failures without retaining exception text or request data."""
+        if isinstance(error, (InvalidEnricherParams, ValidationError)):
+            return RedactedDiagnostic(
+                code="validation_error",
+                safe_message="Input validation failed.",
+                retryable=False,
+            )
+        if isinstance(error, httpx.TimeoutException):
+            return RedactedDiagnostic(
+                code="timeout",
+                safe_message="The operation timed out.",
+                retryable=True,
+            )
+        if isinstance(error, httpx.HTTPStatusError):
+            status_code = error.response.status_code
+            if status_code == 429:
+                return RedactedDiagnostic(
+                    code="http_rate_limited",
+                    safe_message="The remote service rate limited the request.",
+                    retryable=True,
+                )
+            if 500 <= status_code < 600:
+                return RedactedDiagnostic(
+                    code="http_server_error",
+                    safe_message="The remote service failed.",
+                    retryable=True,
+                )
+            if 400 <= status_code < 500:
+                return RedactedDiagnostic(
+                    code="http_client_error",
+                    safe_message="The remote service rejected the request.",
+                    retryable=False,
+                )
+            return RedactedDiagnostic(
+                code="http_error",
+                safe_message="The remote service returned an HTTP error.",
+                retryable=False,
+            )
+        return RedactedDiagnostic(
+            code="unexpected_error",
+            safe_message="Unexpected processing failure.",
+            retryable=False,
+        )
+
+    def _classify_structured_success(
+        self,
+        outputs: tuple[Any, ...],
+        evidence: tuple[EvidenceEnvelope, ...],
+    ) -> tuple[OutcomeStatus, RedactedDiagnostic | None]:
+        return OutcomeStatus.SUCCESS, None
+
+    async def _execute_structured_input(
+        self,
+        original_input: Any,
+        context: Any,
+        *,
+        adapter: TypeAdapter | None = None,
+        primary_field: str | None = None,
+    ) -> InputOutcome:
+        input_ref = canonical_input_hash(original_input)
+        try:
+            input_obj = self._validate_single_input(
+                original_input, adapter=adapter, primary_field=primary_field
+            )
+        except Exception as error:
+            return InputOutcome(
+                input_ref=input_ref,
+                status=OutcomeStatus.FAILURE,
+                diagnostic=self._classify_structured_exception(error),
+            )
+
+        outputs: tuple[Any, ...] = ()
+        diagnostic: RedactedDiagnostic | None = None
+        status = OutcomeStatus.SUCCESS
+        try:
+            processed = await self._process_single_input_structured(input_obj, context)
+            outputs = tuple(self.postprocess(processed, [input_obj]))
+        except Exception as error:
+            status = OutcomeStatus.FAILURE
+            diagnostic = self._classify_structured_exception(error)
+
+        try:
+            evidence = self._build_structured_evidence(input_obj, input_ref)
+        except Exception as error:
+            evidence = ()
+            status = OutcomeStatus.FAILURE
+            diagnostic = self._classify_structured_exception(error)
+
+        if status is OutcomeStatus.SUCCESS:
+            status, diagnostic = self._classify_structured_success(outputs, evidence)
+
+        return InputOutcome(
+            input_ref=input_ref,
+            status=status,
+            outputs=outputs,
+            diagnostic=diagnostic,
+            evidence=evidence,
+        )
+
+    async def execute_structured(
+        self, values: List[Any]
+    ) -> StructuredExecutionResult:
+        """Execute independently per original input without flattening outputs."""
+        outcomes: list[InputOutcome] = []
+        if self.name() != "enricher_orchestrator":
+            Logger.info(self.sketch_id, {"message": f"Enricher {self.name()} started."})
+
+        try:
+            await self.async_init()
+        except Exception as error:
+            diagnostic = self._classify_structured_exception(error)
+            outcomes = [
+                InputOutcome(
+                    input_ref=canonical_input_hash(value),
+                    status=OutcomeStatus.FAILURE,
+                    diagnostic=diagnostic,
+                )
+                for value in values
+            ]
+        else:
+            try:
+                adapter, primary_field = self._input_validation_context()
+                async with self._structured_execution_context() as context:
+                    for value in values:
+                        outcomes.append(
+                            await self._execute_structured_input(
+                                value,
+                                context,
+                                adapter=adapter,
+                                primary_field=primary_field,
+                            )
+                        )
+            except Exception as error:
+                diagnostic = self._classify_structured_exception(error)
+                for value in values[len(outcomes) :]:
+                    outcomes.append(
+                        InputOutcome(
+                            input_ref=canonical_input_hash(value),
+                            status=OutcomeStatus.FAILURE,
+                            diagnostic=diagnostic,
+                        )
+                    )
+        finally:
+            try:
+                self._graph_service.flush()
+            except Exception:
+                Logger.error(
+                    self.sketch_id,
+                    {"message": f"Enricher {self.name()} graph flush failed."},
+                )
+
+        if self.name() != "enricher_orchestrator":
+            Logger.completed(
+                self.sketch_id, {"message": f"Enricher {self.name()} finished."}
+            )
+        return StructuredExecutionResult(
+            enricher_name=self.name(),
+            outcomes=tuple(outcomes),
+        )
 
     def postprocess(
         self, results: List[Dict[str, Any]], input_data: List[str] = None
@@ -435,11 +645,11 @@ class Enricher(ABC):
 
             return processed
 
-        except Exception as e:
+        except Exception:
             if self.name() != "enricher_orchestrator":
                 Logger.error(
                     self.sketch_id,
-                    {"message": f"Enricher {self.name()} errored: {str(e)}"},
+                    {"message": f"Enricher {self.name()} errored."},
                 )
             return []
 

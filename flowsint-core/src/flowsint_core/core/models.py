@@ -10,11 +10,13 @@ from sqlalchemy import (
     Float,
     ForeignKey,
     Index,
+    Integer,
     LargeBinary,
     String,
     Text,
     UniqueConstraint,
     Uuid,
+    event,
     func,
 )
 from sqlalchemy import (
@@ -409,3 +411,209 @@ class EnricherTemplate(Base):
         Index("idx_enricher_templates_category", "category"),
         Index("idx_enricher_templates_is_public", "is_public"),
     )
+
+
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+class FlowRun(Base):
+    """Durable, resumable execution of a flow or standalone template step."""
+
+    __tablename__ = "flow_runs"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    flow_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid,
+        ForeignKey("flows.id", onupdate="CASCADE", ondelete="SET NULL"),
+        nullable=True,
+    )
+    sketch_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid,
+        ForeignKey("sketches.id", onupdate="CASCADE", ondelete="SET NULL"),
+        nullable=True,
+    )
+    owner_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid,
+        ForeignKey("profiles.id", onupdate="CASCADE", ondelete="SET NULL"),
+        nullable=True,
+    )
+    idempotency_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
+    attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    input_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    input_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    checkpoint: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    safe_error_code: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    safe_error_diagnostic: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    started_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=_utcnow,
+        server_default=func.now(),
+        onupdate=_utcnow,
+    )
+
+    flow = relationship("Flow", foreign_keys=[flow_id])
+    sketch = relationship("Sketch", foreign_keys=[sketch_id])
+    owner = relationship("Profile", foreign_keys=[owner_id])
+    step_runs = relationship("StepRun", back_populates="flow_run")
+    evidence_records = relationship(
+        "EvidenceEnvelopeRecord", back_populates="flow_run", foreign_keys="EvidenceEnvelopeRecord.flow_run_id"
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "owner_id",
+            "idempotency_key",
+            name="uq_flow_runs_owner_idempotency_key",
+        ),
+        Index("idx_flow_runs_owner_id", "owner_id"),
+        Index("idx_flow_runs_status", "status"),
+    )
+
+
+class StepRun(Base):
+    """Current resumable state for a stable step within a flow run."""
+
+    __tablename__ = "step_runs"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    flow_run_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
+        ForeignKey("flow_runs.id", onupdate="CASCADE", ondelete="CASCADE"),
+        nullable=False,
+    )
+    step_key: Mapped[str] = mapped_column(String(255), nullable=False)
+    attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
+    retryable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    checkpoint: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    input_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    success_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    failure_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    hold_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    output_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    started_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=_utcnow,
+        server_default=func.now(),
+        onupdate=_utcnow,
+    )
+
+    flow_run = relationship("FlowRun", back_populates="step_runs")
+    evidence_records = relationship(
+        "EvidenceEnvelopeRecord", back_populates="step_run", foreign_keys="EvidenceEnvelopeRecord.step_run_id"
+    )
+
+    __table_args__ = (
+        UniqueConstraint("flow_run_id", "step_key", name="uq_step_runs_flow_run_step_key"),
+        Index("idx_step_runs_flow_run_id", "flow_run_id"),
+        Index("idx_step_runs_status", "status"),
+    )
+
+
+class EvidenceEnvelopeRecord(Base):
+    """Append-only evidence snapshot for one structured input outcome."""
+
+    __tablename__ = "evidence_envelope_records"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    flow_run_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
+        ForeignKey("flow_runs.id", onupdate="CASCADE", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    step_run_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
+        ForeignKey("step_runs.id", onupdate="CASCADE", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    attempt: Mapped[int] = mapped_column(Integer, nullable=False)
+    input_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    evidence_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    input_ref: Mapped[str] = mapped_column(String(128), nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False)
+    retryable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    mapped_outputs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    diagnostic: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    source: Mapped[str] = mapped_column(String(255), nullable=False)
+    request_url_pattern: Mapped[str | None] = mapped_column(Text, nullable=True)
+    artifact_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    artifact_reference: Mapped[str | None] = mapped_column(Text, nullable=True)
+    observed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    source_rights: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    schema_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    parser_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
+    verification_state: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    supersedes_id: Mapped[uuid.UUID | None] = mapped_column(
+        Uuid,
+        ForeignKey(
+            "evidence_envelope_records.id",
+            onupdate="CASCADE",
+            ondelete="RESTRICT",
+        ),
+        nullable=True,
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, server_default=func.now()
+    )
+
+    flow_run = relationship(
+        "FlowRun",
+        back_populates="evidence_records",
+        foreign_keys=[flow_run_id],
+    )
+    step_run = relationship(
+        "StepRun",
+        back_populates="evidence_records",
+        foreign_keys=[step_run_id],
+    )
+    supersedes = relationship(
+        "EvidenceEnvelopeRecord",
+        foreign_keys=[supersedes_id],
+        remote_side=[id],
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "step_run_id",
+            "attempt",
+            "input_index",
+            "evidence_index",
+            name="uq_evidence_step_attempt_input_envelope",
+        ),
+        Index("idx_evidence_envelopes_flow_run_id", "flow_run_id"),
+        Index("idx_evidence_envelopes_step_run_id", "step_run_id"),
+        Index("idx_evidence_envelopes_supersedes_id", "supersedes_id"),
+    )
+
+
+@event.listens_for(EvidenceEnvelopeRecord, "before_update")
+def _reject_evidence_update(mapper, connection, target) -> None:
+    raise TypeError("EvidenceEnvelopeRecord rows are append-only")
+
+
+@event.listens_for(EvidenceEnvelopeRecord, "before_delete")
+def _reject_evidence_delete(mapper, connection, target) -> None:
+    raise TypeError("EvidenceEnvelopeRecord rows are append-only")
