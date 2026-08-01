@@ -20,6 +20,8 @@ from ..execution import (
     StructuredExecutionResult,
 )
 from ..models import EvidenceEnvelopeRecord, FlowRun, StepRun
+from ..projection.contracts import ProjectionBinding
+from ..projection.repository import ProjectionRepository
 from ..repositories.execution_repository import ExecutionRepository
 from .base import BaseService
 
@@ -36,6 +38,14 @@ class RunLease:
     lease_owner: str
     attempt: int
 
+
+
+@dataclass(frozen=True)
+class PersistedStructuredResult:
+    """Committed execution state and graph outbox rows created with its evidence."""
+
+    run: FlowRun
+    projection_job_ids: tuple[UUID, ...]
 
 class RunLeaseLost(RuntimeError):
     """Raised when a worker no longer owns an active flow-run lease."""
@@ -81,17 +91,27 @@ class ExecutionService(BaseService):
         idempotency_key: str,
         input_digest: str,
         input_count: int,
+        operation_digest: str | None = None,
         flow_id: UUID | None = None,
         sketch_id: UUID | None = None,
         run_id: UUID | None = None,
     ) -> tuple[FlowRun, bool]:
         """Create a run once per owner/key, rejecting mismatched replay input."""
+        operation_digest = (
+            input_digest if operation_digest is None else operation_digest
+        )
         existing = self._repo.get_by_owner_and_idempotency_key(
             owner_id, idempotency_key
         )
         if existing is not None:
-            if existing.input_digest != input_digest or existing.input_count != input_count:
-                raise ValueError("Idempotency key cannot be reused for different inputs")
+            if (
+                existing.input_digest != input_digest
+                or existing.input_count != input_count
+                or existing.operation_digest != operation_digest
+            ):
+                raise ValueError(
+                    "Idempotency key cannot be reused for a different operation"
+                )
             return existing, False
 
         run = FlowRun(
@@ -100,6 +120,7 @@ class ExecutionService(BaseService):
             sketch_id=sketch_id,
             idempotency_key=idempotency_key,
             input_digest=input_digest,
+            operation_digest=operation_digest,
             input_count=input_count,
         )
         if run_id is not None:
@@ -115,8 +136,14 @@ class ExecutionService(BaseService):
             )
             if existing is None:
                 raise
-            if existing.input_digest != input_digest or existing.input_count != input_count:
-                raise ValueError("Idempotency key cannot be reused for different inputs")
+            if (
+                existing.input_digest != input_digest
+                or existing.input_count != input_count
+                or existing.operation_digest != operation_digest
+            ):
+                raise ValueError(
+                    "Idempotency key cannot be reused for a different operation"
+                )
             return existing, False
 
         self._commit()
@@ -213,8 +240,14 @@ class ExecutionService(BaseService):
         lease: RunLease,
         step: StepRun,
         result: StructuredExecutionResult,
-    ) -> FlowRun:
-        """Persist every input outcome without overwriting immutable evidence."""
+        *,
+        projection_binding: ProjectionBinding | None = None,
+    ) -> PersistedStructuredResult:
+        """Persist immutable evidence and matching projection jobs in one transaction."""
+        projection_repo = (
+            ProjectionRepository(self._db) if projection_binding is not None else None
+        )
+        projection_job_ids: list[UUID] = []
         self._fence_run(run, lease)
         if len(result.outcomes) != run.input_count:
             raise ValueError("Structured result must contain every original input")
@@ -235,18 +268,26 @@ class ExecutionService(BaseService):
                     is not None
                 ):
                     continue
-                self._repo.add(
-                    self._record_for_outcome(
-                        run=run,
-                        step=step,
-                        attempt=step.attempt,
-                        input_index=input_index,
-                        evidence_index=evidence_index,
-                        outcome=outcome,
-                        envelope=envelope,
-                        source=result.enricher_name,
-                    )
+                record = self._record_for_outcome(
+                    run=run,
+                    step=step,
+                    attempt=step.attempt,
+                    input_index=input_index,
+                    evidence_index=evidence_index,
+                    outcome=outcome,
+                    envelope=envelope,
+                    source=result.enricher_name,
                 )
+                self._repo.add(record)
+                if (
+                    projection_repo is not None
+                    and projection_binding is not None
+                    and outcome.status is OutcomeStatus.SUCCESS
+                ):
+                    self._db.flush()
+                    job, created = projection_repo.enqueue(record, projection_binding)
+                    if created:
+                        projection_job_ids.append(job.id)
 
         aggregate_status = self.aggregate_status(result.outcomes)
         step.success_count = sum(
@@ -282,7 +323,10 @@ class ExecutionService(BaseService):
             "completed_input_count": len(result.outcomes),
         }
         self._commit()
-        return run
+        return PersistedStructuredResult(
+            run=run,
+            projection_job_ids=tuple(projection_job_ids),
+        )
 
     def fail_run(
         self, run: FlowRun, lease: RunLease, diagnostic: RedactedDiagnostic
@@ -304,6 +348,7 @@ class ExecutionService(BaseService):
         envelope: EvidenceEnvelope,
         *,
         source: str | None = None,
+        projection_binding: ProjectionBinding | None = None,
     ) -> EvidenceEnvelopeRecord:
         """Supersede evidence by appending a new immutable row."""
         if envelope.input_ref != prior.input_ref:
@@ -322,7 +367,10 @@ class ExecutionService(BaseService):
             mapped_outputs=prior.mapped_outputs,
             diagnostic=prior.diagnostic,
             source=source or prior.source,
-            request_url_pattern=envelope.request_url_pattern,
+            destination_id=envelope.destination_id,
+            endpoint_id=envelope.endpoint_id,
+            capability=envelope.capability,
+            policy_version=envelope.policy_version,
             artifact_sha256=envelope.artifact_sha256,
             artifact_reference=envelope.artifact_reference,
             event_at=envelope.event_at,
@@ -336,6 +384,9 @@ class ExecutionService(BaseService):
             supersedes_id=prior.id,
         )
         self._repo.add(record)
+        if projection_binding is not None and record.status == OutcomeStatus.SUCCESS.value:
+            self._db.flush()
+            ProjectionRepository(self._db).enqueue(record, projection_binding)
         self._commit()
         return record
 
@@ -359,7 +410,7 @@ class ExecutionService(BaseService):
             evidence = tuple(
                 self._envelope_from_record(record)
                 for record in outcome_records
-                if record.request_url_pattern is not None
+                if record.destination_id is not None
             )
             diagnostic = (
                 RedactedDiagnostic.model_validate(first.diagnostic)
@@ -406,9 +457,10 @@ class ExecutionService(BaseService):
                 else None
             ),
             source=source,
-            request_url_pattern=(
-                envelope.request_url_pattern if envelope is not None else None
-            ),
+            destination_id=envelope.destination_id if envelope is not None else None,
+            endpoint_id=envelope.endpoint_id if envelope is not None else None,
+            capability=envelope.capability if envelope is not None else None,
+            policy_version=envelope.policy_version if envelope is not None else None,
             artifact_sha256=envelope.artifact_sha256 if envelope is not None else None,
             artifact_reference=(
                 envelope.artifact_reference if envelope is not None else None
@@ -434,7 +486,10 @@ class ExecutionService(BaseService):
 
         return EvidenceEnvelope(
             input_ref=record.input_ref,
-            request_url_pattern=record.request_url_pattern,
+            destination_id=record.destination_id or "unknown",
+            endpoint_id=record.endpoint_id or "unknown",
+            capability=record.capability or "enrich.read",
+            policy_version=record.policy_version or "unknown",
             artifact_sha256=record.artifact_sha256,
             artifact_reference=record.artifact_reference,
             source_rights=record.source_rights or "unspecified",

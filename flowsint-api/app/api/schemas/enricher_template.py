@@ -1,81 +1,28 @@
-"""Pydantic schemas for enricher templates."""
+"""Pydantic schemas for strict registry-backed enricher templates."""
 
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Literal, Optional
 
-from pydantic import UUID4, BaseModel, Field, field_validator
+from flowsint_core.core.execution import RedactedDiagnostic
+from flowsint_core.templates.types import Template
+from pydantic import UUID4, BaseModel, Field
 
 from .base import ORMBase
 
 
 class EnricherTemplateCreate(BaseModel):
-    """Schema for creating a new enricher template."""
+    """Create a template whose executable fields are validated strict content."""
 
-    name: str = Field(
-        ..., min_length=1, max_length=255, description="Name of the template"
-    )
-    description: Optional[str] = Field(
-        None, max_length=1000, description="Description of the template"
-    )
-    category: str = Field(
-        ..., min_length=1, max_length=100, description="Category (e.g., Ip, Domain)"
-    )
-    version: float = Field(default=1.0, ge=0, description="Template version")
-    content: Dict[str, Any] = Field(
-        ..., description="Template content as parsed YAML/JSON"
-    )
-    is_public: bool = Field(
-        default=False, description="Whether the template is publicly visible"
-    )
-
-    @field_validator("content")
-    @classmethod
-    def validate_content(cls, v: Dict[str, Any]) -> Dict[str, Any]:
-        """Validate that content has required template fields."""
-        required_fields = [
-            "name",
-            "category",
-            "version",
-            "input",
-            "request",
-            "output",
-            "response",
-        ]
-        missing = [f for f in required_fields if f not in v]
-        if missing:
-            raise ValueError(
-                f"Missing required fields in content: {', '.join(missing)}"
-            )
-
-        # Validate input
-        if "input" in v and "type" not in v.get("input", {}):
-            raise ValueError("input.type is required")
-
-        # Validate request
-        request = v.get("request", {})
-        if "method" not in request:
-            raise ValueError("request.method is required")
-        if request.get("method") not in ["GET", "POST"]:
-            raise ValueError("request.method must be GET or POST")
-        if "url" not in request:
-            raise ValueError("request.url is required")
-
-        # Validate output
-        if "output" in v and "type" not in v.get("output", {}):
-            raise ValueError("output.type is required")
-
-        # Validate response
-        response = v.get("response", {})
-        if "expect" not in response:
-            raise ValueError("response.expect is required")
-        if response.get("expect") not in ["json", "xml", "text"]:
-            raise ValueError("response.expect must be json, xml, or text")
-
-        return v
+    name: str = Field(..., min_length=1, max_length=255)
+    description: Optional[str] = Field(None, max_length=1000)
+    category: str = Field(..., min_length=1, max_length=100)
+    version: float = Field(default=1.0, ge=0)
+    content: Dict[str, Any]
+    is_public: bool = False
 
 
 class EnricherTemplateUpdate(BaseModel):
-    """Schema for updating an existing enricher template."""
+    """Update a template without reintroducing arbitrary HTTP fields."""
 
     name: Optional[str] = Field(None, min_length=1, max_length=255)
     description: Optional[str] = Field(None, max_length=1000)
@@ -84,34 +31,8 @@ class EnricherTemplateUpdate(BaseModel):
     content: Optional[Dict[str, Any]] = None
     is_public: Optional[bool] = None
 
-    @field_validator("content")
-    @classmethod
-    def validate_content(cls, v: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
-        """Validate content if provided."""
-        if v is None:
-            return v
-
-        required_fields = [
-            "name",
-            "category",
-            "version",
-            "input",
-            "request",
-            "output",
-            "response",
-        ]
-        missing = [f for f in required_fields if f not in v]
-        if missing:
-            raise ValueError(
-                f"Missing required fields in content: {', '.join(missing)}"
-            )
-
-        return v
-
 
 class EnricherTemplateRead(ORMBase):
-    """Schema for reading an enricher template."""
-
     id: UUID4
     name: str
     description: Optional[str]
@@ -125,8 +46,6 @@ class EnricherTemplateRead(ORMBase):
 
 
 class EnricherTemplateList(ORMBase):
-    """Schema for listing enricher templates (minimal fields)."""
-
     id: UUID4
     name: str
     description: Optional[str]
@@ -139,52 +58,40 @@ class EnricherTemplateList(ORMBase):
 
 
 class EnricherTemplateTestRequest(BaseModel):
-    """Schema for testing an enricher template by ID."""
-
-    input_value: str = Field(
-        ..., min_length=1, description="The value to test the template with"
-    )
+    input_value: str = Field(..., min_length=1)
 
 
-class EnricherTemplateTestContentRequest(BaseModel):
-    """Schema for testing template content directly (without saving)."""
+class ConnectorTestEvidenceMetadata(BaseModel):
+    destination_id: str
+    endpoint_id: str
+    capability: Literal["enrich.read"]
+    policy_version: str
+    artifact_sha256: str | None = None
+    artifact_reference: str | None = None
 
-    input_value: str = Field(
-        ..., min_length=1, description="The value to test the template with"
-    )
-    content: Dict[str, Any] = Field(..., description="Template content to test")
+
+class ConnectorTestOutcome(BaseModel):
+    status: Literal["success", "failure", "hold"]
+    visible_outputs: int = Field(ge=0)
+    diagnostic: RedactedDiagnostic | None = None
+    evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)
 
 
 class EnricherTemplateTestResponse(BaseModel):
-    """Schema for test response."""
+    """Safe test output: identifiers, outcome statuses, and no egress material."""
 
     success: bool
-    data: Optional[Dict[str, Any]] = None
-    error: Optional[str] = None
-    status_code: Optional[int] = None
-    url: str
+    destination_id: str
+    endpoint_id: str
+    capability: Literal["enrich.read"]
+    outcomes: list[ConnectorTestOutcome]
 
 
 class EnricherTemplateGenerateRequest(BaseModel):
-    """Schema for AI-assisted template generation."""
-
-    prompt: str = Field(
-        ...,
-        min_length=10,
-        max_length=16000,
-        description="Free-text description of the desired enricher template",
-    )
-    input_type: Optional[str] = Field(
-        None, description="Flowsint input type name (e.g. 'Ip', 'Domain')"
-    )
-    output_type: Optional[str] = Field(
-        None, description="Flowsint output type name (e.g. 'Ip', 'SocialAccount')"
-    )
+    prompt: str = Field(..., min_length=10, max_length=16000)
+    input_type: Optional[str] = None
+    output_type: Optional[str] = None
 
 
 class EnricherTemplateGenerateResponse(BaseModel):
-    """Schema for the generated template response."""
-
-    yaml_content: str = Field(
-        ..., description="Raw YAML string of the generated template"
-    )
+    yaml_content: str

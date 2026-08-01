@@ -59,27 +59,10 @@ function validateTemplate(content: string): {
     errors.push('input.type is required')
   }
 
-  if (parsed.request) {
-    if (!parsed.request.method) {
-      errors.push('request.method is required')
-    } else if (!['GET', 'POST'].includes(parsed.request.method)) {
-      errors.push('request.method must be GET or POST')
-    }
-    if (!parsed.request.url) {
-      errors.push('request.url is required')
-    }
-  }
-
-  if (parsed.output && !parsed.output.type) {
-    errors.push('output.type is required')
-  }
-
-  if (parsed.response) {
-    if (!parsed.response.expect) {
-      errors.push('response.expect is required')
-    } else if (!['json', 'xml', 'text'].includes(parsed.response.expect)) {
-      errors.push('response.expect must be json, xml, or text')
-    }
+  if (!parsed.connector?.destination_id || !parsed.connector?.endpoint_id) {
+    errors.push('connector.destination_id and connector.endpoint_id are required')
+  } else if (parsed.connector.capability !== 'enrich.read') {
+    errors.push('connector.capability must be enrich.read')
   }
 
   return { valid: errors.length === 0, errors, data: parsed }
@@ -105,7 +88,6 @@ export function TemplateEditor({ templateId, initialContent, importedYaml }: Tem
   const [activeTab, setActiveTab] = useState<'editor' | 'test'>('editor')
 
   const [testInput, setTestInput] = useState('')
-  const [testParams, setTestParams] = useState<Record<string, string>>({})
   const [testResult, setTestResult] = useState<TestResult | null>(null)
   const [isTesting, setIsTesting] = useState(false)
 
@@ -115,8 +97,7 @@ export function TemplateEditor({ templateId, initialContent, importedYaml }: Tem
   const hasChanges = content !== savedContent
   const hasErrors = !validationResult.valid || editorErrors.some((e) => e.severity >= 8)
   const templateName = validationResult.data?.name || 'Untitled'
-  const templateParams = validationResult.data?.request?.params || {}
-  const paramKeys = Object.keys(templateParams)
+  const connector = validationResult.data?.connector
 
   const stateRef = useRef({ hasErrors, hasChanges, data: validationResult.data, content })
   stateRef.current = { hasErrors, hasChanges, data: validationResult.data, content }
@@ -125,6 +106,7 @@ export function TemplateEditor({ templateId, initialContent, importedYaml }: Tem
     mutationFn: (data: TemplateData) =>
       templateService.create({
         name: data.name,
+        description: data.description,
         category: data.category,
         version: data.version,
         content: data
@@ -249,50 +231,24 @@ export function TemplateEditor({ templateId, initialContent, importedYaml }: Tem
     setIsTesting(true)
     setTestResult(null)
     try {
-      const response = isEditMode
-        ? await templateService.test(templateId!, testInput.trim())
-        : await templateService.testContent(testInput.trim(), validationResult.data)
+      if (!isEditMode) {
+        throw new Error('Save the template before running a connector test')
+      }
+      const response = await templateService.test(templateId!, testInput.trim())
       setTestResult({
         success: response.success,
-        data: response.data,
-        raw_results: response.raw_results,
-        error: response.error,
-        duration: response.duration_ms,
-        url: response.url
+        outcomes: response.outcomes
       })
     } catch (error) {
       setTestResult({
         success: false,
         error: (error as Error).message,
-        duration: 0
       })
     } finally {
       setIsTesting(false)
     }
   }, [isEditMode, templateId, testInput, validationResult.data])
 
-  const buildPreviewUrl = useCallback(() => {
-    if (!validationResult.data?.request?.url) return ''
-    const inputKey = validationResult.data.input?.key || 'value'
-    let url = validationResult.data.request.url.replace(
-      new RegExp(`\\{\\{${inputKey}\\}\\}`, 'g'),
-      testInput || `{${inputKey}}`
-    )
-    if (paramKeys.length > 0) {
-      const paramsObj: Record<string, string> = {}
-      for (const key of paramKeys) {
-        const templateValue = String(templateParams[key] ?? '')
-        const resolvedValue = templateValue.replace(
-          new RegExp(`\\{\\{${inputKey}\\}\\}`, 'g'),
-          testInput || `{${inputKey}}`
-        )
-        paramsObj[key] = testParams[key] || resolvedValue
-      }
-      const searchParams = new URLSearchParams(paramsObj)
-      url += (url.includes('?') ? '&' : '?') + searchParams.toString()
-    }
-    return url
-  }, [validationResult.data, testInput, paramKeys, templateParams, testParams])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -414,17 +370,13 @@ export function TemplateEditor({ templateId, initialContent, importedYaml }: Tem
           {activeTab === 'test' && (
             <TemplateTestPanel
               testInput={testInput}
-              testParams={testParams}
               testResult={testResult}
               isTesting={isTesting}
               hasErrors={hasErrors}
               validationData={validationResult.data}
-              paramKeys={paramKeys}
-              templateParams={templateParams}
+              connector={connector}
               onTestInputChange={setTestInput}
-              onTestParamsChange={setTestParams}
               onRunTest={handleTest}
-              buildPreviewUrl={buildPreviewUrl}
             />
           )}
         </div>

@@ -36,7 +36,10 @@ def _diagnostic(code: str = "request_failed", retryable: bool = False):
 def _evidence(input_ref: str, *, reference: str = "artifact://safe-reference"):
     return EvidenceEnvelope(
         input_ref=input_ref,
-        request_url_pattern="https://api.example.test/lookup/{{value}}",
+        destination_id="approved_directory",
+        endpoint_id="lookup",
+        capability="enrich.read",
+        policy_version="1",
         artifact_sha256="a" * 64,
         artifact_reference=reference,
         source_rights="public",
@@ -211,7 +214,10 @@ def test_hold_is_aggregated_and_duplicate_replay_does_not_duplicate_evidence(db_
                 evidence=(
                     EvidenceEnvelope(
                         input_ref=input_ref,
-                        request_url_pattern="https://api.example.test/{{value}}",
+                        destination_id="approved_directory",
+                        endpoint_id="lookup",
+                        capability="enrich.read",
+                        policy_version="1",
                         source_rights="unspecified",
                         schema_version="v1",
                         parser_version="v1",

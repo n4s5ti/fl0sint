@@ -16,6 +16,7 @@ export interface Template {
 
 export interface CreateTemplatePayload {
   name: string
+  description?: string
   category: string
   version?: number
   content: TemplateData
@@ -24,20 +25,37 @@ export interface CreateTemplatePayload {
 
 export interface UpdateTemplatePayload {
   name?: string
+  description?: string
   category?: string
   version?: number
   content?: TemplateData
   is_public?: boolean
 }
 
+export interface ConnectorTestOutcome {
+  status: 'success' | 'failure' | 'hold'
+  visible_outputs: number
+  diagnostic?: {
+    code: string
+    safe_message: string
+    retryable: boolean
+  } | null
+  evidence: Array<{
+    destination_id: string
+    endpoint_id: string
+    capability: 'enrich.read'
+    policy_version: string
+    artifact_sha256?: string | null
+    artifact_reference?: string | null
+  }>
+}
+
 export interface TestTemplateResponse {
   success: boolean
-  data?: Record<string, unknown>
-  error?: string
-  duration_ms: number
-  status_code?: number
-  url: string
-  raw_results?: Record<string, unknown>
+  destination_id: string
+  endpoint_id: string
+  capability: 'enrich.read'
+  outcomes: ConnectorTestOutcome[]
 }
 
 export interface GenerateTemplateResponse {
@@ -84,12 +102,6 @@ export const templateService = {
     })
   },
 
-  testContent: async (inputValue: string, content: TemplateData): Promise<TestTemplateResponse> => {
-    return fetchWithAuth('/api/enrichers/templates/test', {
-      method: 'POST',
-      body: JSON.stringify({ input_value: inputValue, content })
-    })
-  },
 
   generate: async (
     prompt: string,

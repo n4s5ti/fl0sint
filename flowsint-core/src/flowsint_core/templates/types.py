@@ -1,9 +1,12 @@
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
+
 class TemplateInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
     type: str = Field(..., description="Flowsint Type the template takes as input")
     key: str = Field(
         default="nodeLabel",
@@ -12,128 +15,37 @@ class TemplateInput(BaseModel):
 
 
 class TemplateOutput(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
     type: str = Field(
         ..., description="Flowsint Type that the template should return as an output."
     )
-    # If response is an array, this allows mapping each item to an output
-    is_array: bool = Field(
-        default=False,
-        description="Whether the response is an array that should produce multiple outputs",
-    )
-    array_path: Optional[str] = Field(
-        default=None,
-        description="Dot-notation path to array in response (e.g., 'data.results')",
-    )
 
 
-class TemplateHttpRequestHeader(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    name: str = Field(min_length=1, max_length=256, pattern=r"^[A-Za-z0-9\-]+$")
-    value: str = Field(min_length=1, max_length=4096)
-
-
-class TemplateHttpRequestParams(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    key: str = Field(min_length=1, max_length=256, pattern=r"^[A-Za-z0-9\-]+$")
-    value: str = Field(min_length=1, max_length=4096)
-
-
-class TemplateRetryConfig(BaseModel):
-    """Configuration for retry behavior on failed requests."""
+class TemplateConnector(BaseModel):
+    """A template reference to deployment-owned connector policy."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    max_retries: int = Field(
-        default=3, ge=0, le=10, description="Maximum number of retry attempts"
+    destination_id: str = Field(
+        min_length=1, max_length=128, pattern=r"^[a-z][a-z0-9_-]{0,127}$"
     )
-    backoff_factor: float = Field(
-        default=0.5,
-        ge=0.1,
-        le=10.0,
-        description="Multiplier for exponential backoff (seconds)",
+    endpoint_id: str = Field(
+        min_length=1, max_length=128, pattern=r"^[a-z][a-z0-9_-]{0,127}$"
     )
-    retry_on_status: List[int] = Field(
-        default=[429, 500, 502, 503, 504],
-        description="HTTP status codes that should trigger a retry",
-    )
+    capability: Literal["enrich.read"] = "enrich.read"
 
 
-class TemplateSecret(BaseModel):
-    """Definition of a secret/variable that can be injected from vault."""
+
+class TemplateGraphProjectionRef(BaseModel):
+    """Optional reference to a system-owned graph projection profile."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    name: str = Field(
-        ...,
-        min_length=1,
-        max_length=128,
-        description="Name of the secret (used as {{secrets.NAME}} in template)",
+    profile_id: str = Field(
+        min_length=1, max_length=64, pattern=r"^[a-z][a-z0-9_]{0,63}$"
     )
-    required: bool = Field(
-        default=True, description="Whether this secret is required for the template"
-    )
-    description: Optional[str] = Field(
-        default=None, description="Description of what this secret is used for"
-    )
-
-
-class TemplateHttpRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    method: Literal["GET", "POST"] = Field(
-        default="GET", description="HTTP method for the request"
-    )
-    url: str = Field(..., description="URL template with {{variable}} placeholders")
-    headers: dict = Field(
-        default_factory=dict,
-        description="HTTP headers (values can contain {{variable}} placeholders)",
-    )
-    params: dict = Field(
-        default_factory=dict,
-        description="Query parameters (values can contain {{variable}} placeholders)",
-    )
-    body: Optional[str] = Field(
-        default=None,
-        description="Request body for POST requests (can contain {{variable}} placeholders)",
-    )
-    timeout: float = Field(
-        default=30.0,
-        ge=1.0,
-        le=300.0,
-        description="Request timeout in seconds",
-    )
-
-
-class TemplateHttpResponseMapping(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    key: str = Field(
-        min_length=1,
-        max_length=256,
-        pattern=r"^[A-Za-z0-9\-]+$",
-        description="The key (from the response format) to map.",
-    )
-    value: str = Field(
-        min_length=1,
-        max_length=4096,
-        description="The key of the field you want to feed (of the expected FlowsintType).",
-    )
-
-
-class TemplateHttpResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    expect: Literal["json", "xml", "text"] = Field(
-        default="json", description="Expected response format"
-    )
-    # Map supports dot notation for nested paths: "data.user.name"
-    map: dict = Field(
-        default_factory=dict,
-        description="Mapping from output field names to response paths (supports dot notation)",
-    )
-
+    revision: int = Field(ge=1)
 
 class TemplateEvidenceConfig(BaseModel):
     """Retainable provenance metadata for structured template execution."""
@@ -173,37 +85,25 @@ class TemplateEvidenceConfig(BaseModel):
 
 
 class Template(BaseModel):
+    """Strict connector template with no executable egress grammar."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
     name: str = Field(..., description="Name of the template")
     description: Optional[str] = Field(None, description="Description of the template")
     category: str = Field(..., description="Category of the template")
     version: float = Field(..., description="Version of the template")
     execution_mode: Literal["preview"] = Field(
         default="preview",
-        description="Generic templates only preview/map responses and do not persist graph data.",
+        description="Connector templates map policy-approved responses without graph writes.",
     )
-    input: TemplateInput = Field(
-        ...,
-        description="Input format of the template, with key to use (default to nodeLabel)",
+    input: TemplateInput = Field(...)
+    connector: TemplateConnector = Field(
+        ..., description="Deployment-owned destination and endpoint selection."
     )
-    request: TemplateHttpRequest = Field(
-        ..., description="Request model for the HTTP request to be made."
-    )
-    response: TemplateHttpResponse = Field(
-        ..., description="Response model for the HTTP response to expect."
-    )
-    output: TemplateOutput = Field(
-        ...,
-        description="Output type of the template.",
-    )
-    evidence: TemplateEvidenceConfig = Field(
-        default_factory=TemplateEvidenceConfig,
-        description="Provenance metadata retained with structured execution evidence",
-    )
-    # Optional configurations
-    secrets: List[TemplateSecret] = Field(
-        default_factory=list,
-        description="List of secrets required by this template (fetched from vault)",
-    )
-    retry: Optional[TemplateRetryConfig] = Field(
-        default=None, description="Retry configuration for failed requests"
+    output: TemplateOutput = Field(...)
+    evidence: TemplateEvidenceConfig = Field(default_factory=TemplateEvidenceConfig)
+    projection: TemplateGraphProjectionRef | None = Field(
+        default=None,
+        description="Optional system-approved graph projection profile reference.",
     )

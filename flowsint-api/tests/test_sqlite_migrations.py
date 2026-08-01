@@ -40,11 +40,24 @@ from flowsint_core.core.models import (
 )
 
 
+CURRENT_ALEMBIC_HEAD = "e5f6a7b8c9d0"
+
+
 def _upgrade_sqlite(db_path: Path) -> None:
     api_dir = Path(__file__).resolve().parents[1]
+    repo_dir = api_dir.parent
     env = os.environ.copy()
     env["DATABASE_URL"] = f"sqlite:///{db_path}"
-
+    package_paths = [
+        repo_dir / "flowsint-core" / "src",
+        repo_dir / "flowsint-types" / "src",
+        repo_dir / "flowsint-enrichers" / "src",
+    ]
+    inherited_pythonpath = env.get("PYTHONPATH")
+    env["PYTHONPATH"] = os.pathsep.join(
+        [*(str(path) for path in package_paths)]
+        + ([inherited_pythonpath] if inherited_pythonpath else [])
+    )
     result = subprocess.run(
         [sys.executable, "-m", "alembic", "upgrade", "head"],
         cwd=api_dir,
@@ -60,20 +73,20 @@ def _upgrade_sqlite(db_path: Path) -> None:
     engine = create_engine(f"sqlite:///{db_path}")
     with engine.connect() as connection:
         version = connection.execute(text("SELECT version_num FROM alembic_version")).scalar()
-    assert version == "c3f4e5d6a7b8"
+    assert version == CURRENT_ALEMBIC_HEAD
 
 
 def test_alembic_head_bootstraps_empty_sqlite_database(tmp_path: Path) -> None:
     _upgrade_sqlite(tmp_path / "flowsint.db")
 
 
-def test_c3_is_the_sole_alembic_head() -> None:
+def test_stage4_is_the_sole_alembic_head() -> None:
     api_dir = Path(__file__).resolve().parents[1]
     config = Config(str(api_dir / "alembic.ini"))
     config.set_main_option("script_location", str(api_dir / "alembic"))
     script = ScriptDirectory.from_config(config)
 
-    assert script.get_heads() == ["c3f4e5d6a7b8"]
+    assert script.get_heads() == [CURRENT_ALEMBIC_HEAD]
 
 def test_sqlite_evidence_schema_is_append_only(tmp_path: Path) -> None:
     db_path = tmp_path / "flowsint.db"

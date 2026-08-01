@@ -14,24 +14,10 @@ input:
   type: Location
   key: address
 
-request:
-  method: GET
-  url: https://geocoding.geo.census.gov/geocoder/locations/onelineaddress
-  params:
-    address: "{{address}}"
-    benchmark: Public_AR_Current
-    format: json
-  timeout: 10
-
-response:
-  expect: json
-  map:
-    address: result.addressMatches.0.matchedAddress
-    city: result.addressMatches.0.addressComponents.city
-    country: result.addressMatches.0.addressComponents.country
-    zip: result.addressMatches.0.addressComponents.zip
-    latitude: result.addressMatches.0.coordinates.y
-    longitude: result.addressMatches.0.coordinates.x
+connector:
+  destination_id: census_geocoder
+  endpoint_id: location_oneline
+  capability: enrich.read
 
 output:
   type: Location

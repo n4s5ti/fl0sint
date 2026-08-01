@@ -1,20 +1,16 @@
 name: array-response-example
+description: Registry-backed collection fixture
 category: Ip
 version: 1.0
 input:
   type: Ip
   key: address
-request:
-  method: GET
-  url: https://api.example.com/related/{{address}}
-  timeout: 30
+connector:
+  destination_id: approved_directory
+  endpoint_id: related_ips
+  capability: enrich.read
 output:
   type: Ip
-  is_array: true
-  array_path: data.results
-response:
-  expect: json
-  map:
-    address: ip
-    country: location.country
-    city: location.city
+evidence:
+  source_rights: test-only
+

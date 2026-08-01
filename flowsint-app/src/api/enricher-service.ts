@@ -24,5 +24,11 @@ export const enricherService = {
       method: 'POST',
       body: body
     })
+  },
+  launchTemplate: async (templateId: string, body: BodyInit): Promise<any> => {
+    return fetchWithAuth(`/api/enrichers/templates/${templateId}/launch`, {
+      method: 'POST',
+      body: body
+    })
   }
 }

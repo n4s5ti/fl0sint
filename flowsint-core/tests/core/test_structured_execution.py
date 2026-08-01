@@ -130,7 +130,10 @@ def test_evidence_envelope_enforces_retainable_metadata():
     input_ref = canonical_input_hash({"domain": "evidence.example"})
     envelope = EvidenceEnvelope(
         input_ref=input_ref,
-        request_url_pattern="https://api.example/{{domain}}",
+        destination_id="approved_directory",
+        endpoint_id="lookup",
+        capability="enrich.read",
+        policy_version="1",
         artifact_sha256="a" * 64,
         artifact_reference=f"body:sha256:{'a' * 64}",
         source_rights="test-only",
@@ -154,7 +157,10 @@ def test_evidence_envelope_enforces_retainable_metadata():
     with pytest.raises(ValidationError):
         EvidenceEnvelope(
             input_ref=input_ref,
-            request_url_pattern="https://api.example/{{domain}}",
+            destination_id="approved_directory",
+            endpoint_id="lookup",
+            capability="enrich.read",
+            policy_version="1",
             artifact_sha256="not-a-hash",
             source_rights="test-only",
             schema_version="1",
@@ -165,7 +171,10 @@ def test_evidence_envelope_enforces_retainable_metadata():
 
     evidence_kwargs = {
         "input_ref": input_ref,
-        "request_url_pattern": "https://api.example/{{domain}}",
+        "destination_id": "approved_directory",
+        "endpoint_id": "lookup",
+        "capability": "enrich.read",
+        "policy_version": "1",
         "source_rights": "test-only",
         "schema_version": "1",
         "parser_version": "1",
@@ -178,3 +187,4 @@ def test_evidence_envelope_enforces_retainable_metadata():
                 **evidence_kwargs,
                 **{timestamp_field: datetime(2026, 1, 1)},
             )
+

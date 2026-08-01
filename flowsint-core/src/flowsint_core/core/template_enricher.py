@@ -1,94 +1,47 @@
-"""
-Template-based enricher that executes HTTP requests defined in YAML templates.
+"""Strict, registry-backed connector template execution."""
 
-This enricher allows creating declarative enrichers without writing Python code.
-Templates define:
-- Input/output types from the FlowsintType registry
-- HTTP request configuration (method, URL, headers, params, body)
-- Response parsing and field mapping
-- Optional vault secrets for API keys
-- Retry configuration for resilience
-
-Security features:
-- SSRF protection blocks requests to internal IPs and cloud metadata endpoints
-- Input values are URL-encoded to prevent injection attacks
-- Vault integration keeps secrets out of templates
-
-Example template:
-    name: github-user-lookup
-    category: Username
-    version: 1.0
-    input:
-      type: Username
-      key: username
-    secrets:
-      - name: GITHUB_TOKEN
-        required: false
-    request:
-      method: GET
-      url: https://api.github.com/users/{{username}}
-      headers:
-        Authorization: "Bearer {{secrets.GITHUB_TOKEN}}"
-      timeout: 10
-    response:
-      expect: json
-      map:
-        username: login
-        full_name: name
-        avatar_url: avatar_url
-    output:
-      type: Username
-    retry:
-      max_retries: 3
-      backoff_factor: 1.0
-"""
+from __future__ import annotations
 
 import asyncio
 import hashlib
-import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+import json
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator, Dict, List, Optional
+from datetime import datetime, timezone
+from typing import Any, AsyncIterator, List, Optional
+from urllib.parse import quote
 
 import httpx
 from flowsint_types import FlowsintType, get_type
+from flowsint_types.registry import load_all_types
 
+from flowsint_core.core.connector_egress import (
+    ConnectorCredentialUnavailable,
+    ConnectorPolicyError,
+    ConnectorRedirectDenied,
+    ConnectorResponseTooLarge,
+    ConnectorValidationError,
+    DestinationRegistry,
+    EgressAuthorizer,
+)
 from flowsint_core.core.enricher_base import Enricher
 from flowsint_core.core.execution import (
     EvidenceEnvelope,
+    InputOutcome,
     OutcomeStatus,
     RedactedDiagnostic,
+    StructuredExecutionResult,
+    canonical_input_hash,
 )
 from flowsint_core.core.logger import Logger
-from flowsint_core.templates.loader.yaml_loader import (
-    SSRFError,
-    TemplateRenderError,
-    YamlLoader,
-    validate_url_safe,
-)
-from flowsint_core.templates.types import Template, TemplateRetryConfig
+from flowsint_core.templates.types import Template
 
 
 class TemplateEnricherError(Exception):
-    """Base exception for template enricher errors."""
-
-    pass
+    """A safe connector response-processing failure."""
 
 
 class TemplateEnricher(Enricher):
-    """
-    Enricher that executes HTTP requests based on YAML template definitions.
-
-    Supports:
-    - GET and POST HTTP methods
-    - Template variables in URL, headers, params, and body
-    - Vault integration for secrets ({{secrets.NAME}})
-    - Nested response mapping with dot notation
-    - Array response handling
-    - Configurable retry with exponential backoff
-    - JSON, XML, and text response parsing
-    - SSRF protection
-    """
+    """Execute a template only through a resolved deployment-owned endpoint."""
 
     InputType = FlowsintType
     OutputType = FlowsintType
@@ -96,57 +49,39 @@ class TemplateEnricher(Enricher):
     def __init__(
         self,
         template: Template,
+        registry: DestinationRegistry,
+        runtime_authorizer: EgressAuthorizer,
         sketch_id: Optional[str] = None,
         scan_id: Optional[str] = None,
         vault=None,
-        params: Optional[Dict[str, Any]] = None,
     ):
-        # Build params schema from template secrets
-        params_schema = self._build_params_schema_from_template(template)
-
+        self.template = template
+        self.InputType = self._detect_type(template.input.type)
+        self.OutputType = self._detect_type(template.output.type)
+        self.endpoint = registry.resolve(
+            template.connector, template.input.type, template.output.type
+        )
+        runtime_authorizer.require(self.endpoint.capability)
         super().__init__(
             sketch_id=sketch_id,
             scan_id=scan_id,
             vault=vault,
-            params=params,
-            params_schema=params_schema,
+            params_schema=[],
+            params={},
         )
-        self.template = template
-        self.InputType = self._detect_type(self.template.input.type)
-        self.OutputType = self._detect_type(self.template.output.type)
-        self.request = self.template.request
-        self._resolved_secrets: Dict[str, str] = {}
-        self.raw_response: Dict[str, Any] | None = None
         self._last_response_artifact_sha256: str | None = None
+        self._last_http_status_class: int | None = None
 
     @staticmethod
-    def _build_params_schema_from_template(template: Template) -> List[Dict[str, Any]]:
-        """Convert template secrets to enricher params schema format."""
-        schema = []
-        for secret in template.secrets:
-            schema.append(
-                {
-                    "name": secret.name,
-                    "type": "vaultSecret",
-                    "required": secret.required,
-                    "description": secret.description or f"Secret: {secret.name}",
-                }
-            )
-        return schema
-
-    @classmethod
-    def get_params_schema_for_template(cls, template: Template) -> List[Dict[str, Any]]:
-        return cls._build_params_schema_from_template(template)
-
-    def _detect_type(self, input_type: str) -> type[FlowsintType]:
-        """Resolve a type name to its FlowsintType class."""
-        DetectedType = get_type(input_type)
-        if not DetectedType:
-            raise TypeError(f"Type '{input_type}' is not present in registry.")
-        return DetectedType
+    def _detect_type(type_name: str) -> type[FlowsintType]:
+        load_all_types()
+        detected_type = get_type(type_name, case_sensitive=True)
+        if detected_type is None:
+            raise ConnectorPolicyError("connector type denied")
+        return detected_type
 
     def name(self) -> str:  # type: ignore[override]
-        return self.template.name
+        return f"connector:{self.endpoint.destination_id}:{self.endpoint.endpoint_id}"
 
     def category(self) -> str:  # type: ignore[override]
         return self.template.category
@@ -156,360 +91,189 @@ class TemplateEnricher(Enricher):
 
     @classmethod
     def documentation(cls) -> str:
-        """Return formatted markdown documentation for template enrichers."""
-        return "Template-based enricher. See template definition for details."
+        return "Registry-backed enrichment connector."
 
-    async def async_init(self):
-        """Initialize the enricher, resolving vault secrets."""
-        await super().async_init()
-        # Store resolved secrets for template rendering
-        for secret in self.template.secrets:
-            value = self.get_secret(secret.name)
-            if value is not None:
-                self._resolved_secrets[f"secrets.{secret.name}"] = value
-            elif secret.required:
-                raise TemplateEnricherError(
-                    f"Required secret '{secret.name}' not found in vault"
-                )
+    async def async_init(self) -> None:
+        """Do not resolve credentials before per-input policy validation."""
 
-    def _build_template_values(self, input_obj: Any) -> Dict[str, str]:
-        """
-        Build the values dict for template rendering from input object and secrets.
 
-        Args:
-            input_obj: The input FlowsintType object
+    def _reject_unknown_input_fields(self, value: Any) -> None:
+        if not isinstance(value, dict):
+            return
+        allowed_fields = set(self.InputType.model_fields)
+        if set(value) - allowed_fields:
+            raise ConnectorValidationError("connector input field invalid")
 
-        Returns:
-            Dictionary of variable names to their string values
-        """
-        values: Dict[str, str] = {}
-
-        # Add input key value
-        key = self.template.input.key
-        if hasattr(input_obj, key):
-            values[key] = str(getattr(input_obj, key))
-
-        # Add resolved secrets
-        values.update(self._resolved_secrets)
-
+    def _validated_request_values(self, input_obj: Any) -> dict[str, Any]:
+        values: dict[str, Any] = {}
+        for field in self.endpoint.definition.request_fields:
+            value = getattr(input_obj, field.source_field, None)
+            if value is None:
+                if field.required:
+                    raise ConnectorValidationError("connector input field invalid")
+                continue
+            if field.value_type == "string":
+                if not isinstance(value, str) or len(value) > field.max_length:
+                    raise ConnectorValidationError("connector input field invalid")
+            elif field.value_type == "integer":
+                if isinstance(value, bool) or not isinstance(value, int):
+                    raise ConnectorValidationError("connector input field invalid")
+            elif field.value_type == "number":
+                if isinstance(value, bool) or not isinstance(value, (int, float)):
+                    raise ConnectorValidationError("connector input field invalid")
+            elif field.value_type == "boolean" and not isinstance(value, bool):
+                raise ConnectorValidationError("connector input field invalid")
+            values[field.name] = value
         return values
 
-    def _build_mapped_result(self, result: Any) -> Any:
-        """
-        Map response data to output type using the template's response.map config.
-
-        Args:
-            result: The parsed response data (dict for JSON, Element for XML, str for text)
-
-        Returns:
-            Instance of OutputType with mapped fields
-        """
-        mappings = self.template.response.map
-
-        output_dict = {}
-        for output_field, response_path in mappings.items():
-            if self.template.response.expect == "xml" and isinstance(
-                result, ET.Element
-            ):
-                # For XML, use XPath-like access
-                value = self._extract_xml_value(result, response_path)
+    def _request_parts(
+        self, input_obj: Any
+    ) -> tuple[str, dict[str, str], dict[str, Any], dict[str, Any] | None]:
+        values = self._validated_request_values(input_obj)
+        definition = self.endpoint.definition
+        path = definition.path
+        query: dict[str, Any] = dict(definition.fixed_query)
+        json_body: dict[str, Any] = {}
+        for field in definition.request_fields:
+            if field.name not in values:
+                continue
+            value = values[field.name]
+            if field.location == "path":
+                path = path.replace("{" + field.name + "}", quote(str(value), safe=""))
+            elif field.location == "query":
+                if field.name in query:
+                    raise ConnectorPolicyError("connector query field denied")
+                query[field.name] = value
             else:
-                # For JSON/dict, use dot notation
-                value = YamlLoader.extract_nested_value(result, response_path)
-            output_dict[output_field] = value
+                json_body[field.name] = value
 
-        return self.OutputType(**output_dict)
-
-    def _extract_xml_value(self, element: ET.Element, path: str) -> Optional[str]:
-        """
-        Extract a value from an XML element using a simple path.
-
-        Args:
-            element: XML Element to search
-            path: Dot-notation path (e.g., 'user.name' or just 'name')
-
-        Returns:
-            Text content of the found element, or None
-        """
-        parts = path.split(".")
-        current = element
-
-        for part in parts:
-            found = current.find(part)
-            if found is None:
-                # Try with namespace wildcard
-                found = current.find(f".//{part}")
-            if found is None:
-                return None
-            current = found
-
-        return current.text
-
-    def _parse_response(self, response: httpx.Response) -> Any:
-        """
-        Parse the HTTP response based on expected format.
-
-        Args:
-            response: The httpx Response object
-
-        Returns:
-            Parsed data (dict for JSON, Element for XML, str for text)
-
-        Raises:
-            TemplateEnricherError: If parsing fails
-        """
-        expect = self.template.response.expect
-
-        if expect == "json":
-            try:
-                return response.json()
-            except Exception as e:
-                raise TemplateEnricherError(f"Failed to parse JSON response: {e}")
-
-        elif expect == "xml":
-            try:
-                return ET.fromstring(response.text)
-            except ET.ParseError as e:
-                raise TemplateEnricherError(f"Failed to parse XML response: {e}")
-
-        elif expect == "text":
-            return response.text
-
-        else:
-            raise TemplateEnricherError(f"Unknown response format: {expect}")
-
-    def _get_retry_config(self) -> TemplateRetryConfig:
-        """Get retry configuration, using defaults if not specified."""
-        if self.template.retry:
-            return self.template.retry
-        return TemplateRetryConfig()
-
-    async def _make_request_with_retry(
-        self,
-        client: httpx.AsyncClient,
-        method: str,
-        url: str,
-        headers: Dict[str, str],
-        params: Dict[str, Any],
-        body: Optional[str],
-        timeout: float,
-    ) -> httpx.Response:
-        """
-        Make an HTTP request with retry logic.
-
-        Args:
-            client: The httpx AsyncClient
-            method: HTTP method (GET, POST)
-            url: Request URL
-            headers: Request headers
-            params: Query parameters
-            body: Request body (for POST)
-            timeout: Request timeout in seconds
-
-        Returns:
-            httpx Response object
-
-        Raises:
-            httpx.HTTPStatusError: If request fails after all retries
-        """
-        retry_config = self._get_retry_config()
-        last_exception: Optional[Exception] = None
-
-        for attempt in range(retry_config.max_retries + 1):
-            try:
-                if method == "POST":
-                    response = await client.post(
-                        url,
-                        headers=headers,
-                        params=params,
-                        content=body,
-                        timeout=timeout,
-                    )
-                else:
-                    response = await client.get(
-                        url,
-                        headers=headers,
-                        params=params,
-                        timeout=timeout,
-                    )
-
-                # Check if we should retry based on status code
-                if response.status_code in retry_config.retry_on_status:
-                    if attempt < retry_config.max_retries:
-                        wait_time = retry_config.backoff_factor * (2**attempt)
-                        Logger.info(
-                            self.sketch_id,
-                            {
-                                "message": f"Retrying request (attempt {attempt + 1}/{retry_config.max_retries}) "
-                                f"after {response.status_code}, waiting {wait_time}s"
-                            },
-                        )
-                        await asyncio.sleep(wait_time)
-                        continue
-                self._last_response_artifact_sha256 = hashlib.sha256(
-                    response.content
-                ).hexdigest()
-                try:
-                    body = response.json()
-                except Exception:
-                    body = response.text
-                self.raw_response = {
-                    "status_code": response.status_code,
-                    "headers": dict(response.headers),
-                    "body": body,
-                }
-                response.raise_for_status()
-                return response
-
-            except httpx.TimeoutException as e:
-                last_exception = e
-                if attempt < retry_config.max_retries:
-                    wait_time = retry_config.backoff_factor * (2**attempt)
-                    Logger.info(
-                        self.sketch_id,
-                        {
-                            "message": f"Request timeout, retrying (attempt {attempt + 1}/{retry_config.max_retries}), "
-                            f"waiting {wait_time}s"
-                        },
-                    )
-                    await asyncio.sleep(wait_time)
-                    continue
-                raise
-
-            except httpx.HTTPStatusError as e:
-                # Don't retry client errors (4xx) except rate limits
-                if 400 <= e.response.status_code < 500:
-                    if e.response.status_code not in retry_config.retry_on_status:
-                        raise
-                last_exception = e
-                if attempt < retry_config.max_retries:
-                    wait_time = retry_config.backoff_factor * (2**attempt)
-                    await asyncio.sleep(wait_time)
-                    continue
-                raise
-
-        # Should not reach here, but just in case
-        if last_exception:
-            raise last_exception
-        raise TemplateEnricherError("Request failed after all retries")
-
-    async def _process_single_input(
-        self,
-        client: httpx.AsyncClient,
-        input_obj: Any,
-    ) -> List[Any]:
-        """
-        Process a single input value through the template.
-
-        Args:
-            client: The httpx AsyncClient
-            input_obj: The input FlowsintType object
-
-        Returns:
-            List of OutputType instances (can be multiple for array responses)
-        """
-        req = self.request
-        key = self.template.input.key
-
-        if not key:
-            raise TemplateEnricherError(
-                f"Key is missing for input type {self.template.input.type}."
-            )
-
-        # Build template values from input and secrets
-        values = self._build_template_values(input_obj)
-
-        # Render URL with template values
-        url = YamlLoader.render_template(req.url, values)
-
-        try:
-            validate_url_safe(url)
-        except SSRFError:
-            Logger.info(
-                self.sketch_id,
-                {"message": "SSRF protection blocked a template request."},
-            )
-            raise
-
-        # Render headers
-        headers = YamlLoader.render_dict(dict(req.headers), values, sanitize=False)
-
-        # httpx serializes query values; pre-encoding here would encode them twice.
-        params = YamlLoader.render_dict(dict(req.params), values, sanitize=False)
-
-        # Render body if present
-        body = None
-        if req.body:
-            body = YamlLoader.render_template(req.body, values, sanitize=False)
-
-        # Make the request with retry
-        response = await self._make_request_with_retry(
-            client=client,
-            method=req.method,
-            url=url,
-            headers=headers,
-            params=params,
-            body=body,
-            timeout=req.timeout,
+        url = f"{self.endpoint.base_url}{path}"
+        parsed = httpx.URL(url)
+        base = httpx.URL(self.endpoint.base_url)
+        if (
+            parsed.scheme != "https"
+            or parsed.scheme != base.scheme
+            or parsed.host != base.host
+            or parsed.port != base.port
+        ):
+            raise ConnectorPolicyError("connector origin denied")
+        return (
+            url,
+            dict(definition.fixed_headers),
+            query,
+            json_body if definition.method == "POST" else None,
         )
 
-        # Parse response
-        data = self._parse_response(response)
+    def _resolved_headers(self, fixed_headers: dict[str, str]) -> dict[str, str]:
+        headers = dict(fixed_headers)
+        for header_name, secret_name in self.endpoint.definition.secret_headers.items():
+            value = self.vault.get_secret(secret_name) if self.vault is not None else None
+            if not value:
+                raise ConnectorCredentialUnavailable("connector credential unavailable")
+            headers[header_name] = value
+        return headers
 
-        # Handle array responses
+    async def _read_response(self, response: httpx.Response) -> bytes:
+        limit = self.endpoint.definition.max_response_bytes
+        content_length = response.headers.get("content-length")
+        if content_length is not None:
+            try:
+                if int(content_length) > limit:
+                    raise ConnectorResponseTooLarge("connector response too large")
+            except ValueError:
+                raise ConnectorResponseTooLarge("connector response too large") from None
+        content = bytearray()
+        async for chunk in response.aiter_bytes(chunk_size=min(65_536, limit)):
+            if len(chunk) > limit - len(content):
+                raise ConnectorResponseTooLarge("connector response too large")
+            content.extend(chunk)
+        return bytes(content)
+
+    @staticmethod
+    def _extract_path(value: Any, path: str) -> Any:
+        current = value
+        for part in path.split("."):
+            if isinstance(current, list):
+                try:
+                    current = current[int(part)]
+                except (ValueError, IndexError) as error:
+                    raise TemplateEnricherError("connector response mapping failed") from error
+            elif isinstance(current, dict) and part in current:
+                current = current[part]
+            else:
+                raise TemplateEnricherError("connector response mapping failed")
+        return current
+
+    def _map_response(self, response_bytes: bytes) -> List[Any]:
+        try:
+            response_data = json.loads(response_bytes)
+        except (TypeError, ValueError) as error:
+            raise TemplateEnricherError("connector response was invalid") from error
+        items = response_data
+        if self.endpoint.definition.response_array_path is not None:
+            items = self._extract_path(
+                response_data, self.endpoint.definition.response_array_path
+            )
+            if not isinstance(items, list):
+                raise TemplateEnricherError("connector response array was invalid")
+        if not isinstance(items, list):
+            items = [items]
         results = []
-        output_cfg = self.template.output
-
-        if output_cfg.is_array:
-            # Extract array from response
-            if output_cfg.array_path:
-                items = YamlLoader.extract_nested_value(data, output_cfg.array_path)
-            else:
-                items = data
-
-            if isinstance(items, list):
-                for item in items:
-                    try:
-                        results.append(self._build_mapped_result(item))
-                    except Exception:
-                        Logger.info(
-                            self.sketch_id,
-                            {"message": "Failed to map a template array response item."},
-                        )
-            else:
-                Logger.info(
-                    self.sketch_id,
-                    {
-                        "message": f"Expected array response but got {type(items).__name__}"
-                    },
-                )
-        else:
-            # Single result
-            results.append(self._build_mapped_result(data))
-
+        for item in items:
+            mapped = {
+                output_field: self._extract_path(item, source_path)
+                for output_field, source_path in self.endpoint.definition.response_mappings.items()
+            }
+            try:
+                results.append(self.OutputType(**mapped))
+            except Exception as error:
+                raise TemplateEnricherError("connector output was invalid") from error
         return results
+
+    async def _process_single_input(
+        self, client: httpx.AsyncClient, input_obj: Any
+    ) -> List[Any]:
+        self._last_response_artifact_sha256 = None
+        self._last_http_status_class = None
+        url, fixed_headers, query, json_body = self._request_parts(input_obj)
+        headers = self._resolved_headers(fixed_headers)
+        try:
+            async with asyncio.timeout(self.endpoint.definition.timeout_seconds):
+                async with client.stream(
+                    self.endpoint.definition.method,
+                    url,
+                    headers=headers,
+                    params=query,
+                    json=json_body,
+                    timeout=self.endpoint.definition.timeout_seconds,
+                ) as response:
+                    if 300 <= response.status_code < 400:
+                        raise ConnectorRedirectDenied("connector redirect denied")
+                    self._last_http_status_class = response.status_code // 100
+                    response.raise_for_status()
+                    response_bytes = await self._read_response(response)
+        except TimeoutError as error:
+            raise httpx.ReadTimeout("connector deadline exceeded") from error
+        self._last_response_artifact_sha256 = hashlib.sha256(response_bytes).hexdigest()
+        return self._map_response(response_bytes)
 
     @asynccontextmanager
     async def _structured_execution_context(self) -> AsyncIterator[httpx.AsyncClient]:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(follow_redirects=False, trust_env=False) as client:
             yield client
-
-    async def _process_single_input_structured(
-        self, input_obj: Any, context: httpx.AsyncClient
-    ) -> List[Any]:
-        self._last_response_artifact_sha256 = None
-        return await self._process_single_input(context, input_obj)
 
     def _build_structured_evidence(
         self, input_obj: Any, input_ref: str
     ) -> tuple[EvidenceEnvelope, ...]:
         evidence = self.template.evidence
         artifact_sha256 = self._last_response_artifact_sha256
-        retrieved_at = datetime.now(timezone.utc)
         return (
             EvidenceEnvelope(
                 input_ref=input_ref,
-                request_url_pattern=self.request.url,
+                destination_id=self.endpoint.destination_id,
+                endpoint_id=self.endpoint.endpoint_id,
+                capability=self.endpoint.capability,
+                policy_version=self.endpoint.policy_version,
                 artifact_sha256=artifact_sha256,
                 artifact_reference=(
                     f"body:sha256:{artifact_sha256}"
@@ -521,33 +285,57 @@ class TemplateEnricher(Enricher):
                 parser_version=evidence.parser_version,
                 confidence=evidence.confidence,
                 verification_state=evidence.verification_state,
-                retrieved_at=retrieved_at,
+                retrieved_at=datetime.now(timezone.utc),
                 ingested_at=datetime.now(timezone.utc),
             ),
         )
 
-    def _classify_structured_exception(
-        self, error: Exception
-    ) -> RedactedDiagnostic:
-        if isinstance(error, SSRFError):
+    def _classify_structured_exception(self, error: Exception) -> RedactedDiagnostic:
+        if isinstance(error, ConnectorPolicyError):
             return RedactedDiagnostic(
-                code="ssrf_blocked",
-                safe_message="The template request was blocked by safety controls.",
+                code="connector_policy_denied",
+                safe_message="Connector policy denied the request.",
                 retryable=False,
             )
-        if isinstance(error, TemplateRenderError):
+        if isinstance(error, (ConnectorValidationError,)):
             return RedactedDiagnostic(
-                code="template_render_error",
-                safe_message="The template could not be rendered.",
+                code="connector_validation_failed",
+                safe_message="Connector input validation failed.",
                 retryable=False,
             )
-        if isinstance(error, TemplateEnricherError):
+        if isinstance(error, ConnectorCredentialUnavailable):
             return RedactedDiagnostic(
-                code="template_processing_error",
-                safe_message="The template response could not be processed.",
+                code="connector_credential_unavailable",
+                safe_message="Connector credentials are unavailable.",
                 retryable=False,
             )
-        return super()._classify_structured_exception(error)
+        if isinstance(error, httpx.TimeoutException):
+            return RedactedDiagnostic(
+                code="connector_timeout",
+                safe_message="Connector request timed out.",
+                retryable=True,
+            )
+        if isinstance(error, httpx.HTTPStatusError):
+            return RedactedDiagnostic(
+                code="connector_http_error",
+                safe_message="Connector request failed.",
+                retryable=error.response.status_code >= 500
+                or error.response.status_code == 429,
+            )
+        if isinstance(
+            error,
+            (ConnectorRedirectDenied, ConnectorResponseTooLarge, TemplateEnricherError),
+        ):
+            return RedactedDiagnostic(
+                code="connector_response_invalid",
+                safe_message="Connector response was rejected.",
+                retryable=False,
+            )
+        return RedactedDiagnostic(
+            code="connector_response_invalid",
+            safe_message="Connector response was rejected.",
+            retryable=False,
+        )
 
     def _classify_structured_success(
         self,
@@ -563,76 +351,86 @@ class TemplateEnricher(Enricher):
                     retryable=False,
                 ),
             )
-        return super()._classify_structured_success(outputs, evidence)
+        return OutcomeStatus.SUCCESS, None
+
+    async def execute_structured(self, values: List[Any]) -> StructuredExecutionResult:
+        """Execute inputs independently without logging, retaining, or returning raw egress data."""
+        outcomes: list[InputOutcome] = []
+        try:
+            async with self._structured_execution_context() as client:
+                for original_input in values:
+                    input_ref = canonical_input_hash(original_input)
+                    self._last_response_artifact_sha256 = None
+                    self._last_http_status_class = None
+                    try:
+                        self._reject_unknown_input_fields(original_input)
+                        input_obj = self._validate_single_input(original_input)
+                        processed = await self._process_single_input(client, input_obj)
+                        evidence = self._build_structured_evidence(input_obj, input_ref)
+                        status, diagnostic = self._classify_structured_success(
+                            tuple(processed), evidence
+                        )
+                        outcomes.append(
+                            InputOutcome(
+                                input_ref=input_ref,
+                                status=status,
+                                outputs=tuple(processed)
+                                if status is OutcomeStatus.SUCCESS
+                                else (),
+                                diagnostic=diagnostic,
+                                evidence=evidence,
+                            )
+                        )
+                    except Exception as error:
+                        outcomes.append(
+                            InputOutcome(
+                                input_ref=input_ref,
+                                status=OutcomeStatus.FAILURE,
+                                diagnostic=self._classify_structured_exception(error),
+                                evidence=self._build_structured_evidence(
+                                    original_input, input_ref
+                                ),
+                            )
+                        )
+        finally:
+            try:
+                self._graph_service.flush()
+            except Exception:
+                pass
+        Logger.info(
+            self.sketch_id,
+            {
+                "event": "connector_completed",
+                "destination_id": self.endpoint.destination_id,
+                "endpoint_id": self.endpoint.endpoint_id,
+                "capability": self.endpoint.capability,
+                "outcome_counts": {
+                    status.value: sum(
+                        outcome.status is status for outcome in outcomes
+                    )
+                    for status in OutcomeStatus
+                },
+                "http_status_class": self._last_http_status_class,
+            },
+        )
+        return StructuredExecutionResult(enricher_name=self.name(), outcomes=tuple(outcomes))
 
     async def scan(self, values: List[Any]) -> List[Any]:
-        """
-        Execute the template for each input value.
+        result = await self.execute_structured(values)
+        return [
+            output
+            for outcome in result.outcomes
+            if outcome.status is OutcomeStatus.SUCCESS
+            for output in outcome.outputs
+        ]
 
-        Args:
-            values: List of preprocessed input objects
-
-        Returns:
-            List of OutputType instances
-        """
-        results: List[Any] = []
-
-        async with httpx.AsyncClient() as client:
-            for input_obj in values:
-                try:
-                    item_results = await self._process_single_input(client, input_obj)
-                    results.extend(item_results)
-                except SSRFError as e:
-                    Logger.info(
-                        self.sketch_id,
-                        {"message": f"SSRF blocked: {e}"},
-                    )
-                    continue
-                except TemplateRenderError as e:
-                    Logger.info(
-                        self.sketch_id,
-                        {"message": f"Template render error: {e}"},
-                    )
-                    continue
-                except httpx.HTTPStatusError as e:
-                    Logger.info(
-                        self.sketch_id,
-                        {
-                            "message": f"HTTP error {e.response.status_code} for {self.request.url}: {e}"
-                        },
-                    )
-                    continue
-                except httpx.TimeoutException:
-                    Logger.info(
-                        self.sketch_id,
-                        {"message": f"Request timeout for {self.request.url}"},
-                    )
-                    continue
-                except TemplateEnricherError as e:
-                    Logger.info(
-                        self.sketch_id,
-                        {"message": f"Template enricher error: {e}"},
-                    )
-                    continue
-                except Exception as e:
-                    Logger.info(
-                        self.sketch_id,
-                        {
-                            "message": f"Unexpected error processing {self.request.url}: {e}"
-                        },
-                    )
-                    continue
-
-        return results
+    async def execute(self, values: List[Any]) -> List[Any]:
+        return await self.scan(values)
 
     def postprocess(
         self, results: List[Any], input_data: Optional[List[Any]] = None
     ) -> List[Any]:
-        """Return preview results without mutating the graph."""
         return results
-
-    def get_raw_response(self) -> Dict[str, Any] | None:
-        return self.raw_response
 
 
 InputType = TemplateEnricher.InputType

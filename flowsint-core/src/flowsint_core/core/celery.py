@@ -8,6 +8,7 @@ celery = Celery(
     include=[
         "flowsint_core.tasks.event",
         "flowsint_core.tasks.enricher",
+        "flowsint_core.tasks.graph_projection",
         "flowsint_core.tasks.flow",
     ],
 )
@@ -21,5 +22,11 @@ celery.conf.update(
     task_track_started=True,
     task_time_limit=3600,  # 1 hour
     worker_max_tasks_per_child=1000,
+    beat_schedule={
+        "sweep-graph-projection-jobs": {
+            "task": "sweep_graph_projection_jobs",
+            "schedule": 60.0,
+        }
+    },
     worker_prefetch_multiplier=4,  # Allow each worker to prefetch up to 4 tasks
 )

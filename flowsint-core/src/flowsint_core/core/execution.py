@@ -37,7 +37,10 @@ class EvidenceEnvelope(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     input_ref: str = Field(pattern=r"^[a-f0-9]{64}$")
-    request_url_pattern: str = Field(min_length=1, max_length=4096)
+    destination_id: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,127}$")
+    endpoint_id: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,127}$")
+    capability: str = Field(pattern=r"^enrich\.read$")
+    policy_version: str = Field(min_length=1, max_length=64)
     artifact_sha256: str | None = None
     artifact_reference: str | None = Field(default=None, max_length=256)
     source_rights: str = Field(default="unspecified", min_length=1, max_length=128)

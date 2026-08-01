@@ -1,17 +1,14 @@
-name: xml-response-example
+name: response-format-example
 category: Ip
 version: 1.0
 input:
   type: Ip
   key: address
-request:
-  method: GET
-  url: https://api.example.com/xml/{{address}}
-  timeout: 30
+connector:
+  destination_id: approved_directory
+  endpoint_id: ip_lookup
+  capability: enrich.read
 output:
   type: Ip
-response:
-  expect: xml
-  map:
-    address: ip
-    country: location.country
+evidence:
+  source_rights: test-only

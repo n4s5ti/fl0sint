@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from sqlalchemy import (
     JSON,
     Boolean,
+    CheckConstraint,
     Column,
     DateTime,
     DDL,
@@ -447,6 +448,11 @@ class FlowRun(Base):
     status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
     attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     input_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    operation_digest: Mapped[str] = mapped_column(
+        String(64),
+        nullable=False,
+        default=lambda context: context.get_current_parameters()["input_digest"],
+    )
     input_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     checkpoint: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
     safe_error_code: Mapped[str | None] = mapped_column(String(128), nullable=True)
@@ -476,6 +482,10 @@ class FlowRun(Base):
     )
 
     __table_args__ = (
+        CheckConstraint(
+            "length(operation_digest) = 64",
+            name="ck_flow_runs_operation_digest_length",
+        ),
         UniqueConstraint(
             "owner_id",
             "idempotency_key",
@@ -560,7 +570,10 @@ class EvidenceEnvelopeRecord(Base):
     mapped_outputs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     diagnostic: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     source: Mapped[str] = mapped_column(String(256), nullable=False)
-    request_url_pattern: Mapped[str | None] = mapped_column(Text, nullable=True)
+    destination_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    endpoint_id: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    capability: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    policy_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
     artifact_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
     artifact_reference: Mapped[str | None] = mapped_column(Text, nullable=True)
     event_at: Mapped[datetime | None] = mapped_column(
@@ -601,6 +614,11 @@ class EvidenceEnvelopeRecord(Base):
         foreign_keys=[supersedes_id],
         remote_side=[id],
     )
+    projection_jobs = relationship(
+        "GraphProjectionJob",
+        back_populates="evidence_record",
+        foreign_keys="GraphProjectionJob.evidence_envelope_id",
+    )
 
     @validates("event_at", "retrieved_at", "ingested_at")
     def normalize_evidence_timestamp(
@@ -625,6 +643,87 @@ class EvidenceEnvelopeRecord(Base):
         Index("idx_evidence_envelopes_flow_run_id", "flow_run_id"),
         Index("idx_evidence_envelopes_step_run_id", "step_run_id"),
         Index("idx_evidence_envelopes_supersedes_id", "supersedes_id"),
+    )
+
+class GraphProjectionJob(Base):
+    """Durable, lease-fenced outbox job for an approved graph projection."""
+
+    __tablename__ = "graph_projection_jobs"
+
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=uuid.uuid4)
+    evidence_envelope_id: Mapped[uuid.UUID] = mapped_column(
+        Uuid,
+        ForeignKey(
+            "evidence_envelope_records.id",
+            onupdate="CASCADE",
+            ondelete="RESTRICT",
+        ),
+        nullable=False,
+    )
+    profile_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    profile_revision: Mapped[int] = mapped_column(Integer, nullable=False)
+    profile_digest: Mapped[str] = mapped_column(String(64), nullable=False)
+    profile_snapshot: Mapped[dict] = mapped_column(JSON, nullable=False)
+    source_attempt: Mapped[int] = mapped_column(Integer, nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
+    attempt: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    lease_owner: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    lease_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    next_attempt_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    safe_error_code: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    safe_error_diagnostic: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    started_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=_utcnow, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=_utcnow,
+        server_default=func.now(),
+        onupdate=_utcnow,
+    )
+
+    evidence_record = relationship(
+        "EvidenceEnvelopeRecord",
+        back_populates="projection_jobs",
+        foreign_keys=[evidence_envelope_id],
+    )
+
+    __table_args__ = (
+        UniqueConstraint(
+            "evidence_envelope_id",
+            "profile_id",
+            "profile_revision",
+            name="uq_graph_projection_jobs_evidence_profile",
+        ),
+        CheckConstraint(
+            "status IN ('pending', 'running', 'retry', 'succeeded', 'failed')",
+            name="ck_graph_projection_jobs_status",
+        ),
+        CheckConstraint("attempt >= 0", name="ck_graph_projection_jobs_attempt"),
+        CheckConstraint(
+            "source_attempt >= 0",
+            name="ck_graph_projection_jobs_source_attempt",
+        ),
+        Index(
+            "idx_graph_projection_jobs_status_next_attempt",
+            "status",
+            "next_attempt_at",
+        ),
+        Index("idx_graph_projection_jobs_lease_expires_at", "lease_expires_at"),
+        Index(
+            "idx_graph_projection_jobs_evidence_envelope_id",
+            "evidence_envelope_id",
+        ),
     )
 
 
