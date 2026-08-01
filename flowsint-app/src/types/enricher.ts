@@ -18,6 +18,7 @@ export interface EnricherParamSchemaItem {
 
 export interface Enricher {
   id: string
+  source?: 'builtin' | 'template'
   class_name: string
   category: string
   name: string

@@ -27,7 +27,7 @@ import { Enricher, Flow } from '@/types'
 
 const LaunchEnricherOrFlowPanel = memo(
   ({ values, type, children, disabled }: { values: string[]; type: string; children?: React.ReactNode, disabled?: boolean }) => {
-    const { launchEnricher } = useLaunchEnricher()
+    const { launchEnricher, launchTemplate } = useLaunchEnricher()
     const { launchFlow } = useLaunchFlow()
     const { id: sketch_id } = useParams({ strict: false })
     const [isOpen, setIsOpen] = useState(false)
@@ -74,17 +74,19 @@ const LaunchEnricherOrFlowPanel = memo(
 
     const handleLaunchPanel = useCallback(() => {
       if (selectedEnricher) {
-        // Check if it's an Enricher or Flow based on the active tab
         if (activeTab === 'enrichers') {
-          // For enrichers, use name
-          launchEnricher(values, (selectedEnricher as Enricher).name, sketch_id)
+          const enricher = selectedEnricher as Enricher
+          if (enricher.source === 'template') {
+            launchTemplate(values, enricher.id, enricher.name, sketch_id)
+          } else {
+            launchEnricher(values, enricher.name, sketch_id)
+          }
         } else {
-          // For flows, use id
           launchFlow(values, (selectedEnricher as Flow).id, sketch_id)
         }
         handleCloseModal()
       }
-    }, [selectedEnricher, activeTab, launchEnricher, launchFlow, values, sketch_id])
+    }, [selectedEnricher, activeTab, launchEnricher, launchTemplate, launchFlow, values, sketch_id])
 
     if (disabled) return (
       <>{children}</>
@@ -148,7 +150,7 @@ const LaunchEnricherOrFlowPanel = memo(
                   <RadioGroup
                     value={
                       selectedEnricher && 'name' in selectedEnricher
-                        ? selectedEnricher.name
+                        ? `${(selectedEnricher as Enricher).source ?? 'flow'}:${selectedEnricher.id}`
                         : undefined
                     }
                     className="space-y-3"
@@ -178,10 +180,10 @@ const LaunchEnricherOrFlowPanel = memo(
                     ) : filteredEnrichers.length > 0 ? (
                       filteredEnrichers.map((enricher: Enricher) => (
                         <Card
-                          key={enricher.name}
+                          key={`${enricher.source}:${enricher.id}`}
                           className={`cursor-pointer border py-1 transition-all ${selectedEnricher &&
                             'name' in selectedEnricher &&
-                            selectedEnricher.name === enricher.name
+                            selectedEnricher.id === enricher.id
                             ? 'border-primary bg-primary/5'
                             : 'hover:border-primary/50'
                             }`}
@@ -190,7 +192,7 @@ const LaunchEnricherOrFlowPanel = memo(
                           <CardHeader className="p-4">
                             <div className="flex flex-col space-y-4">
                               <div className="flex items-center gap-3">
-                                <RadioGroupItem value={enricher.name} id={enricher.name} />
+                                <RadioGroupItem value={`${enricher.source}:${enricher.id}`} id={`${enricher.source}:${enricher.id}`} />
                                 <CardTitle className="text-base">{enricher.name}</CardTitle>
                               </div>
 

@@ -37,7 +37,36 @@ export function useLaunchEnricher(askUser: boolean = false) {
     openClonsole()
     return
   }
+  const launchTemplate = async (
+    node_ids: string[],
+    templateId: string,
+    templateName: string,
+    sketch_id: string | null | undefined
+  ) => {
+    if (!sketch_id) return toast.error('Could not find the graph.')
+    if (askUser) {
+      const confirmed = await confirm({
+        title: `${templateName} scan`,
+        message: `You're about to launch ${templateName} on ${node_ids.length} items.`
+      })
+      if (!confirmed) return
+    }
+    const body = JSON.stringify({ node_ids, sketch_id })
+    const count = node_ids.length
+    toast.promise(enricherService.launchTemplate(templateId, body), {
+      loading: 'Loading...',
+      success: () =>
+        `Template ${templateName} has been launched on ${count} node${count > 1 ? 's' : ''}.`,
+      error: () => `An error occurred launching connector template.`
+    })
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.scans.list
+    })
+    openClonsole()
+  }
+
   return {
-    launchEnricher
+    launchEnricher,
+    launchTemplate
   }
 }
