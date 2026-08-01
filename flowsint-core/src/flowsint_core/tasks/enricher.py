@@ -67,7 +67,6 @@ def run_enricher(
     serialized_objects: List[dict],
     sketch_id: str | None,
     owner_id: Optional[str] = None,
-    params: Dict[str, Any] | None = None,
 ):
     session = SessionLocal()
 
@@ -95,17 +94,11 @@ def run_enricher(
         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):
             raise ValueError(f"Enricher '{enricher_name}' not found in registry")
 
-        run_params = params or {}
-        run_params = ENRICHER_REGISTRY.filter_params(
-            enricher_name, run_params
-        )
-
         enricher = ENRICHER_REGISTRY.get_enricher(
             name=enricher_name,
             sketch_id=sketch_id,
             scan_id=scan_id,
             vault=vault,
-            params=run_params,
         )
 
         # Deserialize objects back into Pydantic models
