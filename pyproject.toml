@@ -1,7 +1,7 @@
 [project]
 name = "flowsint"
 version = "1.2.8"
-description = "Flowsint multi-module project"
+description = "Fl0sint multi-module project"
 authors = [{ name = "dextmorgn", email = "contact@flowsint.io" }]
 requires-python = ">=3.12,<4.0"
 dependencies = [

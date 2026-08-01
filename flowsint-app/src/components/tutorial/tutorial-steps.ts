@@ -4,7 +4,7 @@ export const tutorialSteps: Record<string, Step[]> = {
   '/dashboard': [
     {
       target: '[data-tour-id="welcome"]',
-      content: 'Welcome to Flowsint! This tutorial will guide you through the main features.',
+      content: 'Welcome to Fl0sint! This tutorial will guide you through the main features.',
       disableBeacon: true,
     },
     {

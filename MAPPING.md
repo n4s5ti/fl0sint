@@ -50,7 +50,7 @@ Option A: Direct API (automated)
   gog sheets get email -> POST /api/enrichers/.../launch -> poll -> gog sheets update
 
 Option B: Wayland CLI (desktop automation)
-  wayland key/mouse -> navigate Flowsint UI -> run enricher -> paste to sheet
+  wayland key/mouse -> navigate Fl0sint UI -> run enricher -> paste to sheet
 
 Option C: Celery (existing pipeline)
   POST /api/enrichers/{name}/launch -> Celery task -> scan() -> postprocess

@@ -17,9 +17,9 @@ const InfoDialog = () => {
         <DialogContent className="sm:max-w-2xl">
           <div className="p-2">
             <div className="p-2 text-sm space-y-4 overflow-y-auto max-h-[80vh]">
-              <h2 className="text-base font-semibold flex items-center gap-2">About Flowsint</h2>
+              <h2 className="text-base font-semibold flex items-center gap-2">About Fl0sint</h2>
               <p>
-                <strong>Flowsint</strong> is an{' '}
+                <strong>Fl0sint</strong> is an{' '}
                 <strong>investigation and intelligence platform</strong> built to support complex
                 research workflows involving{' '}
                 <strong>people, organizations, infrastructure, and online activity</strong>.
@@ -28,11 +28,11 @@ const InfoDialog = () => {
               <p>
                 Whether you're conducting <strong>cyber investigations</strong>, mapping out{' '}
                 <strong>fraud networks</strong>, or gathering intelligence for{' '}
-                <strong>threat assessments</strong>, Flowsint helps you collect, visualize, and
+                <strong>threat assessments</strong>, Fl0sint helps you collect, visualize, and
                 understand fragmented data points in a structured and interactive way.
               </p>
 
-              <h3 className="font-semibold">What Flowsint Does</h3>
+              <h3 className="font-semibold">What Fl0sint Does</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li>
                   <strong>Connects scattered data</strong> — emails, domains, social accounts, IPs,
@@ -54,7 +54,7 @@ const InfoDialog = () => {
                 </li>
               </ul>
 
-              <h3 className="font-semibold">Why Use Flowsint?</h3>
+              <h3 className="font-semibold">Why Use Fl0sint?</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li>
                   Built for <strong>speed and clarity</strong> — fast graph rendering, clean UI,
@@ -92,7 +92,7 @@ const InfoDialog = () => {
               </ul>
 
               <p>
-                Flowsint is designed for <strong>professionals</strong> who need{' '}
+                Fl0sint is designed for <strong>professionals</strong> who need{' '}
                 <strong>full control</strong> over their investigation logic, from how data is
                 structured to how relationships are interpreted. It's not just a tool — it's a{' '}
                 <strong>flexible workspace</strong> for building intelligence.

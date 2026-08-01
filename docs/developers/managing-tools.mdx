@@ -1,9 +1,9 @@
 ---
 title: "Managing tools"
-description: "This guide explains how to create a new tool in the Flowsint ecosystem. Tools are low-level wrappers around external utilities, Docker containers, and APIs that enrichers use to gather intelligence. Understanding the tool architecture will help you extend Flowsint's capabilities with new data sources and reconnaissance utilities."
+description: "This guide explains how to create a new tool in the Fl0sint ecosystem. Tools are low-level wrappers around external utilities, Docker containers, and APIs that enrichers use to gather intelligence. Understanding the tool architecture will help you extend Fl0sint's capabilities with new data sources and reconnaissance utilities."
 category: "Developers"
 order: 9
-author: "Flowsint Team"
+author: "Fl0sint Team"
 tags: ["tutorial", "developers", "creating-a-new-tool"]
 version: "1.2.8"
 last_updated_at: "2026-05-15"
@@ -11,11 +11,11 @@ last_updated_at: "2026-05-15"
 
 ## Understanding tools
 
-Tools in Flowsint serve as abstraction layers between enrichers and external systems. They provide a consistent interface for executing Docker containers, calling APIs, or running python libraries. While enrichers handle high-level orchestration and graph database operations, tools focus exclusively on executing external commands and returning raw results.
+Tools in Fl0sint serve as abstraction layers between enrichers and external systems. They provide a consistent interface for executing Docker containers, calling APIs, or running python libraries. While enrichers handle high-level orchestration and graph database operations, tools focus exclusively on executing external commands and returning raw results.
 
-Every tool implements a basic interface with methods for naming, categorization, and execution. Tools don't know anything about Pydantic types, Neo4j graphs, or the broader Flowsint architecture. They just wrap external functionality and return data.
+Every tool implements a basic interface with methods for naming, categorization, and execution. Tools don't know anything about Pydantic types, Neo4j graphs, or the broader Fl0sint architecture. They just wrap external functionality and return data.
 
-Flowsint currently includes tools for subdomain enumeration, port scanning, DNS queries, WHOIS lookups, web crawling, and business intelligence.
+Fl0sint currently includes tools for subdomain enumeration, port scanning, DNS queries, WHOIS lookups, web crawling, and business intelligence.
 
 ## Tool architecture
 
@@ -197,11 +197,11 @@ class ThreatIntelTool(Tool):
 
 This tool follows a straightforward pattern. The class methods provide metadata that enrichers and the registry use. The `launch` method implements the actual API interaction, handling authentication, making the request, and returning structured data.
 
-Notice how the tool returns simple python data structures like lists and dictionaries. Tools don't know about Pydantic types or Flowsint models. That's the enricher's job.
+Notice how the tool returns simple python data structures like lists and dictionaries. Tools don't know about Pydantic types or Fl0sint models. That's the enricher's job.
 
 ## Creating a docker-based tool
 
-Docker-based tools are more common in Flowsint because most reconnaissance utilities need specific dependencies and isolated environments. Let's walk through creating a tool that wraps a hypothetical Docker-based subdomain scanner.
+Docker-based tools are more common in Fl0sint because most reconnaissance utilities need specific dependencies and isolated environments. Let's walk through creating a tool that wraps a hypothetical Docker-based subdomain scanner.
 
 ### Setting up the class
 
@@ -450,11 +450,11 @@ class IpToThreatIntelEnricher(Enricher):
         return results
 ```
 
-The enricher instantiates your tool, calls its `launch` method with appropriate parameters, and processes the results into Flowsint types.
+The enricher instantiates your tool, calls its `launch` method with appropriate parameters, and processes the results into Fl0sint types.
 
 ## Common patterns
 
-Several patterns appear frequently in Flowsint tools. Understanding these will help you write tools that fit naturally into the ecosystem.
+Several patterns appear frequently in Fl0sint tools. Understanding these will help you write tools that fit naturally into the ecosystem.
 
 ### The install-check pattern
 
@@ -505,8 +505,8 @@ This separation makes the code easier to test and maintain.
 
 ## Next steps
 
-Once you've created your tool and tested it, you can build enrichers that use it. Enrichers orchestrate one or more tools to gather intelligence, validate the results, convert them to Flowsint types, and create graph database nodes and relationships.
+Once you've created your tool and tested it, you can build enrichers that use it. Enrichers orchestrate one or more tools to gather intelligence, validate the results, convert them to Fl0sint types, and create graph database nodes and relationships.
 
 If your tool requires API keys or other secrets, enrichers can access them through the vault system. When you implement an enricher that uses your tool, you can define parameters of type `vaultSecret` that pull credentials from the user's encrypted vault.
 
-Remember that tools are just one layer in the Flowsint architecture. They provide the raw capabilities, but enrichers provide the intelligence and graph-building logic that makes the platform powerful.
+Remember that tools are just one layer in the Fl0sint architecture. They provide the raw capabilities, but enrichers provide the intelligence and graph-building logic that makes the platform powerful.

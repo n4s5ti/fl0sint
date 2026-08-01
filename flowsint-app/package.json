@@ -1,12 +1,12 @@
 {
   "name": "flowsint-app",
-  "productName": "Flowsint",
+  "productName": "Fl0sint",
   "license": "Apache-2.0",
   "version": "1.0.0",
   "type": "module",
   "description": "Graph analysis and intelligence platform to help you discover hidden relationships and insights.",
   "author": "DexterMorgan",
-  "homepage": "https://www.flowsint.io/",
+  "homepage": "https://github.com/n4s5ti/fl0sint",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

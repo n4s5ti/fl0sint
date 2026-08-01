@@ -22,8 +22,8 @@ RUN test -d node_modules/motion-utils && \
 
 FROM nginx:1.29-alpine AS production
 
-LABEL org.opencontainers.image.source="https://github.com/reconurge/flowsint"
-LABEL org.opencontainers.image.description="Flowsint Frontend"
+LABEL org.opencontainers.image.source="https://github.com/n4s5ti/fl0sint"
+LABEL org.opencontainers.image.description="Fl0sint Frontend"
 LABEL org.opencontainers.image.licenses="Apache-2.0"
 
 RUN addgroup -g 1001 -S flowsint && \

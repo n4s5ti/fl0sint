@@ -1,4 +1,4 @@
-# Flowsint
+# Fl0sint
 
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](./LICENSE)
 [![Ethical Software](https://img.shields.io/badge/ethical-use-blue.svg)](./ETHICS.md)
@@ -7,7 +7,9 @@
 [![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/aST9HMQr)
 
 
-Flowsint is an open-source OSINT graph exploration tool designed for ethical investigation, transparency, and verification.
+Fl0sint is an open-source OSINT graph exploration tool designed for ethical investigation, transparency, and verification.
+Fl0sint is a customized fork of [reconurge/flowsint](https://github.com/reconurge/flowsint), preserving its upstream attribution while shipping MCP server and integrations, QUIC/HTTP2 transport work, optional GPU acceleration, and custom enrichers and graph schema. Wholesaler work remains in progress.
+
 
 **Ethics:** Please read [ETHICS.md](./ETHICS.md) for responsible use guidelines.
 
@@ -25,7 +27,7 @@ https://github.com/user-attachments/assets/65c3f26e-7132-4853-be45-21b8933688bd
 
 ## Contributing
 
-Flowsint is still in early development and definetly needs the help of the community! Feel free to raise issues, propose features, etc.
+Fl0sint is still in early development and definitely needs the help of the community! Feel free to raise issues, propose features, etc.
 
 ## Get started
 
@@ -41,8 +43,8 @@ Don't want to read ? Got it. Here's your install instructions:
 #### 2. Run install command
 
 ```bash
-git clone https://github.com/reconurge/flowsint.git
-cd flowsint
+git clone https://github.com/n4s5ti/fl0sint.git
+cd fl0sint
 make prod
 ```
 
@@ -58,8 +60,8 @@ No Make needed. Works in both **Command Prompt (cmd)** and **PowerShell**.
 #### 2. Clone and set up environment files
 
 ```bat
-git clone https://github.com/reconurge/flowsint.git
-cd flowsint
+git clone https://github.com/n4s5ti/fl0sint.git
+cd fl0sint
 
 copy .env.example .env
 copy .env.example flowsint-api\.env
@@ -87,14 +89,14 @@ Then go to [http://localhost:5173/register](http://localhost:5173/register) and 
 The same setup works out of the box on a server: the frontend serves the UI **and** proxies all API calls internally, so no extra configuration is needed for clients.
 
 ```bash
-git clone https://github.com/reconurge/flowsint.git
-cd flowsint
+git clone https://github.com/n4s5ti/fl0sint.git
+cd fl0sint
 cp .env.example .env
 # Edit .env — see "Before exposing to a network" below
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-Anyone on the network can then access Flowsint at `http://<server-ip>:5173`.
+Anyone on the network can then access Fl0sint at `http://<server-ip>:5173`.
 
 **Before exposing to a network, change the default secrets in `.env`:**
 
@@ -121,7 +123,7 @@ When fronting with a reverse proxy, also bind the app port to localhost in `dock
 
 ## What is it?
 
-Flowsint is a graph-based investigation tool focused on reconnaissance and OSINT (Open Source Intelligence). It allows you to explore relationships between entities through a visual graph interface and automated enrichers.
+Fl0sint is a graph-based investigation tool focused on reconnaissance and OSINT (Open Source Intelligence). It allows you to explore relationships between entities through a visual graph interface and automated enrichers.
 
 ### Available Enrichers
 
@@ -323,7 +325,7 @@ uv run pytest
 
 **Ethics:** Please read [ETHICS.md](./ETHICS.md) for responsible use guidelines.
 
-Flowsint is designed **strictly for lawful, ethical investigation and research purposes**.
+Fl0sint is designed **strictly for lawful, ethical investigation and research purposes**.
 
 It was created to assist:
 - Cybersecurity researchers and analysts
@@ -331,7 +333,7 @@ It was created to assist:
 - Law enforcement or fraud investigation teams
 - Organizations conducting internal threat intelligence or digital risk analysis
 
-**Flowsint must not be used for:**
+**Fl0sint must not be used for:**
 - Unauthorized intrusion, surveillance, or data collection
 - Harassment, doxxing, or targeting of individuals
 - Political manipulation, misinformation, or violation of privacy laws

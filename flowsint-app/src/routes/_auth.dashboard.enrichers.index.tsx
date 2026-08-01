@@ -128,7 +128,7 @@ function TemplatesPage() {
           <p className="flex-1 text-sm text-primary">
             Template enrichers are currently in <strong>beta</strong>. Feel free to{' '}
             <a
-              href="https://github.com/reconurge/flowsint/issues"
+              href="https://github.com/n4s5ti/fl0sint/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium underline underline-offset-2"

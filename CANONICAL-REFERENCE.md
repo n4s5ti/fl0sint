@@ -1,7 +1,7 @@
-# Flowsint Canonical Reference
+# Fl0sint Canonical Reference
 ## Architecture, Types, Enrichers, Pivots & Workflow
 ### Forensic-quality reference for auditing. Every claim cites source:line.
-### Based on flowsint ~2026-06-15, 72 enrichers (62 source + 10 template).
+### Based on upstream FlowSINT ~2026-06-15, 72 enrichers (62 source + 10 template).
 
 ---
 

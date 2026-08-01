@@ -172,7 +172,7 @@ regenerate-router:
 	cd $(PROJECT_ROOT)/flowsint-app && npx tsr generate
 
 help:
-	@echo "Flowsint Makefile"
+	@echo "Fl0sint Makefile"
 	@echo ""
 	@echo "Development:"
 	@echo "  make dev          - Start DEV environment (local build, hot-reload)"

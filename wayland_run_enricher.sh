@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Wayland Enricher Automation Script (Option B)
 # ==============================================
-# Automates the Flowsint UI via Wayland CLI to launch an enricher.
+# Automates the Fl0sint UI via Wayland CLI to launch an enricher.
 # Prerequisites: wayland CLI at ~/Documents/dev/wayland-mcp/bin/wayland
-#                Flowsint UI open in browser at localhost:5173
+#                Fl0sint UI open in browser at localhost:5173
 #
 # Usage: bash wayland_run_enricher.sh <email> [enricher_name]
 #

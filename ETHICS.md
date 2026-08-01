@@ -2,20 +2,20 @@
 
 ## License
 
-Flowsint is distributed under the **Apache License 2.0** (effective January 25, 2026).
+Fl0sint is distributed under the **Apache License 2.0** (effective January 25, 2026).
 
 Code contributed prior to January 25, 2026 was originally licensed under AGPL-3.0
 and has been relicensed to Apache 2.0 with the written consent of all contributors.
 
 ## Ethical Foundation
 
-The development and use of Flowsint are guided by the principles of the [Hippocratic License](https://firstdonoharm.dev/):
+The development and use of Fl0sint are guided by the principles of the [Hippocratic License](https://firstdonoharm.dev/):
 
 > **The software must not be used in ways that violate fundamental human rights.**
 
 ## Ethical Commitment
 
-By using or contributing to Flowsint, all individuals and organizations are expected to:
+By using or contributing to Fl0sint, all individuals and organizations are expected to:
 
 * Respect and uphold universal human rights
 * Use the software responsibly, transparently, and ethically
@@ -24,7 +24,7 @@ By using or contributing to Flowsint, all individuals and organizations are expe
 
 ## Lawful and Responsible Use
 
-Flowsint is designed **strictly for lawful, ethical investigation and research purposes**.
+Fl0sint is designed **strictly for lawful, ethical investigation and research purposes**.
 It was created to assist:
 
 * Cybersecurity researchers and analysts
@@ -34,7 +34,7 @@ It was created to assist:
 
 ### Prohibited Uses
 
-Flowsint **must not be used** for:
+Fl0sint **must not be used** for:
 
 * Unauthorized intrusion, surveillance, or data collection
 * Harassment, doxxing, blackmail, or targeting of individuals
@@ -50,5 +50,5 @@ If you become aware of any use that contradicts these principles, please report 
 
 ## Responsibility Statement
 
-The developers and maintainers of Flowsint are committed to upholding these ethical principles throughout the project’s life cycle.
-However, in accordance with the Apache License 2.0, **Flowsint is provided "as is," without warranty**, and its authors **cannot be held liable for misuse or unlawful activity conducted by third parties**.
+The developers and maintainers of Fl0sint are committed to upholding these ethical principles throughout the project’s life cycle.
+However, in accordance with the Apache License 2.0, **Fl0sint is provided "as is," without warranty**, and its authors **cannot be held liable for misuse or unlawful activity conducted by third parties**.

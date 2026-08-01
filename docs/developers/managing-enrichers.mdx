@@ -3,7 +3,7 @@ title: "Managing enrichers"
 description: "Quick start guide to creating Enricher for your OSINT investigations."
 category: "Developers"
 order: 10
-author: "Flowsint Team"
+author: "Fl0sint Team"
 tags: ["tutorial", "developers", "creating-a-new-enricher"]
 version: "1.2.8"
 last_updated_at: "2026-05-15"
@@ -11,11 +11,11 @@ last_updated_at: "2026-05-15"
 
 ## Understanding Enrichers
 
-Enrichers are the high-level business logic layer in Flowsint. While types define data structures and tools wrap external utilities, enrichers orchestrate the entire intelligence gathering workflow. An enricher takes input data of one type, processes it through various tools or APIs, validates and enriches the results, creates graph database nodes and relationships, and returns structured output.
+Enrichers are the high-level business logic layer in Fl0sint. While types define data structures and tools wrap external utilities, enrichers orchestrate the entire intelligence gathering workflow. An enricher takes input data of one type, processes it through various tools or APIs, validates and enriches the results, creates graph database nodes and relationships, and returns structured output.
 
-Every enricher in Flowsint follows a two-phase execution model. The scan phase contains the core enriching logic where tools are executed, APIs are called, and data is gathered. Then, the postprocessing phase creates Neo4j graph nodes and relationships while returning the processed results. Input validation and normalization happens automatically through Pydantic type validation.
+Every enricher in Fl0sint follows a two-phase execution model. The scan phase contains the core enriching logic where tools are executed, APIs are called, and data is gathered. Then, the postprocessing phase creates Neo4j graph nodes and relationships while returning the processed results. Input validation and normalization happens automatically through Pydantic type validation.
 
-Enrichers differ from tools in several fundamental ways. Tools are low-level wrappers that return raw data without knowledge of the Flowsint ecosystem. Enrichers are high-level workflows that understand types, create graph nodes, handle parameters, and orchestrate multiple tools. When you want to add a new data source, you create a tool. When you want to add a new intelligence workflow, you create an enricher.
+Enrichers differ from tools in several fundamental ways. Tools are low-level wrappers that return raw data without knowledge of the Fl0sint ecosystem. Enrichers are high-level workflows that understand types, create graph nodes, handle parameters, and orchestrate multiple tools. When you want to add a new data source, you create a tool. When you want to add a new intelligence workflow, you create an enricher.
 
 ## Enricher architecture
 
@@ -437,7 +437,7 @@ InputType = IpToPortsEnricher.InputType
 OutputType = IpToPortsEnricher.OutputType
 ```
 
-The parameter schema defines the type, description, whether it's required, default values, and for select parameters, the available options. The `vaultSecret` type integrates with Flowsint's encrypted credential storage.
+The parameter schema defines the type, description, whether it's required, default values, and for select parameters, the available options. The `vaultSecret` type integrates with Fl0sint's encrypted credential storage.
 
 ### Using parameters in your enricher
 
@@ -630,7 +630,7 @@ These tests verify that your enricher's metadata is correct, type definitions ar
 
 When creating enrichers, think carefully about error handling. Intelligence gathering involves many external systems that can fail in unpredictable ways. Your enricher should handle errors gracefully, log failures clearly, and continue processing remaining items rather than crashing entirely.
 
-Always use the Logger utility for tracking progress and errors. The logger integrates with Flowsint's monitoring system and helps users understand what's happening during long-running enrichers. Log successful operations at the info level and errors at the error level.
+Always use the Logger utility for tracking progress and errors. The logger integrates with Fl0sint's monitoring system and helps users understand what's happening during long-running enrichers. Log successful operations at the info level and errors at the error level.
 
 Define InputType and OutputType as base types (e.g., `Domain`, not `List[Domain]`). The base class automatically handles the list wrapping and validation. This makes the type definitions cleaner and more intuitive.
 
@@ -646,7 +646,7 @@ Separate concerns between the two phases. Scanning should focus on gathering and
 
 Use type hints everywhere. They provide automatic validation, better IDE support, and serve as inline documentation. The InputType and OutputType class attributes should always be Pydantic types from the flowsint-types package.
 
-When working with tools, remember that they return raw data structures. Your enricher is responsible for converting tool output into proper Flowsint types. This type conversion is typically done in the scan phase.
+When working with tools, remember that they return raw data structures. Your enricher is responsible for converting tool output into proper Fl0sint types. This type conversion is typically done in the scan phase.
 
 Document your enricher thoroughly. The class docstring, documentation method, and parameter descriptions all appear in the UI. Clear documentation helps users understand what your enricher does and how to configure it.
 
@@ -710,6 +710,6 @@ When graph relationships aren't appearing, check that you're creating both nodes
 
 Once you've created and registered your enricher, it becomes available through the API for users to run. Enrichers can be chained together into Flows where the output of one enricher feeds into the input of another. This enables complex intelligence gathering sequences.
 
-Remember that enrichers are the heart of Flowsint's intelligence gathering capabilities. Well-designed enrichers that handle errors gracefully, log progress clearly, and create meaningful graph relationships make the entire platform more powerful and user-friendly.
+Remember that enrichers are the heart of Fl0sint's intelligence gathering capabilities. Well-designed enrichers that handle errors gracefully, log progress clearly, and create meaningful graph relationships make the entire platform more powerful and user-friendly.
 
 If you create new enrichers that you think can help the community, it's highly appreciated that you open-source them. Help the community as much as it helps you !

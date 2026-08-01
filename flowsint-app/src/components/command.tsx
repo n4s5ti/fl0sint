@@ -124,7 +124,7 @@ export function Command() {
         className="text-xs h-8 w-full max-w-3xs border flex rounded-full items-center justify-between hover:border-muted-foreground text-muted-foreground"
       >
         <span className="flex items-center gap-2">
-          <Search /> Search Flowsint{' '}
+          <Search /> Search Fl0sint{' '}
         </span>
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">⌘</span>J

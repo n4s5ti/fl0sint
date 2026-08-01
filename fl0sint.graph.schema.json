@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "name": "fl0sint.graph.schema",
-  "description": "Flowsint graph schema \u2014 B2C investigation model with Individual anchors and prospect datapoint nodes",
+  "description": "Fl0sint graph schema \u2014 B2C investigation model with Individual anchors and prospect datapoint nodes",
   "node_types": {
     "anchor": {
       "Individual": {
@@ -326,7 +326,7 @@
     "GraphNode": {
       "id": "str | None",
       "nodeLabel": "str \u2014 THE CANDIDATE VALUE (e.g., carveralan, +15551234567, https://facebook.com/user)",
-      "nodeType": "str \u2014 THE FLOWSINT TYPE (e.g., username, phone, socialaccount)",
+      "nodeType": "str \u2014 THE FL0SINT TYPE (e.g., username, phone, socialaccount)",
       "nodeProperties": "Any \u2014 typed fields + metadata (source_tool, source_input, evidence_level, hit_count)",
       "nodeMetadata": {
         "created_at": "datetime"

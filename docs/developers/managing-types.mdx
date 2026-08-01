@@ -1,9 +1,9 @@
 ---
 title: "Managing types"
-description: "This guide walks you through the process of creating a new data type in the Flowsint ecosystem and integrating it throughout the platform. Types in Flowsint serve as the foundation for all data modeling, providing structure, validation, and schema generation for the entire system."
+description: "This guide walks you through the process of creating a new data type in the Fl0sint ecosystem and integrating it throughout the platform. Types in Fl0sint serve as the foundation for all data modeling, providing structure, validation, and schema generation for the entire system."
 category: "Developers"
 order: 8
-author: "Flowsint Team"
+author: "Fl0sint Team"
 tags: ["tutorial", "developers", "creating-a-new-type"]
 version: "1.2.8"
 last_updated_at: "2026-05-15"
@@ -11,19 +11,19 @@ last_updated_at: "2026-05-15"
 
 ## Understanding the type system
 
-The Flowsint type system is built on Pydantic models and lives in the `flowsint-types` package. Every type is a python class that inherits from `FlowsintType`, which itself inherits from `pydantic.BaseModel`, **and must be decorated with `@flowsint_type`** to be registered in the global type registry. This provides automatic validation, serialization, JSON schema generation, auto-discovery, and graph-specific functionality like automatic label generation. The architecture is deliberately simple with minimal inheritance hierarchies. Each type inherits from FlowsintType and defines its own fields and behavior.
+The Fl0sint type system is built on Pydantic models and lives in the `flowsint-types` package. Every type is a python class that inherits from `FlowsintType`, which itself inherits from `pydantic.BaseModel`, **and must be decorated with `@flowsint_type`** to be registered in the global type registry. This provides automatic validation, serialization, JSON schema generation, auto-discovery, and graph-specific functionality like automatic label generation. The architecture is deliberately simple with minimal inheritance hierarchies. Each type inherits from FlowsintType and defines its own fields and behavior.
 
 The package structure is straightforward. Inside `flowsint-types/src/flowsint_types/`, you'll find individual python files for each type. Most types get their own file, though closely related types sometimes share a file. For example, `wallet.py` contains `CryptoWallet`, `CryptoWalletTransaction`, and `CryptoNFT` because they work together as a conceptual unit.
 
-Currently, Flowsint includes 39 built-in types covering everything from network entities like domains and IPs to identity information like individuals and organizations, security data like credentials and breaches, and financial information like bank accounts and crypto wallets.
+Currently, Fl0sint includes 39 built-in types covering everything from network entities like domains and IPs to identity information like individuals and organizations, security data like credentials and breaches, and financial information like bank accounts and crypto wallets.
 
 ### What is FlowsintType?
 
-`FlowsintType` is the base class for all Flowsint entity types. It extends Pydantic's `BaseModel` with additional functionality specific to Flowsint's graph database and UI needs:
+`FlowsintType` is the base class for all Fl0sint entity types. It extends Pydantic's `BaseModel` with additional functionality specific to Fl0sint's graph database and UI needs:
 
 ```python
 class FlowsintType(BaseModel):
-    """Base class for all Flowsint entity types with nodeLabel support.
+    """Base class for all Fl0sint entity types with nodeLabel support.
     nodeLabel is optional but computed at definition time.
 
     All classes that inherit from FlowsintType must be decorated with @flowsint_type
@@ -163,11 +163,11 @@ Let's break down the key components:
 
 ### Naming conventions
 
-Flowsint follows strict naming conventions to maintain consistency across the codebase. Class names use PascalCase (like `Vehicle`, `SocialAccount`, or `CryptoWallet`). Field names use snake_case (like `license_plate`, `phone_number`, or `email_address`). This matches python's standard conventions and makes the codebase more readable.
+Fl0sint follows strict naming conventions to maintain consistency across the codebase. Class names use PascalCase (like `Vehicle`, `SocialAccount`, or `CryptoWallet`). Field names use snake_case (like `license_plate`, `phone_number`, or `email_address`). This matches python's standard conventions and makes the codebase more readable.
 
 ### Understanding primary fields and labels
 
-Two concepts are crucial for every Flowsint type: the **primary field** and the **nodeLabel**. Understanding these will help you create types that work seamlessly with the graph database and UI.
+Two concepts are crucial for every Fl0sint type: the **primary field** and the **nodeLabel**. Understanding these will help you create types that work seamlessly with the graph database and UI.
 
 **Why it matters:**
 - When creating Neo4j nodes, this field is used as the key in `MERGE` operations
@@ -372,7 +372,7 @@ Validators receive the field value and can either return a (potentially modified
 
 ### Referencing other types
 
-Types often need to reference other Flowsint types. You can import and use them just like any other python type:
+Types often need to reference other Fl0sint types. You can import and use them just like any other python type:
 
 ```python
 from pydantic import Field, model_validator
@@ -547,7 +547,7 @@ def _get_category_definitions(self) -> List[Dict[str, Any]]:
 
 ### Available categories
 
-Flowsint currently organizes types into these standard categories:
+Fl0sint currently organizes types into these standard categories:
 
 - **Global** contains general-purpose types like Location and Phrase that don't fit neatly into other categories.
 
@@ -877,7 +877,7 @@ metadata: Dict[str, Any] = Field(default={})
 
 ### Importing other types
 
-When referencing other Flowsint types, use relative imports to avoid circular import issues:
+When referencing other Fl0sint types, use relative imports to avoid circular import issues:
 
 ```python
 # Correct
@@ -1021,7 +1021,7 @@ def test_username_validation_boundaries():
 
 ### Testing types with nested objects
 
-When your type contains other Flowsint types, test the relationships:
+When your type contains other Fl0sint types, test the relationships:
 
 ```python
 # tests/test_social_account.py
@@ -1211,7 +1211,7 @@ If you're seeing issues with circular imports:
 
 If enrichers fail when using your type:
 - **Validation failures**: Your field validators might be too strict; check validator error messages in logs
-- **Nested object issues**: When passing nested Flowsint types, pass the complete object, don't recreate it
+- **Nested object issues**: When passing nested Fl0sint types, pass the complete object, don't recreate it
 - **Primary key extraction**: The graph service needs to extract a primitive value from your primary field
 
 ## Next steps
@@ -1238,16 +1238,16 @@ Before considering your type complete, verify that you've:
 You might also want to explore:
 
 - **Creating enrichers**: Use your type as input/output in custom enrichers
-- **Custom types via API**: Flowsint supports runtime type creation using JSON Schema (see `flowsint-core/src/flowsint_core/core/models.py`)
+- **Custom types via API**: Fl0sint supports runtime type creation using JSON Schema (see `flowsint-core/src/flowsint_core/core/models.py`)
 - **Graph format**: Learn about the [node and edge format](/docs/developers/graph-format) used in the frontend
 - **Type schemas**: Understand how Pydantic schemas are used for API validation
 
 ### Final thoughts
 
-Remember that types are the foundation of everything in Flowsint:
+Remember that types are the foundation of everything in Fl0sint:
 - **Well-designed types** make enrichers easier to write
 - **Clear primary fields** ensure proper node identification in the graph
 - **Meaningful labels** make the UI and graph database more intuitive
 - **Thorough validation** ensures data integrity throughout the platform
 
-With these concepts mastered, you're ready to create powerful, robust types that will make the entire Flowsint platform more effective for intelligence gathering.
+With these concepts mastered, you're ready to create powerful, robust types that will make the entire Fl0sint platform more effective for intelligence gathering.

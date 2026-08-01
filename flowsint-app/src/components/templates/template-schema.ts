@@ -29,7 +29,7 @@ export const templateSchema = {
       properties: {
         type: {
           type: 'string',
-          description: 'Flowsint Type the template takes as input'
+          description: 'Fl0sint Type the template takes as input'
         },
         key: {
           type: 'string',
@@ -111,7 +111,7 @@ export const templateSchema = {
       properties: {
         type: {
           type: 'string',
-          description: 'Flowsint Type that the template returns'
+          description: 'Fl0sint Type that the template returns'
         },
         is_array: {
           type: 'boolean',

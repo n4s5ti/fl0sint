@@ -2,7 +2,7 @@
 """
 Enricher Integration Script (Option A: Direct API)
 Reads email from Peptide Buyers sheet, launches email_to_intelligence
-enricher via Flowsint API, writes phone + linkedin results back.
+enricher via Fl0sint API, writes phone + linkedin results back.
 
 Usage:
   export DEHASHED_API_KEY=your_key_here
@@ -10,7 +10,7 @@ Usage:
 
 Prerequisites:
   - gog CLI authenticated (michael@agentsec.ai)
-  - Flowsint API running at VITE_API_URL (default http://127.0.0.1:5001)
+  - Fl0sint API running at VITE_API_URL (default http://127.0.0.1:5001)
   - DEHASHED_API_KEY in env or flowsint vault
 """
 
