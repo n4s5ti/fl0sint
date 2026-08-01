@@ -46,7 +46,7 @@ class DockerTool(Tool):
         except ImageNotFound:
             return False
 
-    def launch(self, command: str, volumes: dict = None, timeout: int = 30, environment: dict = None):
+    def launch(self, command, volumes: dict = None, timeout: int = 30, environment: dict = None, entrypoint=None):
         self.install()
         # Merge default environment with custom environment
         env = {"TERM": "dumb"}  # Set terminal type to avoid TTY issues
@@ -54,8 +54,7 @@ class DockerTool(Tool):
             env.update(environment)
 
         try:
-            result = self.client.containers.run(
-                self.image,
+            run_kwargs = dict(
                 command=command,
                 remove=True,
                 stdout=True,
@@ -67,6 +66,11 @@ class DockerTool(Tool):
                 stdin_open=False,  # Ensure stdin is not open
                 environment=env,
             )
+            # Some tools only accept a single target on stdin, which needs a
+            # shell in front of the image's default entrypoint.
+            if entrypoint is not None:
+                run_kwargs["entrypoint"] = entrypoint
+            result = self.client.containers.run(self.image, **run_kwargs)
             return result.decode()
         except ImageNotFound:
             raise RuntimeError(f"Image {self.image} not found. Did you run install()?")

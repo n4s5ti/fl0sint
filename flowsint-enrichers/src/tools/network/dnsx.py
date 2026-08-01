@@ -1,5 +1,6 @@
 import json
-from typing import Any, List
+import shlex
+from typing import List
 from ..dockertool import DockerTool
 
 
@@ -86,3 +87,78 @@ class DnsxTool(DockerTool):
             raise RuntimeError(
                 f"Error running dnsx: {str(e)}. Output: {getattr(e, 'output', 'No output')}"
             )
+
+    def resolve_domain(
+        self, domain: str, aaaa: bool = True, api_key: str = None
+    ) -> List[str]:
+        """
+        Resolve a domain's A (IPv4) and, optionally, AAAA (IPv6) records.
+
+        Runs ``dnsx -d <domain> -a [-aaaa] -json -silent`` and parses the JSONL
+        output, returning the de-duplicated list of resolved IP addresses.
+
+        Args:
+            domain: Domain name to resolve (e.g., "example.com")
+            aaaa: Whether to also query AAAA (IPv6) records. Defaults to True.
+            api_key: Optional ProjectDiscovery Cloud Platform API key
+
+        Returns:
+            Ordered, de-duplicated list of resolved IP addresses (A then AAAA).
+        """
+        flags = ["-a"]
+        if aaaa:
+            flags.append("-aaaa")
+        flags += ["-json", "-silent"]
+
+        # dnsx >= 1.2 treats `-d` as "bruteforce this domain" and refuses to
+        # run without a `-w` wordlist, so a plain `-d example.com` exits with
+        # "missing wordlist(w) flag required with domain(d) input" and the
+        # enricher silently returns nothing. Feeding the single target on
+        # stdin is the supported invocation.
+        inner = f"dnsx {' '.join(flags)}"
+        command = ["-c", f"echo {shlex.quote(domain)} | {inner}"]
+
+        env = {}
+        if api_key:
+            env["PDCP_API_KEY"] = api_key
+
+        try:
+            result = super().launch(command, environment=env, entrypoint="sh")
+        except Exception as e:
+            raise RuntimeError(
+                f"Error running dnsx: {str(e)}. Output: {getattr(e, 'output', 'No output')}"
+            )
+
+        return self._parse_resolved_ips(result)
+
+    @staticmethod
+    def _parse_resolved_ips(result: str) -> List[str]:
+        """
+        Parse dnsx JSONL output into an ordered, de-duplicated list of IPs.
+
+        Each line is a JSON object whose ``a``/``aaaa`` keys hold the resolved
+        IPv4/IPv6 addresses (see retryabledns.DNSData). Malformed lines are
+        skipped so a single bad record never breaks the whole resolution.
+        """
+        ips: List[str] = []
+        seen: set[str] = set()
+
+        if not result or not result.strip():
+            return ips
+
+        for line in result.split("\n"):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+
+            for key in ("a", "aaaa"):
+                for ip in record.get(key, []) or []:
+                    if ip and ip not in seen:
+                        seen.add(ip)
+                        ips.append(ip)
+
+        return ips

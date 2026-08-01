@@ -129,7 +129,7 @@ class Scan(Base):
         nullable=True,
     )
     status = Column(SQLEnum(EventLevel), default=EventLevel.PENDING)
-    started_at = Column(DateTime, default=datetime.utcnow)
+    started_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     completed_at = Column(DateTime, nullable=True)
     error = Column(Text, nullable=True)
     details = Column(JSON, nullable=True)
@@ -361,6 +361,9 @@ class CustomType(Base):
     icon: Mapped[str] = mapped_column(String, nullable=True)
     color: Mapped[str] = mapped_column(String, nullable=True)
     status: Mapped[str] = mapped_column(String, server_default="draft", nullable=False)
+    category: Mapped[str] = mapped_column(
+        String, server_default="custom_types_category", nullable=False
+    )
     checksum: Mapped[str] = mapped_column(String, nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     created_at = mapped_column(DateTime(timezone=True), server_default=func.now())

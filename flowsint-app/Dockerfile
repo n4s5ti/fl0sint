@@ -10,8 +10,9 @@ RUN yarn install --network-timeout 100000
 
 COPY . .
 
-# Build argument for API URL (injected at build time)
-ARG VITE_API_URL
+# API URL baked at build time. Empty = same-origin relative URLs (/api/...),
+# served through the nginx reverse proxy below. Only override for an external API origin.
+ARG VITE_API_URL=""
 ENV VITE_API_URL=${VITE_API_URL}
 
 RUN test -d node_modules/motion-utils && \
@@ -19,7 +20,7 @@ RUN test -d node_modules/motion-utils && \
     test -d node_modules/@radix-ui/react-select && \
     yarn build
 
-FROM docker.io/library/nginx:1.27-alpine AS production
+FROM nginx:1.29-alpine AS production
 
 LABEL org.opencontainers.image.source="https://github.com/reconurge/flowsint"
 LABEL org.opencontainers.image.description="Flowsint Frontend"
