@@ -1,8 +1,9 @@
 """Persistence queries for durable execution records."""
+from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from sqlalchemy import func
+from sqlalchemy import func, or_, update
 
 from ..models import EvidenceEnvelopeRecord, FlowRun, StepRun
 from .base import BaseRepository
@@ -14,16 +15,49 @@ class ExecutionRepository(BaseRepository[FlowRun]):
     model = FlowRun
 
     def get_by_owner_and_idempotency_key(
-        self, owner_id: UUID | None, idempotency_key: str
+        self, owner_id: UUID, idempotency_key: str
     ) -> Optional[FlowRun]:
-        query = self._db.query(FlowRun).filter(
-            FlowRun.idempotency_key == idempotency_key
+        return (
+            self._db.query(FlowRun)
+            .filter(
+                FlowRun.owner_id == owner_id,
+                FlowRun.idempotency_key == idempotency_key,
+            )
+            .first()
         )
-        if owner_id is None:
-            query = query.filter(FlowRun.owner_id.is_(None))
-        else:
-            query = query.filter(FlowRun.owner_id == owner_id)
-        return query.first()
+
+    def claim_run(
+        self,
+        run_id: UUID,
+        *,
+        lease_owner: str,
+        now: datetime,
+        lease_expires_at: datetime,
+    ) -> bool:
+        """Atomically acquire an available lease for a non-final run."""
+        result = self._db.execute(
+            update(FlowRun)
+            .execution_options(synchronize_session=False)
+            .where(
+                FlowRun.id == run_id,
+                FlowRun.status.in_(("pending", "running")),
+                or_(
+                    FlowRun.lease_expires_at.is_(None),
+                    FlowRun.lease_expires_at <= now,
+                ),
+            )
+            .values(
+                status="running",
+                attempt=FlowRun.attempt + 1,
+                lease_owner=lease_owner,
+                lease_expires_at=lease_expires_at,
+                safe_error_code=None,
+                safe_error_diagnostic=None,
+                completed_at=None,
+                started_at=now,
+            )
+        )
+        return result.rowcount == 1
 
     def get_step(self, flow_run_id: UUID, step_key: str) -> Optional[StepRun]:
         return (

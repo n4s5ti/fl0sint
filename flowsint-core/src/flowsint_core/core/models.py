@@ -22,7 +22,7 @@ from sqlalchemy import (
 from sqlalchemy import (
     Enum as SQLEnum,
 )
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, validates
 from sqlalchemy.types import TypeDecorator
 
 from flowsint_core.core.enums import EventLevel
@@ -433,10 +433,14 @@ class FlowRun(Base):
         ForeignKey("sketches.id", onupdate="CASCADE", ondelete="SET NULL"),
         nullable=True,
     )
-    owner_id: Mapped[uuid.UUID | None] = mapped_column(
+    owner_id: Mapped[uuid.UUID] = mapped_column(
         Uuid,
-        ForeignKey("profiles.id", onupdate="CASCADE", ondelete="SET NULL"),
-        nullable=True,
+        ForeignKey("profiles.id", onupdate="CASCADE", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    lease_owner: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    lease_expires_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
     )
     idempotency_key: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[str] = mapped_column(String(16), nullable=False, default="pending")
@@ -554,14 +558,16 @@ class EvidenceEnvelopeRecord(Base):
     retryable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     mapped_outputs: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
     diagnostic: Mapped[dict | None] = mapped_column(JSON, nullable=True)
-    source: Mapped[str] = mapped_column(String(255), nullable=False)
+    source: Mapped[str] = mapped_column(String(256), nullable=False)
     request_url_pattern: Mapped[str | None] = mapped_column(Text, nullable=True)
     artifact_sha256: Mapped[str | None] = mapped_column(String(64), nullable=True)
     artifact_reference: Mapped[str | None] = mapped_column(Text, nullable=True)
-    observed_at: Mapped[datetime | None] = mapped_column(
+    event_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
-    source_rights: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    retrieved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    ingested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    source_rights: Mapped[str | None] = mapped_column(String(128), nullable=True)
     schema_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
     parser_version: Mapped[str | None] = mapped_column(String(64), nullable=True)
     confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
@@ -594,6 +600,18 @@ class EvidenceEnvelopeRecord(Base):
         foreign_keys=[supersedes_id],
         remote_side=[id],
     )
+
+    @validates("event_at", "retrieved_at", "ingested_at")
+    def normalize_evidence_timestamp(
+        self, key: str, value: datetime | None
+    ) -> datetime | None:
+        if value is None:
+            if key == "event_at":
+                return None
+            raise ValueError(f"{key} is required")
+        if value.tzinfo is None or value.utcoffset() is None:
+            raise ValueError(f"{key} must be timezone-aware")
+        return value.astimezone(timezone.utc)
 
     __table_args__ = (
         UniqueConstraint(

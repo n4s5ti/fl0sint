@@ -135,31 +135,50 @@ def run_template_enricher(
             session.commit()
 
         execution_service = create_execution_service(session)
-        flow_run, created = execution_service.create_or_reuse_run(
+        input_digest = canonical_input_hash(serialized_objects)
+        flow_run, _ = execution_service.create_or_reuse_run(
             owner_id=owner_uuid,
             idempotency_key=idempotency_key,
-            input_digest=canonical_input_hash(serialized_objects),
+            input_digest=input_digest,
             input_count=len(serialized_objects),
             sketch_id=sketch_uuid,
             run_id=scan_id,
         )
-
-        replayed_step = execution_service.get_step(flow_run, template_name)
-        if (
-            not created
-            and replayed_step is not None
-            and replayed_step.status in FINAL_RUN_STATUSES
-        ):
-            structured_result = execution_service.reconstruct_structured_result(
-                replayed_step
+        flow_run = execution_service.claim_run(flow_run, str(scan_id))
+        if flow_run is None:
+            session.expire_all()
+            flow_run, _ = execution_service.create_or_reuse_run(
+                owner_id=owner_uuid,
+                idempotency_key=idempotency_key,
+                input_digest=input_digest,
+                input_count=len(serialized_objects),
+                sketch_id=sketch_uuid,
+                run_id=scan_id,
             )
+            replayed_step = execution_service.get_step(flow_run, template_name)
+            if (
+                replayed_step is not None
+                and replayed_step.status in FINAL_RUN_STATUSES
+            ):
+                structured_result = execution_service.reconstruct_structured_result(
+                    replayed_step
+                )
+                scan.status = EventLevel.COMPLETED
+                scan.error = None
+                scan.details = structured_result.model_dump(mode="json")
+                session.commit()
+                return {"result": scan.details}
+
             scan.status = EventLevel.COMPLETED
             scan.error = None
-            scan.details = structured_result.model_dump(mode="json")
+            scan.details = {
+                "status": "in_progress",
+                "flow_run_id": str(flow_run.id),
+                "flow_run_reference": f"flow_run:{flow_run.id}",
+            }
             session.commit()
             return {"result": scan.details}
 
-        execution_service.begin_or_resume_run(flow_run)
         step_run = execution_service.begin_or_resume_step(
             flow_run, template_name, len(serialized_objects)
         )

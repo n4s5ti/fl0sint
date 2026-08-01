@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+from datetime import timezone
 from pathlib import Path
 from typing import Optional
 from unittest.mock import MagicMock
@@ -805,6 +806,9 @@ class TestTemplateEnricherStructuredExecution:
         assert failure_evidence.artifact_reference == (
             f"body:sha256:{failure_evidence.artifact_sha256}"
         )
+        assert failure_evidence.event_at is None
+        assert failure_evidence.retrieved_at.tzinfo is timezone.utc
+        assert failure_evidence.ingested_at.tzinfo is timezone.utc
         diagnostic_json = result.outcomes[0].diagnostic.model_dump_json()
         assert "8.8.8.8" not in diagnostic_json
         assert "sensitive.example" not in diagnostic_json
@@ -867,7 +871,7 @@ class TestTemplateEnricherStructuredExecution:
 
         outcome = result.outcomes[0]
         assert outcome.status is OutcomeStatus.HOLD
-        assert len(outcome.outputs) == 1
+        assert outcome.outputs == ()
         assert outcome.diagnostic.code == "source_rights_unspecified"
 
     @pytest.mark.asyncio

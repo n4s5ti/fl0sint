@@ -46,6 +46,7 @@ Example template:
 import asyncio
 import hashlib
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 from typing import Any, AsyncIterator, Dict, List, Optional
 
@@ -504,6 +505,7 @@ class TemplateEnricher(Enricher):
     ) -> tuple[EvidenceEnvelope, ...]:
         evidence = self.template.evidence
         artifact_sha256 = self._last_response_artifact_sha256
+        retrieved_at = datetime.now(timezone.utc)
         return (
             EvidenceEnvelope(
                 input_ref=input_ref,
@@ -519,6 +521,8 @@ class TemplateEnricher(Enricher):
                 parser_version=evidence.parser_version,
                 confidence=evidence.confidence,
                 verification_state=evidence.verification_state,
+                retrieved_at=retrieved_at,
+                ingested_at=datetime.now(timezone.utc),
             ),
         )
 

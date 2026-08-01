@@ -1,7 +1,8 @@
 """SQLite contracts for durable structured execution persistence."""
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import pytest
+from sqlalchemy.orm import sessionmaker
 
 from flowsint_core.core.execution import (
     EvidenceEnvelope,
@@ -34,7 +35,9 @@ def _evidence(input_ref: str, *, reference: str = "artifact://safe-reference"):
         parser_version="v1",
         confidence=0.9,
         verification_state="verified",
-        observed_at=datetime(2026, 8, 1, tzinfo=timezone.utc),
+        event_at=datetime(2026, 7, 31, tzinfo=timezone.utc),
+        retrieved_at=datetime(2026, 8, 1, tzinfo=timezone.utc),
+        ingested_at=datetime(2026, 8, 1, 0, 0, 1, tzinfo=timezone.utc),
     )
 
 
@@ -50,17 +53,20 @@ def _started_run(db_session, values):
         input_count=len(values),
     )
     assert created
-    service.begin_or_resume_run(run)
+    run = service.claim_run(run, "started-run")
+    assert run is not None
     step = service.begin_or_resume_step(run, "template-lookup", len(values))
     return service, run, step, owner
 
 
-def test_create_or_reuse_and_resume_preserves_checkpoints(db_session):
+def test_expired_lease_resume_preserves_checkpoints(db_session):
     values = [{"value": "one"}]
     service, run, step, owner = _started_run(db_session, values)
 
     service.update_run_checkpoint(run, {"next_step": "template-lookup"})
     service.update_step_checkpoint(step, {"next_input_index": 1})
+    run.lease_expires_at = datetime.now(timezone.utc) - timedelta(seconds=1)
+    db_session.commit()
     same_run, created = service.create_or_reuse_run(
         owner_id=owner.id,
         idempotency_key="template-task-key",
@@ -70,8 +76,9 @@ def test_create_or_reuse_and_resume_preserves_checkpoints(db_session):
 
     assert not created
     assert same_run.id == run.id
-    service.begin_or_resume_run(same_run)
-    resumed_step = service.begin_or_resume_step(same_run, "template-lookup", 1)
+    claimed_run = service.claim_run(same_run, "recovery-run")
+    assert claimed_run is not None
+    resumed_step = service.begin_or_resume_step(claimed_run, "template-lookup", 1)
     db_session.expire_all()
 
     assert db_session.get(type(run), run.id).attempt == 2
@@ -80,6 +87,46 @@ def test_create_or_reuse_and_resume_preserves_checkpoints(db_session):
     }
     assert resumed_step.attempt == 2
     assert resumed_step.checkpoint == {"next_input_index": 1}
+
+
+def test_active_lease_blocks_second_service_until_expiry(db_session):
+    values = [{"value": "one"}]
+    owner = Profile(email="leases@example.test", hashed_password="hash")
+    db_session.add(owner)
+    db_session.commit()
+    first_service = create_execution_service(db_session)
+    run, created = first_service.create_or_reuse_run(
+        owner_id=owner.id,
+        idempotency_key="lease-key",
+        input_digest=canonical_input_hash(values),
+        input_count=len(values),
+    )
+    assert created
+    assert first_service.claim_run(run, "worker-one") is not None
+
+    second_session = sessionmaker(bind=db_session.get_bind())()
+    try:
+        second_service = create_execution_service(second_session)
+        duplicate, created = second_service.create_or_reuse_run(
+            owner_id=owner.id,
+            idempotency_key="lease-key",
+            input_digest=canonical_input_hash(values),
+            input_count=len(values),
+        )
+
+        assert not created
+        assert second_service.claim_run(duplicate, "worker-two") is None
+
+        db_session.refresh(run)
+        run.lease_expires_at = datetime.now(timezone.utc) - timedelta(seconds=1)
+        db_session.commit()
+
+        recovered = second_service.claim_run(duplicate, "worker-two")
+        assert recovered is not None
+        assert recovered.attempt == 2
+        assert recovered.lease_owner == "worker-two"
+    finally:
+        second_session.close()
 
 
 def test_persists_sibling_outcomes_and_one_to_many_output_grouping(db_session):
@@ -120,9 +167,22 @@ def test_persists_sibling_outcomes_and_one_to_many_output_grouping(db_session):
     assert step.failure_count == 1
     assert step.output_count == 2
     assert run.status == "partial"
+    assert run.lease_owner is None
+    assert run.lease_expires_at is None
 
     reloaded = service.reconstruct_structured_result(step)
     assert reloaded.model_dump(mode="json") == result.model_dump(mode="json")
+
+
+def test_failure_releases_run_lease(db_session):
+    values = [{"value": "one"}]
+    service, run, _, _ = _started_run(db_session, values)
+
+    service.fail_run(run, _diagnostic())
+
+    assert run.status == "failed"
+    assert run.lease_owner is None
+    assert run.lease_expires_at is None
 
 
 def test_hold_is_aggregated_and_duplicate_replay_does_not_duplicate_evidence(db_session):
@@ -156,6 +216,11 @@ def test_hold_is_aggregated_and_duplicate_replay_does_not_duplicate_evidence(db_
 
     assert run.status == "hold"
     assert step.hold_count == 1
+    assert result.outcomes[0].outputs == ()
+    assert (
+        db_session.query(EvidenceEnvelopeRecord).one().mapped_outputs == []
+    )
+    assert service.reconstruct_structured_result(step).outcomes[0].outputs == ()
     assert db_session.query(EvidenceEnvelopeRecord).count() == 1
     assert service.aggregate_status(result.outcomes) == "hold"
     assert service.aggregate_status(

@@ -2,12 +2,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from ..execution import (
@@ -23,6 +24,8 @@ from .base import BaseService
 
 
 FINAL_RUN_STATUSES = frozenset({"completed", "partial", "failed", "hold"})
+DEFAULT_RUN_LEASE_DURATION = timedelta(minutes=15)
+
 
 
 def _utcnow() -> datetime:
@@ -60,7 +63,7 @@ class ExecutionService(BaseService):
     def create_or_reuse_run(
         self,
         *,
-        owner_id: UUID | None,
+        owner_id: UUID,
         idempotency_key: str,
         input_digest: str,
         input_count: int,
@@ -87,19 +90,41 @@ class ExecutionService(BaseService):
         )
         if run_id is not None:
             run.id = run_id
-        self._repo.add(run)
+
+        try:
+            with self._db.begin_nested():
+                self._repo.add(run)
+                self._db.flush()
+        except IntegrityError:
+            existing = self._repo.get_by_owner_and_idempotency_key(
+                owner_id, idempotency_key
+            )
+            if existing is None:
+                raise
+            if existing.input_digest != input_digest or existing.input_count != input_count:
+                raise ValueError("Idempotency key cannot be reused for different inputs")
+            return existing, False
+
         self._commit()
         return run, True
 
-    def begin_or_resume_run(self, run: FlowRun) -> FlowRun:
-        """Transition a non-final run to running and advance its attempt."""
-        run.attempt += 1
-        run.status = "running"
-        run.safe_error_code = None
-        run.safe_error_diagnostic = None
-        run.completed_at = None
-        run.started_at = _utcnow()
+    def claim_run(
+        self,
+        run: FlowRun,
+        lease_owner: str,
+        lease_duration: timedelta = DEFAULT_RUN_LEASE_DURATION,
+    ) -> FlowRun | None:
+        """Atomically claim a pending or expired run lease."""
+        now = _utcnow()
+        if not self._repo.claim_run(
+            run.id,
+            lease_owner=lease_owner,
+            now=now,
+            lease_expires_at=now + lease_duration,
+        ):
+            return None
         self._commit()
+        self._db.refresh(run)
         return run
 
     def get_step(self, run: FlowRun, step_key: str) -> StepRun | None:
@@ -213,6 +238,8 @@ class ExecutionService(BaseService):
         }
 
         run.status = aggregate_status
+        run.lease_owner = None
+        run.lease_expires_at = None
         run.completed_at = _utcnow()
         run.checkpoint = {
             **run.checkpoint,
@@ -226,6 +253,8 @@ class ExecutionService(BaseService):
     def fail_run(self, run: FlowRun, diagnostic: RedactedDiagnostic) -> FlowRun:
         """Store only an approved redacted diagnostic for a top-level failure."""
         run.status = "failed"
+        run.lease_owner = None
+        run.lease_expires_at = None
         run.safe_error_code = diagnostic.code
         run.safe_error_diagnostic = diagnostic.model_dump(mode="json")
         run.completed_at = _utcnow()
@@ -259,7 +288,9 @@ class ExecutionService(BaseService):
             request_url_pattern=envelope.request_url_pattern,
             artifact_sha256=envelope.artifact_sha256,
             artifact_reference=envelope.artifact_reference,
-            observed_at=envelope.observed_at,
+            event_at=envelope.event_at,
+            retrieved_at=envelope.retrieved_at,
+            ingested_at=envelope.ingested_at,
             source_rights=envelope.source_rights,
             schema_version=envelope.schema_version,
             parser_version=envelope.parser_version,
@@ -345,7 +376,9 @@ class ExecutionService(BaseService):
             artifact_reference=(
                 envelope.artifact_reference if envelope is not None else None
             ),
-            observed_at=envelope.observed_at if envelope is not None else None,
+            event_at=envelope.event_at if envelope is not None else None,
+            retrieved_at=envelope.retrieved_at if envelope is not None else _utcnow(),
+            ingested_at=envelope.ingested_at if envelope is not None else _utcnow(),
             source_rights=envelope.source_rights if envelope is not None else None,
             schema_version=envelope.schema_version if envelope is not None else None,
             parser_version=envelope.parser_version if envelope is not None else None,
@@ -357,9 +390,11 @@ class ExecutionService(BaseService):
 
     @staticmethod
     def _envelope_from_record(record: EvidenceEnvelopeRecord) -> EvidenceEnvelope:
-        observed_at = record.observed_at or record.created_at
-        if observed_at.tzinfo is None or observed_at.utcoffset() is None:
-            observed_at = observed_at.replace(tzinfo=timezone.utc)
+        def utc_timestamp(value: datetime) -> datetime:
+            if value.tzinfo is None or value.utcoffset() is None:
+                return value.replace(tzinfo=timezone.utc)
+            return value.astimezone(timezone.utc)
+
         return EvidenceEnvelope(
             input_ref=record.input_ref,
             request_url_pattern=record.request_url_pattern,
@@ -370,7 +405,11 @@ class ExecutionService(BaseService):
             parser_version=record.parser_version or "unknown",
             confidence=record.confidence if record.confidence is not None else 0.0,
             verification_state=record.verification_state or "unverified",
-            observed_at=observed_at,
+            event_at=(
+                utc_timestamp(record.event_at) if record.event_at is not None else None
+            ),
+            retrieved_at=utc_timestamp(record.retrieved_at),
+            ingested_at=utc_timestamp(record.ingested_at),
         )
 
 

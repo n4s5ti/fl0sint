@@ -1,7 +1,7 @@
 """add durable execution records
 
 Revision ID: c3f4e5d6a7b8
-Revises: a1f2b3c4d5e6
+Revises: f4d42260273d
 Create Date: 2026-08-01 00:00:00.000000
 
 """
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision: str = "c3f4e5d6a7b8"
-down_revision: Union[str, None] = "a1f2b3c4d5e6"
+down_revision: Union[str, None] = "f4d42260273d"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -24,7 +24,9 @@ def upgrade() -> None:
         sa.Column("id", sa.Uuid(), nullable=False),
         sa.Column("flow_id", sa.Uuid(), nullable=True),
         sa.Column("sketch_id", sa.Uuid(), nullable=True),
-        sa.Column("owner_id", sa.Uuid(), nullable=True),
+        sa.Column("owner_id", sa.Uuid(), nullable=False),
+        sa.Column("lease_owner", sa.String(length=255), nullable=True),
+        sa.Column("lease_expires_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column("idempotency_key", sa.String(length=255), nullable=False),
         sa.Column("status", sa.String(length=16), nullable=False),
         sa.Column("attempt", sa.Integer(), nullable=False),
@@ -54,7 +56,7 @@ def upgrade() -> None:
             ["sketch_id"], ["sketches.id"], onupdate="CASCADE", ondelete="SET NULL"
         ),
         sa.ForeignKeyConstraint(
-            ["owner_id"], ["profiles.id"], onupdate="CASCADE", ondelete="SET NULL"
+            ["owner_id"], ["profiles.id"], onupdate="CASCADE", ondelete="RESTRICT"
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
@@ -117,12 +119,14 @@ def upgrade() -> None:
         sa.Column("retryable", sa.Boolean(), nullable=False),
         sa.Column("mapped_outputs", sa.JSON(), nullable=False),
         sa.Column("diagnostic", sa.JSON(), nullable=True),
-        sa.Column("source", sa.String(length=255), nullable=False),
+        sa.Column("source", sa.String(length=256), nullable=False),
         sa.Column("request_url_pattern", sa.Text(), nullable=True),
         sa.Column("artifact_sha256", sa.String(length=64), nullable=True),
         sa.Column("artifact_reference", sa.Text(), nullable=True),
-        sa.Column("observed_at", sa.DateTime(timezone=True), nullable=True),
-        sa.Column("source_rights", sa.String(length=64), nullable=True),
+        sa.Column("event_at", sa.DateTime(timezone=True), nullable=True),
+        sa.Column("retrieved_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("ingested_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("source_rights", sa.String(length=128), nullable=True),
         sa.Column("schema_version", sa.String(length=64), nullable=True),
         sa.Column("parser_version", sa.String(length=64), nullable=True),
         sa.Column("confidence", sa.Float(), nullable=True),
@@ -176,9 +180,68 @@ def upgrade() -> None:
         "evidence_envelope_records",
         ["supersedes_id"],
     )
+    dialect = op.get_bind().dialect.name
+    if dialect == "sqlite":
+        op.execute(
+            """
+            CREATE TRIGGER trg_evidence_envelopes_reject_update
+            BEFORE UPDATE ON evidence_envelope_records
+            BEGIN
+                SELECT RAISE(ABORT, 'evidence_envelope_records are append-only');
+            END;
+            """
+        )
+        op.execute(
+            """
+            CREATE TRIGGER trg_evidence_envelopes_reject_delete
+            BEFORE DELETE ON evidence_envelope_records
+            BEGIN
+                SELECT RAISE(ABORT, 'evidence_envelope_records are append-only');
+            END;
+            """
+        )
+    elif dialect == "postgresql":
+        op.execute(
+            """
+            CREATE FUNCTION reject_evidence_envelope_mutation()
+            RETURNS trigger AS $$
+            BEGIN
+                RAISE EXCEPTION 'evidence_envelope_records are append-only';
+            END;
+            $$ LANGUAGE plpgsql;
+            """
+        )
+        op.execute(
+            """
+            CREATE TRIGGER trg_evidence_envelopes_reject_update
+            BEFORE UPDATE ON evidence_envelope_records
+            FOR EACH ROW EXECUTE FUNCTION reject_evidence_envelope_mutation();
+            """
+        )
+        op.execute(
+            """
+            CREATE TRIGGER trg_evidence_envelopes_reject_delete
+            BEFORE DELETE ON evidence_envelope_records
+            FOR EACH ROW EXECUTE FUNCTION reject_evidence_envelope_mutation();
+            """
+        )
 
 
 def downgrade() -> None:
+    dialect = op.get_bind().dialect.name
+    if dialect == "sqlite":
+        op.execute("DROP TRIGGER IF EXISTS trg_evidence_envelopes_reject_delete")
+        op.execute("DROP TRIGGER IF EXISTS trg_evidence_envelopes_reject_update")
+    elif dialect == "postgresql":
+        op.execute(
+            "DROP TRIGGER IF EXISTS trg_evidence_envelopes_reject_delete "
+            "ON evidence_envelope_records"
+        )
+        op.execute(
+            "DROP TRIGGER IF EXISTS trg_evidence_envelopes_reject_update "
+            "ON evidence_envelope_records"
+        )
+        op.execute("DROP FUNCTION IF EXISTS reject_evidence_envelope_mutation()")
     op.drop_index("idx_evidence_envelopes_supersedes_id", "evidence_envelope_records")
     op.drop_index("idx_evidence_envelopes_step_run_id", "evidence_envelope_records")
     op.drop_index("idx_evidence_envelopes_flow_run_id", "evidence_envelope_records")

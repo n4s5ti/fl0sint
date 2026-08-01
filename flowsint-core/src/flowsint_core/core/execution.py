@@ -45,22 +45,17 @@ class EvidenceEnvelope(BaseModel):
     parser_version: str = Field(min_length=1, max_length=64)
     confidence: float = Field(ge=0.0, le=1.0)
     verification_state: str = Field(min_length=1, max_length=64)
-    observed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    event_at: datetime | None = None
+    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-    @field_validator("artifact_sha256")
+    @field_validator("event_at", "retrieved_at", "ingested_at")
     @classmethod
-    def validate_artifact_sha256(cls, value: str | None) -> str | None:
+    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:
         if value is None:
             return None
-        if len(value) != 64 or any(character not in "0123456789abcdef" for character in value):
-            raise ValueError("artifact_sha256 must be a lowercase SHA-256 hex digest")
-        return value
-
-    @field_validator("observed_at")
-    @classmethod
-    def normalize_observed_at(cls, value: datetime) -> datetime:
         if value.tzinfo is None or value.utcoffset() is None:
-            raise ValueError("observed_at must be timezone-aware")
+            raise ValueError("evidence timestamps must be timezone-aware")
         return value.astimezone(timezone.utc)
 
 
@@ -79,6 +74,8 @@ class InputOutcome(BaseModel):
     def require_diagnostic_for_non_success(self) -> InputOutcome:
         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:
             raise ValueError("non-success outcomes require a diagnostic")
+        if self.status is not OutcomeStatus.SUCCESS and self.outputs:
+            raise ValueError("non-success outcomes cannot include outputs")
         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:
             raise ValueError("success outcomes cannot include a diagnostic")
         return self

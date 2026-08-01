@@ -11,6 +11,7 @@ from pydantic import ValidationError
 from flowsint_core.core.enricher_base import Enricher
 from flowsint_core.core.execution import (
     EvidenceEnvelope,
+    InputOutcome,
     OutcomeStatus,
     RedactedDiagnostic,
     canonical_input_hash,
@@ -104,6 +105,20 @@ async def test_structured_execution_distinguishes_empty_success_from_failure(
     assert result.outcomes[1].outputs == ()
 
 
+@pytest.mark.parametrize("status", [OutcomeStatus.FAILURE, OutcomeStatus.HOLD])
+def test_non_success_outcomes_reject_derived_outputs(status):
+    with pytest.raises(ValidationError, match="non-success outcomes cannot include outputs"):
+        InputOutcome(
+            input_ref=canonical_input_hash({"domain": "hold.example"}),
+            status=status,
+            outputs=({"domain": "hold.example"},),
+            diagnostic=RedactedDiagnostic(
+                code="retention_hold",
+                safe_message="Outputs cannot be retained.",
+                retryable=False,
+            ),
+        )
+
 def test_canonical_input_hash_is_stable_for_equivalent_input_shapes():
     first: dict[str, Any] = {"domain": "stable.example", "metadata": {"a": 1, "b": 2}}
     second = {"metadata": {"b": 2, "a": 1}, "domain": "stable.example"}
@@ -123,10 +138,14 @@ def test_evidence_envelope_enforces_retainable_metadata():
         parser_version="1",
         confidence=0.5,
         verification_state="verified",
-        observed_at=datetime(2026, 1, 1, tzinfo=timezone(timedelta(hours=2))),
+        event_at=datetime(2026, 1, 1, tzinfo=timezone(timedelta(hours=2))),
+        retrieved_at=datetime(2026, 1, 2, tzinfo=timezone(timedelta(hours=2))),
+        ingested_at=datetime(2026, 1, 3, tzinfo=timezone(timedelta(hours=2))),
     )
 
-    assert envelope.observed_at.tzinfo is timezone.utc
+    assert envelope.event_at.tzinfo is timezone.utc
+    assert envelope.retrieved_at.tzinfo is timezone.utc
+    assert envelope.ingested_at.tzinfo is timezone.utc
     assert set(
         RedactedDiagnostic(
             code="timeout", safe_message="The operation timed out.", retryable=True
@@ -142,5 +161,20 @@ def test_evidence_envelope_enforces_retainable_metadata():
             parser_version="1",
             confidence=1.1,
             verification_state="verified",
-            observed_at=datetime(2026, 1, 1),
         )
+
+    evidence_kwargs = {
+        "input_ref": input_ref,
+        "request_url_pattern": "https://api.example/{{domain}}",
+        "source_rights": "test-only",
+        "schema_version": "1",
+        "parser_version": "1",
+        "confidence": 0.5,
+        "verification_state": "verified",
+    }
+    for timestamp_field in ("event_at", "retrieved_at", "ingested_at"):
+        with pytest.raises(ValidationError, match="timezone-aware"):
+            EvidenceEnvelope(
+                **evidence_kwargs,
+                **{timestamp_field: datetime(2026, 1, 1)},
+            )

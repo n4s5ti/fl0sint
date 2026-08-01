@@ -551,6 +551,9 @@ class Enricher(ABC):
 
         if status is OutcomeStatus.SUCCESS:
             status, diagnostic = self._classify_structured_success(outputs, evidence)
+        if status is not OutcomeStatus.SUCCESS:
+            outputs = ()
+
 
         return InputOutcome(
             input_ref=input_ref,
