@@ -108,6 +108,8 @@ class ExecutionService(BaseService):
                 existing.input_digest != input_digest
                 or existing.input_count != input_count
                 or existing.operation_digest != operation_digest
+                or existing.flow_id != flow_id
+                or existing.sketch_id != sketch_id
             ):
                 raise ValueError(
                     "Idempotency key cannot be reused for a different operation"
@@ -140,6 +142,8 @@ class ExecutionService(BaseService):
                 existing.input_digest != input_digest
                 or existing.input_count != input_count
                 or existing.operation_digest != operation_digest
+                or existing.flow_id != flow_id
+                or existing.sketch_id != sketch_id
             ):
                 raise ValueError(
                     "Idempotency key cannot be reused for a different operation"

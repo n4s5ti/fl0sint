@@ -1,5 +1,6 @@
 """SQLite contracts for durable structured execution persistence."""
 from datetime import datetime, timedelta, timezone
+from uuid import uuid4
 
 import pytest
 from sqlalchemy import create_engine, event
@@ -16,8 +17,10 @@ from flowsint_core.core.execution import (
 from flowsint_core.core.models import (
     Base,
     EvidenceEnvelopeRecord,
+    Flow,
     FlowRun,
     Profile,
+    Sketch,
     StepRun,
 )
 from flowsint_core.core.services.execution_service import (
@@ -142,6 +145,53 @@ def test_active_lease_blocks_second_service_until_expiry(db_session):
         assert recovered.lease_owner == "worker-two"
     finally:
         second_session.close()
+
+
+def test_idempotency_replay_rejects_different_routing_context(db_session):
+    owner = Profile(email="routing@example.test", hashed_password="hash")
+    first_flow = Flow(name="first flow")
+    second_flow = Flow(name="second flow")
+    first_sketch = Sketch(title="first", description="first", owner_id=owner.id)
+    second_sketch = Sketch(title="second", description="second", owner_id=owner.id)
+    db_session.add_all(
+        (owner, first_flow, second_flow, first_sketch, second_sketch)
+    )
+    db_session.commit()
+    service = create_execution_service(db_session)
+    input_digest = canonical_input_hash([{"value": "one"}])
+    run, created = service.create_or_reuse_run(
+        owner_id=owner.id,
+        idempotency_key="routing-key",
+        input_digest=input_digest,
+        input_count=1,
+        operation_digest="a" * 64,
+        flow_id=first_flow.id,
+        sketch_id=first_sketch.id,
+    )
+
+    assert created
+    with pytest.raises(ValueError, match="different operation"):
+        service.create_or_reuse_run(
+            owner_id=owner.id,
+            idempotency_key="routing-key",
+            input_digest=input_digest,
+            input_count=1,
+            operation_digest="a" * 64,
+            flow_id=second_flow.id,
+            sketch_id=first_sketch.id,
+        )
+    with pytest.raises(ValueError, match="different operation"):
+        service.create_or_reuse_run(
+            owner_id=owner.id,
+            idempotency_key="routing-key",
+            input_digest=input_digest,
+            input_count=1,
+            operation_digest="a" * 64,
+            flow_id=first_flow.id,
+            sketch_id=second_sketch.id,
+        )
+
+    assert db_session.query(FlowRun).one().id == run.id
 
 
 def test_persists_sibling_outcomes_and_one_to_many_output_grouping(db_session):

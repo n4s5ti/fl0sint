@@ -26,6 +26,7 @@ from flowsint_core.core.models import (
     EvidenceEnvelopeRecord,
     FlowRun,
     Profile,
+    Sketch,
     Scan,
     StepRun,
 )
@@ -119,7 +120,15 @@ def patch_connector_task(monkeypatch, db_session, template):
     )
 
 
-def run_task(owner_id, template, values, task_id, idempotency_key, template_id=None):
+def run_task(
+    owner_id,
+    template,
+    values,
+    task_id,
+    idempotency_key,
+    template_id=None,
+    sketch_id=None,
+):
     template_digest = connector_template_digest(template)
     template_id = template_id or uuid5(
         NAMESPACE_URL, f"flowsint:connector-template:{template_digest}"
@@ -129,7 +138,7 @@ def run_task(owner_id, template, values, task_id, idempotency_key, template_id=N
             str(template_id),
             template_digest,
             values,
-            None,
+            str(sketch_id) if sketch_id else None,
             owner_id,
         ),
         kwargs={"idempotency_key": idempotency_key},
@@ -170,6 +179,52 @@ def test_connector_task_reuses_durable_result_and_redacts_scan(
     assert "private input" not in scan_text
     assert "mapped output" not in scan_text
     assert "https://" not in scan_text
+
+
+def test_connector_task_rejects_cross_sketch_idempotency_replay(
+    db_session, monkeypatch
+):
+    owner = Profile(email="connector-routing@example.test", hashed_password="hash")
+    first_sketch = Sketch(title="first", description="first", owner_id=owner.id)
+    second_sketch = Sketch(title="second", description="second", owner_id=owner.id)
+    db_session.add_all((owner, first_sketch, second_sketch))
+    db_session.commit()
+    template = connector_template()
+    values = [{"address": "private input"}]
+    StructuredConnectorEnricher.instances = 0
+    StructuredConnectorEnricher.executions = 0
+    patch_connector_task(monkeypatch, db_session, template)
+
+    first_task_id = uuid4()
+    first = run_task(
+        str(owner.id),
+        template,
+        values,
+        first_task_id,
+        "connector-routing-key",
+        sketch_id=first_sketch.id,
+    )
+    replay = run_task(
+        str(owner.id),
+        template,
+        values,
+        uuid4(),
+        "connector-routing-key",
+        sketch_id=second_sketch.id,
+    )
+
+    assert first.successful()
+    assert replay.failed()
+    with pytest.raises(RuntimeError, match="Connector execution could not be completed"):
+        replay.get()
+    db_session.expire_all()
+    flow_run = db_session.query(FlowRun).one()
+    scan = db_session.query(Scan).one()
+    assert flow_run.sketch_id == first_sketch.id
+    assert scan.id == first_task_id
+    assert scan.sketch_id == first_sketch.id
+    assert StructuredConnectorEnricher.instances == 1
+    assert StructuredConnectorEnricher.executions == 1
 
 
 def test_changed_template_replay_preserves_completed_canonical_scan(
@@ -243,7 +298,7 @@ def test_connector_task_attaches_then_recovers_expired_lease(db_session, monkeyp
         input_digest=canonical_input_hash(values),
         input_count=len(values),
         operation_digest=hashlib.sha256(
-            f"{template_id}:{template_digest}".encode("utf-8")
+            f"{template_id}:{template_digest}:".encode("utf-8")
         ).hexdigest(),
     )
     assert created

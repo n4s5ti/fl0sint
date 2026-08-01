@@ -67,6 +67,7 @@ def run_enricher(
     serialized_objects: List[dict],
     sketch_id: str | None,
     owner_id: Optional[str] = None,
+    params: Dict[str, Any] | None = None,
 ):
     session = SessionLocal()
 
@@ -94,11 +95,17 @@ def run_enricher(
         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):
             raise ValueError(f"Enricher '{enricher_name}' not found in registry")
 
+        run_params = params or {}
+        run_params = ENRICHER_REGISTRY.filter_params(
+            enricher_name, run_params
+        )
+
         enricher = ENRICHER_REGISTRY.get_enricher(
             name=enricher_name,
             sketch_id=sketch_id,
             scan_id=scan_id,
             vault=vault,
+            params=run_params,
         )
 
         # Deserialize objects back into Pydantic models
@@ -222,7 +229,7 @@ def run_connector_template(
         sketch_uuid = uuid.UUID(sketch_id) if sketch_id else None
         input_digest = canonical_input_hash(serialized_objects)
         operation_digest = hashlib.sha256(
-            f"{template_uuid}:{template_digest}".encode("utf-8")
+            f"{template_uuid}:{template_digest}:{sketch_uuid or ''}".encode("utf-8")
         ).hexdigest()
         step_key = f"connector-template:{template_uuid}:{template_digest}"
         execution_service = create_execution_service(session)
