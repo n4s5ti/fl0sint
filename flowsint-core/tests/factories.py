@@ -127,7 +127,7 @@ class ScanFactory(SQLAlchemyModelFactory):
     sketch = factory.SubFactory(SketchFactory)
     sketch_id = factory.LazyAttribute(lambda o: o.sketch.id)
     status = EventLevel.PENDING
-    started_at = factory.LazyFunction(datetime.utcnow)
+    started_at = factory.LazyFunction(lambda: datetime.now(timezone.utc))
 
 
 class LogFactory(SQLAlchemyModelFactory):
