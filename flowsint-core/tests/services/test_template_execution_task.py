@@ -402,3 +402,114 @@ def test_template_task_fences_stale_attempt_after_same_task_id_recovery(
     assert canonical_result["outcomes"][0]["outputs"] == [{"worker": "attempt-2"}]
     db_session.close()
     engine.dispose()
+
+
+def test_final_replay_repairs_pending_canonical_scan(db_session, monkeypatch):
+    owner = Profile(email="replay-repair@example.test", hashed_password="hash")
+    db_session.add(owner)
+    db_session.commit()
+    owner_id = str(owner.id)
+    task_session = sessionmaker(bind=db_session.get_bind())
+    monkeypatch.setattr(task_module, "SessionLocal", task_session)
+    monkeypatch.setattr(task_module, "Template", lambda **content: SimpleNamespace())
+    monkeypatch.setattr(task_module, "TemplateEnricher", _StructuredTemplateEnricher)
+    monkeypatch.setattr(
+        task_module,
+        "create_vault_service",
+        lambda session: SimpleNamespace(for_user=lambda owner_id: None),
+    )
+    monkeypatch.setattr(
+        task_module,
+        "create_enricher_template_service",
+        lambda session: SimpleNamespace(
+            find_by_name=lambda template_name, owner_id: SimpleNamespace(content={})
+        ),
+    )
+    _StructuredTemplateEnricher.instances = 0
+    _StructuredTemplateEnricher.executions = 0
+    values = [{"address": "203.0.113.10"}]
+    canonical_scan_id = uuid4()
+    replay_scan_id = uuid4()
+
+    first = task_module.run_template_enricher.apply(
+        args=("safe-template", values, None, owner_id),
+        kwargs={"idempotency_key": "repair-final-scan"},
+        task_id=str(canonical_scan_id),
+    )
+    canonical_result = first.get()["result"]
+    db_session.expire_all()
+    canonical_scan = db_session.get(Scan, canonical_scan_id)
+    canonical_scan.status = EventLevel.PENDING
+    canonical_scan.error = None
+    canonical_scan.details = None
+    db_session.commit()
+
+    replay = task_module.run_template_enricher.apply(
+        args=("safe-template", values, None, owner_id),
+        kwargs={"idempotency_key": "repair-final-scan"},
+        task_id=str(replay_scan_id),
+    )
+    db_session.expire_all()
+
+    assert first.successful()
+    assert replay.successful()
+    assert replay.get()["result"] == canonical_result
+    repaired_scan = db_session.get(Scan, canonical_scan_id)
+    assert repaired_scan.status is EventLevel.COMPLETED
+    assert repaired_scan.error is None
+    assert repaired_scan.details == canonical_result
+    assert db_session.get(Scan, replay_scan_id) is None
+    assert _StructuredTemplateEnricher.executions == 1
+
+
+def test_failed_replay_repairs_missing_canonical_scan(db_session, monkeypatch):
+    owner = Profile(email="failed-repair@example.test", hashed_password="hash")
+    db_session.add(owner)
+    db_session.commit()
+    owner_id = str(owner.id)
+    values = [{"address": "203.0.113.10"}]
+    canonical_scan_id = uuid4()
+    replay_scan_id = uuid4()
+    execution_service = create_execution_service(db_session)
+    flow_run, created = execution_service.create_or_reuse_run(
+        owner_id=owner.id,
+        idempotency_key="repair-failed-scan",
+        input_digest=canonical_input_hash(values),
+        input_count=len(values),
+        run_id=canonical_scan_id,
+    )
+    assert created
+    lease = execution_service.claim_run(flow_run, str(canonical_scan_id))
+    assert lease is not None
+    diagnostic = RedactedDiagnostic(
+        code="template_execution_failed",
+        safe_message="Template execution could not be completed",
+        retryable=False,
+    )
+    execution_service.fail_run(flow_run, lease, diagnostic)
+    assert db_session.get(Scan, canonical_scan_id) is None
+
+    task_session = sessionmaker(bind=db_session.get_bind())
+    monkeypatch.setattr(task_module, "SessionLocal", task_session)
+    monkeypatch.setattr(task_module, "Template", lambda **content: SimpleNamespace())
+    monkeypatch.setattr(task_module, "TemplateEnricher", _StructuredTemplateEnricher)
+
+    replay = task_module.run_template_enricher.apply(
+        args=("safe-template", values, None, owner_id),
+        kwargs={"idempotency_key": "repair-failed-scan"},
+        task_id=str(replay_scan_id),
+    )
+    db_session.expire_all()
+
+    assert replay.successful()
+    assert replay.get()["result"] == {
+        "status": "failed",
+        "flow_run_id": str(flow_run.id),
+        "flow_run_reference": f"flow_run:{flow_run.id}",
+        "error": diagnostic.safe_message,
+    }
+    repaired_scan = db_session.get(Scan, canonical_scan_id)
+    assert repaired_scan.status is EventLevel.FAILED
+    assert repaired_scan.error == diagnostic.safe_message
+    assert repaired_scan.details == replay.get()["result"]
+    assert db_session.get(Scan, replay_scan_id) is None

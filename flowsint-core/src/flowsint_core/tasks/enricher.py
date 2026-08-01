@@ -129,6 +129,17 @@ def run_template_enricher(
         execution_service = create_execution_service(session)
         input_digest = canonical_input_hash(serialized_objects)
 
+        def canonical_scan(current_run):
+            current_scan = session.get(Scan, current_run.id)
+            if current_scan is None:
+                current_scan = Scan(
+                    id=current_run.id,
+                    status=EventLevel.PENDING,
+                    sketch_id=sketch_uuid,
+                )
+                session.add(current_scan)
+            return current_scan
+
         def replay_or_attach():
             session.expire_all()
             current_run, _ = execution_service.create_or_reuse_run(
@@ -140,14 +151,33 @@ def run_template_enricher(
                 run_id=scan_id,
             )
             replayed_step = execution_service.get_step(current_run, template_name)
-            if (
-                replayed_step is not None
-                and replayed_step.status in FINAL_RUN_STATUSES
-            ):
-                structured_result = execution_service.reconstruct_structured_result(
-                    replayed_step
-                )
-                return {"result": structured_result.model_dump(mode="json")}
+            if current_run.status in FINAL_RUN_STATUSES:
+                current_scan = canonical_scan(current_run)
+                if (
+                    replayed_step is not None
+                    and replayed_step.status in FINAL_RUN_STATUSES
+                ):
+                    structured_result = execution_service.reconstruct_structured_result(
+                        replayed_step
+                    )
+                    current_scan.status = EventLevel.COMPLETED
+                    current_scan.error = None
+                    current_scan.details = structured_result.model_dump(mode="json")
+                else:
+                    diagnostic = current_run.safe_error_diagnostic or {}
+                    safe_message = diagnostic.get(
+                        "safe_message", safe_diagnostic.safe_message
+                    )
+                    current_scan.status = EventLevel.FAILED
+                    current_scan.error = safe_message
+                    current_scan.details = {
+                        "status": "failed",
+                        "flow_run_id": str(current_run.id),
+                        "flow_run_reference": f"flow_run:{current_run.id}",
+                        "error": safe_message,
+                    }
+                session.commit()
+                return {"result": current_scan.details}
             return {
                 "result": {
                     "status": "in_progress",
@@ -167,6 +197,8 @@ def run_template_enricher(
         lease = execution_service.claim_run(flow_run, str(scan_id))
         if lease is None:
             return replay_or_attach()
+        scan = canonical_scan(flow_run)
+        session.commit()
 
         step_run = execution_service.begin_or_resume_step(
             flow_run, lease, template_name, len(serialized_objects)
@@ -196,7 +228,7 @@ def run_template_enricher(
         enricher = TemplateEnricher(
             template=template,
             sketch_id=sketch_id,
-            scan_id=str(scan_id),
+            scan_id=str(flow_run.id),
             vault=vault,
             params=template_params,
         )
@@ -207,14 +239,6 @@ def run_template_enricher(
             flow_run, lease, step_run, structured_result
         )
 
-        scan = session.get(Scan, scan_id)
-        if scan is None:
-            scan = Scan(
-                id=scan_id,
-                status=EventLevel.PENDING,
-                sketch_id=sketch_uuid,
-            )
-            session.add(scan)
         scan.status = EventLevel.COMPLETED
         scan.error = None
         scan.details = structured_result.model_dump(mode="json")
@@ -233,14 +257,7 @@ def run_template_enricher(
                 session.rollback()
                 return replay_or_attach()
 
-            scan = session.get(Scan, uuid.UUID(self.request.id))
-            if scan is None:
-                scan = Scan(
-                    id=uuid.UUID(self.request.id),
-                    status=EventLevel.PENDING,
-                    sketch_id=sketch_uuid,
-                )
-                session.add(scan)
+            scan = canonical_scan(flow_run)
             scan.status = EventLevel.FAILED
             scan.error = safe_diagnostic.safe_message
             session.commit()
