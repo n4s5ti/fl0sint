@@ -7,6 +7,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
+    DDL,
     Float,
     ForeignKey,
     Index,
@@ -625,6 +626,77 @@ class EvidenceEnvelopeRecord(Base):
         Index("idx_evidence_envelopes_step_run_id", "step_run_id"),
         Index("idx_evidence_envelopes_supersedes_id", "supersedes_id"),
     )
+
+
+event.listen(
+    EvidenceEnvelopeRecord.__table__,
+    "after_create",
+    DDL(
+        """
+        CREATE TRIGGER trg_evidence_envelopes_reject_update
+        BEFORE UPDATE ON evidence_envelope_records
+        BEGIN
+            SELECT RAISE(ABORT, 'evidence_envelope_records are append-only');
+        END
+        """
+    ).execute_if(dialect="sqlite"),
+)
+event.listen(
+    EvidenceEnvelopeRecord.__table__,
+    "after_create",
+    DDL(
+        """
+        CREATE TRIGGER trg_evidence_envelopes_reject_delete
+        BEFORE DELETE ON evidence_envelope_records
+        BEGIN
+            SELECT RAISE(ABORT, 'evidence_envelope_records are append-only');
+        END
+        """
+    ).execute_if(dialect="sqlite"),
+)
+event.listen(
+    EvidenceEnvelopeRecord.__table__,
+    "after_create",
+    DDL(
+        """
+        CREATE OR REPLACE FUNCTION reject_evidence_envelope_mutation()
+        RETURNS trigger AS $$
+        BEGIN
+            RAISE EXCEPTION 'evidence_envelope_records are append-only';
+        END;
+        $$ LANGUAGE plpgsql
+        """
+    ).execute_if(dialect="postgresql"),
+)
+event.listen(
+    EvidenceEnvelopeRecord.__table__,
+    "after_create",
+    DDL(
+        """
+        CREATE TRIGGER trg_evidence_envelopes_reject_update
+        BEFORE UPDATE ON evidence_envelope_records
+        FOR EACH ROW EXECUTE FUNCTION reject_evidence_envelope_mutation()
+        """
+    ).execute_if(dialect="postgresql"),
+)
+event.listen(
+    EvidenceEnvelopeRecord.__table__,
+    "after_create",
+    DDL(
+        """
+        CREATE TRIGGER trg_evidence_envelopes_reject_delete
+        BEFORE DELETE ON evidence_envelope_records
+        FOR EACH ROW EXECUTE FUNCTION reject_evidence_envelope_mutation()
+        """
+    ).execute_if(dialect="postgresql"),
+)
+event.listen(
+    EvidenceEnvelopeRecord.__table__,
+    "after_drop",
+    DDL(
+        "DROP FUNCTION IF EXISTS reject_evidence_envelope_mutation()"
+    ).execute_if(dialect="postgresql"),
+)
 
 
 @event.listens_for(EvidenceEnvelopeRecord, "before_update")
