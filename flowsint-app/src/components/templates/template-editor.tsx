@@ -234,7 +234,13 @@ export function TemplateEditor({ templateId, initialContent, importedYaml }: Tem
       if (!isEditMode) {
         throw new Error('Save the template before running a connector test')
       }
-      const response = await templateService.test(templateId!, testInput.trim())
+      let parsedInput: unknown
+      try {
+        parsedInput = JSON.parse(testInput)
+      } catch {
+        parsedInput = testInput.trim()
+      }
+      const response = await templateService.test(templateId!, parsedInput)
       setTestResult({
         success: response.success,
         outcomes: response.outcomes

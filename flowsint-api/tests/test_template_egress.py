@@ -94,6 +94,8 @@ def test_template_test_route_redacts_result_and_transport_material(
     db_session.refresh(stored)
     monkeypatch.setattr(routes, "destination_registry", _registry())
 
+    captured_inputs = []
+
     class FakeEnricher:
         def __init__(self, **_kwargs):
             self.endpoint = type(
@@ -106,7 +108,8 @@ def test_template_test_route_redacts_result_and_transport_material(
                 },
             )()
 
-        async def execute_structured(self, _values):
+        async def execute_structured(self, values):
+            captured_inputs.extend(values)
             return StructuredExecutionResult(
                 enricher_name="connector:approved_directory:lookup",
                 outcomes=(
@@ -146,13 +149,78 @@ def test_template_test_route_redacts_result_and_transport_material(
     response = client.post(
         f"/api/enrichers/templates/{stored.id}/test",
         headers={"Authorization": f"Bearer {token}"},
-        json={"input_value": "private input"},
+        json={
+            "input_value": {
+                "address": "private input",
+                "city": "Private City",
+                "country": "US",
+                "zip": "00000",
+            }
+        },
     )
 
     assert response.status_code == 200
+    assert captured_inputs == [
+        {
+            "address": "private input",
+            "city": "Private City",
+            "country": "US",
+            "zip": "00000",
+        }
+    ]
     payload = response.json()
     assert payload["outcomes"][0]["visible_outputs"] == 1
     assert "private input" not in response.text
     assert "private mapped output" not in response.text
     assert "https://approved.example" not in response.text
     assert "Authorization" not in response.text
+
+
+def test_template_update_keeps_wrapper_metadata_and_content_synchronized(
+    db_session, monkeypatch
+):
+    from app.api.routes import enricher_templates as routes
+
+    user = Profile(email="template-update-user@example.com", hashed_password="x")
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+    strict_template = _template()
+    stored = EnricherTemplate(
+        name=strict_template.name,
+        description=strict_template.description,
+        category=strict_template.category,
+        version=strict_template.version,
+        content=strict_template.model_dump(mode="json"),
+        owner_id=user.id,
+    )
+    db_session.add(stored)
+    db_session.commit()
+    db_session.refresh(stored)
+    monkeypatch.setattr(routes, "destination_registry", _registry())
+    wrapper_payload = routes.update_template(
+        template_id=stored.id,
+        update_data=routes.EnricherTemplateUpdate(
+            description="Updated through wrapper metadata"
+        ),
+        db=db_session,
+        current_user=user,
+    )
+
+    assert wrapper_payload["description"] == "Updated through wrapper metadata"
+    assert (
+        wrapper_payload["content"]["description"]
+        == "Updated through wrapper metadata"
+    )
+
+    updated_content = wrapper_payload["content"]
+    updated_content["name"] = "approved-address-preview-v2"
+    content_payload = routes.update_template(
+        template_id=stored.id,
+        update_data=routes.EnricherTemplateUpdate(content=updated_content),
+        db=db_session,
+        current_user=user,
+    )
+
+    assert content_payload["name"] == "approved-address-preview-v2"
+    assert content_payload["content"]["name"] == "approved-address-preview-v2"

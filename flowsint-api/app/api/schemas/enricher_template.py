@@ -58,7 +58,7 @@ class EnricherTemplateList(ORMBase):
 
 
 class EnricherTemplateTestRequest(BaseModel):
-    input_value: str = Field(..., min_length=1)
+    input_value: Any = Field(...)
 
 
 class ConnectorTestEvidenceMetadata(BaseModel):

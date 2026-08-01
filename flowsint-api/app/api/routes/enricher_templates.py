@@ -255,17 +255,43 @@ def update_template(
 ):
     """Update a template without accepting arbitrary HTTP grammar."""
     update_fields = update_data.model_dump(exclude_unset=True)
+    service = create_enricher_template_service(db)
+    try:
+        existing = service.get_owned_template(template_id, current_user.id)
+    except NotFoundError as error:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={"code": "enricher_template_not_found"},
+        ) from error
+
+    metadata_fields = ("name", "description", "category", "version")
     if "content" in update_fields:
         strict_template = _deserialize_template(update_fields["content"])
-        _validate_wrapper_metadata(
-            strict_template,
-            update_fields.get("name"),
-            update_fields.get("description"),
-            update_fields.get("category"),
-            update_fields.get("version"),
-        )
+        if any(
+            field in update_fields
+            and update_fields[field] != getattr(strict_template, field)
+            for field in metadata_fields
+        ):
+            raise _invalid_connector_template()
+    else:
+        strict_template = _deserialize_template(existing.content)
+        metadata_updates = {
+            field: update_fields[field]
+            for field in metadata_fields
+            if field in update_fields
+        }
+        if metadata_updates:
+            strict_template = _deserialize_template(
+                strict_template.model_copy(update=metadata_updates).model_dump(mode="json")
+            )
+
+    if "content" in update_fields or any(
+        field in update_fields for field in metadata_fields
+    ):
         update_fields["content"] = strict_template.model_dump(mode="json")
-    service = create_enricher_template_service(db)
+        for field in metadata_fields:
+            update_fields[field] = getattr(strict_template, field)
+
     try:
         updated = service.update_template(
             template_id=template_id,

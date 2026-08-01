@@ -2,7 +2,7 @@ import { Play, FlaskConical, Loader2, CheckCircle2, XCircle } from 'lucide-react
 
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@/components/ui/resizable'
 import type { ConnectorTestOutcome } from '@/api/template-service'
@@ -49,18 +49,24 @@ export function TemplateTestPanel({
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="test-input">
-                Input Value
-                {validationData?.input?.key && (
-                  <span className="text-muted-foreground ml-1">({validationData.input.key})</span>
+                Input JSON or scalar
+                {validationData?.input?.type && (
+                  <span className="text-muted-foreground ml-1">({validationData.input.type})</span>
                 )}
               </Label>
-              <Input
+              <Textarea
                 id="test-input"
-                placeholder={`Enter ${validationData?.input?.type || 'value'}...`}
+                placeholder={`Enter a scalar or JSON ${validationData?.input?.type || 'input'} object...`}
                 value={testInput}
                 onChange={(event) => onTestInputChange(event.target.value)}
-                onKeyDown={(event) => event.key === 'Enter' && onRunTest()}
+                onKeyDown={(event) => {
+                  if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') onRunTest()
+                }}
+                className="min-h-28 font-mono text-xs"
               />
+              <p className="text-xs text-muted-foreground">
+                Multi-field inputs must be a JSON object. Press Ctrl/⌘+Enter to run.
+              </p>
             </div>
             {connector && (
               <div className="space-y-1 text-xs text-muted-foreground">

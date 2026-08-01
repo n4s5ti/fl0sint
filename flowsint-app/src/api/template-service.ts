@@ -95,7 +95,7 @@ export const templateService = {
     })
   },
 
-  test: async (templateId: string, inputValue: string): Promise<TestTemplateResponse> => {
+  test: async (templateId: string, inputValue: unknown): Promise<TestTemplateResponse> => {
     return fetchWithAuth(`/api/enrichers/templates/${templateId}/test`, {
       method: 'POST',
       body: JSON.stringify({ input_value: inputValue })
