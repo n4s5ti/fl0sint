@@ -4,6 +4,8 @@ from typing import Any, Dict, List, Optional
 
 from celery import states
 from flowsint_enrichers import ENRICHER_REGISTRY, load_all_enrichers
+from sqlalchemy.dialects.postgresql import insert as postgres_insert
+from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session
 
 from flowsint_core.utils import to_json_serializable
@@ -21,6 +23,29 @@ from ..templates.types import Template
 load_all_enrichers()
 
 db: Session = next(get_db())
+
+def _get_or_create_scan(session, scan_id, sketch_id):
+    dialect = session.get_bind().dialect.name
+    values = {
+        "id": scan_id,
+        "status": EventLevel.PENDING,
+        "sketch_id": sketch_id,
+    }
+    if dialect == "sqlite":
+        statement = sqlite_insert(Scan).values(**values)
+    elif dialect == "postgresql":
+        statement = postgres_insert(Scan).values(**values)
+    else:
+        raise RuntimeError(f"Unsupported Scan persistence dialect: {dialect}")
+
+    session.execute(statement.on_conflict_do_nothing(index_elements=["id"]))
+    session.flush()
+    session.expire_all()
+    current_scan = session.get(Scan, scan_id)
+    if current_scan is None:
+        raise RuntimeError("Canonical Scan could not be loaded after insert")
+    return current_scan
+
 
 
 @celery.task(name="run_enricher", bind=True)
@@ -130,15 +155,7 @@ def run_template_enricher(
         input_digest = canonical_input_hash(serialized_objects)
 
         def canonical_scan(current_run):
-            current_scan = session.get(Scan, current_run.id)
-            if current_scan is None:
-                current_scan = Scan(
-                    id=current_run.id,
-                    status=EventLevel.PENDING,
-                    sketch_id=sketch_uuid,
-                )
-                session.add(current_scan)
-            return current_scan
+            return _get_or_create_scan(session, current_run.id, sketch_uuid)
 
         def replay_or_attach():
             session.expire_all()

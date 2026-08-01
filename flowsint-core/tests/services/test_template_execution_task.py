@@ -1,10 +1,13 @@
 """Task-level persistence contract for database template execution."""
 import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
+from threading import Barrier, Lock, get_ident
 from uuid import uuid4
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import Session as OrmSession
 from sqlalchemy.orm import sessionmaker
 
 from flowsint_core.core.execution import (
@@ -513,3 +516,59 @@ def test_failed_replay_repairs_missing_canonical_scan(db_session, monkeypatch):
     assert repaired_scan.error == diagnostic.safe_message
     assert repaired_scan.details == replay.get()["result"]
     assert db_session.get(Scan, replay_scan_id) is None
+
+
+def test_atomic_scan_insert_converges_concurrent_replays(tmp_path):
+    class InsertBarrierSession(OrmSession):
+        barrier = Barrier(2)
+        seen_threads = set()
+        seen_lock = Lock()
+
+        def execute(self, statement, *args, **kwargs):
+            should_wait = False
+            if getattr(statement, "table", None) is Scan.__table__:
+                thread_id = get_ident()
+                with type(self).seen_lock:
+                    if thread_id not in type(self).seen_threads:
+                        type(self).seen_threads.add(thread_id)
+                        should_wait = True
+            if should_wait:
+                type(self).barrier.wait(timeout=10)
+            return super().execute(statement, *args, **kwargs)
+
+    engine = create_engine(
+        f"sqlite:///{tmp_path / 'concurrent-replay.db'}",
+        connect_args={"check_same_thread": False, "timeout": 10},
+    )
+
+    @event.listens_for(engine, "connect")
+    def configure_sqlite(connection, _record):
+        cursor = connection.cursor()
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA busy_timeout=10000")
+        cursor.close()
+
+    Base.metadata.create_all(engine)
+    task_session = sessionmaker(
+        bind=engine, class_=InsertBarrierSession, expire_on_commit=False
+    )
+    canonical_scan_id = uuid4()
+
+    def create_canonical_scan(_index):
+        with task_session() as session:
+            scan = task_module._get_or_create_scan(
+                session, canonical_scan_id, sketch_id=None
+            )
+            session.commit()
+            return scan.id
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        scan_ids = list(executor.map(create_canonical_scan, range(2)))
+
+    with task_session() as session:
+        assert scan_ids == [canonical_scan_id, canonical_scan_id]
+        assert session.query(Scan).count() == 1
+        canonical_scan = session.get(Scan, canonical_scan_id)
+        assert canonical_scan.status is EventLevel.PENDING
+        assert canonical_scan.sketch_id is None
+    engine.dispose()
