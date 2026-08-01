@@ -59,6 +59,29 @@ class ExecutionRepository(BaseRepository[FlowRun]):
         )
         return result.rowcount == 1
 
+    def fence_run(
+        self,
+        run_id: UUID,
+        *,
+        lease_owner: str,
+        attempt: int,
+        now: datetime,
+    ) -> bool:
+        """Acquire a write fence for the active run lease without committing."""
+        result = self._db.execute(
+            update(FlowRun)
+            .execution_options(synchronize_session=False)
+            .where(
+                FlowRun.id == run_id,
+                FlowRun.lease_owner == lease_owner,
+                FlowRun.attempt == attempt,
+                FlowRun.status == "running",
+                FlowRun.lease_expires_at > now,
+            )
+            .values(lease_expires_at=FlowRun.lease_expires_at)
+        )
+        return result.rowcount == 1
+
     def get_step(self, flow_run_id: UUID, step_key: str) -> Optional[StepRun]:
         return (
             self._db.query(StepRun)

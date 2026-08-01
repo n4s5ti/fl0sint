@@ -1,8 +1,10 @@
 """Task-level persistence contract for database template execution."""
+import asyncio
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from uuid import uuid4
 
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from flowsint_core.core.execution import (
@@ -13,7 +15,14 @@ from flowsint_core.core.execution import (
     StructuredExecutionResult,
     canonical_input_hash,
 )
-from flowsint_core.core.models import EvidenceEnvelopeRecord, FlowRun, Profile, Scan, StepRun
+from flowsint_core.core.models import (
+    Base,
+    EvidenceEnvelopeRecord,
+    FlowRun,
+    Profile,
+    Scan,
+    StepRun,
+)
 from flowsint_core.core.enums import EventLevel
 from flowsint_core.core.services.execution_service import create_execution_service
 from flowsint_core.tasks import enricher as task_module
@@ -97,6 +106,48 @@ class _HoldingTemplateEnricher:
             ),
         )
 
+class _InterleavingTemplateEnricher:
+    attempts = 0
+    recover = None
+
+    @staticmethod
+    def get_params_schema_for_template(template):
+        return []
+
+    def __init__(self, **kwargs):
+        pass
+
+    async def execute_structured(self, values):
+        type(self).attempts += 1
+        worker = f"attempt-{type(self).attempts}"
+        if type(self).attempts == 1:
+            await asyncio.to_thread(type(self).recover)
+        input_ref = canonical_input_hash(values[0])
+        return StructuredExecutionResult(
+            enricher_name="safe-template",
+            outcomes=(
+                InputOutcome(
+                    input_ref=input_ref,
+                    status=OutcomeStatus.SUCCESS,
+                    outputs=({"worker": worker},),
+                    evidence=(
+                        EvidenceEnvelope(
+                            input_ref=input_ref,
+                            request_url_pattern="https://api.example.test/{{address}}",
+                            artifact_sha256="c" * 64,
+                            artifact_reference=f"artifact://{worker}",
+                            source_rights="public",
+                            schema_version="v1",
+                            parser_version="v1",
+                            confidence=1.0,
+                            verification_state="verified",
+                        ),
+                    ),
+                ),
+            ),
+        )
+
+
 def test_template_task_reuses_idempotency_key_without_duplicate_evidence(
     db_session, monkeypatch
 ):
@@ -125,15 +176,17 @@ def test_template_task_reuses_idempotency_key_without_duplicate_evidence(
     )
 
     values = [{"address": "203.0.113.10"}]
+    first_task_id = uuid4()
+    second_task_id = uuid4()
     first = task_module.run_template_enricher.apply(
         args=("safe-template", values, None, owner_id),
         kwargs={"idempotency_key": "replay-safe-key"},
-        task_id=str(uuid4()),
+        task_id=str(first_task_id),
     )
     second = task_module.run_template_enricher.apply(
         args=("safe-template", values, None, owner_id),
         kwargs={"idempotency_key": "replay-safe-key"},
-        task_id=str(uuid4()),
+        task_id=str(second_task_id),
     )
 
     db_session.expire_all()
@@ -146,7 +199,9 @@ def test_template_task_reuses_idempotency_key_without_duplicate_evidence(
     assert db_session.query(EvidenceEnvelopeRecord).count() == 1
     assert _StructuredTemplateEnricher.instances == 1
     assert _StructuredTemplateEnricher.executions == 1
-    assert db_session.query(Scan).count() == 2
+    assert db_session.query(Scan).count() == 1
+    assert db_session.get(Scan, first_task_id) is not None
+    assert db_session.get(Scan, second_task_id) is None
 
 
 def test_active_template_duplicate_attaches_until_expired_lease_recovers(
@@ -204,9 +259,7 @@ def test_active_template_duplicate_attaches_until_expired_lease_recovers(
     assert _StructuredTemplateEnricher.executions == 0
     assert db_session.query(StepRun).count() == 0
     assert db_session.query(EvidenceEnvelopeRecord).count() == 0
-    active_scan = db_session.get(Scan, active_task_id)
-    assert active_scan.status is EventLevel.COMPLETED
-    assert active_scan.details["flow_run_id"] == str(flow_run.id)
+    assert db_session.get(Scan, active_task_id) is None
 
     db_session.refresh(flow_run)
     flow_run.lease_expires_at = datetime.now(timezone.utc) - timedelta(seconds=1)
@@ -229,7 +282,7 @@ def test_active_template_duplicate_attaches_until_expired_lease_recovers(
     assert recovered_run.lease_expires_at is None
     assert db_session.query(StepRun).one().attempt == 1
     assert db_session.query(EvidenceEnvelopeRecord).count() == 1
-    assert db_session.query(Scan).count() == 2
+    assert db_session.query(Scan).count() == 1
 
 
 def test_template_task_hold_omits_outputs_from_evidence_and_scan_details(
@@ -267,3 +320,85 @@ def test_template_task_hold_omits_outputs_from_evidence_and_scan_details(
     db_session.expire_all()
     assert db_session.query(EvidenceEnvelopeRecord).one().mapped_outputs == []
     assert db_session.get(Scan, task_id).details["outcomes"][0]["outputs"] == []
+
+
+def test_template_task_fences_stale_attempt_after_same_task_id_recovery(
+    tmp_path, monkeypatch
+):
+    engine = create_engine(
+        f"sqlite:///{tmp_path / 'stale-template-task.db'}",
+        connect_args={"check_same_thread": False},
+    )
+    Base.metadata.create_all(engine)
+    task_session = sessionmaker(bind=engine, expire_on_commit=False)
+    db_session = task_session()
+    owner = Profile(email="stale-task@example.test", hashed_password="hash")
+    db_session.add(owner)
+    db_session.commit()
+    owner_id = str(owner.id)
+    task_id = uuid4()
+    values = [{"address": "203.0.113.10"}]
+    monkeypatch.setattr(task_module, "SessionLocal", task_session)
+    monkeypatch.setattr(task_module, "Template", lambda **content: SimpleNamespace())
+    monkeypatch.setattr(
+        task_module, "TemplateEnricher", _InterleavingTemplateEnricher
+    )
+    monkeypatch.setattr(
+        task_module,
+        "create_vault_service",
+        lambda session: SimpleNamespace(for_user=lambda owner_id: None),
+    )
+    monkeypatch.setattr(
+        task_module,
+        "create_enricher_template_service",
+        lambda session: SimpleNamespace(
+            find_by_name=lambda template_name, owner_id: SimpleNamespace(content={})
+        ),
+    )
+
+    recovered = {}
+
+    def recover_expired_attempt():
+        recovery_session = task_session()
+        try:
+            flow_run = recovery_session.get(FlowRun, task_id)
+            flow_run.lease_expires_at = datetime.now(timezone.utc) - timedelta(
+                seconds=1
+            )
+            recovery_session.commit()
+        finally:
+            recovery_session.close()
+        recovered["result"] = task_module.run_template_enricher.apply(
+            args=("safe-template", values, None, owner_id),
+            task_id=str(task_id),
+        )
+
+    _InterleavingTemplateEnricher.attempts = 0
+    _InterleavingTemplateEnricher.recover = recover_expired_attempt
+    stale = task_module.run_template_enricher.apply(
+        args=("safe-template", values, None, owner_id),
+        task_id=str(task_id),
+    )
+
+    assert stale.successful()
+    assert recovered["result"].successful()
+    assert stale.get()["result"] == recovered["result"].get()["result"]
+    assert _InterleavingTemplateEnricher.attempts == 2
+    db_session.expire_all()
+    flow_run = db_session.get(FlowRun, task_id)
+    step_run = db_session.query(StepRun).one()
+    evidence = db_session.query(EvidenceEnvelopeRecord).one()
+    scan = db_session.get(Scan, task_id)
+    canonical_result = recovered["result"].get()["result"]
+
+    assert flow_run.attempt == 2
+    assert step_run.attempt == 2
+    assert evidence.attempt == 2
+    assert evidence.artifact_reference == "artifact://attempt-2"
+    assert db_session.query(EvidenceEnvelopeRecord).count() == 1
+    assert db_session.query(Scan).count() == 1
+    assert scan.status is EventLevel.COMPLETED
+    assert scan.details == canonical_result
+    assert canonical_result["outcomes"][0]["outputs"] == [{"worker": "attempt-2"}]
+    db_session.close()
+    engine.dispose()

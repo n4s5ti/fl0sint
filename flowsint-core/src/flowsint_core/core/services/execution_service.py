@@ -1,6 +1,7 @@
 """Transactional persistence for durable structured enricher executions."""
 from __future__ import annotations
 
+from dataclasses import dataclass
 from collections.abc import Mapping
 from datetime import datetime, timedelta, timezone
 from enum import Enum
@@ -25,6 +26,19 @@ from .base import BaseService
 
 FINAL_RUN_STATUSES = frozenset({"completed", "partial", "failed", "hold"})
 DEFAULT_RUN_LEASE_DURATION = timedelta(minutes=15)
+
+
+@dataclass(frozen=True)
+class RunLease:
+    """Capability proving ownership of one active flow-run attempt."""
+
+    run_id: UUID
+    lease_owner: str
+    attempt: int
+
+
+class RunLeaseLost(RuntimeError):
+    """Raised when a worker no longer owns an active flow-run lease."""
 
 
 
@@ -113,7 +127,7 @@ class ExecutionService(BaseService):
         run: FlowRun,
         lease_owner: str,
         lease_duration: timedelta = DEFAULT_RUN_LEASE_DURATION,
-    ) -> FlowRun | None:
+    ) -> RunLease | None:
         """Atomically claim a pending or expired run lease."""
         now = _utcnow()
         if not self._repo.claim_run(
@@ -125,16 +139,28 @@ class ExecutionService(BaseService):
             return None
         self._commit()
         self._db.refresh(run)
-        return run
+        return RunLease(run_id=run.id, lease_owner=lease_owner, attempt=run.attempt)
 
     def get_step(self, run: FlowRun, step_key: str) -> StepRun | None:
         """Return the stable step state for a run, if it has been started."""
         return self._repo.get_step(run.id, step_key)
 
+    def _fence_run(self, run: FlowRun, lease: RunLease) -> None:
+        """Assert the caller still owns an unexpired lease within this transaction."""
+        if lease.run_id != run.id or not self._repo.fence_run(
+            run.id,
+            lease_owner=lease.lease_owner,
+            attempt=lease.attempt,
+            now=_utcnow(),
+        ):
+            self._rollback()
+            raise RunLeaseLost(f"Lease lost for flow run {run.id}")
+
     def begin_or_resume_step(
-        self, run: FlowRun, step_key: str, input_count: int
+        self, run: FlowRun, lease: RunLease, step_key: str, input_count: int
     ) -> StepRun:
         """Create or resume a stable step while preserving its checkpoint."""
+        self._fence_run(run, lease)
         step = self._repo.get_step(run.id, step_key)
         if step is None:
             step = StepRun(flow_run_id=run.id, step_key=step_key, input_count=input_count)
@@ -154,12 +180,18 @@ class ExecutionService(BaseService):
         self._commit()
         return step
 
-    def update_run_checkpoint(self, run: FlowRun, checkpoint: dict) -> FlowRun:
+    def update_run_checkpoint(
+        self, run: FlowRun, lease: RunLease, checkpoint: dict
+    ) -> FlowRun:
+        self._fence_run(run, lease)
         run.checkpoint = _json_value(checkpoint)
         self._commit()
         return run
 
-    def update_step_checkpoint(self, step: StepRun, checkpoint: dict) -> StepRun:
+    def update_step_checkpoint(
+        self, run: FlowRun, lease: RunLease, step: StepRun, checkpoint: dict
+    ) -> StepRun:
+        self._fence_run(run, lease)
         step.checkpoint = _json_value(checkpoint)
         self._commit()
         return step
@@ -178,10 +210,12 @@ class ExecutionService(BaseService):
     def persist_structured_result(
         self,
         run: FlowRun,
+        lease: RunLease,
         step: StepRun,
         result: StructuredExecutionResult,
     ) -> FlowRun:
         """Persist every input outcome without overwriting immutable evidence."""
+        self._fence_run(run, lease)
         if len(result.outcomes) != run.input_count:
             raise ValueError("Structured result must contain every original input")
         if step.flow_run_id != run.id:
@@ -250,8 +284,11 @@ class ExecutionService(BaseService):
         self._commit()
         return run
 
-    def fail_run(self, run: FlowRun, diagnostic: RedactedDiagnostic) -> FlowRun:
+    def fail_run(
+        self, run: FlowRun, lease: RunLease, diagnostic: RedactedDiagnostic
+    ) -> FlowRun:
         """Store only an approved redacted diagnostic for a top-level failure."""
+        self._fence_run(run, lease)
         run.status = "failed"
         run.lease_owner = None
         run.lease_expires_at = None

@@ -106,12 +106,15 @@ def run_template_enricher(
     from ..core.execution import RedactedDiagnostic, canonical_input_hash
     from ..core.services.execution_service import (
         FINAL_RUN_STATUSES,
+        RunLeaseLost,
         create_execution_service,
     )
 
     session = SessionLocal()
     scan = None
     flow_run = None
+    lease = None
+    execution_service = None
     safe_diagnostic = RedactedDiagnostic(
         code="template_execution_failed",
         safe_message="Template execution could not be completed",
@@ -123,19 +126,36 @@ def run_template_enricher(
         owner_uuid = uuid.UUID(owner_id)
         idempotency_key = idempotency_key or str(scan_id)
         sketch_uuid = uuid.UUID(sketch_id) if sketch_id else None
-
-        scan = session.get(Scan, scan_id)
-        if scan is None:
-            scan = Scan(
-                id=scan_id,
-                status=EventLevel.PENDING,
-                sketch_id=sketch_uuid,
-            )
-            session.add(scan)
-            session.commit()
-
         execution_service = create_execution_service(session)
         input_digest = canonical_input_hash(serialized_objects)
+
+        def replay_or_attach():
+            session.expire_all()
+            current_run, _ = execution_service.create_or_reuse_run(
+                owner_id=owner_uuid,
+                idempotency_key=idempotency_key,
+                input_digest=input_digest,
+                input_count=len(serialized_objects),
+                sketch_id=sketch_uuid,
+                run_id=scan_id,
+            )
+            replayed_step = execution_service.get_step(current_run, template_name)
+            if (
+                replayed_step is not None
+                and replayed_step.status in FINAL_RUN_STATUSES
+            ):
+                structured_result = execution_service.reconstruct_structured_result(
+                    replayed_step
+                )
+                return {"result": structured_result.model_dump(mode="json")}
+            return {
+                "result": {
+                    "status": "in_progress",
+                    "flow_run_id": str(current_run.id),
+                    "flow_run_reference": f"flow_run:{current_run.id}",
+                }
+            }
+
         flow_run, _ = execution_service.create_or_reuse_run(
             owner_id=owner_uuid,
             idempotency_key=idempotency_key,
@@ -144,43 +164,12 @@ def run_template_enricher(
             sketch_id=sketch_uuid,
             run_id=scan_id,
         )
-        flow_run = execution_service.claim_run(flow_run, str(scan_id))
-        if flow_run is None:
-            session.expire_all()
-            flow_run, _ = execution_service.create_or_reuse_run(
-                owner_id=owner_uuid,
-                idempotency_key=idempotency_key,
-                input_digest=input_digest,
-                input_count=len(serialized_objects),
-                sketch_id=sketch_uuid,
-                run_id=scan_id,
-            )
-            replayed_step = execution_service.get_step(flow_run, template_name)
-            if (
-                replayed_step is not None
-                and replayed_step.status in FINAL_RUN_STATUSES
-            ):
-                structured_result = execution_service.reconstruct_structured_result(
-                    replayed_step
-                )
-                scan.status = EventLevel.COMPLETED
-                scan.error = None
-                scan.details = structured_result.model_dump(mode="json")
-                session.commit()
-                return {"result": scan.details}
-
-            scan.status = EventLevel.COMPLETED
-            scan.error = None
-            scan.details = {
-                "status": "in_progress",
-                "flow_run_id": str(flow_run.id),
-                "flow_run_reference": f"flow_run:{flow_run.id}",
-            }
-            session.commit()
-            return {"result": scan.details}
+        lease = execution_service.claim_run(flow_run, str(scan_id))
+        if lease is None:
+            return replay_or_attach()
 
         step_run = execution_service.begin_or_resume_step(
-            flow_run, template_name, len(serialized_objects)
+            flow_run, lease, template_name, len(serialized_objects)
         )
 
         vault = None
@@ -215,22 +204,43 @@ def run_template_enricher(
             enricher.execute_structured(values=serialized_objects)
         )
         execution_service.persist_structured_result(
-            flow_run, step_run, structured_result
+            flow_run, lease, step_run, structured_result
         )
 
+        scan = session.get(Scan, scan_id)
+        if scan is None:
+            scan = Scan(
+                id=scan_id,
+                status=EventLevel.PENDING,
+                sketch_id=sketch_uuid,
+            )
+            session.add(scan)
         scan.status = EventLevel.COMPLETED
         scan.error = None
         scan.details = structured_result.model_dump(mode="json")
         session.commit()
         return {"result": scan.details}
 
+    except RunLeaseLost:
+        session.rollback()
+        return replay_or_attach()
     except Exception:
         session.rollback()
-        if flow_run is not None:
-            create_execution_service(session).fail_run(flow_run, safe_diagnostic)
+        if flow_run is not None and lease is not None:
+            try:
+                execution_service.fail_run(flow_run, lease, safe_diagnostic)
+            except RunLeaseLost:
+                session.rollback()
+                return replay_or_attach()
 
-        scan = session.get(Scan, uuid.UUID(self.request.id))
-        if scan is not None:
+            scan = session.get(Scan, uuid.UUID(self.request.id))
+            if scan is None:
+                scan = Scan(
+                    id=uuid.UUID(self.request.id),
+                    status=EventLevel.PENDING,
+                    sketch_id=sketch_uuid,
+                )
+                session.add(scan)
             scan.status = EventLevel.FAILED
             scan.error = safe_diagnostic.safe_message
             session.commit()
