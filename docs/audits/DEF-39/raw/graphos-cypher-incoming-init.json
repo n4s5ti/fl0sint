@@ -1,0 +1,28 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "columns": [
+            "type",
+            "n"
+        ],
+        "rows": [
+            {
+                "type": "CALLS",
+                "n": 33
+            },
+            {
+                "type": "METHOD_OVERRIDES",
+                "n": 6
+            },
+            {
+                "type": "HAS_METHOD",
+                "n": 2
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

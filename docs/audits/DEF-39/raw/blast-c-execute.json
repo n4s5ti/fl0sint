@@ -1,0 +1,119 @@
+{
+    "symbol": "execute",
+    "repo": "fl0sint",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+        "name": "execute",
+        "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+        "nodeType": "Method",
+        "startLine": 630,
+        "endLine": 655,
+        "content": "    async def execute(self, values: List[Any]) -> List[Dict[str, Any]]:         if self.name() != \"enricher_orchestrator\":             Logger.info(self.sketch_id, {\"message\": f\"Enricher {self.name()} started.\"})         try:             await self.async_init()             preprocessed = self.preprocess(values)             results = await self.scan(preprocessed)             processed = self.postprocess(results, preprocessed)             # Flush any pending batch operations             self._graph_service.flush()             if self.name() != \"enricher_orchestrator\":                 Logger.completed(                     self.sketch_id, {\"message\": f\"Enricher {self.name()} finished.\"}                 )             return processed         except Exception:             if self.name() != \"enricher_orchestrator\":                 Logger.error(                     self.sketch_id,                     {\"message\": f\"Enricher {self.name()} errored.\"},                 )             return []"
+    },
+    "symbols": [
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+            "name": "execute",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 630,
+            "endLine": 655,
+            "content": "    async def execute(self, values: List[Any]) -> List[Dict[str, Any]]:         if self.name() != \"enricher_orchestrator\":             Logger.info(self.sketch_id, {\"message\": f\"Enricher {self.name()} started.\"})         try:             await self.async_init()             preprocessed = self.preprocess(values)             results = await self.scan(preprocessed)             processed = self.postprocess(results, preprocessed)             # Flush any pending batch operations             self._graph_service.flush()             if self.name() != \"enricher_orchestrator\":                 Logger.completed(                     self.sketch_id, {\"message\": f\"Enricher {self.name()} finished.\"}                 )             return processed         except Exception:             if self.name() != \"enricher_orchestrator\":                 Logger.error(                     self.sketch_id,                     {\"message\": f\"Enricher {self.name()} errored.\"},                 )             return []"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute#1",
+            "name": "execute",
+            "filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+            "nodeType": "Method",
+            "startLine": 427,
+            "endLine": 428,
+            "content": "    async def execute(self, values: List[Any]) -> List[Any]:         return await self.scan(values)"
+        },
+        {
+            "id": "Method:flowsint-core/tests/services/test_template_execution_task.py:InsertBarrierSession.execute",
+            "name": "execute",
+            "filePath": "flowsint-core/tests/services/test_template_execution_task.py",
+            "nodeType": "Method",
+            "startLine": 334,
+            "endLine": 344,
+            "content": "        def execute(self, statement, *args, **kwargs):             should_wait = False             if getattr(statement, \"table\", None) is Scan.__table__:                 thread_id = get_ident()                 with type(self).seen_lock:                     if thread_id not in type(self).seen_threads:                         type(self).seen_threads.add(thread_id)                         should_wait = True             if should_wait:                 type(self).barrier.wait(timeout=10)             return super().execute(statement, *args, **kwargs)"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+                    "name": "execute",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 630,
+                    "endLine": 655,
+                    "content": "    async def execute(self, values: List[Any]) -> List[Dict[str, Any]]:         if self.name() != \"enricher_orchestrator\":             Logger.info(self.sketch_id, {\"message\": f\"Enricher {self.name()} started.\"})         try:             await self.async_init()             preprocessed = self.preprocess(values)             results = await self.scan(preprocessed)             processed = self.postprocess(results, preprocessed)             # Flush any pending batch operations             self._graph_service.flush()             if self.name() != \"enricher_orchestrator\":                 Logger.completed(                     self.sketch_id, {\"message\": f\"Enricher {self.name()} finished.\"}                 )             return processed         except Exception:             if self.name() != \"enricher_orchestrator\":                 Logger.error(                     self.sketch_id,                     {\"message\": f\"Enricher {self.name()} errored.\"},                 )             return []"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute#1",
+                    "name": "execute",
+                    "filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+                    "nodeType": "Method",
+                    "startLine": 427,
+                    "endLine": 428,
+                    "content": "    async def execute(self, values: List[Any]) -> List[Any]:         return await self.scan(values)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/tests/services/test_template_execution_task.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/tests/services/test_template_execution_task.py:InsertBarrierSession.execute",
+                    "name": "execute",
+                    "filePath": "flowsint-core/tests/services/test_template_execution_task.py",
+                    "nodeType": "Method",
+                    "startLine": 334,
+                    "endLine": 344,
+                    "content": "        def execute(self, statement, *args, **kwargs):             should_wait = False             if getattr(statement, \"table\", None) is Scan.__table__:                 thread_id = get_ident()                 with type(self).seen_lock:                     if thread_id not in type(self).seen_threads:                         type(self).seen_threads.add(thread_id)                         should_wait = True             if should_wait:                 type(self).barrier.wait(timeout=10)             return super().execute(statement, *args, **kwargs)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint",
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "symbol": "execute",
+        "rootSymbols": 3,
+        "totalSymbols": 3,
+        "totalEdges": 0,
+        "filesMatched": 3,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "ambiguous-symbol",
+        "query-interrupted"
+    ],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,1794 @@
+{
+ "issue": "DEF-39 [B02]",
+ "generated": "2026-09-25 MDT",
+ "repo": "/home/n4s5ti/Documents/dev/fl0sint",
+ "head": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+ "branch": "feat/graph-projection-connectors",
+ "pip3r": "1.2.6",
+ "blast_contract": {
+  "declared": "application/vnd.pip3r.blast+json;v=1 in packages/blast/src/plugin.ts",
+  "observed_in_payload": false,
+  "observed_top_level_keys_success": [
+   "symbol",
+   "repo",
+   "lbugPath",
+   "rootPath",
+   "direction",
+   "risk",
+   "target",
+   "symbols",
+   "edges",
+   "files",
+   "affected_modules",
+   "affected_processes",
+   "byDepth",
+   "summary",
+   "warnings",
+   "completeness",
+   "completenessReasons",
+   "indexStatus"
+  ],
+  "optional_keys": [
+   "source_generation (only when auto-index ran in-process)",
+   "reason",
+   "hint (only on unresolved/missing-index)"
+  ],
+  "risk_enum": [
+   "LOW",
+   "MEDIUM",
+   "HIGH",
+   "CRITICAL",
+   "UNKNOWN"
+  ],
+  "completeness_enum": [
+   "complete",
+   "partial"
+  ],
+  "completenessReasons_enum_from_source": [
+   "stale-index",
+   "lock-timeout",
+   "query-interrupted",
+   "ambiguous-symbol",
+   "match-truncated",
+   "index-unavailable",
+   "qualified-symbol-not-found",
+   "import-fallback",
+   "no-call-edges",
+   "target-symbol-unresolved"
+  ],
+  "observed_reasons": [
+   "query-interrupted",
+   "ambiguous-symbol",
+   "target-symbol-unresolved",
+   "index-unavailable",
+   "no-call-edges"
+  ]
+ },
+ "cases": {
+  "a_known_caller_chain": {
+   "symbol": "build_params_model (flowsint-core/src/flowsint_core/core/enricher_base.py:29-59)",
+   "expected": "callers Enricher.__init__ and Enricher.async_init (confirmed by graphos --refs, raw/graphos-refs-build_params_model.json)",
+   "runs": {
+    "standalone_default_autoindex": {
+     "raw": "raw/blast-a-build_params_model.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --json build_params_model",
+     "exit": 0,
+     "wall_s": 42.65,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "source_generation",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 3,
+      "totalEdges": 2,
+      "direct": 2,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ]
+     ],
+     "edges_total": 2
+    },
+    "native_default_autoindex": {
+     "raw": "raw/blastnative-a-build_params_model.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --json build_params_model",
+     "exit": 0,
+     "wall_s": 1.6,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "source_generation",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 3,
+      "totalEdges": 2,
+      "direct": 2,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ]
+     ],
+     "edges_total": 2
+    },
+    "standalone_no_auto_index": {
+     "raw": "raw/blast-a-build_params_model-noauto.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json build_params_model",
+     "exit": 0,
+     "wall_s": 0.96,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 3,
+      "totalEdges": 2,
+      "direct": 2,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ]
+     ],
+     "edges_total": 2
+    },
+    "native_no_auto_index": {
+     "raw": "raw/blastnative-a-build_params_model-noauto.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json build_params_model",
+     "exit": 0,
+     "wall_s": 0.89,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 3,
+      "totalEdges": 2,
+      "direct": 2,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ]
+     ],
+     "edges_total": 2
+    },
+    "standalone_downstream": {
+     "raw": "raw/blast-a-build_params_model-down.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --json --direction downstream build_params_model",
+     "exit": 0,
+     "wall_s": 1.61,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "source_generation",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "downstream",
+     "risk": "LOW",
+     "completeness": "complete",
+     "completenessReasons": [],
+     "indexStatus": "ready",
+     "source_generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 1,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "standalone_CALLS_only_depth5": {
+     "raw": "raw/blast-a-build_params_model-calls-d5.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --relation-types CALLS --max-depth 5 build_params_model",
+     "exit": 0,
+     "wall_s": 0.87,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 3,
+      "totalEdges": 2,
+      "direct": 2,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+       0.85
+      ]
+     ],
+     "edges_total": 2
+    },
+    "secondary_symbol_run_enricher_no_auto_index": {
+     "raw": "raw/blast-a-run_enricher-noauto.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json run_enricher",
+     "exit": 0,
+     "wall_s": 0.91,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "ambiguous-symbol"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 2,
+      "totalSymbols": 4,
+      "totalEdges": 2,
+      "direct": 1,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Function:scripts/enrich_sheet.py:main"
+       ]
+      },
+      "d=2": {
+       "label": "LIKELY AFFECTED",
+       "symbols": [
+        "File:scripts/enrich_sheet.py"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Function:scripts/enrich_sheet.py:main",
+       "CALLS",
+       "Function:scripts/enrich_sheet.py:run_enricher",
+       0.85
+      ],
+      [
+       "File:scripts/enrich_sheet.py",
+       "CALLS",
+       "Function:scripts/enrich_sheet.py:main",
+       0.85
+      ]
+     ],
+     "edges_total": 2
+    }
+   },
+   "direction_both": {
+    "cmd": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --json --direction both build_params_model",
+    "exit": 252,
+    "stderr": "Failed to parse \"both\" for direction: direction must be upstream or downstream",
+    "raw": "raw/blast-a-build_params_model-both.stderr.txt"
+   },
+   "verdict": "PASS (caller chain detected: 2 CALLS edges, byDepth d=1 WILL BREAK = Enricher.__init__#6, Enricher.async_init#0). Risk reported UNKNOWN / completeness=partial with reason query-interrupted on every upstream run, including --relation-types CALLS. Standalone and native JSON byte-identical (diff exit 0)."
+  },
+  "b_missing_symbol": {
+   "symbol": "DefinitelyNotASymbol_DEF39",
+   "runs": {
+    "standalone": {
+     "raw": "raw/blast-b-missing.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json DefinitelyNotASymbol_DEF39",
+     "exit": 0,
+     "wall_s": 0.86,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "reason",
+      "hint",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "target-symbol-unresolved"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": "target symbol not indexed",
+     "hint": "No indexed definition was found for \"DefinitelyNotASymbol_DEF39\". The index may omit this language construct; rebuild or use a supported declaration form before relying on impact results.",
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 0,
+      "totalSymbols": 0,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "native": {
+     "raw": "raw/blastnative-b-missing.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json DefinitelyNotASymbol_DEF39",
+     "exit": 0,
+     "wall_s": 0.86,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "reason",
+      "hint",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "target-symbol-unresolved"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": "target symbol not indexed",
+     "hint": "No indexed definition was found for \"DefinitelyNotASymbol_DEF39\". The index may omit this language construct; rebuild or use a supported declaration form before relying on impact results.",
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 0,
+      "totalSymbols": 0,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    }
+   },
+   "stderr": "blast: target symbol not indexed \u2014 No indexed definition was found for \"DefinitelyNotASymbol_DEF39\" ...",
+   "verdict": "PASS (NOT reported as zero risk: risk=UNKNOWN, completeness=partial, completenessReasons=[target-symbol-unresolved], target=null, reason/hint keys present; exit code still 0)"
+  },
+  "c_ambiguous_symbol": {
+   "symbol": "execute (3 defs: Enricher.execute#1, TemplateEnricher.execute#1, test InsertBarrierSession.execute \u2014 raw/graphos-cypher-execute.json)",
+   "runs": {
+    "bare": {
+     "raw": "raw/blast-c-execute.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json execute",
+     "exit": 0,
+     "wall_s": 0.9,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "ambiguous-symbol",
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 3,
+      "totalSymbols": 3,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "qualified_file_symbol": {
+     "raw": "raw/blast-c-execute-qualified.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json flowsint-core/src/flowsint_core/core/enricher_base.py:execute",
+     "exit": 0,
+     "wall_s": 0.87,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "query-interrupted"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 1,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "second_ambiguous_to_json_serializable_3_defs": {
+     "raw": "raw/blast-c-to_json_serializable.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json to_json_serializable",
+     "exit": 0,
+     "wall_s": 0.96,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "ambiguous-symbol"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 3,
+      "totalSymbols": 12,
+      "totalEdges": 19,
+      "direct": 6,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_enricher",
+        "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+        "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+        "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+        "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+        "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1"
+       ]
+      },
+      "d=2": {
+       "label": "LIKELY AFFECTED",
+       "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+        "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+        "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Function:flowsint-api/app/utils.py:to_json_serializable",
+       "CALLS",
+       "Function:flowsint-api/app/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_enricher",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Function:flowsint-enrichers/src/flowsint_enrichers/utils.py:to_json_serializable",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+       "CALLS",
+       "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+       "CALLS",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+       "CALLS",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+       0.85
+      ],
+      [
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+       "CALLS",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+       0.85
+      ],
+      [
+       "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+       "HAS_METHOD",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+       1
+      ],
+      [
+       "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+       "HAS_METHOD",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+       1
+      ],
+      [
+       "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+       "HAS_METHOD",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+       1
+      ],
+      [
+       "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+       "HAS_METHOD",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+       1
+      ],
+      [
+       "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+       "CALLS",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+       0.85
+      ],
+      [
+       "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+       "HAS_METHOD",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+       1
+      ],
+      [
+       "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+       "HAS_METHOD",
+       "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+       1
+      ]
+     ],
+     "edges_total": 19
+    }
+   },
+   "verdict": "PASS for ambiguity signalling (rootSymbols=3, completenessReasons contains ambiguous-symbol, risk UNKNOWN). OBSERVATION: 0 CALLS edges into Enricher.execute even though run_enricher calls enricher.execute(...) via an instance (dynamic dispatch); qualified form file:symbol resolves to a single root but reports query-interrupted with 0 edges."
+  },
+  "d_dynamic_registration": {
+   "symbols": {
+    "flowsint_enricher (decorator, registry.py:130)": {
+     "raw": "raw/blast-d-flowsint_enricher.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json flowsint_enricher",
+     "exit": 0,
+     "wall_s": 0.88,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "CRITICAL",
+     "completeness": "complete",
+     "completenessReasons": [],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 77,
+      "totalEdges": 76,
+      "direct": 76,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "File:flowsint-enrichers/src/flowsint_enrichers/asn/to_cidrs.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/cidr/to_ips.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/crypto/to_nfts.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/crypto/to_transactions.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_asn.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dehashed.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dns.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dummy_individuals.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_history.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_ip.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_root_domain.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_ssl.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_subdomains.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_website.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_whois.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_whois_history.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_dehashed.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_domain.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_domains.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_google.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_gravatar.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_hudsonrock.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_leaks.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_linkedin.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_username.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/email/to_zuckered.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/individual/to_domains.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/individual/to_org.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_asn.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_dehashed.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_domain.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_dummy_domains.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_fraudscore.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_infos.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_ports.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/n8n/connector.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_company.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_funding.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_leadership.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_metrics.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_profile.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_tech.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_asn.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_domains.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_company_socials.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_emails.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_individuals.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_people.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_infos.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_carrier.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_getcontact.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_hudsonrock.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_infos.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_zuckered.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_emails.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_individuals.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_phones.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_blackbird.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_dehashed.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_gaia.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_hudsonrock.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_maigret.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_namechk.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_osintgram.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_searchsystems.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_sherlock.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/social/to_whatsmyname.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_crawler.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_domain.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_fire_enrich_company.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_scrapling.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_subdomain.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_technologies.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "File:flowsint-enrichers/src/flowsint_enrichers/website/to_webtrackers.py"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/asn/to_cidrs.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/cidr/to_ips.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/crypto/to_nfts.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/crypto/to_transactions.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_asn.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dehashed.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dns.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dummy_individuals.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_history.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_ip.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_root_domain.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_ssl.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_subdomains.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_website.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_whois.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_whois_history.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/email/to_dehashed.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/email/to_domain.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/email/to_domains.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ],
+      [
+       "File:flowsint-enrichers/src/flowsint_enrichers/email/to_google.py",
+       "CALLS",
+       "Function:flowsint-enrichers/src/flowsint_enrichers/registry.py:flowsint_enricher",
+       0.85
+      ]
+     ],
+     "edges_total": 76
+    },
+    "WebsiteToText (class, decorated enricher)": {
+     "raw": "raw/blast-d-WebsiteToText.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json WebsiteToText",
+     "exit": 0,
+     "wall_s": 0.88,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "no-call-edges"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 1,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "to_text.py:scan (overriding method)": {
+     "raw": "raw/blast-d-WebsiteToText-scan.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:scan",
+     "exit": 0,
+     "wall_s": 0.9,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "LOW",
+     "completeness": "complete",
+     "completenessReasons": [],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 2,
+      "totalEdges": 1,
+      "direct": 1,
+      "modules": 1,
+      "truncated": false
+     },
+     "byDepth": {
+      "d=1": {
+       "label": "WILL BREAK",
+       "symbols": [
+        "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+       ]
+      }
+     },
+     "edges": [
+      [
+       "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+       "HAS_METHOD",
+       "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.scan#1",
+       1
+      ]
+     ],
+     "edges_total": 1
+    },
+    "get_enricher downstream (registry lookup)": {
+     "raw": "raw/blast-d-get_enricher-down.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --direction downstream get_enricher",
+     "exit": 0,
+     "wall_s": 0.83,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "downstream",
+     "risk": "LOW",
+     "completeness": "complete",
+     "completenessReasons": [],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": null,
+     "hint": null,
+     "warnings": [],
+     "summary": {
+      "rootSymbols": 1,
+      "totalSymbols": 1,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    }
+   },
+   "graph_facts": {
+    "decorator_edges": "76 File->flowsint_enricher CALLS edges at confidence 0.85 (raw/graphos-cypher-flowsint_enricher.json) \u2014 decorator application is modelled as a File-level CALLS edge, not Class->decorator DECORATES",
+    "class_edges": "WebsiteToText has EXTENDS Enricher, 6 METHOD_OVERRIDES, HAS_METHOD, MEMBER_OF; zero CALLS/USES edges into the class (raw/graphos-cypher-WebsiteToText.json)",
+    "relation_types_in_index": "DEFINES 7835, CALLS 5540, MEMBER_OF 3612, HAS_METHOD 2304, IMPORTS 2156, HAS_PROPERTY 1766, CONTAINS 1564, STEP_IN_PROCESS 849, METHOD_OVERRIDES 596, ACCESSES 544, ENTRY_POINT_OF 539, EXTENDS 225, USES 135, HANDLES_ROUTE 88, HANDLES_TOOL 23 (raw/graphos-cypher-reltypes.json)",
+    "graphos_refs_bug": "`pip3r graphos --refs WebsiteToText` exits 1 with zod invalid_enum_value: index contains METHOD_OVERRIDES but graphos-schemas enum lacks it (raw/graphos-cypher-WebsiteToText.json shows the edge)"
+   },
+   "verdict": "VISIBLE-AS-GAP. Registry-driven instantiation (ENRICHER_REGISTRY.get_enricher -> class) is NOT an edge: WebsiteToText upstream = 0 edges, risk UNKNOWN, reason no-call-edges; get_enricher downstream = 0 edges but risk LOW/complete (a false-comfort result for a dynamic lookup). Decorator fan-in IS visible (CRITICAL, 76 files). Cypher/Jinja/SQL: 3 .cypher files are in fileHashes but no edges were queried for them \u2014 UNKNOWN."
+  },
+  "e_stale_or_missing_index": {
+   "runs": {
+    "lbug_path_empty_dir_standalone": {
+     "raw": "raw/blast-e-emptylbug.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --lbug-path /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug build_params_model",
+     "exit": 0,
+     "wall_s": 0.93,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "reason",
+      "hint",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "index-unavailable"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": "graph index query failed",
+     "hint": "Index query error: Failed to open LadybugDB for repo \"fl0sint\" at /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug: Error: Runtime exception: Database path cannot be a directory: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug. Ensure the index is well-formed or regenerate it with `pip3r graphos --index`.",
+     "warnings": [
+      "Graph index query failed: Failed to open LadybugDB for repo \"fl0sint\" at /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug: Error: Runtime exception: Database path cannot be a directory: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug"
+     ],
+     "summary": {
+      "rootSymbols": 0,
+      "totalSymbols": 0,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "lbug_path_empty_dir_native": {
+     "raw": "raw/blastnative-e-emptylbug.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --lbug-path /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug build_params_model",
+     "exit": 0,
+     "wall_s": 0.75,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "reason",
+      "hint",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "index-unavailable"
+     ],
+     "indexStatus": "ready",
+     "source_generation": null,
+     "reason": "graph index query failed",
+     "hint": "Index query error: Failed to open LadybugDB for repo \"fl0sint\" at /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug: Error: Runtime exception: Database path cannot be a directory: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug. Ensure the index is well-formed or regenerate it with `pip3r graphos --index`.",
+     "warnings": [
+      "Graph index query failed: Failed to open LadybugDB for repo \"fl0sint\" at /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug: Error: Runtime exception: Database path cannot be a directory: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug"
+     ],
+     "summary": {
+      "rootSymbols": 0,
+      "totalSymbols": 0,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "disposable_repo_no_index_no_auto_index_standalone": {
+     "raw": "raw/blast-e-noindex-noauto.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper",
+     "exit": 0,
+     "wall_s": 0.75,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "reason",
+      "hint",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "index-unavailable"
+     ],
+     "indexStatus": "missing",
+     "source_generation": null,
+     "reason": "graph index missing",
+     "hint": "No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one.",
+     "warnings": [
+      "No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one."
+     ],
+     "summary": {
+      "rootSymbols": 0,
+      "totalSymbols": 0,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    },
+    "disposable_repo_no_index_no_auto_index_native": {
+     "raw": "raw/blastnative-e-noindex-noauto.json",
+     "cmd": "PIP3R_DISCLOSURE=off pip3r Blast-native --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper",
+     "exit": 0,
+     "wall_s": 0.76,
+     "top_level_keys": [
+      "symbol",
+      "repo",
+      "lbugPath",
+      "rootPath",
+      "direction",
+      "risk",
+      "target",
+      "symbols",
+      "edges",
+      "files",
+      "affected_modules",
+      "affected_processes",
+      "byDepth",
+      "summary",
+      "reason",
+      "hint",
+      "warnings",
+      "completeness",
+      "completenessReasons",
+      "indexStatus"
+     ],
+     "contentType_or_schema_key": null,
+     "direction": "upstream",
+     "risk": "UNKNOWN",
+     "completeness": "partial",
+     "completenessReasons": [
+      "index-unavailable"
+     ],
+     "indexStatus": "missing",
+     "source_generation": null,
+     "reason": "graph index missing",
+     "hint": "No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one.",
+     "warnings": [
+      "No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one."
+     ],
+     "summary": {
+      "rootSymbols": 0,
+      "totalSymbols": 0,
+      "totalEdges": 0,
+      "direct": 0,
+      "modules": 0,
+      "truncated": false
+     },
+     "byDepth": {},
+     "edges": [],
+     "edges_total": 0
+    }
+   },
+   "verdict": "PASS (index-required behaviour visible: risk UNKNOWN, completeness partial, completenessReasons=[index-unavailable], reason='graph index missing' / 'graph index query failed', hint says run `pip3r graphos --index`; indexStatus=missing for absent index, but indexStatus=ready when --lbug-path points at an unusable dir \u2014 inconsistent). Exit code 0 in all four; error is only distinguishable from JSON body/stderr. Real index untouched by these runs."
+  }
+ },
+ "doctor": {
+  "verify_refactor": {
+   "cmd": "PIP3R_DISCLOSURE=off timeout 300 timeout 300 pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint --verify-refactor build_params_model --json",
+   "exit": 0,
+   "wall_s": 2.06,
+   "raw": "raw/doctor-verify-refactor-build_params_model.json",
+   "top_level_keys": [
+    "cwd",
+    "packageName",
+    "packageManager",
+    "requestedChecks",
+    "results",
+    "graph",
+    "refactor"
+   ],
+   "graph": {
+    "status": "passed",
+    "fileCount": 922,
+    "indexStatus": "ready"
+   },
+   "refactor": {
+    "symbols": 1,
+    "safetyScore": 100,
+    "wave": 1,
+    "recommendation": "safe to modify",
+    "totalFlows": 0
+   },
+   "observation": "safetyScore 100 / 'safe to modify' for a symbol whose blast returned risk UNKNOWN + query-interrupted; doctor does not surface blast completeness"
+  },
+  "hunt": {
+   "cmd": "PIP3R_DISCLOSURE=off timeout 300 timeout 300 pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint --hunt --json",
+   "exit": 0,
+   "wall_s": 1.99,
+   "raw": "raw/doctor-hunt.json",
+   "hunt": {
+    "findings": [
+     {
+      "symbol": "pip3r",
+      "filePath": "pip3r-cli",
+      "category": "flag_inconsistency",
+      "severity": "medium",
+      "evidence": "1",
+      "explanation": "Root --help must exit 0"
+     }
+    ],
+    "counts": {
+     "total": 1,
+     "medium": 1
+    },
+    "coverage": {
+     "commandsDiscovered": 0,
+     "commandsProbed": 0,
+     "jsonContractsExercised": 0,
+     "spawns": 2
+    }
+   },
+   "observation": "Hunt probes the pip3r CLI contracts, not fl0sint code. Its one finding ('Root --help must exit 0', evidence '1') contradicts a direct check: `pip3r --help` exited 0 when run from the fl0sint root (help/root-help.txt). commandsDiscovered=0 => DEGRADED coverage. No hang, no dirty marker present.",
+   "status": "DEGRADED"
+  },
+  "drift": {
+   "cmd": "PIP3R_DISCLOSURE=off timeout 300 timeout 300 pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json",
+   "exit": 0,
+   "wall_s": 1.26,
+   "raw": "raw/graphos-drift.json",
+   "result": {
+    "changed_symbols": 0,
+    "summary": {
+     "total": 0,
+     "file_modified": 0,
+     "file_removed": 0,
+     "file_unindexed": 0,
+     "symbol_stale": 0
+    }
+   },
+   "observation": "0 drift reported AFTER the auto-index rebuilt the shared index over the dirty working tree (87 dirty entries). Drift was NOT measured against the pre-run 2026-08-09 index \u2014 that measurement is lost. Status: PASS-for-rebuilt-index / UNKNOWN-for-original-index."
+  }
+ },
+ "disposable_index_demo": {
+  "repo": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+  "files": [
+   "src/lib.py (helper)",
+   "src/app.py (caller->helper, top->caller)"
+  ],
+  "index": {
+   "cmd": "PIP3R_DISCLOSURE=off timeout 600 timeout 600 pip3r graphos --index --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --json",
+   "exit": 0,
+   "wall_s": 19.49,
+   "raw": "raw/disposable-index.json",
+   "created_gitnexus_dir": true,
+   "files_in_gitnexus": [
+    "gitnexus.json",
+    "index.lock.reclaim",
+    "index.lock.reclaim.mode",
+    "lbug (4.2M)",
+    "meta.json",
+    "pip3r-content-manifest.json",
+    "pip3r-generation.json",
+    "pip3r-workspace-edges.json"
+   ],
+   "indexLatencyMs": 18465,
+   "filesParsed": 2,
+   "generation": "sha256:465c9848ba6788d7d2d924fda18a3bbcbe894396f0c9a323c67abf7a6de01a3d",
+   "lastCommit_field": "\"\" (EMPTY \u2014 pip3r-graphos producer does not stamp git HEAD; freshness is content-hash generation + drift, not HEAD)"
+  },
+  "blast_helper": {
+   "raw": "raw/disposable-blast-helper.json",
+   "cmd": "PIP3R_DISCLOSURE=off timeout 120 pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper",
+   "exit": 0,
+   "wall_s": 1.08,
+   "top_level_keys": [
+    "symbol",
+    "repo",
+    "lbugPath",
+    "rootPath",
+    "direction",
+    "risk",
+    "target",
+    "symbols",
+    "edges",
+    "files",
+    "affected_modules",
+    "affected_processes",
+    "byDepth",
+    "summary",
+    "warnings",
+    "completeness",
+    "completenessReasons",
+    "indexStatus"
+   ],
+   "contentType_or_schema_key": null,
+   "direction": "upstream",
+   "risk": "LOW",
+   "completeness": "complete",
+   "completenessReasons": [],
+   "indexStatus": "ready",
+   "source_generation": null,
+   "reason": null,
+   "hint": null,
+   "warnings": [],
+   "summary": {
+    "rootSymbols": 1,
+    "totalSymbols": 3,
+    "totalEdges": 2,
+    "direct": 1,
+    "modules": 1,
+    "truncated": false
+   },
+   "byDepth": {
+    "d=1": {
+     "label": "WILL BREAK",
+     "symbols": [
+      "Function:src/app.py:caller"
+     ]
+    },
+    "d=2": {
+     "label": "LIKELY AFFECTED",
+     "symbols": [
+      "Function:src/app.py:top"
+     ]
+    }
+   },
+   "edges": [
+    [
+     "Function:src/app.py:caller",
+     "CALLS",
+     "Function:src/lib.py:helper",
+     0.85
+    ],
+    [
+     "Function:src/app.py:top",
+     "CALLS",
+     "Function:src/app.py:caller",
+     0.85
+    ]
+   ],
+   "edges_total": 2
+  },
+  "freshness_tied_to_head": {
+   "new_commit": "ed2426914a10470c368cb4f1ebb6eadf12859f6c (appended def extra(): return top())",
+   "drift_after_commit": {
+    "raw": "raw/disposable-drift-after-commit.json",
+    "summary": {
+     "total": 3,
+     "file_modified": 1,
+     "symbol_stale": 2
+    }
+   },
+   "blast_no_auto_index_after_commit": {
+    "raw": "raw/disposable-blast-helper-after-commit.json",
+    "result": "risk LOW, completeness complete, indexStatus ready, extra() NOT in byDepth \u2014 stale index served as fresh with NO stale flag"
+   },
+   "blast_auto_index_after_commit": {
+    "raw": "raw/disposable-blast-helper-autoindex.json",
+    "wall_s": 11.84,
+    "result": "auto-index rebuilt (generation changed to sha256:4dd89c45...), d=3 now includes Function:src/app.py:extra, source_generation key present"
+   },
+   "drift_after_autoindex": {
+    "raw": "raw/disposable-drift-after-autoindex.json",
+    "summary": {
+     "total": 0
+    }
+   }
+  }
+ }
+}

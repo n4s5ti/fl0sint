@@ -1,0 +1,17 @@
+{
+ "repoPath": "/home/n4s5ti/Documents/dev/fl0sint",
+ "lastCommit": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+ "indexedAt": "2026-08-09T01:51:58.694Z",
+ "branch": "feat/graph-projection-connectors",
+ "stats": {
+  "files": 891,
+  "nodes": 12427,
+  "edges": 24610,
+  "communities": 447,
+  "processes": 237,
+  "embeddings": 0
+ },
+ "schemaVersion": 7,
+ "sha256": "2ccd7ba5310751c2871c0277cad22742b81508cb816f668fd30310735f352885",
+ "note": "essential fields captured before any blast run; full file was 115095 bytes incl. fileHashes"
+}

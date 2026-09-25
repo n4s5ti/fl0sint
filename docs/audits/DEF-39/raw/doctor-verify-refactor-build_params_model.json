@@ -1,0 +1,70 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 922,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "refactor": {
+        "concept": "build_params_model",
+        "symbols": [
+            {
+                "name": "build_params_model",
+                "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "safetyScore": 100,
+                "wave": 1,
+                "findings": [],
+                "recommendation": "safe to modify"
+            }
+        ],
+        "waves": {
+            "safe": 1,
+            "moderate": 0,
+            "careful": 0
+        },
+        "warnings": [],
+        "summary": {
+            "totalSymbols": 1,
+            "totalFlows": 0,
+            "suggestedStart": "Start with wave 1 safe changes.",
+            "durationMs": 241
+        }
+    }
+}

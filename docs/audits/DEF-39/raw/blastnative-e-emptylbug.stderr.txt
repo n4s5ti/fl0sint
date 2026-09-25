@@ -1,0 +1,1 @@
+blast: graph index query failed — Index query error: Failed to open LadybugDB for repo "fl0sint" at /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug: Error: Runtime exception: Database path cannot be a directory: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug. Ensure the index is well-formed or regenerate it with `pip3r graphos --index`.

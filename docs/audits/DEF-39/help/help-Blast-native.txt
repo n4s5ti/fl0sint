@@ -1,0 +1,31 @@
+USAGE
+  pip3r Blast-native [--auto-index] [--blast value] [--cwd value] [--json] [--direction value] [--include-tests] [--path value] [--repo value] [--lbug-path value] [--max-depth value] [--risk-only] [--max-matches value] [--min-confidence value] [--relation-types value] [<arg1>]
+  pip3r Blast-native --help
+
+[plan] Impact / blast radius analysis (run before EVERY edit)
+
+ALIASES
+  pip3r blast-native
+
+PIP3R_JSON_PROBE: {"version":1,"bare":false}
+
+FLAGS
+     [--auto-index/--no-auto-index]  Build a missing code index with an available indexer before analysis      [default = true]
+     [--blast]                       [plan] Impact / blast radius analysis (run before EVERY edit)
+  -c [--cwd]                         Target directory to analyze
+     [--json]                        Emit JSON summary instead of plain text                                   [default = false]
+     [--direction]                   Blast traversal direction: upstream dependants or downstream dependencies [default = upstream]
+     [--include-tests]               Include test files in blast results                                       [default = false]
+  -p [--path]                        Restrict analysis to a subpath under the target directory
+  -r [--repo]                        GraphOS repo name to open
+     [--lbug-path]                   Path to the LadybugDB read model
+  -d [--max-depth]                   Traversal depth (inspect, blast)                                          [default = 3]
+     [--risk-only]                   Only show risk summary (blast)                                            [default = false]
+     [--max-matches]                 Maximum individual symbol matches to report                               [default = 200]
+     [--min-confidence]              Minimum GraphOS edge confidence from 0 to 1                               [default = 0.7]
+     [--relation-types]              Comma-separated GraphOS relation types to traverse
+  -h  --help                         Print help information and exit
+      --                             All subsequent inputs should be interpreted as arguments
+
+ARGUMENTS
+  [arg1]  Symbol (or file:symbol) to analyze

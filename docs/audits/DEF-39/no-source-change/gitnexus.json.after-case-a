@@ -1,0 +1,32 @@
+{
+  "repoPath": "/home/n4s5ti/Documents/dev/fl0sint",
+  "lastCommit": "",
+  "indexedAt": "2026-09-25T08:33:06.197Z",
+  "stats": {
+    "files": 922,
+    "nodes": 14378,
+    "edges": 27776,
+    "communities": 517,
+    "processes": 239,
+    "embeddings": 0
+  },
+  "capabilities": {
+    "graph": {
+      "provider": "ladybugdb",
+      "status": "available"
+    },
+    "fts": {
+      "provider": "ladybugdb-fts",
+      "status": "available"
+    },
+    "vectorSearch": {
+      "provider": "ladybugdb-vector",
+      "status": "unavailable",
+      "exactScanLimit": 10000
+    }
+  },
+  "cjkSegmentation": "none",
+  "cacheKeys": [
+    "2199764ff8ad716fab65bdf3491149198b9ad47222bade5ce854782ec456c69b"
+  ]
+}

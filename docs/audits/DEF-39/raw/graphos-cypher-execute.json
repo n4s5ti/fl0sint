@@ -1,0 +1,28 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "columns": [
+            "n.id",
+            "n.filePath"
+        ],
+        "rows": [
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+                "n.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute#1",
+                "n.filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/tests/services/test_template_execution_task.py:InsertBarrierSession.execute",
+                "n.filePath": "flowsint-core/tests/services/test_template_execution_task.py"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

@@ -1,0 +1,21 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+        "success": true,
+        "warnings": [
+            "Cannot read root package.json at /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/package.json",
+            "No workspace packages with recognised entry files — sidecar will be empty"
+        ],
+        "generation": "sha256:465c9848ba6788d7d2d924fda18a3bbcbe894396f0c9a323c67abf7a6de01a3d",
+        "planAction": "rebuild",
+        "deltaAdded": 0,
+        "deltaModified": 0,
+        "deltaDeleted": 0,
+        "deltaRenamed": 0,
+        "deltaUnreadable": 0,
+        "indexLatencyMs": 18465,
+        "filesParsed": 2
+    }
+}

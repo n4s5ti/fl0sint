@@ -1,0 +1,80 @@
+blast-a-run_enricher-noauto exit=0 wall=0.91s bytes=46892
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json run_enricher
+graphos-refs-to_json_serializable exit=0 wall=0.90s bytes=24828
+CMD: pip3r graphos --refs to_json_serializable --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json
+graphos-refs-build_params_model exit=0 wall=0.94s bytes=2933
+CMD: pip3r graphos --refs build_params_model --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json
+graphos-cypher-defs exit=0 wall=0.96s bytes=1106
+CMD: pip3r graphos --cypher MATCH (n) WHERE n.name IN ['to_json_serializable','build_params_model','create_vault_service','get_enricher'] RETURN n.id --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json
+blast-a-build_params_model exit=0 wall=42.65s bytes=14633
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --json build_params_model
+blastnative-a-build_params_model exit=0 wall=1.60s bytes=14633
+CMD: pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --json build_params_model
+blast-a-build_params_model-down exit=0 wall=1.61s bytes=5858
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --json --direction downstream build_params_model
+blast-a-build_params_model-both exit=252 wall=0.63s bytes=0
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --json --direction both build_params_model
+blast-a-build_params_model-noauto exit=0 wall=0.96s bytes=14533
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json build_params_model
+blastnative-a-build_params_model-noauto exit=0 wall=0.89s bytes=14533
+CMD: pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json build_params_model
+blast-b-missing exit=0 wall=0.86s bytes=1275
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json DefinitelyNotASymbol_DEF39
+blastnative-b-missing exit=0 wall=0.86s bytes=1275
+CMD: pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json DefinitelyNotASymbol_DEF39
+blast-c-execute exit=0 wall=0.90s bytes=8572
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json execute
+blast-c-to_json_serializable exit=0 wall=0.96s bytes=88872
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json to_json_serializable
+blast-c-execute-qualified exit=0 wall=0.87s bytes=5377
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json flowsint-core/src/flowsint_core/core/enricher_base.py:execute
+blast-d-flowsint_enricher exit=0 wall=0.88s bytes=1604031
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json flowsint_enricher
+blast-d-WebsiteToText exit=0 wall=0.88s bytes=17716
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json WebsiteToText
+blast-d-WebsiteToText-scan exit=0 wall=0.90s bytes=22497
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:scan
+blast-d-get_enricher-down exit=0 wall=0.83s bytes=3127
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --direction downstream get_enricher
+blast-a-build_params_model-calls exit=0 wall=0.85s bytes=14533
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --relation-types CALLS build_params_model
+blast-a-build_params_model-calls-d5 exit=0 wall=0.87s bytes=14533
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --relation-types CALLS --max-depth 5 build_params_model
+blast-c-execute-calls exit=0 wall=0.83s bytes=8572
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --relation-types CALLS execute
+blast-a-Enricher-execute-calls exit=0 wall=0.89s bytes=5377
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --relation-types CALLS flowsint-core/src/flowsint_core/core/enricher_base.py:execute
+graphos-cypher-incoming-init exit=0 wall=1.28s bytes=591
+CMD: pip3r graphos --cypher MATCH (s)-[r:CodeRelation]->(t) WHERE t.id IN ['Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6','Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1'] RETURN r.type AS type, count(*) AS n --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json
+graphos-cypher-reltypes exit=0 wall=1.20s bytes=1701
+CMD: pip3r graphos --cypher MATCH ()-[r:CodeRelation]->() RETURN r.type AS type, count(*) AS n --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json
+blast-e-emptylbug exit=0 wall=0.93s bytes=1741
+CMD: pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --lbug-path /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug build_params_model
+blastnative-e-emptylbug exit=0 wall=0.75s bytes=1741
+CMD: pip3r Blast-native --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json --lbug-path /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/empty-lbug build_params_model
+blast-e-noindex-noauto exit=0 wall=0.75s bytes=1597
+CMD: pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper
+blastnative-e-noindex-noauto exit=0 wall=0.76s bytes=1597
+CMD: pip3r Blast-native --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper
+doctor-verify-refactor-build_params_model exit=0 wall=2.06s bytes=1790
+CMD: timeout 300 pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint --verify-refactor build_params_model --json
+doctor-hunt exit=0 wall=1.99s bytes=1882
+CMD: timeout 300 pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint --hunt --json
+graphos-drift exit=0 wall=1.26s bytes=407
+CMD: timeout 300 pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint --no-auto-index --json
+disposable-index exit=0 wall=19.49s bytes=857
+CMD: timeout 600 pip3r graphos --index --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --json
+disposable-blast-helper exit=0 wall=1.08s bytes=4963
+CMD: timeout 120 pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper
+disposable-blast-helper-d3-calls exit=0 wall=1.05s bytes=4963
+CMD: timeout 120 pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json --relation-types CALLS --max-depth 3 helper
+disposable-drift-after-commit exit=0 wall=1.08s bytes=1264
+CMD: timeout 120 pip3r graphos --drift --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json
+disposable-status-after-commit exit=0 wall=1.09s bytes=812
+CMD: timeout 120 pip3r graphos --status --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json
+disposable-blast-helper-after-commit exit=0 wall=1.19s bytes=4963
+CMD: timeout 120 pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json helper
+disposable-blast-helper-autoindex exit=0 wall=11.84s bytes=6356
+CMD: timeout 300 pip3r blast --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --json helper
+disposable-drift-after-autoindex exit=0 wall=0.80s bytes=448
+CMD: timeout 120 pip3r graphos --drift --cwd /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo --no-auto-index --json

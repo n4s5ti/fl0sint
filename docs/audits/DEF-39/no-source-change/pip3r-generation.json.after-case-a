@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+  "committedAt": "2026-09-25T08:33:06.918Z",
+  "producer": "pip3r-graphos",
+  "schemaStamp": 1,
+  "options": {
+    "embeddings": false
+  },
+  "sourceCount": 922,
+  "packageHash": "5cdb3968015089187a30ac4bd1ed8276e2825d092caadbe965af76c24301e686",
+  "ignoreHash": "098d165668732443a8a53c3b3b8d8fea0e8a98afe2475a48f85d3f44d720dfc1",
+  "workspacePackagesHash": "993eafb6020f679499eba04a57044d11b6e969dc3e953ad2dd8325f9ff626510",
+  "contractVersion": 2,
+  "attemptId": "b28692e5-ad95-4820-b3e3-06bfbc73d82e",
+  "recoveryOutcome": "published"
+}

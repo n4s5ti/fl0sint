@@ -1,0 +1,513 @@
+{
+    "symbol": "to_json_serializable",
+    "repo": "fl0sint",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-api/app/utils.py:to_json_serializable",
+        "name": "to_json_serializable",
+        "filePath": "flowsint-api/app/utils.py",
+        "nodeType": "Function",
+        "startLine": 289,
+        "endLine": 313,
+        "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-api/app/utils.py:to_json_serializable",
+            "name": "to_json_serializable",
+            "filePath": "flowsint-api/app/utils.py",
+            "nodeType": "Function",
+            "startLine": 289,
+            "endLine": 313,
+            "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "name": "to_json_serializable",
+            "filePath": "flowsint-core/src/flowsint_core/utils.py",
+            "nodeType": "Function",
+            "startLine": 327,
+            "endLine": 352,
+            "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/utils.py:to_json_serializable",
+            "name": "to_json_serializable",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/utils.py",
+            "nodeType": "Function",
+            "startLine": 343,
+            "endLine": 367,
+            "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+            "name": "__init__",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Method",
+            "startLine": 20,
+            "endLine": 32,
+            "content": "    def __init__(         self,         sketch_id: str,         scan_id: str,         enricher_branches: List[FlowBranch],         vault=None,     ):         super().__init__(sketch_id, scan_id, vault=vault)         self.enricher_branches = enricher_branches         self.enrichers = {}  # Map of nodeId -> enricher instance         self.execution_log_file = None  # Path to the execution log file         self._create_execution_log()         self._load_enrichers()"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+            "name": "_create_execution_log",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Method",
+            "startLine": 34,
+            "endLine": 91,
+            "content": "    def _create_execution_log(self) -> None:         \"\"\"         Create the initial execution log JSON file with enricher configuration.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_execution_{self.sketch_id}_{self.scan_id}.json\"             self.execution_log_file = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Create initial log structure             initial_log = {                 \"sketch_id\": self.sketch_id,                 \"scan_id\": self.scan_id,                 \"created_at\": datetime.now().isoformat(),                 \"updated_at\": datetime.now().isoformat(),                 \"status\": \"initialized\",                 \"enricher_branches\": serialized_branches,                 \"execution_log\": [],                 \"summary\": {                     \"total_steps\": 0,                     \"completed_steps\": 0,                     \"failed_steps\": 0,                     \"total_execution_time_ms\": 0,                 },                 \"final_results\": {},             }             # Count total steps             total_steps = 0             for branch in self.enricher_branches:                 for step in branch.steps:                     if step.type != \"type\":                         total_steps += 1             initial_log[\"summary\"][\"total_steps\"] = total_steps             # Save initial log file             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(initial_log, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log created at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to create execution log: {str(e)}\"}             )             self.execution_log_file = None"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+            "name": "_finalize_execution_log",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Method",
+            "startLine": 138,
+            "endLine": 170,
+            "content": "    def _finalize_execution_log(self, final_results: Dict[str, Any]) -> None:         \"\"\"         Finalize the execution log with final results and status.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update final data             log_data[\"updated_at\"] = datetime.now().isoformat()             log_data[\"status\"] = \"completed\"             log_data[\"final_results\"] = to_json_serializable(final_results)             # Write final log             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(log_data, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log finalized at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Failed to finalize execution log: {str(e)}\"},             )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+            "name": "_save_enricher_branches",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Method",
+            "startLine": 172,
+            "endLine": 210,
+            "content": "    def _save_enricher_branches(self) -> None:         \"\"\"         Save the enricher branches to a JSON file for debugging and persistence.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_branches_{self.sketch_id}_{self.scan_id}.json\"             filepath = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Save to JSON file             with open(filepath, \"w\", encoding=\"utf-8\") as f:                 json.dump(                     {                         \"sketch_id\": self.sketch_id,                         \"scan_id\": self.scan_id,                         \"timestamp\": datetime.now().isoformat(),                         \"enricher_branches\": serialized_branches,                     },                     f,                     indent=2,                     ensure_ascii=False,                 )             Logger.info(                 self.sketch_id, {\"message\": f\"Enricher branches saved to {filepath}\"}             )         except Exception as e:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Failed to save enricher branches: {str(e)}\"},             )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+            "name": "scan",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Method",
+            "startLine": 332,
+            "endLine": 342,
+            "content": "    def scan(self, values: List[str]) -> Dict[str, Any]:         \"\"\"         Synchronous implementation of scan that runs the async version in an event loop         \"\"\"         loop = asyncio.new_event_loop()         asyncio.set_event_loop(loop)         try:             results = loop.run_until_complete(self._async_scan(values))             return results         finally:             loop.close()"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+            "name": "_async_scan",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Method",
+            "startLine": 344,
+            "endLine": 498,
+            "content": "    async def _async_scan(self, values: List[str]) -> Dict[str, Any]:         \"\"\"         The actual async implementation of the scan logic         \"\"\"         # Update execution log to indicate scan has started         self._update_execution_log(None, \"running\")         results = {\"initial_values\": values, \"branches\": [], \"results\": {}}         Logger.pending(self.sketch_id, {\"message\": \"Starting enricher...\"})         # Global mapping of output references to actual values         results_mapping = {}         # Cache for enricher results to avoid recomputation         enricher_results_cache = {}         total_steps = sum(len(branch.steps) for branch in self.enricher_branches)         completed_steps = 0         # Process each branch         for branch in self.enricher_branches:             branch_id = branch.id             branch_name = branch.name             branch_results = {\"id\": branch_id, \"name\": branch_name, \"steps\": []}             # Process each step in the branch             enricher_inputs = values             for step in branch.steps:                 if step.type == \"type\":                     continue                 node_id = step.nodeId                 enricher = self.enrichers.get(node_id)                 if not enricher:                     Logger.error(                         self.sketch_id,                         {\"message\": f\"Enricher not found for node {node_id}\"},                     )                     continue                 enricher_name = enricher.name()                 step_start_time = time.time()                 step_result = {                     \"nodeId\": node_id,                     \"enricher\": enricher_name,                     \"status\": \"error\",  # Default to error, will update on success                 }                 # Create execution log entry                 log_entry = {                     \"step_id\": f\"{branch_id}_{node_id}\",                     \"branch_id\": branch_id,                     \"branch_name\": branch_name,                     \"node_id\": node_id,                     \"enricher_name\": enricher_name,                     \"inputs\": to_json_serializable(enricher_inputs),                     \"outputs\": None,                     \"status\": \"running\",                     \"error\": None,                     \"timestamp\": datetime.now().isoformat(),                     \"execution_time_ms\": 0,                 }                 try:                     # Update status for current step                     completed_steps += 1                     if not enricher_inputs:                         error_msg = \"No inputs available\"                         step_result[\"error\"] = error_msg                         log_entry[\"status\"] = \"error\"                         log_entry[\"error\"] = error_msg                         log_entry[\"execution_time_ms\"] = int(                             (time.time() - step_start_time) * 1000                         )                         self._update_execution_log(log_entry)                         branch_results[\"steps\"].append(step_result)                         continue                     # Check if we already have results for this enricher with these inputs                     cache_key = f\"{node_id}:{str(enricher_inputs)}\"                     if cache_key in enricher_results_cache:                         outputs = enricher_results_cache[cache_key]                         log_entry[\"cache_hit\"] = True                     else:                         # Execute the enricher                         outputs = await enricher.execute(enricher_inputs)                         if not isinstance(outputs, (dict, list)):                             raise ValueError(                                 f\"Enricher '{enricher_name}' returned unsupported output format\"                             )                         # Cache the results                         enricher_results_cache[cache_key] = outputs                         log_entry[\"cache_hit\"] = False                     # Store the outputs in the step result (serialize to avoid JSON issues)                     step_result[\"outputs\"] = to_json_serializable(outputs)                     step_result[\"status\"] = \"completed\"                     # Update log entry with success                     log_entry[\"outputs\"] = to_json_serializable(outputs)                     log_entry[\"status\"] = \"completed\"                     log_entry[\"execution_time_ms\"] = int(                         (time.time() - step_start_time) * 1000                     )                     # Update the global results mapping with the outputs                     self.update_results_mapping(outputs, step.outputs, results_mapping)                     # Also store the raw outputs in the main results                     results[\"results\"][node_id] = outputs                     enricher_inputs = outputs                 except ValidationError as e:                     error_msg = f\"Validation error: {str(e)}\"        ... [truncated]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_enricher",
+            "name": "run_enricher",
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "nodeType": "Function",
+            "startLine": 67,
+            "endLine": 137,
+            "content": "def run_enricher(     self,     enricher_name: str,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: Optional[str] = None,     params: Dict[str, Any] | None = None, ):     session = SessionLocal()     try:         scan_id = uuid.UUID(self.request.id)         scan = Scan(             id=scan_id,             status=EventLevel.PENDING,             sketch_id=uuid.UUID(sketch_id) if sketch_id else None,         )         session.add(scan)         session.commit()         # Create vault instance if owner_id is provided         vault = None         if owner_id:             try:                 vault = create_vault_service(session).for_user(uuid.UUID(owner_id))             except Exception as e:                 Logger.error(                     sketch_id, {\"message\": f\"Failed to create vault: {str(e)}\"}                 )         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):             raise ValueError(f\"Enricher '{enricher_name}' not found in registry\")         run_params = params or {}         run_params = ENRICHER_REGISTRY.filter_params(enricher_name, run_params)         enricher = ENRICHER_REGISTRY.get_enricher(             name=enricher_name,             sketch_id=sketch_id,             scan_id=scan_id,             vault=vault,             params=run_params,         )         # Deserialize objects back into Pydantic models         # The preprocess method in Enricher will handle these already-parsed objects         results = asyncio.run(enricher.execute(values=serialized_objects))         scan.status = EventLevel.COMPLETED         scan.details = to_json_serializable(results)         session.commit()         return {\"result\": scan.details}     except Exception as ex:         session.rollback()         error_logs = f\"An error occurred: {str(ex)}\"         print(f\"Error in task: {error_logs}\")         scan = session.query(Scan).filter(Scan.id == uuid.UUID(self.request.id)).first()         if scan:             scan.status = EventLevel.FAILED             scan.error = error_logs             session.commit()         self.update_state(state=states.FAILURE)         raise ex     finally:         session.close()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+            "name": "run_flow",
+            "filePath": "flowsint-core/src/flowsint_core/tasks/flow.py",
+            "nodeType": "Function",
+            "startLine": 25,
+            "endLine": 91,
+            "content": "def run_flow(     self,     enricher_branches,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: Optional[str] = None, ):     session = SessionLocal()     try:         if not enricher_branches:             raise ValueError(\"enricher_branches not provided in the input enricher\")         scan_id = uuid.UUID(self.request.id)         scan = Scan(             id=scan_id,             status=EventLevel.PENDING,             sketch_id=uuid.UUID(sketch_id) if sketch_id else None,         )         session.add(scan)         session.commit()         # Create vault instance if owner_id is provided         vault = None         if owner_id:             try:                 vault = create_vault_service(session).for_user(uuid.UUID(owner_id))             except Exception as e:                 Logger.error(                     sketch_id, {\"message\": f\"Failed to create vault: {str(e)}\"}                 )         enricher_branches = [FlowBranch(**branch) for branch in enricher_branches]         enricher = FlowOrchestrator(             sketch_id=sketch_id,             scan_id=str(scan_id),             enricher_branches=enricher_branches,             vault=vault,         )         # Use the synchronous scan method which internally handles the async operations         # Pass serialized objects instead of strings - the preprocess will handle them         results = enricher.scan(values=serialized_objects)         scan.status = EventLevel.COMPLETED         scan.details = to_json_serializable(results)         session.commit()         return {\"result\": scan.details}     except Exception as ex:         session.rollback()         error_logs = f\"An error occurred: {str(ex)}\"         print(f\"Error in task: {error_logs}\")         scan = session.query(Scan).filter(Scan.id == uuid.UUID(self.request.id)).first()         if scan:             scan.status = EventLevel.FAILED             scan.error = error_logs             session.commit()         self.update_state(state=states.FAILURE)         raise ex     finally:         session.close()"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "name": "FlowOrchestrator",
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "nodeType": "Class",
+            "startLine": 15,
+            "endLine": 498,
+            "content": "class FlowOrchestrator(Enricher):     \"\"\"     Orchestrator for running a list of enrichers.     \"\"\"     def __init__(         self,         sketch_id: str,         scan_id: str,         enricher_branches: List[FlowBranch],         vault=None,     ):         super().__init__(sketch_id, scan_id, vault=vault)         self.enricher_branches = enricher_branches         self.enrichers = {}  # Map of nodeId -> enricher instance         self.execution_log_file = None  # Path to the execution log file         self._create_execution_log()         self._load_enrichers()     def _create_execution_log(self) -> None:         \"\"\"         Create the initial execution log JSON file with enricher configuration.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_execution_{self.sketch_id}_{self.scan_id}.json\"             self.execution_log_file = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Create initial log structure             initial_log = {                 \"sketch_id\": self.sketch_id,                 \"scan_id\": self.scan_id,                 \"created_at\": datetime.now().isoformat(),                 \"updated_at\": datetime.now().isoformat(),                 \"status\": \"initialized\",                 \"enricher_branches\": serialized_branches,                 \"execution_log\": [],                 \"summary\": {                     \"total_steps\": 0,                     \"completed_steps\": 0,                     \"failed_steps\": 0,                     \"total_execution_time_ms\": 0,                 },                 \"final_results\": {},             }             # Count total steps             total_steps = 0             for branch in self.enricher_branches:                 for step in branch.steps:                     if step.type != \"type\":                         total_steps += 1             initial_log[\"summary\"][\"total_steps\"] = total_steps             # Save initial log file             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(initial_log, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log created at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to create execution log: {str(e)}\"}             )             self.execution_log_file = None     def _update_execution_log(         self, step_entry: Dict[str, Any], status: str = None     ) -> None:         \"\"\"         Update the execution log file with a new step entry or status update.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update timestamp             log_data[\"updated_at\"] = datetime.now().isoformat()             # Update status if provided             if status:                 log_data[\"status\"] = status             # Add step entry if provided             if step_entry:                 log_data[\"execution_log\"].append(step_entry)                 # Update summary                 if step_entry[\"status\"] == \"completed\":                     log_data[\"summary\"][\"completed_steps\"] += 1                 elif step_entry[\"status\"] == \"error\":                     log_data[\"summary\"][\"failed_steps\"] += 1                 if \"execution_time_ms\" in step_entry:                     log_data[\"summary\"][\"total_execution_time_ms\"] += step_entry[                         \"execution_time_ms\"                     ]             # Write updated log             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(log_data, f, indent=2, ensure_ascii=False)         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to update execution log: {str(e)}\"}             )     def _finalize_execution_log(self, final_results: Dict[str, Any]) -> None:         \"\"\"         Finalize the execution log with final results and status.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update final data             log_data[\"updated_at\"] = datetime.now().isoformat()             log_data[\"status\"] = \"completed\"             log_data[\"final_results\"] = to_json_serializable(final_results) ... [truncated]"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-api/app/utils.py:to_json_serializable",
+            "to": "Function:flowsint-api/app/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_enricher",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/utils.py:to_json_serializable",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+            "to": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+            "to": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-api/app/utils.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-api/app/utils.py:to_json_serializable",
+                    "name": "to_json_serializable",
+                    "filePath": "flowsint-api/app/utils.py",
+                    "nodeType": "Function",
+                    "startLine": 289,
+                    "endLine": 313,
+                    "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/utils.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/utils.py:to_json_serializable",
+                    "name": "to_json_serializable",
+                    "filePath": "flowsint-core/src/flowsint_core/utils.py",
+                    "nodeType": "Function",
+                    "startLine": 327,
+                    "endLine": 352,
+                    "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/utils.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/utils.py:to_json_serializable",
+                    "name": "to_json_serializable",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/utils.py",
+                    "nodeType": "Function",
+                    "startLine": 343,
+                    "endLine": 367,
+                    "content": "def to_json_serializable(obj):     \"\"\"Convert any object to a JSON-serializable format.\"\"\"     import json     from pydantic import BaseModel     try:         # Test if already JSON serializable         json.dumps(obj)         return obj     except (TypeError, ValueError):         # Handle common cases         if isinstance(obj, BaseModel):             # Use mode='json' to ensure all Pydantic types are properly serialized             return (                 obj.model_dump(mode=\"json\")                 if hasattr(obj, \"model_dump\")                 else obj.dict()             )         elif isinstance(obj, (list, tuple)):             return [to_json_serializable(item) for item in obj]         elif isinstance(obj, dict):             return {key: to_json_serializable(value) for key, value in obj.items()}         else:             # Convert anything else to string             return str(obj)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+            "count": 7,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+                    "name": "__init__",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 20,
+                    "endLine": 32,
+                    "content": "    def __init__(         self,         sketch_id: str,         scan_id: str,         enricher_branches: List[FlowBranch],         vault=None,     ):         super().__init__(sketch_id, scan_id, vault=vault)         self.enricher_branches = enricher_branches         self.enrichers = {}  # Map of nodeId -> enricher instance         self.execution_log_file = None  # Path to the execution log file         self._create_execution_log()         self._load_enrichers()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+                    "name": "_create_execution_log",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 34,
+                    "endLine": 91,
+                    "content": "    def _create_execution_log(self) -> None:         \"\"\"         Create the initial execution log JSON file with enricher configuration.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_execution_{self.sketch_id}_{self.scan_id}.json\"             self.execution_log_file = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Create initial log structure             initial_log = {                 \"sketch_id\": self.sketch_id,                 \"scan_id\": self.scan_id,                 \"created_at\": datetime.now().isoformat(),                 \"updated_at\": datetime.now().isoformat(),                 \"status\": \"initialized\",                 \"enricher_branches\": serialized_branches,                 \"execution_log\": [],                 \"summary\": {                     \"total_steps\": 0,                     \"completed_steps\": 0,                     \"failed_steps\": 0,                     \"total_execution_time_ms\": 0,                 },                 \"final_results\": {},             }             # Count total steps             total_steps = 0             for branch in self.enricher_branches:                 for step in branch.steps:                     if step.type != \"type\":                         total_steps += 1             initial_log[\"summary\"][\"total_steps\"] = total_steps             # Save initial log file             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(initial_log, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log created at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to create execution log: {str(e)}\"}             )             self.execution_log_file = None"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+                    "name": "_finalize_execution_log",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 138,
+                    "endLine": 170,
+                    "content": "    def _finalize_execution_log(self, final_results: Dict[str, Any]) -> None:         \"\"\"         Finalize the execution log with final results and status.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update final data             log_data[\"updated_at\"] = datetime.now().isoformat()             log_data[\"status\"] = \"completed\"             log_data[\"final_results\"] = to_json_serializable(final_results)             # Write final log             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(log_data, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log finalized at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Failed to finalize execution log: {str(e)}\"},             )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+                    "name": "_save_enricher_branches",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 172,
+                    "endLine": 210,
+                    "content": "    def _save_enricher_branches(self) -> None:         \"\"\"         Save the enricher branches to a JSON file for debugging and persistence.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_branches_{self.sketch_id}_{self.scan_id}.json\"             filepath = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Save to JSON file             with open(filepath, \"w\", encoding=\"utf-8\") as f:                 json.dump(                     {                         \"sketch_id\": self.sketch_id,                         \"scan_id\": self.scan_id,                         \"timestamp\": datetime.now().isoformat(),                         \"enricher_branches\": serialized_branches,                     },                     f,                     indent=2,                     ensure_ascii=False,                 )             Logger.info(                 self.sketch_id, {\"message\": f\"Enricher branches saved to {filepath}\"}             )         except Exception as e:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Failed to save enricher branches: {str(e)}\"},             )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+                    "name": "scan",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 332,
+                    "endLine": 342,
+                    "content": "    def scan(self, values: List[str]) -> Dict[str, Any]:         \"\"\"         Synchronous implementation of scan that runs the async version in an event loop         \"\"\"         loop = asyncio.new_event_loop()         asyncio.set_event_loop(loop)         try:             results = loop.run_until_complete(self._async_scan(values))             return results         finally:             loop.close()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+                    "name": "_async_scan",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 344,
+                    "endLine": 498,
+                    "content": "    async def _async_scan(self, values: List[str]) -> Dict[str, Any]:         \"\"\"         The actual async implementation of the scan logic         \"\"\"         # Update execution log to indicate scan has started         self._update_execution_log(None, \"running\")         results = {\"initial_values\": values, \"branches\": [], \"results\": {}}         Logger.pending(self.sketch_id, {\"message\": \"Starting enricher...\"})         # Global mapping of output references to actual values         results_mapping = {}         # Cache for enricher results to avoid recomputation         enricher_results_cache = {}         total_steps = sum(len(branch.steps) for branch in self.enricher_branches)         completed_steps = 0         # Process each branch         for branch in self.enricher_branches:             branch_id = branch.id             branch_name = branch.name             branch_results = {\"id\": branch_id, \"name\": branch_name, \"steps\": []}             # Process each step in the branch             enricher_inputs = values             for step in branch.steps:                 if step.type == \"type\":                     continue                 node_id = step.nodeId                 enricher = self.enrichers.get(node_id)                 if not enricher:                     Logger.error(                         self.sketch_id,                         {\"message\": f\"Enricher not found for node {node_id}\"},                     )                     continue                 enricher_name = enricher.name()                 step_start_time = time.time()                 step_result = {                     \"nodeId\": node_id,                     \"enricher\": enricher_name,                     \"status\": \"error\",  # Default to error, will update on success                 }                 # Create execution log entry                 log_entry = {                     \"step_id\": f\"{branch_id}_{node_id}\",                     \"branch_id\": branch_id,                     \"branch_name\": branch_name,                     \"node_id\": node_id,                     \"enricher_name\": enricher_name,                     \"inputs\": to_json_serializable(enricher_inputs),                     \"outputs\": None,                     \"status\": \"running\",                     \"error\": None,                     \"timestamp\": datetime.now().isoformat(),                     \"execution_time_ms\": 0,                 }                 try:                     # Update status for current step                     completed_steps += 1                     if not enricher_inputs:                         error_msg = \"No inputs available\"                         step_result[\"error\"] = error_msg                         log_entry[\"status\"] = \"error\"                         log_entry[\"error\"] = error_msg                         log_entry[\"execution_time_ms\"] = int(                             (time.time() - step_start_time) * 1000                         )                         self._update_execution_log(log_entry)                         branch_results[\"steps\"].append(step_result)                         continue                     # Check if we already have results for this enricher with these inputs                     cache_key = f\"{node_id}:{str(enricher_inputs)}\"                     if cache_key in enricher_results_cache:                         outputs = enricher_results_cache[cache_key]                         log_entry[\"cache_hit\"] = True                     else:                         # Execute the enricher                         outputs = await enricher.execute(enricher_inputs)                         if not isinstance(outputs, (dict, list)):                             raise ValueError(                                 f\"Enricher '{enricher_name}' returned unsupported output format\"                             )                         # Cache the results                         enricher_results_cache[cache_key] = outputs                         log_entry[\"cache_hit\"] = False                     # Store the outputs in the step result (serialize to avoid JSON issues)                     step_result[\"outputs\"] = to_json_serializable(outputs)                     step_result[\"status\"] = \"completed\"                     # Update log entry with success                     log_entry[\"outputs\"] = to_json_serializable(outputs)                     log_entry[\"status\"] = \"completed\"                     log_entry[\"execution_time_ms\"] = int(                         (time.time() - step_start_time) * 1000                     )                     # Update the global results mapping with the outputs                     self.update_results_mapping(outputs, step.outputs, results_mapping)                     # Also store the raw outputs in the main results                     results[\"results\"][node_id] = outputs                     enricher_inputs = outputs                 except ValidationError as e:                     error_msg = f\"Validation error: {str(e)}\"        ... [truncated]"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+                    "name": "FlowOrchestrator",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Class",
+                    "startLine": 15,
+                    "endLine": 498,
+                    "content": "class FlowOrchestrator(Enricher):     \"\"\"     Orchestrator for running a list of enrichers.     \"\"\"     def __init__(         self,         sketch_id: str,         scan_id: str,         enricher_branches: List[FlowBranch],         vault=None,     ):         super().__init__(sketch_id, scan_id, vault=vault)         self.enricher_branches = enricher_branches         self.enrichers = {}  # Map of nodeId -> enricher instance         self.execution_log_file = None  # Path to the execution log file         self._create_execution_log()         self._load_enrichers()     def _create_execution_log(self) -> None:         \"\"\"         Create the initial execution log JSON file with enricher configuration.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_execution_{self.sketch_id}_{self.scan_id}.json\"             self.execution_log_file = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Create initial log structure             initial_log = {                 \"sketch_id\": self.sketch_id,                 \"scan_id\": self.scan_id,                 \"created_at\": datetime.now().isoformat(),                 \"updated_at\": datetime.now().isoformat(),                 \"status\": \"initialized\",                 \"enricher_branches\": serialized_branches,                 \"execution_log\": [],                 \"summary\": {                     \"total_steps\": 0,                     \"completed_steps\": 0,                     \"failed_steps\": 0,                     \"total_execution_time_ms\": 0,                 },                 \"final_results\": {},             }             # Count total steps             total_steps = 0             for branch in self.enricher_branches:                 for step in branch.steps:                     if step.type != \"type\":                         total_steps += 1             initial_log[\"summary\"][\"total_steps\"] = total_steps             # Save initial log file             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(initial_log, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log created at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to create execution log: {str(e)}\"}             )             self.execution_log_file = None     def _update_execution_log(         self, step_entry: Dict[str, Any], status: str = None     ) -> None:         \"\"\"         Update the execution log file with a new step entry or status update.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update timestamp             log_data[\"updated_at\"] = datetime.now().isoformat()             # Update status if provided             if status:                 log_data[\"status\"] = status             # Add step entry if provided             if step_entry:                 log_data[\"execution_log\"].append(step_entry)                 # Update summary                 if step_entry[\"status\"] == \"completed\":                     log_data[\"summary\"][\"completed_steps\"] += 1                 elif step_entry[\"status\"] == \"error\":                     log_data[\"summary\"][\"failed_steps\"] += 1                 if \"execution_time_ms\" in step_entry:                     log_data[\"summary\"][\"total_execution_time_ms\"] += step_entry[                         \"execution_time_ms\"                     ]             # Write updated log             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(log_data, f, indent=2, ensure_ascii=False)         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to update execution log: {str(e)}\"}             )     def _finalize_execution_log(self, final_results: Dict[str, Any]) -> None:         \"\"\"         Finalize the execution log with final results and status.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update final data             log_data[\"updated_at\"] = datetime.now().isoformat()             log_data[\"status\"] = \"completed\"             log_data[\"final_results\"] = to_json_serializable(final_results) ... [truncated]"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_enricher",
+                    "name": "run_enricher",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 67,
+                    "endLine": 137,
+                    "content": "def run_enricher(     self,     enricher_name: str,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: Optional[str] = None,     params: Dict[str, Any] | None = None, ):     session = SessionLocal()     try:         scan_id = uuid.UUID(self.request.id)         scan = Scan(             id=scan_id,             status=EventLevel.PENDING,             sketch_id=uuid.UUID(sketch_id) if sketch_id else None,         )         session.add(scan)         session.commit()         # Create vault instance if owner_id is provided         vault = None         if owner_id:             try:                 vault = create_vault_service(session).for_user(uuid.UUID(owner_id))             except Exception as e:                 Logger.error(                     sketch_id, {\"message\": f\"Failed to create vault: {str(e)}\"}                 )         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):             raise ValueError(f\"Enricher '{enricher_name}' not found in registry\")         run_params = params or {}         run_params = ENRICHER_REGISTRY.filter_params(enricher_name, run_params)         enricher = ENRICHER_REGISTRY.get_enricher(             name=enricher_name,             sketch_id=sketch_id,             scan_id=scan_id,             vault=vault,             params=run_params,         )         # Deserialize objects back into Pydantic models         # The preprocess method in Enricher will handle these already-parsed objects         results = asyncio.run(enricher.execute(values=serialized_objects))         scan.status = EventLevel.COMPLETED         scan.details = to_json_serializable(results)         session.commit()         return {\"result\": scan.details}     except Exception as ex:         session.rollback()         error_logs = f\"An error occurred: {str(ex)}\"         print(f\"Error in task: {error_logs}\")         scan = session.query(Scan).filter(Scan.id == uuid.UUID(self.request.id)).first()         if scan:             scan.status = EventLevel.FAILED             scan.error = error_logs             session.commit()         self.update_state(state=states.FAILURE)         raise ex     finally:         session.close()"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/tasks/flow.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+                    "name": "run_flow",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/flow.py",
+                    "nodeType": "Function",
+                    "startLine": 25,
+                    "endLine": 91,
+                    "content": "def run_flow(     self,     enricher_branches,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: Optional[str] = None, ):     session = SessionLocal()     try:         if not enricher_branches:             raise ValueError(\"enricher_branches not provided in the input enricher\")         scan_id = uuid.UUID(self.request.id)         scan = Scan(             id=scan_id,             status=EventLevel.PENDING,             sketch_id=uuid.UUID(sketch_id) if sketch_id else None,         )         session.add(scan)         session.commit()         # Create vault instance if owner_id is provided         vault = None         if owner_id:             try:                 vault = create_vault_service(session).for_user(uuid.UUID(owner_id))             except Exception as e:                 Logger.error(                     sketch_id, {\"message\": f\"Failed to create vault: {str(e)}\"}                 )         enricher_branches = [FlowBranch(**branch) for branch in enricher_branches]         enricher = FlowOrchestrator(             sketch_id=sketch_id,             scan_id=str(scan_id),             enricher_branches=enricher_branches,             vault=vault,         )         # Use the synchronous scan method which internally handles the async operations         # Pass serialized objects instead of strings - the preprocess will handle them         results = enricher.scan(values=serialized_objects)         scan.status = EventLevel.COMPLETED         scan.details = to_json_serializable(results)         session.commit()         return {\"result\": scan.details}     except Exception as ex:         session.rollback()         error_logs = f\"An error occurred: {str(ex)}\"         print(f\"Error in task: {error_logs}\")         scan = session.query(Scan).filter(Scan.id == uuid.UUID(self.request.id)).first()         if scan:             scan.status = EventLevel.FAILED             scan.error = error_logs             session.commit()         self.update_state(state=states.FAILURE)         raise ex     finally:         session.close()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 9
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_enricher",
+                    "name": "run_enricher",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 67,
+                    "endLine": 137,
+                    "content": "def run_enricher(     self,     enricher_name: str,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: Optional[str] = None,     params: Dict[str, Any] | None = None, ):     session = SessionLocal()     try:         scan_id = uuid.UUID(self.request.id)         scan = Scan(             id=scan_id,             status=EventLevel.PENDING,             sketch_id=uuid.UUID(sketch_id) if sketch_id else None,         )         session.add(scan)         session.commit()         # Create vault instance if owner_id is provided         vault = None         if owner_id:             try:                 vault = create_vault_service(session).for_user(uuid.UUID(owner_id))             except Exception as e:                 Logger.error(                     sketch_id, {\"message\": f\"Failed to create vault: {str(e)}\"}                 )         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):             raise ValueError(f\"Enricher '{enricher_name}' not found in registry\")         run_params = params or {}         run_params = ENRICHER_REGISTRY.filter_params(enricher_name, run_params)         enricher = ENRICHER_REGISTRY.get_enricher(             name=enricher_name,             sketch_id=sketch_id,             scan_id=scan_id,             vault=vault,             params=run_params,         )         # Deserialize objects back into Pydantic models         # The preprocess method in Enricher will handle these already-parsed objects         results = asyncio.run(enricher.execute(values=serialized_objects))         scan.status = EventLevel.COMPLETED         scan.details = to_json_serializable(results)         session.commit()         return {\"result\": scan.details}     except Exception as ex:         session.rollback()         error_logs = f\"An error occurred: {str(ex)}\"         print(f\"Error in task: {error_logs}\")         scan = session.query(Scan).filter(Scan.id == uuid.UUID(self.request.id)).first()         if scan:             scan.status = EventLevel.FAILED             scan.error = error_logs             session.commit()         self.update_state(state=states.FAILURE)         raise ex     finally:         session.close()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/flow.py:run_flow",
+                    "name": "run_flow",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/flow.py",
+                    "nodeType": "Function",
+                    "startLine": 25,
+                    "endLine": 91,
+                    "content": "def run_flow(     self,     enricher_branches,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: Optional[str] = None, ):     session = SessionLocal()     try:         if not enricher_branches:             raise ValueError(\"enricher_branches not provided in the input enricher\")         scan_id = uuid.UUID(self.request.id)         scan = Scan(             id=scan_id,             status=EventLevel.PENDING,             sketch_id=uuid.UUID(sketch_id) if sketch_id else None,         )         session.add(scan)         session.commit()         # Create vault instance if owner_id is provided         vault = None         if owner_id:             try:                 vault = create_vault_service(session).for_user(uuid.UUID(owner_id))             except Exception as e:                 Logger.error(                     sketch_id, {\"message\": f\"Failed to create vault: {str(e)}\"}                 )         enricher_branches = [FlowBranch(**branch) for branch in enricher_branches]         enricher = FlowOrchestrator(             sketch_id=sketch_id,             scan_id=str(scan_id),             enricher_branches=enricher_branches,             vault=vault,         )         # Use the synchronous scan method which internally handles the async operations         # Pass serialized objects instead of strings - the preprocess will handle them         results = enricher.scan(values=serialized_objects)         scan.status = EventLevel.COMPLETED         scan.details = to_json_serializable(results)         session.commit()         return {\"result\": scan.details}     except Exception as ex:         session.rollback()         error_logs = f\"An error occurred: {str(ex)}\"         print(f\"Error in task: {error_logs}\")         scan = session.query(Scan).filter(Scan.id == uuid.UUID(self.request.id)).first()         if scan:             scan.status = EventLevel.FAILED             scan.error = error_logs             session.commit()         self.update_state(state=states.FAILURE)         raise ex     finally:         session.close()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._create_execution_log#0",
+                    "name": "_create_execution_log",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 34,
+                    "endLine": 91,
+                    "content": "    def _create_execution_log(self) -> None:         \"\"\"         Create the initial execution log JSON file with enricher configuration.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_execution_{self.sketch_id}_{self.scan_id}.json\"             self.execution_log_file = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Create initial log structure             initial_log = {                 \"sketch_id\": self.sketch_id,                 \"scan_id\": self.scan_id,                 \"created_at\": datetime.now().isoformat(),                 \"updated_at\": datetime.now().isoformat(),                 \"status\": \"initialized\",                 \"enricher_branches\": serialized_branches,                 \"execution_log\": [],                 \"summary\": {                     \"total_steps\": 0,                     \"completed_steps\": 0,                     \"failed_steps\": 0,                     \"total_execution_time_ms\": 0,                 },                 \"final_results\": {},             }             # Count total steps             total_steps = 0             for branch in self.enricher_branches:                 for step in branch.steps:                     if step.type != \"type\":                         total_steps += 1             initial_log[\"summary\"][\"total_steps\"] = total_steps             # Save initial log file             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(initial_log, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log created at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to create execution log: {str(e)}\"}             )             self.execution_log_file = None"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._finalize_execution_log#1",
+                    "name": "_finalize_execution_log",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 138,
+                    "endLine": 170,
+                    "content": "    def _finalize_execution_log(self, final_results: Dict[str, Any]) -> None:         \"\"\"         Finalize the execution log with final results and status.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update final data             log_data[\"updated_at\"] = datetime.now().isoformat()             log_data[\"status\"] = \"completed\"             log_data[\"final_results\"] = to_json_serializable(final_results)             # Write final log             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(log_data, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log finalized at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Failed to finalize execution log: {str(e)}\"},             )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._save_enricher_branches#0",
+                    "name": "_save_enricher_branches",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 172,
+                    "endLine": 210,
+                    "content": "    def _save_enricher_branches(self) -> None:         \"\"\"         Save the enricher branches to a JSON file for debugging and persistence.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_branches_{self.sketch_id}_{self.scan_id}.json\"             filepath = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Save to JSON file             with open(filepath, \"w\", encoding=\"utf-8\") as f:                 json.dump(                     {                         \"sketch_id\": self.sketch_id,                         \"scan_id\": self.scan_id,                         \"timestamp\": datetime.now().isoformat(),                         \"enricher_branches\": serialized_branches,                     },                     f,                     indent=2,                     ensure_ascii=False,                 )             Logger.info(                 self.sketch_id, {\"message\": f\"Enricher branches saved to {filepath}\"}             )         except Exception as e:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Failed to save enricher branches: {str(e)}\"},             )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator._async_scan#1",
+                    "name": "_async_scan",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 344,
+                    "endLine": 498,
+                    "content": "    async def _async_scan(self, values: List[str]) -> Dict[str, Any]:         \"\"\"         The actual async implementation of the scan logic         \"\"\"         # Update execution log to indicate scan has started         self._update_execution_log(None, \"running\")         results = {\"initial_values\": values, \"branches\": [], \"results\": {}}         Logger.pending(self.sketch_id, {\"message\": \"Starting enricher...\"})         # Global mapping of output references to actual values         results_mapping = {}         # Cache for enricher results to avoid recomputation         enricher_results_cache = {}         total_steps = sum(len(branch.steps) for branch in self.enricher_branches)         completed_steps = 0         # Process each branch         for branch in self.enricher_branches:             branch_id = branch.id             branch_name = branch.name             branch_results = {\"id\": branch_id, \"name\": branch_name, \"steps\": []}             # Process each step in the branch             enricher_inputs = values             for step in branch.steps:                 if step.type == \"type\":                     continue                 node_id = step.nodeId                 enricher = self.enrichers.get(node_id)                 if not enricher:                     Logger.error(                         self.sketch_id,                         {\"message\": f\"Enricher not found for node {node_id}\"},                     )                     continue                 enricher_name = enricher.name()                 step_start_time = time.time()                 step_result = {                     \"nodeId\": node_id,                     \"enricher\": enricher_name,                     \"status\": \"error\",  # Default to error, will update on success                 }                 # Create execution log entry                 log_entry = {                     \"step_id\": f\"{branch_id}_{node_id}\",                     \"branch_id\": branch_id,                     \"branch_name\": branch_name,                     \"node_id\": node_id,                     \"enricher_name\": enricher_name,                     \"inputs\": to_json_serializable(enricher_inputs),                     \"outputs\": None,                     \"status\": \"running\",                     \"error\": None,                     \"timestamp\": datetime.now().isoformat(),                     \"execution_time_ms\": 0,                 }                 try:                     # Update status for current step                     completed_steps += 1                     if not enricher_inputs:                         error_msg = \"No inputs available\"                         step_result[\"error\"] = error_msg                         log_entry[\"status\"] = \"error\"                         log_entry[\"error\"] = error_msg                         log_entry[\"execution_time_ms\"] = int(                             (time.time() - step_start_time) * 1000                         )                         self._update_execution_log(log_entry)                         branch_results[\"steps\"].append(step_result)                         continue                     # Check if we already have results for this enricher with these inputs                     cache_key = f\"{node_id}:{str(enricher_inputs)}\"                     if cache_key in enricher_results_cache:                         outputs = enricher_results_cache[cache_key]                         log_entry[\"cache_hit\"] = True                     else:                         # Execute the enricher                         outputs = await enricher.execute(enricher_inputs)                         if not isinstance(outputs, (dict, list)):                             raise ValueError(                                 f\"Enricher '{enricher_name}' returned unsupported output format\"                             )                         # Cache the results                         enricher_results_cache[cache_key] = outputs                         log_entry[\"cache_hit\"] = False                     # Store the outputs in the step result (serialize to avoid JSON issues)                     step_result[\"outputs\"] = to_json_serializable(outputs)                     step_result[\"status\"] = \"completed\"                     # Update log entry with success                     log_entry[\"outputs\"] = to_json_serializable(outputs)                     log_entry[\"status\"] = \"completed\"                     log_entry[\"execution_time_ms\"] = int(                         (time.time() - step_start_time) * 1000                     )                     # Update the global results mapping with the outputs                     self.update_results_mapping(outputs, step.outputs, results_mapping)                     # Also store the raw outputs in the main results                     results[\"results\"][node_id] = outputs                     enricher_inputs = outputs                 except ValidationError as e:                     error_msg = f\"Validation error: {str(e)}\"        ... [truncated]"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.__init__#4",
+                    "name": "__init__",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 20,
+                    "endLine": 32,
+                    "content": "    def __init__(         self,         sketch_id: str,         scan_id: str,         enricher_branches: List[FlowBranch],         vault=None,     ):         super().__init__(sketch_id, scan_id, vault=vault)         self.enricher_branches = enricher_branches         self.enrichers = {}  # Map of nodeId -> enricher instance         self.execution_log_file = None  # Path to the execution log file         self._create_execution_log()         self._load_enrichers()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator.scan#1",
+                    "name": "scan",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Method",
+                    "startLine": 332,
+                    "endLine": 342,
+                    "content": "    def scan(self, values: List[str]) -> Dict[str, Any]:         \"\"\"         Synchronous implementation of scan that runs the async version in an event loop         \"\"\"         loop = asyncio.new_event_loop()         asyncio.set_event_loop(loop)         try:             results = loop.run_until_complete(self._async_scan(values))             return results         finally:             loop.close()"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_core/core/orchestrator.py:FlowOrchestrator",
+                    "name": "FlowOrchestrator",
+                    "filePath": "flowsint-core/src/flowsint_core/core/orchestrator.py",
+                    "nodeType": "Class",
+                    "startLine": 15,
+                    "endLine": 498,
+                    "content": "class FlowOrchestrator(Enricher):     \"\"\"     Orchestrator for running a list of enrichers.     \"\"\"     def __init__(         self,         sketch_id: str,         scan_id: str,         enricher_branches: List[FlowBranch],         vault=None,     ):         super().__init__(sketch_id, scan_id, vault=vault)         self.enricher_branches = enricher_branches         self.enrichers = {}  # Map of nodeId -> enricher instance         self.execution_log_file = None  # Path to the execution log file         self._create_execution_log()         self._load_enrichers()     def _create_execution_log(self) -> None:         \"\"\"         Create the initial execution log JSON file with enricher configuration.         \"\"\"         try:             # Create a directory for storing enricher files if it doesn't exist             enricher_dir = \"enricher_logs\"             os.makedirs(enricher_dir, exist_ok=True)             # Create filename with sketch_id and scan_id             filename = f\"enricher_execution_{self.sketch_id}_{self.scan_id}.json\"             self.execution_log_file = os.path.join(enricher_dir, filename)             # Serialize the enricher branches             serialized_branches = to_json_serializable(self.enricher_branches)             # Create initial log structure             initial_log = {                 \"sketch_id\": self.sketch_id,                 \"scan_id\": self.scan_id,                 \"created_at\": datetime.now().isoformat(),                 \"updated_at\": datetime.now().isoformat(),                 \"status\": \"initialized\",                 \"enricher_branches\": serialized_branches,                 \"execution_log\": [],                 \"summary\": {                     \"total_steps\": 0,                     \"completed_steps\": 0,                     \"failed_steps\": 0,                     \"total_execution_time_ms\": 0,                 },                 \"final_results\": {},             }             # Count total steps             total_steps = 0             for branch in self.enricher_branches:                 for step in branch.steps:                     if step.type != \"type\":                         total_steps += 1             initial_log[\"summary\"][\"total_steps\"] = total_steps             # Save initial log file             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(initial_log, f, indent=2, ensure_ascii=False)             Logger.info(                 self.sketch_id,                 {                     \"message\": f\"Enricher execution log created at {self.execution_log_file}\"                 },             )         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to create execution log: {str(e)}\"}             )             self.execution_log_file = None     def _update_execution_log(         self, step_entry: Dict[str, Any], status: str = None     ) -> None:         \"\"\"         Update the execution log file with a new step entry or status update.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update timestamp             log_data[\"updated_at\"] = datetime.now().isoformat()             # Update status if provided             if status:                 log_data[\"status\"] = status             # Add step entry if provided             if step_entry:                 log_data[\"execution_log\"].append(step_entry)                 # Update summary                 if step_entry[\"status\"] == \"completed\":                     log_data[\"summary\"][\"completed_steps\"] += 1                 elif step_entry[\"status\"] == \"error\":                     log_data[\"summary\"][\"failed_steps\"] += 1                 if \"execution_time_ms\" in step_entry:                     log_data[\"summary\"][\"total_execution_time_ms\"] += step_entry[                         \"execution_time_ms\"                     ]             # Write updated log             with open(self.execution_log_file, \"w\", encoding=\"utf-8\") as f:                 json.dump(log_data, f, indent=2, ensure_ascii=False)         except Exception as e:             Logger.error(                 self.sketch_id, {\"message\": f\"Failed to update execution log: {str(e)}\"}             )     def _finalize_execution_log(self, final_results: Dict[str, Any]) -> None:         \"\"\"         Finalize the execution log with final results and status.         \"\"\"         if not self.execution_log_file:             return         try:             # Read current log             with open(self.execution_log_file, \"r\", encoding=\"utf-8\") as f:                 log_data = json.load(f)             # Update final data             log_data[\"updated_at\"] = datetime.now().isoformat()             log_data[\"status\"] = \"completed\"             log_data[\"final_results\"] = to_json_serializable(final_results) ... [truncated]"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint",
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "symbol": "to_json_serializable",
+        "rootSymbols": 3,
+        "totalSymbols": 12,
+        "totalEdges": 19,
+        "filesMatched": 6,
+        "truncated": false,
+        "direct": 6,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "ambiguous-symbol"
+    ],
+    "indexStatus": "ready"
+}

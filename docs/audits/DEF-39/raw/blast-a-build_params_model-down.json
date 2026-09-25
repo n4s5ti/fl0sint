@@ -1,0 +1,69 @@
+{
+    "symbol": "build_params_model",
+    "repo": "fl0sint",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+        "name": "build_params_model",
+        "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+        "nodeType": "Function",
+        "startLine": 29,
+        "endLine": 59,
+        "content": "def build_params_model(params_schema: list) -> BaseModel:     \"\"\"     Build a strict Pydantic model from a params_schema.     Unknown fields will raise a validation error.     Note: Vault secrets are always optional in the Pydantic model to allow     for deferred configuration. Required validation happens after vault resolution.     \"\"\"     fields: Dict[str, Any] = {}     for param in params_schema:         name = param[\"name\"]         param_type = param.get(\"type\", \"string\")         field_type = bool if param_type == \"bool\" else str         required = param.get(\"required\", False)         # Vault secrets are always optional in Pydantic validation         # Required validation happens after vault resolution         if param_type == \"vaultSecret\":             default = param.get(\"default\", None)         else:             default = ... if required else param.get(\"default\")         fields[name] = (             Optional[field_type],             Field(default=default, description=param.get(\"description\", \"\")),         )     model = create_model(\"ParamsModel\", __config__=ConfigDict(extra=\"forbid\"), **fields)     return model"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+            "name": "build_params_model",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Function",
+            "startLine": 29,
+            "endLine": 59,
+            "content": "def build_params_model(params_schema: list) -> BaseModel:     \"\"\"     Build a strict Pydantic model from a params_schema.     Unknown fields will raise a validation error.     Note: Vault secrets are always optional in the Pydantic model to allow     for deferred configuration. Required validation happens after vault resolution.     \"\"\"     fields: Dict[str, Any] = {}     for param in params_schema:         name = param[\"name\"]         param_type = param.get(\"type\", \"string\")         field_type = bool if param_type == \"bool\" else str         required = param.get(\"required\", False)         # Vault secrets are always optional in Pydantic validation         # Required validation happens after vault resolution         if param_type == \"vaultSecret\":             default = param.get(\"default\", None)         else:             default = ... if required else param.get(\"default\")         fields[name] = (             Optional[field_type],             Field(default=default, description=param.get(\"description\", \"\")),         )     model = create_model(\"ParamsModel\", __config__=ConfigDict(extra=\"forbid\"), **fields)     return model"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+                    "name": "build_params_model",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Function",
+                    "startLine": 29,
+                    "endLine": 59,
+                    "content": "def build_params_model(params_schema: list) -> BaseModel:     \"\"\"     Build a strict Pydantic model from a params_schema.     Unknown fields will raise a validation error.     Note: Vault secrets are always optional in the Pydantic model to allow     for deferred configuration. Required validation happens after vault resolution.     \"\"\"     fields: Dict[str, Any] = {}     for param in params_schema:         name = param[\"name\"]         param_type = param.get(\"type\", \"string\")         field_type = bool if param_type == \"bool\" else str         required = param.get(\"required\", False)         # Vault secrets are always optional in Pydantic validation         # Required validation happens after vault resolution         if param_type == \"vaultSecret\":             default = param.get(\"default\", None)         else:             default = ... if required else param.get(\"default\")         fields[name] = (             Optional[field_type],             Field(default=default, description=param.get(\"description\", \"\")),         )     model = create_model(\"ParamsModel\", __config__=ConfigDict(extra=\"forbid\"), **fields)     return model"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint",
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "symbol": "build_params_model",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "source_generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+    "indexStatus": "ready"
+}

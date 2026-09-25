@@ -1,0 +1,1 @@
+blast: graph index missing — No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one.
