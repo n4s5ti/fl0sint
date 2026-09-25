@@ -11,6 +11,7 @@ from .key_repository import KeyRepository
 from .flow_repository import FlowRepository
 from .custom_type_repository import CustomTypeRepository
 from .enricher_template_repository import EnricherTemplateRepository
+from .grievance_repository import GrievanceRepository
 
 __all__ = [
     "BaseRepository",
@@ -25,4 +26,5 @@ __all__ = [
     "FlowRepository",
     "CustomTypeRepository",
     "EnricherTemplateRepository",
+    "GrievanceRepository",
 ]

@@ -1,0 +1,1068 @@
+version: 1
+pivot_unlocks:
+- pivot_id: person_name_full_to_contact_email_address_candidat
+  requires:
+  - person.name.full
+  - org.domain
+  unlocks:
+  - contact.email.address.candidate
+  method: []
+  mechanism: Can generate or test public business email patterns.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_to_org_employee_name_candidate
+  requires:
+  - person.name.full
+  - org.name
+  unlocks:
+  - org.employee_name_candidate
+  method: []
+  mechanism: Can search public staff pages, bios, filings, talks, docs.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_to_record_company_filing_candidat
+  requires:
+  - person.name.full
+  - org.jurisdiction
+  unlocks:
+  - record.company_filing.candidate
+  method: []
+  mechanism: Reduces false matches in business/public-record systems.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_to_account_profile_url_candidate
+  requires:
+  - account.username
+  - org.name
+  unlocks:
+  - account.profile_url.candidate
+  method: []
+  mechanism: Helps distinguish personal accounts from company/team accounts.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_to_person_identity_candidate
+  requires:
+  - person.name.full
+  - geo.region
+  unlocks:
+  - person.identity_candidate
+  method: []
+  mechanism: Narrows same-name collisions; still requires verification.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_to_email_provider
+  requires:
+  - contact.email.address
+  - net.dns.mx
+  unlocks:
+  - email.provider
+  method: []
+  mechanism: Email domain plus MX records identifies mail infrastructure.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_to_contact_email_address_verified
+  requires:
+  - contact.email.address
+  - source.url
+  unlocks:
+  - contact.email.address.verified
+  method: []
+  mechanism: Source page proves where the email was observed.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_to_domain_related_subdomains
+  requires:
+  - net.domain.name
+  - net.tls.certificate
+  unlocks:
+  - domain.related_subdomains
+  method: []
+  mechanism: Certificates may expose related hostnames.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: media_image_file_to_geo_coordinate
+  requires:
+  - media.image.file
+  - media.image.exif_gps
+  unlocks:
+  - geo.coordinate
+  method: []
+  mechanism: GPS metadata can directly emit coordinates.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: media_image_file_to_geo_place_candidate
+  requires:
+  - media.image.file
+  - geo.landmark_candidate
+  unlocks:
+  - geo.place_candidate
+  method: []
+  mechanism: Visible landmarks narrow location.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: media_image_timestamp_to_geo_location_or_time_constrain
+  requires:
+  - media.image.timestamp
+  - geo.shadow_direction
+  unlocks:
+  - geo.location_or_time_constraint
+  method: []
+  mechanism: Sun/shadow reasoning can constrain time or region.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: media_video_frame_to_geo_camera_viewpoint_candidate
+  requires:
+  - media.video.frame
+  - geo.landmark_candidate
+  unlocks:
+  - geo.camera_viewpoint_candidate
+  method: []
+  mechanism: Frame evidence plus landmarks supports viewpoint reconstruction.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_file_to_person_name_candidate
+  requires:
+  - document.file
+  - document.metadata.author
+  unlocks:
+  - person.name.candidate
+  method: []
+  mechanism: Metadata may expose author fields.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_file_to_source_url
+  requires:
+  - document.file
+  - document.embedded_url
+  unlocks:
+  - source.url
+  method: []
+  mechanism: Embedded links become new crawl targets.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_file_to_contact_email_address
+  requires:
+  - document.file
+  - document.embedded_email
+  unlocks:
+  - contact.email.address
+  method: []
+  mechanism: Extracted emails can be verified against source context.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_metadata_software_to_org_workflow_or_tooling_hint
+  requires:
+  - document.metadata.software
+  - org.name
+  unlocks:
+  - org.workflow_or_tooling_hint
+  method: []
+  mechanism: Software metadata can hint at publishing or internal workflows.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: org_name_to_org_registration_id
+  requires:
+  - org.name
+  - org.jurisdiction
+  unlocks:
+  - org.registration_id
+  method: []
+  mechanism: Jurisdiction reduces same-name company collisions.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: org_registration_id_to_org_filing_url
+  requires:
+  - org.registration_id
+  - org.jurisdiction
+  unlocks:
+  - org.filing_url
+  method: []
+  mechanism: Registry ID plus jurisdiction usually points to filings.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: org_name_to_org_identity_verified
+  requires:
+  - org.name
+  - org.domain
+  unlocks:
+  - org.identity_verified
+  method: []
+  mechanism: Website-domain consistency strengthens org identity.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: org_address_to_org_location_candidate
+  requires:
+  - org.address
+  - org.name
+  unlocks:
+  - org.location_candidate
+  method: []
+  mechanism: Helps verify offices, registrations, or branches.
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_to_contact_email_local_part
+  requires:
+  - contact.email.address
+  unlocks:
+  - contact.email.local_part
+  method: []
+  mechanism: Extract local part from email address
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: contact_email_address_to_contact_email_domain
+  requires:
+  - contact.email.address
+  unlocks:
+  - contact.email.domain
+  method: []
+  mechanism: Extract domain from email address
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_domain_name_to_net_subdomain_name
+  requires:
+  - net.domain.name
+  unlocks:
+  - net.subdomain.name
+  method: []
+  mechanism: DNS subdomain enumeration
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_url_to_net_domain_name
+  requires:
+  - net.url
+  unlocks:
+  - net.domain.name
+  method: []
+  mechanism: Extract domain from URL
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: media_image_file_to_media_image_exif
+  requires:
+  - media.image.file
+  unlocks:
+  - media.image.exif
+  method: []
+  mechanism: Extract EXIF metadata from image
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: media_image_file_to_media_image_exif_gps
+  requires:
+  - media.image.file
+  unlocks:
+  - media.image.exif_gps
+  method: []
+  mechanism: Extract GPS coordinates from image EXIF
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: document_file_to_document_metadata_author
+  requires:
+  - document.file
+  unlocks:
+  - document.metadata.author
+  method: []
+  mechanism: Extract author metadata from document
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: document_file_to_document_metadata_created_at
+  requires:
+  - document.file
+  unlocks:
+  - document.metadata.created_at
+  method: []
+  mechanism: Extract creation timestamp from document
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_domain_name_to_net_dns_mx
+  requires:
+  - net.domain.name
+  unlocks:
+  - net.dns.mx
+  method: []
+  mechanism: DNS MX record lookup
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_domain_name_to_net_dns_ns
+  requires:
+  - net.domain.name
+  unlocks:
+  - net.dns.ns
+  method: []
+  mechanism: DNS NS record lookup
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_domain_name_to_net_dns_txt
+  requires:
+  - net.domain.name
+  unlocks:
+  - net.dns.txt
+  method: []
+  mechanism: DNS TXT record lookup
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_domain_name_to_net_ip_address
+  requires:
+  - net.domain.name
+  unlocks:
+  - net.ip.address
+  method: []
+  mechanism: DNS A/AAAA record resolution
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_ip_address_to_net_asn
+  requires:
+  - net.ip.address
+  unlocks:
+  - net.asn
+  method: []
+  mechanism: ASN lookup for IP
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: account_username_to_account_profile_url
+  requires:
+  - account.username
+  unlocks:
+  - account.profile_url
+  method: []
+  mechanism: Build profile URL from username and known platform
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: contact_phone_e164_to_contact_phone_carrier
+  requires:
+  - contact.phone.e164
+  unlocks:
+  - contact.phone.carrier
+  method: []
+  mechanism: Identify phone carrier from number
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: contact_phone_e164_to_contact_phone_country_code
+  requires:
+  - contact.phone.e164
+  unlocks:
+  - contact.phone.country_code
+  method: []
+  mechanism: Extract country code from phone number
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: person_name_full_to_person_name_first
+  requires:
+  - person.name.full
+  unlocks:
+  - person.name.first
+  method: []
+  mechanism: Extract first name
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: person_name_full_to_person_name_last
+  requires:
+  - person.name.full
+  unlocks:
+  - person.name.last
+  method: []
+  mechanism: Extract last name
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_domain_name_to_net_tech_stack
+  requires:
+  - net.domain.name
+  unlocks:
+  - net.tech_stack
+  method: []
+  mechanism: Technology stack fingerprinting
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: media_image_file_to_media_image_perceptual_hash
+  requires:
+  - media.image.file
+  unlocks:
+  - media.image.perceptual_hash
+  method: []
+  mechanism: Compute perceptual hash for image matching
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: media_image_exif_gps_to_geo_coordinate
+  requires:
+  - media.image.exif_gps
+  unlocks:
+  - geo.coordinate
+  method: []
+  mechanism: Extract GPS coordinates
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: person_name_first_to_person_alias
+  requires:
+  - person.name.first
+  unlocks:
+  - person.alias
+  method: []
+  mechanism: Search alternative name spellings
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: person_name_full_org_domain_to_contact_email_address_can
+  requires:
+  - person.name.full
+  - org.domain
+  unlocks:
+  - contact.email.address.candidate
+  method: []
+  mechanism: Generate likely corporate email patterns from name + domain
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_org_name_to_org_employee_name_candida
+  requires:
+  - person.name.full
+  - org.name
+  unlocks:
+  - org.employee_name_candidate
+  method: []
+  mechanism: Search staff pages and bios for the person
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_org_jurisdiction_to_record_company_filing_can
+  requires:
+  - person.name.full
+  - org.jurisdiction
+  unlocks:
+  - record.company_filing.candidate
+  method: []
+  mechanism: Narrow company filing search by jurisdiction
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_platform_name_to_account_profile_url_candi
+  requires:
+  - account.username
+  - platform.name
+  unlocks:
+  - account.profile_url.candidate
+  method: []
+  mechanism: Generate platform-specific profile URL from username
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_geo_region_to_person_identity_candidate
+  requires:
+  - person.name.full
+  - geo.region
+  unlocks:
+  - person.identity_candidate
+  method: []
+  mechanism: Narrow same-name collisions by region
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_net_dns_mx_to_contact_phone_carrier
+  requires:
+  - contact.email.address
+  - net.dns.mx
+  unlocks:
+  - contact.phone.carrier
+  method: []
+  mechanism: Email domain MX → mail provider → carrier inference
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_person_name_f_to_evidence_identity_link_ca
+  requires:
+  - contact.email.address
+  - person.name.full
+  unlocks:
+  - evidence.identity_link_candidate
+  method: []
+  mechanism: Strengthen name-email link from co-occurring source
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_source_url_to_contact_email_address_ver
+  requires:
+  - contact.email.address
+  - source.url
+  unlocks:
+  - contact.email.address.verified
+  method: []
+  mechanism: Verify email was observed on a specific source page
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_local_part_account_us_to_evidence_username_reuse_c
+  requires:
+  - contact.email.local_part
+  - account.username
+  unlocks:
+  - evidence.username_reuse_candidate
+  method: []
+  mechanism: Detect local-part reuse across platforms
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_domain_org_domain_to_org_email_relationship
+  requires:
+  - contact.email.domain
+  - org.domain
+  unlocks:
+  - org_email_relationship
+  method: []
+  mechanism: Confirm email domain belongs to the org
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_net_dns_mx_to_contact_phone_carrier
+  requires:
+  - net.domain.name
+  - net.dns.mx
+  unlocks:
+  - contact.phone.carrier
+  method: []
+  mechanism: MX points to mail service provider
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_net_tls_certificate_to_net_subdomain_name
+  requires:
+  - net.domain.name
+  - net.tls.certificate
+  unlocks:
+  - net.subdomain.name
+  method: []
+  mechanism: Certificate SAN entries reveal related hostnames
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_source_archive_url_to_source_page_text
+  requires:
+  - net.domain.name
+  - source.archive_url
+  unlocks:
+  - source.page_text
+  method: []
+  mechanism: Archived pages may reveal prior contact info
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: net_subdomain_name_net_tech_stack_to_net_url
+  requires:
+  - net.subdomain.name
+  - net.tech_stack
+  unlocks:
+  - net.url
+  method: []
+  mechanism: Subdomain + tech stack suggests service type URL
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: net_ip_address_net_asn_to_cloud_infrastructure
+  requires:
+  - net.ip.address
+  - net.asn
+  unlocks:
+  - cloud.infrastructure
+  method: []
+  mechanism: IP + ASN identifies hosting provider
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_account_avatar_url_to_evidence_same_account_clu
+  requires:
+  - account.username
+  - account.avatar_url
+  unlocks:
+  - evidence.same_account_cluster_candidate
+  method: []
+  mechanism: Same handle + same avatar is stronger identity signal
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_geo_region_to_evidence_account_disambig
+  requires:
+  - account.username
+  - geo.region
+  unlocks:
+  - evidence.account_disambiguation_candidate
+  method: []
+  mechanism: Region narrows same-handle matches
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_contact_email_addr_to_org_name
+  requires:
+  - person.name.full
+  - contact.email.address
+  unlocks:
+  - org.name
+  method: []
+  mechanism: Email domain lookup identifies organization
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_contact_phone_e164_to_evidence_identity_link_ca
+  requires:
+  - person.name.full
+  - contact.phone.e164
+  unlocks:
+  - evidence.identity_link_candidate
+  method: []
+  mechanism: Name + phone strengthens identity link
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_contact_email_to_account_profile_url
+  requires:
+  - contact.email.address
+  - contact.email.validated
+  unlocks:
+  - account.profile_url
+  method: []
+  mechanism: Verified email used to discover linked accounts
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_phone_e164_person_name_firs_to_contact_address_city
+  requires:
+  - contact.phone.e164
+  - person.name.first
+  unlocks:
+  - contact.address.city
+  method: []
+  mechanism: Reverse phone + first name can surface location
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: document_file_source_url_to_evidence_retrieval_timest
+  requires:
+  - document.file
+  - source.url
+  unlocks:
+  - evidence.retrieval_timestamp
+  method: []
+  mechanism: Document source URL + file confirms retrieval chain
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_contact_email_addre_to_org_employee_name_candida
+  requires:
+  - net.domain.name
+  - contact.email.address
+  unlocks:
+  - org.employee_name_candidate
+  method: []
+  mechanism: Domain + email suggests org employee email pattern
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: record_court_case_public_person_nam_to_record_property_record_pu
+  requires:
+  - record.court_case_public
+  - person.name.full
+  unlocks:
+  - record.property_record_public
+  method: []
+  mechanism: Court case + name may link to property records
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: person_name_full_org_legal_name_to_record_sanctions_candidat
+  requires:
+  - person.name.full
+  - org.legal_name
+  unlocks:
+  - record.sanctions_candidate
+  method: []
+  mechanism: Person + org legal name cross-checked against sanctions
+  confidence_default: 0.35
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_contact_email_to_account_username
+  requires:
+  - contact.email.address
+  - contact.email.validated
+  unlocks:
+  - account.username
+  method: []
+  mechanism: if email is valid, local_part is often the username
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_address_net_domain_na_to_org_name
+  requires:
+  - contact.email.address
+  - net.domain.name
+  unlocks:
+  - org.name
+  method: []
+  mechanism: email domain resolves to organization name via WHOIS
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_email_local_part_to_person_name_first
+  requires:
+  - contact.email.local_part
+  unlocks:
+  - person.name.first
+  method: []
+  mechanism: local part often contains first name patterns
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: contact_email_local_part_to_person_name_last
+  requires:
+  - contact.email.local_part
+  unlocks:
+  - person.name.last
+  method: []
+  mechanism: local part often contains last name patterns
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: contact_phone_e164_to_person_name_first
+  requires:
+  - contact.phone.e164
+  unlocks:
+  - person.name.first
+  method: []
+  mechanism: reverse phone lookup returns name
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: contact_phone_e164_person_name_firs_to_contact_address_postal
+  requires:
+  - contact.phone.e164
+  - person.name.first
+  unlocks:
+  - contact.address.postal
+  method: []
+  mechanism: phone + name lookup returns address
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: contact_phone_e164_contact_phone_ca_to_contact_email_address
+  requires:
+  - contact.phone.e164
+  - contact.phone.carrier
+  unlocks:
+  - contact.email.address
+  method: []
+  mechanism: phone + carrier can link to email accounts
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_platform_name_to_account_follower_count
+  requires:
+  - account.username
+  - platform.name
+  unlocks:
+  - account.follower_count
+  method: []
+  mechanism: platform API returns follower metrics for username
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_account_display_na_to_account_bio_text
+  requires:
+  - account.username
+  - account.display_name
+  unlocks:
+  - account.bio_text
+  method: []
+  mechanism: profile page returns bio text
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_account_bio_text_to_org_name
+  requires:
+  - account.username
+  - account.bio_text
+  unlocks:
+  - org.name
+  method: []
+  mechanism: bio text may mention employer
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_username_account_bio_locati_to_geo_place_name
+  requires:
+  - account.username
+  - account.bio_location_text
+  unlocks:
+  - geo.place_name
+  method: []
+  mechanism: bio may list location
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_net_dns_mx_to_contact_email_domain
+  requires:
+  - net.domain.name
+  - net.dns.mx
+  unlocks:
+  - contact.email.domain
+  method: []
+  mechanism: MX records identify which email domains are valid
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_source_archive_url_to_contact_email_address
+  requires:
+  - net.domain.name
+  - source.archive_url
+  unlocks:
+  - contact.email.address
+  method: []
+  mechanism: archived pages may leak email addresses
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: net_domain_name_net_tech_stack_to_org_employee_name_candida
+  requires:
+  - net.domain.name
+  - net.tech_stack
+  unlocks:
+  - org.employee_name_candidate
+  method: []
+  mechanism: tech stack may reveal job postings with names
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: net_subdomain_name_to_net_url
+  requires:
+  - net.subdomain.name
+  unlocks:
+  - net.url
+  method: []
+  mechanism: subdomain suggests full URL structure
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: net_subdomain_name_net_ip_address_to_cloud_infrastructure
+  requires:
+  - net.subdomain.name
+  - net.ip.address
+  unlocks:
+  - cloud.infrastructure
+  method: []
+  mechanism: subdomain IP reveals cloud provider
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: net_url_to_media_image_file
+  requires:
+  - net.url
+  unlocks:
+  - media.image.file
+  method: []
+  mechanism: page scrape extracts images
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: account_facebook_profile_url_accoun_to_evidence_same_account_clu
+  requires:
+  - account.facebook.profile_url
+  - account.instagram.profile_url
+  unlocks:
+  - evidence.same_account_cluster_candidate
+  method: []
+  mechanism: same person often links social accounts
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_linkedin_profile_url_person_to_org_name
+  requires:
+  - account.linkedin.profile_url
+  - person.name.full
+  unlocks:
+  - org.name
+  method: []
+  mechanism: LinkedIn profile shows current employer
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: account_linkedin_profile_url_to_org_employee_name_candida
+  requires:
+  - account.linkedin.profile_url
+  unlocks:
+  - org.employee_name_candidate
+  method: []
+  mechanism: LinkedIn shows colleagues/network
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: account_instagram_profile_url_to_account_bio_text
+  requires:
+  - account.instagram.profile_url
+  unlocks:
+  - account.bio_text
+  method: []
+  mechanism: Instagram bio
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: account_facebook_id_to_account_facebook_profile_
+  requires:
+  - account.facebook.id
+  unlocks:
+  - account.facebook.profile_url
+  method: []
+  mechanism: Facebook ID maps to profile URL
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: account_instagram_profile_url_to_media_image_file
+  requires:
+  - account.instagram.profile_url
+  unlocks:
+  - media.image.file
+  method: []
+  mechanism: Instagram profile images
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: account_profile_url_to_account_avatar_url
+  requires:
+  - account.profile_url
+  unlocks:
+  - account.avatar_url
+  method: []
+  mechanism: profile page has avatar
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: document_file_document_metadata_aut_to_person_name_full
+  requires:
+  - document.file
+  - document.metadata.author
+  unlocks:
+  - person.name.full
+  method: []
+  mechanism: document metadata contains author name
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_file_document_embedded_url_to_contact_email_address
+  requires:
+  - document.file
+  - document.embedded_url
+  unlocks:
+  - contact.email.address
+  method: []
+  mechanism: document may contain embedded email
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_embedded_url_source_url_to_evidence_retrieval_timest
+  requires:
+  - document.embedded_url
+  - source.url
+  unlocks:
+  - evidence.retrieval_timestamp
+  method: []
+  mechanism: embedded URLs provide retrieval context
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: document_metadata_created_at_to_evidence_retrieval_timest
+  requires:
+  - document.metadata.created_at
+  unlocks:
+  - evidence.retrieval_timestamp
+  method: []
+  mechanism: document creation time as evidence timestamp
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: source_url_source_page_title_to_org_name
+  requires:
+  - source.url
+  - source.page_title
+  unlocks:
+  - org.name
+  method: []
+  mechanism: page title often contains organization name
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: source_url_source_page_text_to_contact_email_address
+  requires:
+  - source.url
+  - source.page_text
+  unlocks:
+  - contact.email.address
+  method: []
+  mechanism: page text may contain email addresses
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: source_page_text_to_account_username
+  requires:
+  - source.page_text
+  unlocks:
+  - account.username
+  method: []
+  mechanism: page text may contain usernames
+  confidence_default: 0.7
+  requires_verification: false
+  risk: low
+- pivot_id: source_archive_url_source_retrieved_to_evidence_raw_snippet
+  requires:
+  - source.archive_url
+  - source.retrieved_at
+  unlocks:
+  - evidence.raw_snippet
+  method: []
+  mechanism: archived capture proves content existed at time
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium
+- pivot_id: breach_data_contact_email_address_to_contact_phone_e164
+  requires:
+  - breach.data
+  - contact.email.address
+  unlocks:
+  - contact.phone.e164
+  method: []
+  mechanism: breach data correlates email to phone
+  confidence_default: 0.5
+  requires_verification: true
+  risk: medium

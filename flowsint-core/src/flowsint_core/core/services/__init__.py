@@ -11,6 +11,7 @@ from .base import BaseService
 from .chat_service import ChatService, create_chat_service
 from .custom_type_service import CustomTypeService, create_custom_type_service
 from .enricher_service import EnricherService, create_enricher_service
+from .grievance_service import GrievanceService, create_grievance_service
 from .enricher_template_service import (
     EnricherTemplateService,
     create_enricher_template_service,
@@ -85,6 +86,8 @@ __all__ = [
     "create_enricher_template_service",
     "TemplateGeneratorService",
     "create_template_generator_service",
+    "GrievanceService",
+    "create_grievance_service",
     # Vault
     "VaultService",
     "create_vault_service",

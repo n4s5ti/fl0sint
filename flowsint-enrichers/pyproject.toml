@@ -33,6 +33,13 @@ gpu = [
     "cupy-cuda13x>=14.1.1",
     "cudf-cu13>=26.6.0",
 ]
+scrapling = [
+    "scrapling>=0.4.9",
+]
+
+ghunt = [
+    "ghunt>=2.3.4",
+]
 
 [dependency-groups]
 dev = [
@@ -72,3 +79,6 @@ python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

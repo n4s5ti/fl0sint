@@ -105,6 +105,20 @@ class WebsiteToText(Enricher):
                 "label": "Request timeout (seconds)",
                 "description": "Timeout for each HTTP request",
             },
+            {
+                "name": "enable_gpu",
+                "type": "bool",
+                "default": True,
+                "label": "Enable GPU postprocessing",
+                "description": "Use GPU-accelerated dedupe and batch transforms when available",
+            },
+            {
+                "name": "gpu_provider",
+                "type": "string",
+                "default": "auto",
+                "label": "GPU provider",
+                "description": "GPU implementation selector: auto/cupy/cudf/none",
+            },
         ]
 
     # ------------------------------------------------------------------
@@ -298,17 +312,22 @@ class WebsiteToText(Enricher):
         if not results:
             return results
 
-        if HAS_CUPY:
-            results = self._gpu_deduplicate(results)
-        if HAS_CUDF:
-            results = self._gpu_batch_transform(results)
+        enable_gpu = bool(self.params.get("enable_gpu", True))
+        gpu_provider = str(self.params.get("gpu_provider", "auto")).strip().lower()
+
+        if enable_gpu and gpu_provider not in {"none", "false", "0", "off"}:
+            if gpu_provider in {"auto", "cupy"} and HAS_CUPY:
+                results = self._gpu_deduplicate(results)
+            if gpu_provider in {"auto", "cudf"} and HAS_CUDF:
+                results = self._gpu_batch_transform(results)
 
         if HAS_CUPY or HAS_CUDF:
             Logger.info(
                 self.sketch_id,
                 {
                     "message": (
-                        f"GPU postprocess: cupy={HAS_CUPY} cudf={HAS_CUDF} "
+                        f"GPU postprocess enabled: provider={gpu_provider}, "
+                        f"cupy={HAS_CUPY}, cudf={HAS_CUDF}, "
                         f"processed {len(results)} results"
                     )
                 },

@@ -46,7 +46,10 @@ Don't want to read ? Got it. Here's your install instructions:
 git clone https://github.com/n4s5ti/fl0sint.git
 cd fl0sint
 make prod
+flowsint mcp launch-enricher --enricher-name domain_to_whois --node-ids-csv /tmp/node_ids.csv --sketch-id sk-1
 ```
+
+`--node-ids` keeps its existing comma-separated behavior. When `--node-ids-csv` is provided, values are appended after explicit `--node-ids` entries. CSV input accepts one node ID per row.
 
 ### Windows
 
@@ -220,6 +223,112 @@ flowsint-types (types)
 ```bash
 make dev
 ```
+
+### CLI usage (local)
+
+From any directory, the Fl0sint CLI is available as `flowsint` when `~/.local/bin` is on `PATH`:
+
+```bash
+flowsint --help               # wrapper command list
+flowsint mcp --help            # MCP-subcommand list
+flowsint mcp list-enrichers    # discover all available enrichers
+flowsint mcp launch-enricher --enricher-name domain_to_whois --node-ids node-a --sketch-id sk-1
+flowsint mcp launch-enrichers --enricher-names domain_to_whois,ip_to_asn --node-ids node-a,node-b --sketch-id sk-1
+flowsint mcp launch-enricher \
+  --enricher-name website_to_text \
+  --node-ids node-a \
+  --sketch-id sk-1 \
+  --enable-http2 true --enable-gpu true --gpu-provider auto --max-concurrency 12 --request-timeout 12 --launch-params-json '{\"headless\":false}'
+flowsint mcp launch-enrichers \
+  --enricher-names domain_to_whois,ip_to_asn \
+  --node-ids-csv /path/to/node_ids.csv \
+  --sketch-id sk-1
+```
+
+Common runtime flags:
+
+- `--enable-http2 true|false` enables HTTP/2 for template and transport-capable enrichers.
+- `--enable-quic true|false` enables QUIC/HTTP3 attempts for enrichers that support it.
+- `--enable-gpu true|false` enables GPU postprocessing where implemented.
+- `--gpu-provider` selects the GPU backend (`auto`, `cupy`, `cudf`, `none`).
+- `--max-concurrency` overrides enricher concurrency where supported.
+- `--request-timeout` overrides request timeout where supported.
+- `--launch-params-json` passes extra key/value pairs directly to the enricher runtime.
+
+CSV format accepted by `--node-ids-csv`:
+
+- One ID per row (optionally with a single header row like `node_id`).
+- Empty rows are ignored.
+- Header row is optional; when provided, row-order and explicit `--node-ids` values are preserved.
+- Combining sources is deterministic: explicit `--node-ids` are applied first, then CSV rows are appended.
+- Any row with extra non-empty columns is rejected with an error.
+
+Example:
+
+```bash
+cat > /tmp/node_ids.csv <<'CSV'
+node_id
+node-b
+node-c
+CSV
+
+flowsint mcp launch-enricher \
+  --enricher-name website_to_scrapling \
+  --node-ids node-a \
+  --node-ids-csv /tmp/node_ids.csv \
+  --sketch-id sk-1
+```
+
+The CLI command honors `FLOWSINT_API_URL` for non-default API targets.
+
+Runtime defaults can also be provided through environment variables:
+`FLOWSINT_MCP_ENABLE_HTTP2`, `FLOWSINT_MCP_ENABLE_QUIC`, and `FLOWSINT_MCP_ENABLE_GPU`.
+
+#### Enricher templates (composite enrichers)
+
+
+Create reusable composite enricher templates via the `create-enricher-template` tool.
+Two modes are available:
+
+**Legacy mode** — provide the template content as a JSON string:
+
+```bash
+flowsint mcp create-enricher-template \
+  --name my-enricher \
+  --category Domain \
+  --content '{
+    "input": {"type": "string"},
+    "request": {"method": "GET", "url": "https://api.example.com/{value}"},
+    "output": {"type": "json"},
+    "response": {"expect": "json"}
+  }'
+```
+
+**Cookiecutter mode** — render from a local cookiecutter template directory
+(requires `cookiecutter` Python package):
+
+```bash
+flowsint mcp create-enricher-template \
+  --name my-enricher \
+  --category Domain \
+  --template-path /path/to/cookiecutter-template-root \
+  --template-context '{"name": "my-enricher", "category": "Domain"}'
+```
+
+The cookiecutter template directory must contain a `cookiecutter.json` at its root
+and produce at least one `.json` or `.yaml`/`.yml` file after rendering.
+The rendered template payload is posted to the API just like legacy `--content`.
+
+**Notes:**
+- `--content` and `--template-path` are mutually exclusive — providing both
+  returns an error.
+- `--template-context` is optional (defaults to `{}`) and must be a JSON object
+  when provided.
+- When `cookiecutter` is not installed, the tool returns an installation hint.
+- `--template-path` must point to a cookiecutter template directory (not a file).
+- The rendered output directory is cleaned up automatically after the request.
+- Additional fields `--description`, `--version` (default `1.0`), and `--is-public`
+  are accepted in both modes.
 
 **Windows** (cmd or PowerShell, no Make — create the `.env` files first, see [Get started](#windows)):
 

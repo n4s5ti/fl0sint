@@ -8,6 +8,8 @@ from uuid import UUID, uuid4
 
 from sqlalchemy.orm import Session
 
+from ..forensics import legacy_execution_boundary
+
 from ..models import Flow, Sketch
 from ..repositories import (
     CustomTypeRepository,
@@ -39,6 +41,7 @@ class FlowService(BaseService):
         self._sketch_repo = sketch_repo
         self._investigation_repo = investigation_repo
 
+    @legacy_execution_boundary("flow_service_get_all_flows")
     def get_all_flows(
         self, category: Optional[str], user_id: UUID
     ) -> List[Dict[str, Any]]:
@@ -63,12 +66,14 @@ class FlowService(BaseService):
 
         return self._flow_repo.get_all_with_optional_category(category)
 
+    @legacy_execution_boundary("flow_service_get_by_id")
     def get_by_id(self, flow_id: UUID) -> Flow:
         flow = self._flow_repo.get_by_id(flow_id)
         if not flow:
             raise NotFoundError("Flow not found")
         return flow
 
+    @legacy_execution_boundary("flow_service_create")
     def create(
         self,
         name: str,
@@ -90,6 +95,7 @@ class FlowService(BaseService):
         self._refresh(new_flow)
         return new_flow
 
+    @legacy_execution_boundary("flow_service_update")
     def update(self, flow_id: UUID, updates: Dict[str, Any]) -> Flow:
         flow = self._flow_repo.get_by_id(flow_id)
         if not flow:
@@ -106,6 +112,7 @@ class FlowService(BaseService):
         self._refresh(flow)
         return flow
 
+    @legacy_execution_boundary("flow_service_delete")
     def delete(self, flow_id: UUID) -> None:
         flow = self._flow_repo.get_by_id(flow_id)
         if not flow:
@@ -114,6 +121,7 @@ class FlowService(BaseService):
         self._flow_repo.delete(flow)
         self._commit()
 
+    @legacy_execution_boundary("flow_service_get_sketch_for_launch")
     def get_sketch_for_launch(self, sketch_id: str, user_id: UUID) -> Sketch:
         sketch = self._sketch_repo.get_by_id(sketch_id)
         if not sketch:
@@ -123,6 +131,7 @@ class FlowService(BaseService):
         return sketch
 
 
+@legacy_execution_boundary("create_flow_service")
 def create_flow_service(db: Session) -> FlowService:
     investigation_repo = InvestigationRepository(db)
     return FlowService(

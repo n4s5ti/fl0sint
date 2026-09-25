@@ -16,6 +16,8 @@ from .execution import (
     canonical_input_hash,
 )
 from .graph import GraphService, create_graph_service
+from .forensics import legacy_execution_boundary
+
 from .logger import Logger
 from .vault import VaultProtocol
 
@@ -458,9 +460,7 @@ class Enricher(ABC):
         """Return retainable evidence captured while processing one input."""
         return ()
 
-    def _classify_structured_exception(
-        self, error: Exception
-    ) -> RedactedDiagnostic:
+    def _classify_structured_exception(self, error: Exception) -> RedactedDiagnostic:
         """Classify failures without retaining exception text or request data."""
         if isinstance(error, (InvalidEnricherParams, ValidationError)):
             return RedactedDiagnostic(
@@ -554,7 +554,6 @@ class Enricher(ABC):
         if status is not OutcomeStatus.SUCCESS:
             outputs = ()
 
-
         return InputOutcome(
             input_ref=input_ref,
             status=status,
@@ -563,9 +562,7 @@ class Enricher(ABC):
             evidence=evidence,
         )
 
-    async def execute_structured(
-        self, values: List[Any]
-    ) -> StructuredExecutionResult:
+    async def execute_structured(self, values: List[Any]) -> StructuredExecutionResult:
         """Execute independently per original input without flattening outputs."""
         outcomes: list[InputOutcome] = []
         if self.name() != "enricher_orchestrator":
@@ -629,6 +626,7 @@ class Enricher(ABC):
     ) -> List[Dict[str, Any]]:
         return results
 
+    @legacy_execution_boundary("legacy_enricher_execute")
     async def execute(self, values: List[Any]) -> List[Dict[str, Any]]:
         if self.name() != "enricher_orchestrator":
             Logger.info(self.sketch_id, {"message": f"Enricher {self.name()} started."})

@@ -10,8 +10,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from .connection import Neo4jConnection
 from .types import GraphDict
+from ..forensics import legacy_execution_class_boundary
 
 
+@legacy_execution_class_boundary("legacy_neo4j_graph_repository")
 class Neo4jGraphRepository:
     """
     Neo4j main implementation of the graph repository.

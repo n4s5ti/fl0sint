@@ -1,0 +1,8 @@
+{
+    "enricher_name": "test-enricher",
+    "category": "test",
+    "input_type": "Domain",
+    "input_key": "domain",
+    "url": "https://dns.example.com/{value}",
+    "output_type": "DomainInfo"
+}

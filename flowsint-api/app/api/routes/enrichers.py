@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, List, Optional
 from uuid import UUID
 
 
@@ -7,6 +7,11 @@ from flowsint_core.core.celery import celery
 from flowsint_core.core.config import destination_registry
 from flowsint_core.core.connector_egress import connector_template_digest
 from flowsint_core.core.graph import create_graph_service
+from flowsint_core.core.forensics import (
+    dispatch_legacy_task,
+    legacy_execution_boundary,
+)
+
 from flowsint_core.core.models import Profile
 from flowsint_core.core.postgre_db import get_db
 from flowsint_core.core.services import (
@@ -16,7 +21,9 @@ from flowsint_core.core.services import (
     create_enricher_template_service,
     create_flow_service,
 )
-from flowsint_core.core.services.type_registry_service import create_type_registry_service
+from flowsint_core.core.services.type_registry_service import (
+    create_type_registry_service,
+)
 from flowsint_core.templates.types import Template
 from flowsint_enrichers import ENRICHER_REGISTRY, load_all_enrichers
 from pydantic import BaseModel
@@ -31,6 +38,8 @@ load_all_enrichers()
 class launchEnricherPayload(BaseModel):
     node_ids: List[str]
     sketch_id: str
+    params: Optional[dict[str, Any]] = None
+
 
 class launchTemplatePayload(BaseModel):
     node_ids: List[str]
@@ -99,8 +108,6 @@ async def launch_connector_template(
         ) from error
 
 
-
-
 @router.get("")
 def get_enrichers(
     category: Optional[str] = Query(None),
@@ -115,6 +122,7 @@ def get_enrichers(
 
 
 @router.post("/{enricher_name}/launch")
+@legacy_execution_boundary("legacy_enricher_launch")
 async def launch_enricher(
     enricher_name: str,
     payload: launchEnricherPayload,
@@ -125,7 +133,9 @@ async def launch_enricher(
         # Retrieve nodes from Neo4J by their element IDs
         type_registry = create_type_registry_service(db)
         resolver = type_registry.build_type_resolver(current_user.id)
-        graph_service = create_graph_service(sketch_id=payload.sketch_id, type_resolver=resolver)
+        graph_service = create_graph_service(
+            sketch_id=payload.sketch_id, type_resolver=resolver
+        )
         entities = graph_service.get_nodes_by_ids_for_task(payload.node_ids)
 
         # Send deserialized nodes
@@ -138,16 +148,16 @@ async def launch_enricher(
             )
 
         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):
-            raise HTTPException(
-                status_code=404, detail={"code": "enricher_not_found"}
-            )
-        task = celery.send_task(
+            raise HTTPException(status_code=404, detail={"code": "enricher_not_found"})
+        task = dispatch_legacy_task(
+            celery,
             "run_enricher",
             args=[
                 enricher_name,
                 entities,
                 payload.sketch_id,
                 str(current_user.id),
+                payload.params or {},
             ],
         )
         return {"id": task.id}

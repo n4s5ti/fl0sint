@@ -8,8 +8,8 @@ celery = Celery(
     include=[
         "flowsint_core.tasks.event",
         "flowsint_core.tasks.enricher",
-        "flowsint_core.tasks.graph_projection",
         "flowsint_core.tasks.flow",
+        "flowsint_core.tasks.graph_projection",
     ],
 )
 
@@ -22,11 +22,14 @@ celery.conf.update(
     task_track_started=True,
     task_time_limit=3600,  # 1 hour
     worker_max_tasks_per_child=1000,
+    worker_prefetch_multiplier=4,
+    # GPU / accelerator pool (overridden via --pool CLI flag at worker start)
+    worker_pool=settings.WORKER_POOL,
+    worker_concurrency=settings.WORKER_GPU_CONCURRENCY,
     beat_schedule={
         "sweep-graph-projection-jobs": {
             "task": "sweep_graph_projection_jobs",
             "schedule": 60.0,
         }
     },
-    worker_prefetch_multiplier=4,  # Allow each worker to prefetch up to 4 tasks
 )

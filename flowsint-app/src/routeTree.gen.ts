@@ -19,6 +19,7 @@ import { Route as AuthDashboardIndexRouteImport } from './routes/_auth.dashboard
 import { Route as AuthDashboardVaultRouteImport } from './routes/_auth.dashboard.vault'
 import { Route as AuthDashboardToolsRouteImport } from './routes/_auth.dashboard.tools'
 import { Route as AuthDashboardProfileRouteImport } from './routes/_auth.dashboard.profile'
+import { Route as AuthDashboardGrievancesRouteImport } from './routes/_auth.dashboard.grievances'
 import { Route as AuthDashboardFlowsIndexRouteImport } from './routes/_auth.dashboard.flows.index'
 import { Route as AuthDashboardEnrichersIndexRouteImport } from './routes/_auth.dashboard.enrichers.index'
 import { Route as AuthDashboardCustomTypesIndexRouteImport } from './routes/_auth.dashboard.custom-types.index'
@@ -77,6 +78,11 @@ const AuthDashboardToolsRoute = AuthDashboardToolsRouteImport.update({
 const AuthDashboardProfileRoute = AuthDashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthDashboardRoute,
+} as any)
+const AuthDashboardGrievancesRoute = AuthDashboardGrievancesRouteImport.update({
+  id: '/grievances',
+  path: '/grievances',
   getParentRoute: () => AuthDashboardRoute,
 } as any)
 const AuthDashboardFlowsIndexRoute = AuthDashboardFlowsIndexRouteImport.update({
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/middleware': typeof MiddlewareRoute
   '/register': typeof RegisterRoute
   '/dashboard': typeof AuthDashboardRouteWithChildren
+  '/dashboard/grievances': typeof AuthDashboardGrievancesRoute
   '/dashboard/profile': typeof AuthDashboardProfileRoute
   '/dashboard/tools': typeof AuthDashboardToolsRoute
   '/dashboard/vault': typeof AuthDashboardVaultRoute
@@ -154,9 +161,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/enrichers/new': typeof AuthDashboardEnrichersNewRoute
   '/dashboard/flows/$flowId': typeof AuthDashboardFlowsFlowIdRoute
   '/dashboard/investigations/$investigationId': typeof AuthDashboardInvestigationsInvestigationIdRouteWithChildren
-  '/dashboard/custom-types': typeof AuthDashboardCustomTypesIndexRoute
-  '/dashboard/enrichers': typeof AuthDashboardEnrichersIndexRoute
-  '/dashboard/flows': typeof AuthDashboardFlowsIndexRoute
+  '/dashboard/custom-types/': typeof AuthDashboardCustomTypesIndexRoute
+  '/dashboard/enrichers/': typeof AuthDashboardEnrichersIndexRoute
+  '/dashboard/flows/': typeof AuthDashboardFlowsIndexRoute
   '/dashboard/investigations/$investigationId/': typeof AuthDashboardInvestigationsInvestigationIdIndexRoute
   '/dashboard/investigations/$investigationId/$type/$id': typeof AuthDashboardInvestigationsInvestigationIdTypeIdRoute
 }
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/middleware': typeof MiddlewareRoute
   '/register': typeof RegisterRoute
+  '/dashboard/grievances': typeof AuthDashboardGrievancesRoute
   '/dashboard/profile': typeof AuthDashboardProfileRoute
   '/dashboard/tools': typeof AuthDashboardToolsRoute
   '/dashboard/vault': typeof AuthDashboardVaultRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   '/middleware': typeof MiddlewareRoute
   '/register': typeof RegisterRoute
   '/_auth/dashboard': typeof AuthDashboardRouteWithChildren
+  '/_auth/dashboard/grievances': typeof AuthDashboardGrievancesRoute
   '/_auth/dashboard/profile': typeof AuthDashboardProfileRoute
   '/_auth/dashboard/tools': typeof AuthDashboardToolsRoute
   '/_auth/dashboard/vault': typeof AuthDashboardVaultRoute
@@ -210,6 +219,7 @@ export interface FileRouteTypes {
     | '/middleware'
     | '/register'
     | '/dashboard'
+    | '/dashboard/grievances'
     | '/dashboard/profile'
     | '/dashboard/tools'
     | '/dashboard/vault'
@@ -219,9 +229,9 @@ export interface FileRouteTypes {
     | '/dashboard/enrichers/new'
     | '/dashboard/flows/$flowId'
     | '/dashboard/investigations/$investigationId'
-    | '/dashboard/custom-types'
-    | '/dashboard/enrichers'
-    | '/dashboard/flows'
+    | '/dashboard/custom-types/'
+    | '/dashboard/enrichers/'
+    | '/dashboard/flows/'
     | '/dashboard/investigations/$investigationId/'
     | '/dashboard/investigations/$investigationId/$type/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/middleware'
     | '/register'
+    | '/dashboard/grievances'
     | '/dashboard/profile'
     | '/dashboard/tools'
     | '/dashboard/vault'
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/middleware'
     | '/register'
     | '/_auth/dashboard'
+    | '/_auth/dashboard/grievances'
     | '/_auth/dashboard/profile'
     | '/_auth/dashboard/tools'
     | '/_auth/dashboard/vault'
@@ -301,7 +313,7 @@ declare module '@tanstack/react-router' {
     '/_auth': {
       id: '/_auth'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -347,24 +359,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardProfileRouteImport
       parentRoute: typeof AuthDashboardRoute
     }
+    '/_auth/dashboard/grievances': {
+      id: '/_auth/dashboard/grievances'
+      path: '/grievances'
+      fullPath: '/dashboard/grievances'
+      preLoaderRoute: typeof AuthDashboardGrievancesRouteImport
+      parentRoute: typeof AuthDashboardRoute
+    }
     '/_auth/dashboard/flows/': {
       id: '/_auth/dashboard/flows/'
       path: '/flows'
-      fullPath: '/dashboard/flows'
+      fullPath: '/dashboard/flows/'
       preLoaderRoute: typeof AuthDashboardFlowsIndexRouteImport
       parentRoute: typeof AuthDashboardRoute
     }
     '/_auth/dashboard/enrichers/': {
       id: '/_auth/dashboard/enrichers/'
       path: '/enrichers'
-      fullPath: '/dashboard/enrichers'
+      fullPath: '/dashboard/enrichers/'
       preLoaderRoute: typeof AuthDashboardEnrichersIndexRouteImport
       parentRoute: typeof AuthDashboardRoute
     }
     '/_auth/dashboard/custom-types/': {
       id: '/_auth/dashboard/custom-types/'
       path: '/custom-types'
-      fullPath: '/dashboard/custom-types'
+      fullPath: '/dashboard/custom-types/'
       preLoaderRoute: typeof AuthDashboardCustomTypesIndexRouteImport
       parentRoute: typeof AuthDashboardRoute
     }
@@ -439,6 +458,7 @@ const AuthDashboardInvestigationsInvestigationIdRouteWithChildren =
   )
 
 interface AuthDashboardRouteChildren {
+  AuthDashboardGrievancesRoute: typeof AuthDashboardGrievancesRoute
   AuthDashboardProfileRoute: typeof AuthDashboardProfileRoute
   AuthDashboardToolsRoute: typeof AuthDashboardToolsRoute
   AuthDashboardVaultRoute: typeof AuthDashboardVaultRoute
@@ -454,6 +474,7 @@ interface AuthDashboardRouteChildren {
 }
 
 const AuthDashboardRouteChildren: AuthDashboardRouteChildren = {
+  AuthDashboardGrievancesRoute: AuthDashboardGrievancesRoute,
   AuthDashboardProfileRoute: AuthDashboardProfileRoute,
   AuthDashboardToolsRoute: AuthDashboardToolsRoute,
   AuthDashboardVaultRoute: AuthDashboardVaultRoute,

@@ -9,6 +9,11 @@ from typing import Any, Dict, List, Optional, Protocol
 
 from flowsint_types import FlowsintType
 from pydantic import BaseModel
+from flowsint_core.core.forensics.fencing import (
+    LegacyExecutionMode,
+    require_legacy_graph_access,
+)
+
 
 from .repository import Neo4jGraphRepository
 from .repository_protocol import GraphRepositoryProtocol
@@ -42,6 +47,8 @@ class GraphService:
         logger: Optional[LoggerProtocol] = None,
         enable_batching: bool = False,
         type_resolver: Optional[TypeResolver] = None,
+        mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,
+        case_reference: str | None = None,
     ):
         """
         Initialize the graph service.
@@ -56,6 +63,12 @@ class GraphService:
         Raises:
             ValueError: If repository is not provided
         """
+        require_legacy_graph_access(
+            mode,
+            operation="graph_service_construction",
+            case_reference=case_reference,
+        )
+
         if repository is None:
             raise ValueError(
                 "repository is required. Use create_graph_service() factory "
@@ -66,15 +79,26 @@ class GraphService:
         self._logger = logger
         self._enable_batching = enable_batching
         self._type_resolver = type_resolver
+        self._mode = mode
+        self._case_reference = case_reference
+
+    def _require_access(self, operation: str) -> None:
+        require_legacy_graph_access(
+            self._mode,
+            operation=operation,
+            case_reference=self._case_reference,
+        )
 
     @property
     def sketch_id(self) -> str:
         """Get the sketch ID."""
+        self._require_access("graph_service_sketch_id_access")
         return self._sketch_id
 
     @property
     def repository(self) -> GraphRepositoryProtocol:
         """Get the underlying repository."""
+        self._require_access("graph_service_repository_access")
         return self._repository
 
     def create_node(self, node_obj: GraphNode) -> str | None:
@@ -87,6 +111,7 @@ class GraphService:
         Args:
             node_obj: a GraphNode object
         """
+        self._require_access("graph_service_create_node")
 
         if isinstance(node_obj, FlowsintType):
             raise Exception(
@@ -117,6 +142,7 @@ class GraphService:
         Args:
             node_obj: a FlowsintType object
         """
+        self._require_access("graph_service_create_node_from_flowsint_type")
 
         if isinstance(node_obj, GraphNode):
             raise Exception(
@@ -140,6 +166,7 @@ class GraphService:
             )
 
     def get_sketch_graph(self) -> GraphData:
+        self._require_access("graph_service_get_sketch_graph")
         graph_data = self.repository.get_sketch_graph(self.sketch_id)
         nodes = GraphSerializer.deserialize_nodes(
             graph_data.get("nodes", []), type_resolver=self._type_resolver
@@ -148,12 +175,14 @@ class GraphService:
         return GraphData(nodes=nodes, edges=edges)
 
     def get_nodes_by_ids(self, node_ids: List[str]) -> List[GraphNode]:
+        self._require_access("graph_service_get_nodes_by_ids")
         nodes = self.repository.get_nodes_by_ids(node_ids, self.sketch_id)
         return GraphSerializer.deserialize_nodes(
             nodes, type_resolver=self._type_resolver
         )
 
     def get_nodes_by_ids_for_task(self, node_ids: List[str]) -> List[BaseModel]:
+        self._require_access("graph_service_get_nodes_by_ids_for_task")
         nodes = self.get_nodes_by_ids(node_ids)
         return [GraphSerializer.graph_node_to_flowsint_type(node) for node in nodes]
 
@@ -175,6 +204,7 @@ class GraphService:
             rel_label: Relationship label (ex: "IS_CONNECTED_TO")
             **properties: Additional relationship properties
         """
+        self._require_access("graph_service_create_relationship")
 
         neo4j_rel_dict: GraphDict = GraphSerializer.graph_edge_to_neo4j_dict(
             from_obj, to_obj, rel_label
@@ -198,6 +228,7 @@ class GraphService:
         to_element_id: str,
         rel_label: str = "IS_RELATED_TO",
     ):
+        self._require_access("graph_service_create_relationship_by_element_id")
         return self._repository.create_relationship_by_element_id(
             from_element_id=from_element_id,
             to_element_id=to_element_id,
@@ -206,6 +237,7 @@ class GraphService:
         )
 
     def get_neighbors(self, node_id: str) -> GraphData:
+        self._require_access("graph_service_get_neighbors")
         graph_data = self._repository.get_neighbors(
             node_id=node_id,
             sketch_id=self._sketch_id,
@@ -217,6 +249,7 @@ class GraphService:
         return GraphData(nodes=nodes, edges=edges)
 
     def update_node(self, element_id: str, updates: Dict[str, Any]) -> str | None:
+        self._require_access("graph_service_update_node")
         flatten_updates = GraphSerializer.flatten(updates)
         """Update a node by its element ID."""
         return self._repository.update_node(
@@ -226,6 +259,7 @@ class GraphService:
         )
 
     def update_nodes_positions(self, positions: List[Dict[str, Any]]) -> int:
+        self._require_access("graph_service_update_nodes_positions")
         """Update positions (x, y) for multiple nodes in batch."""
         return self._repository.update_nodes_positions(
             positions=positions,
@@ -233,6 +267,7 @@ class GraphService:
         )
 
     def delete_nodes(self, node_ids: List[str]) -> int:
+        self._require_access("graph_service_delete_nodes")
         """Delete nodes by their element IDs."""
         return self._repository.delete_nodes(
             node_ids=node_ids,
@@ -240,6 +275,7 @@ class GraphService:
         )
 
     def delete_relationships(self, relationship_ids: List[str]) -> int:
+        self._require_access("graph_service_delete_relationships")
         """Delete relationships by their element IDs."""
         return self._repository.delete_relationships(
             relationship_ids=relationship_ids,
@@ -247,6 +283,7 @@ class GraphService:
         )
 
     def delete_all_sketch_nodes(self) -> int:
+        self._require_access("graph_service_delete_all_sketch_nodes")
         """Delete all nodes and relationships for the sketch."""
         return self._repository.delete_all_sketch_nodes(
             sketch_id=self._sketch_id,
@@ -256,6 +293,7 @@ class GraphService:
         self, element_id: str, properties: Dict[str, Any]
     ) -> Dict[str, Any] | None:
         """Update a relationship by its element ID."""
+        self._require_access("graph_service_update_relationship")
         return self._repository.update_relationship(
             element_id=element_id,
             rel_obj=properties,
@@ -269,6 +307,7 @@ class GraphService:
         new_node_id: str | None = None,
     ) -> str | None:
         """Merge multiple nodes into one, transferring all relationships."""
+        self._require_access("graph_service_merge_nodes")
         return self._repository.merge_nodes(
             old_node_ids=old_node_ids,
             new_node_data=new_node_data,
@@ -278,6 +317,7 @@ class GraphService:
 
     def batch_create_nodes(self, nodes: List[GraphDict]) -> Dict[str, Any]:
         """Create multiple nodes in a single batch transaction."""
+        self._require_access("graph_service_batch_create_nodes")
         return self._repository.batch_create_nodes(
             nodes=nodes,
             sketch_id=self._sketch_id,
@@ -287,6 +327,7 @@ class GraphService:
         self, edges: List[GraphDict]
     ) -> Dict[str, Any]:
         """Create multiple edges using element IDs in a single batch transaction."""
+        self._require_access("graph_service_batch_create_edges_by_element_id")
         return self._repository.batch_create_edges_by_element_id(
             edges=edges,
             sketch_id=self._sketch_id,
@@ -299,11 +340,13 @@ class GraphService:
         Args:
             message: Message to log
         """
+        self._require_access("graph_service_log_graph_message")
         if self._logger:
             self._logger.graph_append(self._sketch_id, {"message": message})
 
     def flush(self) -> None:
         """Flush any pending batch operations."""
+        self._require_access("graph_service_flush")
         if self._enable_batching:
             self._repository.flush_batch()
 
@@ -318,6 +361,7 @@ class GraphService:
         Returns:
             List of result records
         """
+        self._require_access("graph_service_query")
         return self._repository.query(cypher, parameters)
 
     def set_batch_size(self, size: int) -> None:
@@ -327,14 +371,17 @@ class GraphService:
         Args:
             size: Number of operations to batch
         """
+        self._require_access("graph_service_set_batch_size")
         self._repository.set_batch_size(size)
 
     def __enter__(self):
         """Context manager entry."""
+        self._require_access("graph_service_context_enter")
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Context manager exit - auto-flush batch."""
+        self._require_access("graph_service_context_exit")
         if exc_type is None:
             self.flush()
 
@@ -343,6 +390,8 @@ def create_graph_service(
     sketch_id: str,
     enable_batching: bool = True,
     type_resolver: Optional[TypeResolver] = None,
+    mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,
+    case_reference: str | None = None,
 ) -> GraphService:
     """
     Factory function to create a GraphService instance with Neo4j repository.
@@ -358,6 +407,12 @@ def create_graph_service(
     Returns:
         Configured GraphService instance
     """
+    require_legacy_graph_access(
+        mode,
+        operation="graph_service_factory_construction",
+        case_reference=case_reference,
+    )
+
     # Import Logger here to avoid circular imports
     from flowsint_core.core.logger import Logger
 
@@ -370,4 +425,6 @@ def create_graph_service(
         logger=Logger,
         enable_batching=enable_batching,
         type_resolver=type_resolver,
+        mode=mode,
+        case_reference=case_reference,
     )

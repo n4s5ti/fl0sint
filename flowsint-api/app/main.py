@@ -17,6 +17,7 @@ from app.api.routes import keys
 from app.api.routes import types
 from app.api.routes import custom_types
 from app.api.routes import enricher_templates
+from app.api.routes import grievances
 
 # Comma-separated list of allowed origins, e.g. "https://app.example.com,https://staging.example.com"
 # Falls back to localhost dev origin when unset. Never use "*" with allow_credentials=True.
@@ -59,3 +60,4 @@ app.include_router(keys.router, prefix="/api/keys", tags=["keys"])
 app.include_router(types.router, prefix="/api/types", tags=["types"])
 app.include_router(custom_types.router, prefix="/api/custom-types", tags=["custom-types"])
 app.include_router(enricher_templates.router, prefix="/api/enrichers/templates", tags=["enricher-templates"])
+app.include_router(grievances.router, prefix="/v1/grievances", tags=["grievances"])

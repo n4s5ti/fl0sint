@@ -22,6 +22,8 @@ from ..core.connector_egress import (
 )
 from ..core.enums import EventLevel
 from ..core.logger import Logger
+from ..core.forensics import LegacyExecutionTask, legacy_execution_boundary
+
 from ..core.models import Scan
 from ..core.projection.contracts import ProjectionError
 from ..core.projection.registry import projection_registry
@@ -35,6 +37,7 @@ from .graph_projection import project_graph_evidence
 load_all_enrichers()
 
 db: Session = next(get_db())
+
 
 def _get_or_create_scan(session, scan_id, sketch_id):
     dialect = session.get_bind().dialect.name
@@ -59,14 +62,15 @@ def _get_or_create_scan(session, scan_id, sketch_id):
     return current_scan
 
 
-
-@celery.task(name="run_enricher", bind=True)
+@celery.task(name="run_enricher", bind=True, base=LegacyExecutionTask)
+@legacy_execution_boundary("legacy_run_enricher_task")
 def run_enricher(
     self,
     enricher_name: str,
     serialized_objects: List[dict],
     sketch_id: str | None,
     owner_id: Optional[str] = None,
+    params: Dict[str, Any] | None = None,
 ):
     session = SessionLocal()
 
@@ -94,11 +98,15 @@ def run_enricher(
         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):
             raise ValueError(f"Enricher '{enricher_name}' not found in registry")
 
+        run_params = params or {}
+        run_params = ENRICHER_REGISTRY.filter_params(enricher_name, run_params)
+
         enricher = ENRICHER_REGISTRY.get_enricher(
             name=enricher_name,
             sketch_id=sketch_id,
             scan_id=scan_id,
             vault=vault,
+            params=run_params,
         )
 
         # Deserialize objects back into Pydantic models

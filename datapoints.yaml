@@ -1,0 +1,302 @@
+version: 1
+datapoints:
+- datapoint_id: account.avatar_url
+  category: identity
+  sensitivity: high
+  description: A account avatar_url datapoint
+- datapoint_id: account.bio_location_text
+  category: identity
+  sensitivity: high
+  description: A account bio_location_text datapoint
+- datapoint_id: account.bio_text
+  category: identity
+  sensitivity: high
+  description: A account bio_text datapoint
+- datapoint_id: account.display_name
+  category: identity
+  sensitivity: high
+  description: A account display_name datapoint
+- datapoint_id: account.facebook.id
+  category: identity
+  sensitivity: high
+  description: A account facebook id datapoint
+- datapoint_id: account.facebook.profile_url
+  category: identity
+  sensitivity: high
+  description: A account facebook profile_url datapoint
+- datapoint_id: account.follower_count
+  category: identity
+  sensitivity: high
+  description: A account follower_count datapoint
+- datapoint_id: account.following_count
+  category: identity
+  sensitivity: high
+  description: A account following_count datapoint
+- datapoint_id: account.instagram.profile_url
+  category: identity
+  sensitivity: high
+  description: A account instagram profile_url datapoint
+- datapoint_id: account.linked_url
+  category: identity
+  sensitivity: high
+  description: A account linked_url datapoint
+- datapoint_id: account.linkedin.profile_url
+  category: identity
+  sensitivity: high
+  description: A account linkedin profile_url datapoint
+- datapoint_id: account.post_timestamp
+  category: identity
+  sensitivity: high
+  description: A account post_timestamp datapoint
+- datapoint_id: account.post_url
+  category: identity
+  sensitivity: high
+  description: A account post_url datapoint
+- datapoint_id: account.profile_url
+  category: identity
+  sensitivity: high
+  description: A account profile_url datapoint
+- datapoint_id: account.username
+  category: identity
+  sensitivity: high
+  description: A account username datapoint
+- datapoint_id: account.username.candidate
+  category: identity
+  sensitivity: high
+  description: A account username candidate datapoint
+- datapoint_id: ai.tool
+  category: technical
+  sensitivity: low
+  description: A ai tool datapoint
+- datapoint_id: breach.data
+  category: breach
+  sensitivity: high
+  description: A breach data datapoint
+- datapoint_id: business.records
+  category: public_record
+  sensitivity: medium
+  description: A business records datapoint
+- datapoint_id: certificate.transparency
+  category: infrastructure
+  sensitivity: low
+  description: A certificate transparency datapoint
+- datapoint_id: cloud.infrastructure
+  category: infrastructure
+  sensitivity: low
+  description: A cloud infrastructure datapoint
+- datapoint_id: cloud.storage
+  category: infrastructure
+  sensitivity: low
+  description: A cloud storage datapoint
+- datapoint_id: contact.address.city
+  category: contact
+  sensitivity: high
+  description: A contact address city datapoint
+- datapoint_id: contact.address.postal
+  category: contact
+  sensitivity: high
+  description: A contact address postal datapoint
+- datapoint_id: contact.address.postal_code
+  category: contact
+  sensitivity: high
+  description: A contact address postal_code datapoint
+- datapoint_id: contact.address.region
+  category: contact
+  sensitivity: high
+  description: A contact address region datapoint
+- datapoint_id: contact.email
+  category: contact
+  sensitivity: high
+  description: A contact email datapoint
+- datapoint_id: contact.email.address
+  category: contact
+  sensitivity: high
+  description: A contact email address datapoint
+- datapoint_id: contact.email.address.candidate
+  category: contact
+  sensitivity: high
+  description: A contact email address candidate datapoint
+- datapoint_id: contact.email.address.verified
+  category: contact
+  sensitivity: high
+  description: A contact email address verified datapoint
+- datapoint_id: contact.email.domain
+  category: contact
+  sensitivity: high
+  description: A contact email domain datapoint
+- datapoint_id: contact.email.local_part
+  category: contact
+  sensitivity: high
+  description: A contact email local_part datapoint
+- datapoint_id: contact.email.related_candidate
+  category: contact
+  sensitivity: high
+  description: A contact email related_candidate datapoint
+- datapoint_id: contact.email.validated
+  category: contact
+  sensitivity: high
+  description: A contact email validated datapoint
+- datapoint_id: contact.phone.carrier
+  category: contact
+  sensitivity: high
+  description: A contact phone carrier datapoint
+- datapoint_id: contact.phone.country_code
+  category: contact
+  sensitivity: high
+  description: A contact phone country_code datapoint
+- datapoint_id: contact.phone.e
+  category: contact
+  sensitivity: high
+  description: A contact phone e datapoint
+- datapoint_id: contact.phone.e164
+  category: contact
+  sensitivity: high
+  description: A contact phone e164 datapoint
+- datapoint_id: dark.web
+  category: threat
+  sensitivity: high
+  description: A dark web datapoint
+- datapoint_id: document.analysis
+  category: document
+  sensitivity: medium
+  description: A document analysis datapoint
+- datapoint_id: document.embedded_email
+  category: document
+  sensitivity: medium
+  description: A document embedded_email datapoint
+- datapoint_id: document.embedded_url
+  category: document
+  sensitivity: medium
+  description: A document embedded_url datapoint
+- datapoint_id: document.file
+  category: document
+  sensitivity: medium
+  description: A document file datapoint
+- datapoint_id: document.metadata.author
+  category: document
+  sensitivity: medium
+  description: A document metadata author datapoint
+- datapoint_id: document.metadata.created_at
+  category: document
+  sensitivity: medium
+  description: A document metadata created_at datapoint
+- datapoint_id: document.metadata.software
+  category: document
+  sensitivity: medium
+  description: A document metadata software datapoint
+- datapoint_id: domain.blocklist
+  category: infrastructure
+  sensitivity: low
+  description: A domain blocklist datapoint
+- datapoint_id: domain.discovery
+  category: infrastructure
+  sensitivity: low
+  description: A domain discovery datapoint
+- datapoint_id: domain.name
+  category: infrastructure
+  sensitivity: low
+  description: A domain name datapoint
+- datapoint_id: domain.reputation
+  category: infrastructure
+  sensitivity: low
+  description: A domain reputation datapoint
+- datapoint_id: domain.subdomain
+  category: infrastructure
+  sensitivity: low
+  description: A domain subdomain datapoint
+- datapoint_id: email.address
+  category: other
+  sensitivity: medium
+  description: A email address datapoint
+- datapoint_id: email.domain
+  category: other
+  sensitivity: medium
+  description: A email domain datapoint
+- datapoint_id: email.valid
+  category: other
+  sensitivity: medium
+  description: A email valid datapoint
+- datapoint_id: encoding.decoding
+  category: technical
+  sensitivity: low
+  description: A encoding decoding datapoint
+- datapoint_id: estimated.age
+  category: other
+  sensitivity: medium
+  description: A estimated age datapoint
+- datapoint_id: evidence.capture
+  category: verification
+  sensitivity: low
+  description: A evidence capture datapoint
+- datapoint_id: evidence.confidence
+  category: verification
+  sensitivity: low
+  description: A evidence confidence datapoint
+- datapoint_id: evidence.contradiction
+  category: verification
+  sensitivity: low
+  description: A evidence contradiction datapoint
+- datapoint_id: evidence.identity_link_candidate
+  category: verification
+  sensitivity: low
+  description: A evidence identity_link_candidate datapoint
+- datapoint_id: evidence.match_score
+  category: verification
+  sensitivity: low
+  description: A evidence match_score datapoint
+- datapoint_id: evidence.raw_snippet
+  category: verification
+  sensitivity: low
+  description: A evidence raw_snippet datapoint
+- datapoint_id: evidence.retrieval_timestamp
+  category: verification
+  sensitivity: low
+  description: A evidence retrieval_timestamp datapoint
+- datapoint_id: evidence.source_url
+  category: verification
+  sensitivity: low
+  description: A evidence source_url datapoint
+- datapoint_id: evidence.status_current_or_historical
+  category: verification
+  sensitivity: low
+  description: A evidence status_current_or_historical datapoint
+- datapoint_id: facebook.uuid
+  category: other
+  sensitivity: medium
+  description: A facebook uuid datapoint
+- datapoint_id: first.name
+  category: other
+  sensitivity: medium
+  description: A first name datapoint
+- datapoint_id: funding.text
+  category: organization
+  sensitivity: medium
+  description: A funding text datapoint
+- datapoint_id: geo.camera_viewpoint_candidate
+  category: geospatial
+  sensitivity: medium
+  description: A geo camera_viewpoint_candidate datapoint
+- datapoint_id: geo.coordinate
+  category: geospatial
+  sensitivity: medium
+  description: A geo coordinate datapoint
+- datapoint_id: geo.landmark_candidate
+  category: geospatial
+  sensitivity: medium
+  description: A geo landmark_candidate datapoint
+- datapoint_id: geo.place_candidate
+  category: geospatial
+  sensitivity: medium
+  description: A geo place_candidate datapoint
+- datapoint_id: geo.place_name
+  category: geospatial
+  sensitivity: medium
+  description: A geo place_name datapoint
+- datapoint_id: geo.shadow_direction
+  category: geospatial
+  sensitivity: medium
+  description: A geo shadow_direction datapoint
+- datapoint_id: gravatar.hash
+  category: other
+  sensitivity: medium
+  description: A gravatar hash datapoint
