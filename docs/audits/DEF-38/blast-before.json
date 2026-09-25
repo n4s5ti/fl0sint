@@ -1,0 +1,280 @@
+{
+  "issue": "DEF-38",
+  "tool": "pip3r 1.2.6",
+  "env": {
+    "PIP3R_DISCLOSURE": "off"
+  },
+  "index": {
+    "path": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus",
+    "policy": "never reindexed or deleted by this pass; every pip3r blast invoked with --no-auto-index",
+    "state_at_start_of_pass (read 08:29Z, used by all blast runs 08:31:22Z\u201308:32:03Z)": {
+      "indexedAt": "2026-08-09T01:51:58.694Z",
+      "lastCommit": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+      "branch": "feat/graph-projection-connectors",
+      "stats": {
+        "files": 891,
+        "nodes": 12427,
+        "edges": 24610,
+        "communities": 447,
+        "processes": 237,
+        "embeddings": 0
+      },
+      "schemaVersion": 7,
+      "capabilities": {
+        "graph": {
+          "provider": "ladybugdb",
+          "status": "available"
+        }
+      },
+      "matches_HEAD": true
+    },
+    "state_observed_at_08:36Z": {
+      "indexedAt": "2026-09-25T08:33:06.197Z",
+      "lastCommit": "",
+      "stats": {
+        "files": 922,
+        "nodes": 14378,
+        "edges": 27776,
+        "communities": 517,
+        "processes": 239,
+        "embeddings": 0
+      },
+      "generation": {
+        "version": 1,
+        "generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+        "committedAt": "2026-09-25T08:33:06.918Z",
+        "producer": "pip3r-graphos",
+        "schemaStamp": 1,
+        "options": {
+          "embeddings": false
+        },
+        "sourceCount": 922,
+        "packageHash": "5cdb3968015089187a30ac4bd1ed8276e2825d092caadbe965af76c24301e686",
+        "ignoreHash": "098d165668732443a8a53c3b3b8d8fea0e8a98afe2475a48f85d3f44d720dfc1",
+        "workspacePackagesHash": "993eafb6020f679499eba04a57044d11b6e969dc3e953ad2dd8325f9ff626510",
+        "contractVersion": 2,
+        "attemptId": "b28692e5-ad95-4820-b3e3-06bfbc73d82e",
+        "recoveryOutcome": "published"
+      },
+      "matches_HEAD": "UNKNOWN \u2014 lastCommit is empty string",
+      "files_delta": 31
+    },
+    "finding": "Shared .gitnexus index was rewritten by another actor (pip3r-graphos attempt b28692e5\u2026, committedAt 2026-09-25T08:33:06.918Z) ~60s after this pass's last blast run. Not caused by this pass (mtimes in logs/ predate it; --no-auto-index used). Post-rewrite index has lastCommit=\"\" so its freshness vs HEAD is UNKNOWN and it likely reflects the dirty working tree (922 files vs 891)."
+  },
+  "command_template": "pip3r blast --no-auto-index --cwd /home/n4s5ti/Documents/dev/fl0sint --json --direction <upstream|downstream> --max-depth 3 <symbol>",
+  "deviation_from_brief": "Brief asked for `--direction both`; pip3r 1.2.6 rejects it (exit 252: 'direction must be upstream or downstream', see logs/blast-WebsiteToText.stderr). Ran upstream and downstream separately. `--no-auto-index` passed explicitly because `--auto-index` defaults to true (logs/pip3r-blast-help.txt).",
+  "execution": "serial, stdout redirected to files, never piped",
+  "runs": [
+    {
+      "file": "docs/audits/DEF-38/logs/blast-WebsiteToText-upstream.json",
+      "symbol": "WebsiteToText",
+      "direction": "upstream",
+      "risk": "UNKNOWN",
+      "indexStatus": "ready",
+      "completeness": "partial",
+      "completenessReasons": [
+        "no-call-edges"
+      ],
+      "warnings": [],
+      "summary": {
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+      },
+      "affected_modules": [],
+      "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Class",
+        "startLine": 63,
+        "endLine": 396
+      },
+      "symbols": [
+        "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+      ],
+      "files": [
+        [
+          "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+          1
+        ]
+      ]
+    },
+    {
+      "file": "docs/audits/DEF-38/logs/blast-WebsiteToText-downstream.json",
+      "symbol": "WebsiteToText",
+      "direction": "downstream",
+      "risk": "UNKNOWN",
+      "indexStatus": "ready",
+      "completeness": "partial",
+      "completenessReasons": [
+        "query-interrupted"
+      ],
+      "warnings": [],
+      "summary": {
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+      },
+      "affected_modules": [],
+      "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Class",
+        "startLine": 63,
+        "endLine": 396
+      },
+      "symbols": [
+        "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+      ],
+      "files": [
+        [
+          "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+          1
+        ]
+      ]
+    },
+    {
+      "file": "docs/audits/DEF-38/logs/blast-Enricher.execute-upstream.json",
+      "symbol": "flowsint-core/src/flowsint_core/core/enricher_base.py:execute",
+      "direction": "upstream",
+      "risk": "UNKNOWN",
+      "indexStatus": "ready",
+      "completeness": "partial",
+      "completenessReasons": [
+        "query-interrupted"
+      ],
+      "warnings": [],
+      "summary": {
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+      },
+      "affected_modules": [],
+      "target": {
+        "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+        "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+        "nodeType": "Method",
+        "startLine": 630,
+        "endLine": 655
+      },
+      "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1"
+      ],
+      "files": [
+        [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          1
+        ]
+      ]
+    },
+    {
+      "file": "docs/audits/DEF-38/logs/blast-Enricher.execute-downstream.json",
+      "symbol": "flowsint-core/src/flowsint_core/core/enricher_base.py:execute",
+      "direction": "downstream",
+      "risk": "HIGH",
+      "indexStatus": "ready",
+      "completeness": "complete",
+      "completenessReasons": [],
+      "warnings": [],
+      "summary": {
+        "rootSymbols": 1,
+        "totalSymbols": 18,
+        "totalEdges": 23,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 8,
+        "processes": 0,
+        "modules": 1
+      },
+      "affected_modules": [
+        {
+          "name": "flowsint-core",
+          "direct": true,
+          "symbolCount": 17
+        }
+      ],
+      "target": {
+        "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+        "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+        "nodeType": "Method",
+        "startLine": 630,
+        "endLine": 655
+      },
+      "symbols": [
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute#1",
+        "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.resolve_params#0",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.name#0",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.scan#1",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._input_validation_context#0",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._validate_single_input#3",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.preprocess#1",
+        "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.postprocess#2",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton._get_next_sequence#0",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton._flush_batch#1",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton._emit_event#4",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton._log#3",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton.info#2",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton.error#2",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton.warn#2",
+        "Method:flowsint-core/src/flowsint_core/core/logger.py:LoggerSingleton.completed#2"
+      ],
+      "files": [
+        [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          10
+        ],
+        [
+          "flowsint-core/src/flowsint_core/core/logger.py",
+          8
+        ]
+      ]
+    }
+  ],
+  "overall_status": "DEGRADED",
+  "assessment": [
+    "indexStatus=ready and index lastCommit matched HEAD at run time, but 3 of 4 runs are completeness=partial (reasons: 'no-call-edges' for WebsiteToText upstream, 'query-interrupted' for WebsiteToText downstream and Enricher.execute upstream) and report risk=UNKNOWN with 0 edges.",
+    "Only Enricher.execute downstream is completeness=complete: risk=HIGH, 18 symbols / 23 CALLS edges confined to enricher_base.py and logger.py (LoggerSingleton.info/error/warn/completed \u2192 _log \u2192 _flush_batch/_emit_event). It does NOT surface the graph sink (self._graph_service.flush / create_node) nor subclass overrides \u2014 Python attribute-call resolution is not in the index.",
+    "The index shows no upstream callers for WebsiteToText or Enricher.execute although rg finds run_enricher (tasks/enricher.py:114), orchestrator.py:430 and registry.get_enricher. Blast output is therefore NOT a substitute for the manual trace in acquisition-path-trace.md; treat as DEGRADED, not PASS.",
+    "Target line numbers in the index (WebsiteToText 63-396) reflect the dirty working-tree to_text.py (400 lines), not HEAD (381 lines): the index was built from the working tree.",
+    "No reindex was performed by this pass (shared coordination state).",
+    "Index freshness for the blast runs: lastCommit 59e2d67 == HEAD (state at start). The index was rewritten by another process ~60s after the last run; results in this packet come from the pre-rewrite index."
+  ],
+  "schema_fields_seen": [
+    "symbol",
+    "repo",
+    "lbugPath",
+    "rootPath",
+    "direction",
+    "risk",
+    "target",
+    "symbols",
+    "edges",
+    "files",
+    "affected_modules",
+    "affected_processes",
+    "byDepth",
+    "summary",
+    "warnings",
+    "completeness",
+    "completenessReasons",
+    "indexStatus"
+  ],
+  "mode_version_fields": "pip3r --json output contains no explicit mode/schema/version keys; tool version from `pip3r --version` = 1.2.6; index schemaVersion=7 from .gitnexus/gitnexus.json at start of pass"
+}
