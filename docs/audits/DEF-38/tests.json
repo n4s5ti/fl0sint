@@ -1,0 +1,122 @@
+{
+  "issue": "DEF-38",
+  "head_sha": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+  "discovered_entrypoints": {
+    "Makefile:test": [
+      "cd flowsint-types && uv run pytest",
+      "cd flowsint-core && uv run pytest",
+      "cd flowsint-enrichers && uv run pytest",
+      "cd flowsint-api && uv run pytest"
+    ],
+    ".github/workflows/tests.yml": {
+      "trigger": "pull_request, push to main",
+      "steps": "actions/checkout@v6 \u2192 astral-sh/setup-uv@v7 \u2192 `make test`",
+      "env": {
+        "AUTH_SECRET": "ci-only-dummy-secret",
+        "REDIS_URL": "redis://127.0.0.1:6379/0"
+      }
+    },
+    ".github/workflows/images.yml": "build-and-push only (tags v*); no tests",
+    "pyproject.toml (root)": "uv workspace; no [tool.pytest] config; no lint/typecheck scripts",
+    "flowsint-*/pyproject.toml": "dev deps black/isort/flake8/mypy (+pytest-asyncio, pytest-httpx, factory-boy in core) declared; no configured lint/typecheck entrypoint; [tool.mypy] python_version=3.11 while requires-python>=3.12",
+    "package.json (root)": "scripts: prepare(husky), commit, release*, sync-version, migrate(node scripts/migrate.js) \u2014 no test/lint",
+    "flowsint-app/package.json": "scripts: lint (eslint --fix), typecheck (tsc --noEmit), test (vitest run) \u2014 frontend only, not executed (out of Python scope, node_modules absent)",
+    ".husky/commit-msg": "commitlint",
+    "pytest_config_files": "none (no pytest.ini/tox.ini/setup.cfg); conftest.py in flowsint-core/tests, flowsint-core/tests/templates, flowsint-enrichers/tests, flowsint-api/tests"
+  },
+  "environment_setup": {
+    "uv_sync": "uv sync --frozen --all-packages (created fresh .venv in the worktree from existing uv.lock; 227 packages installed; git sources maigret/recontrack/reconcrawl/reconspread resolved from lock; no lockfile change)",
+    "uv_sync_log": "docs/audits/DEF-38/logs/uv-sync.log",
+    "python": "CPython 3.12.13 (.python-version=3.12)",
+    "lockfile_modified": false
+  },
+  "packages": {
+    "flowsint-types": {
+      "command": "cd flowsint-types && timeout 600 uv run --frozen pytest -x -q --no-header -p no:cacheprovider",
+      "env": {
+        "AUTH_SECRET": "ci-only-dummy-secret",
+        "REDIS_URL": "redis://127.0.0.1:6379/0"
+      },
+      "exit_code": 0,
+      "passed": 54,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0,
+      "log": "docs/audits/DEF-38/logs/pytest-flowsint-types.log",
+      "status": "PASS"
+    },
+    "flowsint-core": {
+      "command": "cd flowsint-core && timeout 600 uv run --frozen pytest -x -q --no-header -p no:cacheprovider",
+      "env": {
+        "AUTH_SECRET": "ci-only-dummy-secret",
+        "REDIS_URL": "redis://127.0.0.1:6379/0"
+      },
+      "exit_code": 0,
+      "passed": 382,
+      "failed": 5433,
+      "skipped": 0,
+      "errors": 0,
+      "log": "docs/audits/DEF-38/logs/pytest-flowsint-core.log",
+      "status": "PASS"
+    },
+    "flowsint-enrichers": {
+      "command": "cd flowsint-enrichers && timeout 600 uv run --frozen pytest -x -q --no-header -p no:cacheprovider",
+      "env": {
+        "AUTH_SECRET": "ci-only-dummy-secret",
+        "REDIS_URL": "redis://127.0.0.1:6379/0"
+      },
+      "exit_code": 0,
+      "passed": 33,
+      "failed": 5433,
+      "skipped": 0,
+      "errors": 0,
+      "log": "docs/audits/DEF-38/logs/pytest-flowsint-enrichers.log",
+      "status": "PASS"
+    },
+    "flowsint-api": {
+      "command": "cd flowsint-api && timeout 600 uv run --frozen pytest -x -q --no-header -p no:cacheprovider",
+      "env": {
+        "AUTH_SECRET": "ci-only-dummy-secret",
+        "REDIS_URL": "redis://127.0.0.1:6379/0"
+      },
+      "exit_code": 1,
+      "passed": 1,
+      "failed": 1,
+      "skipped": 1,
+      "errors": 0,
+      "log": "docs/audits/DEF-38/logs/pytest-flowsint-api.log",
+      "status": "FAIL",
+      "full_run_without_x": {
+        "command": "cd flowsint-api && timeout 600 uv run --frozen pytest -q --no-header -p no:cacheprovider",
+        "exit_code": 1,
+        "passed": 9,
+        "failed": 3,
+        "skipped": 1,
+        "errors": 0,
+        "log": "docs/audits/DEF-38/logs/pytest-flowsint-api-full.log",
+        "failed_tests": [
+          "tests/test_events_auth.py::test_log_stream_rejects_token_query_param",
+          "tests/test_events_auth.py::test_log_stream_requires_auth_header",
+          "tests/test_events_auth.py::test_status_stream_requires_auth_header"
+        ]
+      },
+      "failure_signature": "tests/test_events_auth.py: AttributeError: 'NoneType' object has no attribute 'rsplit' at app/api/deps.py:50 get_current_user -> jose.jws._load(None); tests expect 401 when Authorization header missing / token in query param, but deps passes token=None into jwt.decode"
+    },
+    "_side_effects_observed": "flowsint-core and flowsint-enrichers logs contain 'ERROR:root:Failed to batch insert logs: psycopg2.OperationalError connection to server at localhost:5433 ... password authentication failed for user flowsint' \u2014 LoggerSingleton batch worker (flowsint_core/core/logger.py:117-176) attempted a real Postgres connection using DATABASE_URL loaded by python-dotenv from the developer's untracked .env at repo root (/home/n4s5ti/Documents/dev/fl0sint/.env, not in worktree). Tests still pass; this is a preexisting test-isolation gap, not fixed."
+  },
+  "lint": {
+    "status": "NOT_RUN",
+    "reason": "no lint entrypoint discovered in Makefile/CI; tools only declared as dev deps"
+  },
+  "typecheck": {
+    "status": "NOT_RUN",
+    "reason": "no Python typecheck entrypoint discovered in Makefile/CI"
+  },
+  "services_required": "none \u2014 conftests inject dummy Neo4j creds and mock Logger/emit_event; SQLite in-memory for DB tests. No package marked BLOCKED.",
+  "summary": {
+    "flowsint-types": "PASS 54/54",
+    "flowsint-core": "PASS 382/382 (2 warnings)",
+    "flowsint-enrichers": "PASS 33/33 (2 warnings)",
+    "flowsint-api": "FAIL \u2014 3 failed, 9 passed, 1 skipped (all in tests/test_events_auth.py); preexisting at HEAD, not fixed"
+  }
+}

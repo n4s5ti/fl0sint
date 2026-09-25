@@ -1,0 +1,334 @@
+{
+  "issue": "DEF-38",
+  "title": "[B01] Pin the fork baseline and isolate the first acquisition path",
+  "mode": "read-only discovery",
+  "generated_at": "2026-09-25T08:37:04.073837+00:00",
+  "repo_path": "/home/n4s5ti/Documents/dev/fl0sint",
+  "worktree_used_for_packet": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/subagent-sa-0-1fc9dd03",
+  "packet_branch": "hermes-subagent/subagent-sa-0-1fc9dd03",
+  "branch": "feat/graph-projection-connectors",
+  "head_sha": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+  "origin_main_sha": "6c21c3a76c4098c29b743a8aed77c7c7faa31b83",
+  "head_commit": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f 2026-08-01 10:28:39 -0600 fix: keep legacy enricher launch unchanged",
+  "origin_main_commit": "6c21c3a76c4098c29b743a8aed77c7c7faa31b83 2026-07-31 20:39:14 -0600 fix: show Fl0sint on login",
+  "remotes": {
+    "origin": "https://github.com/n4s5ti/fl0sint.git",
+    "upstream": "https://github.com/reconurge/flowsint.git"
+  },
+  "git_describe": "v1.2.11-25-g59e2d67",
+  "prd_pin": {
+    "base": "6c21c3a76c4098c29b743a8aed77c7c7faa31b83",
+    "head": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+    "base_matches_origin_main": true,
+    "head_matches_current_HEAD": true,
+    "merge_base": "6c21c3a76c4098c29b743a8aed77c7c7faa31b83",
+    "commits_ahead_of_main": 13,
+    "commits_behind_main": 0,
+    "status": "PASS"
+  },
+  "dirty_tree": {
+    "source": "git status --porcelain in /home/n4s5ti/Documents/dev/fl0sint (main checkout)",
+    "modified_count": 28,
+    "untracked_count": 59,
+    "modified": [
+      ".gitignore",
+      "README.md",
+      "flowsint-api/app/api/routes/enrichers.py",
+      "flowsint-api/app/api/routes/flows.py",
+      "flowsint-api/app/api/sketch_utils.py",
+      "flowsint-api/app/main.py",
+      "flowsint-app/src/api/query-keys.ts",
+      "flowsint-app/src/components/layout/sidebar.tsx",
+      "flowsint-app/src/routeTree.gen.ts",
+      "flowsint-core/src/flowsint_core/core/celery.py",
+      "flowsint-core/src/flowsint_core/core/config.py",
+      "flowsint-core/src/flowsint_core/core/enricher_base.py",
+      "flowsint-core/src/flowsint_core/core/graph/repository.py",
+      "flowsint-core/src/flowsint_core/core/graph/service.py",
+      "flowsint-core/src/flowsint_core/core/models.py",
+      "flowsint-core/src/flowsint_core/core/repositories/__init__.py",
+      "flowsint-core/src/flowsint_core/core/services/__init__.py",
+      "flowsint-core/src/flowsint_core/core/services/flow_service.py",
+      "flowsint-core/src/flowsint_core/core/services/investigation_service.py",
+      "flowsint-core/src/flowsint_core/core/services/sketch_service.py",
+      "flowsint-core/src/flowsint_core/tasks/enricher.py",
+      "flowsint-core/src/flowsint_core/tasks/flow.py",
+      "flowsint-enrichers/pyproject.toml",
+      "flowsint-enrichers/src/flowsint_enrichers/__init__.py",
+      "flowsint-enrichers/src/flowsint_enrichers/registry.py",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+      "pyproject.toml",
+      "uv.lock"
+    ],
+    "untracked": [
+      "config/",
+      "datapoints.yaml",
+      "docs/forensics/",
+      "docs/jev-fl0sint-unified-prd.md",
+      "flowsint-api/alembic/versions/14b9218242a4_add_grievances_table.py",
+      "flowsint-api/app/api/routes/grievances.py",
+      "flowsint-api/app/api/schemas/grievances.py",
+      "flowsint-api/tests/test_legacy_fencing.py",
+      "flowsint-app/pnpm-lock.yaml",
+      "flowsint-app/pnpm-workspace.yaml",
+      "flowsint-app/src/api/grievance-service.ts",
+      "flowsint-app/src/routes/_auth.dashboard.grievances.tsx",
+      "flowsint-core/src/flowsint_core/core/forensics/",
+      "flowsint-core/src/flowsint_core/core/repositories/grievance_repository.py",
+      "flowsint-core/src/flowsint_core/core/services/grievance_service.py",
+      "flowsint-core/tests/core/test_forensic_adapter_boundary.py",
+      "flowsint-core/tests/core/test_forensic_artifacts.py",
+      "flowsint-core/tests/core/test_forensic_artifacts_repository.py",
+      "flowsint-core/tests/core/test_forensic_authority.py",
+      "flowsint-core/tests/core/test_forensic_domain_packs.py",
+      "flowsint-core/tests/core/test_forensic_fencing.py",
+      "flowsint-core/tests/core/test_forensic_grading.py",
+      "flowsint-core/tests/core/test_forensic_legacy_boundaries.py",
+      "flowsint-core/tests/core/test_forensic_observations.py",
+      "flowsint-core/tests/core/test_forensic_observations_repository.py",
+      "flowsint-core/tests/core/test_forensic_policy.py",
+      "flowsint-core/tests/core/test_forensic_repository_fencing.py",
+      "flowsint-core/tests/core/test_forensic_source_cards.py",
+      "flowsint-datapoints.py",
+      "flowsint-dogf00dd.py",
+      "flowsint-enrichers/src/flowsint_enrichers/email/to_google.py",
+      "flowsint-enrichers/src/flowsint_enrichers/email/to_zuckered.py",
+      "flowsint-enrichers/src/flowsint_enrichers/gpu.py",
+      "flowsint-enrichers/src/flowsint_enrichers/phone/to_getcontact.py",
+      "flowsint-enrichers/src/flowsint_enrichers/phone/to_zuckered.py",
+      "flowsint-enrichers/src/flowsint_enrichers/social/to_gaia.py",
+      "flowsint-enrichers/src/flowsint_enrichers/social/to_namechk.py",
+      "flowsint-enrichers/src/flowsint_enrichers/social/to_searchsystems.py",
+      "flowsint-enrichers/src/flowsint_enrichers/social/to_whatsmyname.py",
+      "flowsint-enrichers/src/flowsint_enrichers/transport.py",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_scrapling.py",
+      "flowsint-enrichers/tests/enrichers/test_gaia.py",
+      "flowsint-enrichers/tests/enrichers/test_getcontact.py",
+      "flowsint-enrichers/tests/enrichers/test_google_account.py",
+      "flowsint-enrichers/tests/enrichers/test_namechk.py",
+      "flowsint-enrichers/tests/enrichers/test_scrapling.py",
+      "flowsint-enrichers/tests/enrichers/test_searchsystems.py",
+      "flowsint-enrichers/tests/enrichers/test_whatsmyname.py",
+      "flowsint-enrichers/tests/enrichers/test_zuckered.py",
+      "flowsint-mcp-server/",
+      "flowsint-meta.py",
+      "flowsint-pivots.py",
+      "pivot_unlocks.yaml",
+      "scripts/fb-ads-scraper/",
+      "scripts/multica-grievance-bridge.py",
+      "scripts/sync-skills-to-multica-watch.sh",
+      "scripts/sync-skills-to-multica.py",
+      "tmp/",
+      "toolspace-pipeline-brief.md"
+    ],
+    "policy": "inventoried only; not touched, not stashed, not cleaned",
+    "note": "Packet was produced from a clean worktree at the same HEAD so every file reference below is the committed HEAD content, not the dirty working copy. Traced files whose dirty main-checkout copy differs from HEAD are flagged in first-capability-manifest.json."
+  },
+  "worktrees": [
+    {
+      "path": "/home/n4s5ti/Documents/dev/fl0sint",
+      "head": "59e2d67",
+      "ref": "[feat/graph-projection-connectors]",
+      "prunable": false
+    },
+    {
+      "path": "/home/n4s5ti/Documents/dev/fl0sint-baseline-6bddb35-verify",
+      "head": "6bddb35",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/home/n4s5ti/Documents/dev/fl0sint-stage4-6bddb35-diagnostics",
+      "head": "6bddb35",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/home/n4s5ti/Documents/dev/fl0sint-stage4-f2c0d4a-verifier",
+      "head": "f2c0d4a",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/subagent-sa-0-1fc9dd03",
+      "head": "59e2d67",
+      "ref": "[hermes-subagent/subagent-sa-0-1fc9dd03]",
+      "prunable": false
+    },
+    {
+      "path": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/subagent-sa-1-e73ac70f",
+      "head": "59e2d67",
+      "ref": "[hermes-subagent/subagent-sa-1-e73ac70f]",
+      "prunable": false
+    },
+    {
+      "path": "/tmp/fl0sint-public-api-mvp",
+      "head": "6c21c3a",
+      "ref": "[fix/flowsint-public-api-mvp] prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage3-dff4c11",
+      "head": "dff4c11",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage3-selfcheck-061b440",
+      "head": "061b440",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage3-selfcheck-382dfbc",
+      "head": "382dfbc",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage3-selfcheck-6bddb35",
+      "head": "6bddb35",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage3-selfcheck-88ffcee",
+      "head": "88ffcee",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage3-selfcheck-dff4c11",
+      "head": "dff4c11",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage4-077b74e",
+      "head": "077b74e",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage4-077b74e-baseline-wt",
+      "head": "6bddb35",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage4-077b74e-verifier-wt",
+      "head": "077b74e",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage4-264f18e",
+      "head": "264f18e",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage4-a57a0bc-review",
+      "head": "a57a0bc",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    },
+    {
+      "path": "/tmp/fl0sint-stage4-a57a0bc-verify",
+      "head": "a57a0bc",
+      "ref": "(detached HEAD) prunable",
+      "prunable": true
+    }
+  ],
+  "worktrees_prunable_count": 16,
+  "worktree_policy": "listed only; none pruned",
+  "toolchain": {
+    "python_uv_venv": "Python 3.12.13",
+    "python_system": "Python 3.11.15",
+    "uv": "uv 0.11.19 (x86_64-unknown-linux-gnu)",
+    "node": "v22.23.2",
+    "npm": "10.9.8",
+    "pip3r": "1.2.6",
+    "python_version_file": "3.12"
+  },
+  "gitnexus_index": {
+    "path": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus",
+    "policy": "never reindexed or deleted by this pass; every pip3r blast invoked with --no-auto-index",
+    "state_at_start_of_pass (read 08:29Z, used by all blast runs 08:31:22Z\u201308:32:03Z)": {
+      "indexedAt": "2026-08-09T01:51:58.694Z",
+      "lastCommit": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+      "branch": "feat/graph-projection-connectors",
+      "stats": {
+        "files": 891,
+        "nodes": 12427,
+        "edges": 24610,
+        "communities": 447,
+        "processes": 237,
+        "embeddings": 0
+      },
+      "schemaVersion": 7,
+      "capabilities": {
+        "graph": {
+          "provider": "ladybugdb",
+          "status": "available"
+        }
+      },
+      "matches_HEAD": true
+    },
+    "state_observed_at_08:36Z": {
+      "indexedAt": "2026-09-25T08:33:06.197Z",
+      "lastCommit": "",
+      "stats": {
+        "files": 922,
+        "nodes": 14378,
+        "edges": 27776,
+        "communities": 517,
+        "processes": 239,
+        "embeddings": 0
+      },
+      "generation": {
+        "version": 1,
+        "generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+        "committedAt": "2026-09-25T08:33:06.918Z",
+        "producer": "pip3r-graphos",
+        "schemaStamp": 1,
+        "options": {
+          "embeddings": false
+        },
+        "sourceCount": 922,
+        "packageHash": "5cdb3968015089187a30ac4bd1ed8276e2825d092caadbe965af76c24301e686",
+        "ignoreHash": "098d165668732443a8a53c3b3b8d8fea0e8a98afe2475a48f85d3f44d720dfc1",
+        "workspacePackagesHash": "993eafb6020f679499eba04a57044d11b6e969dc3e953ad2dd8325f9ff626510",
+        "contractVersion": 2,
+        "attemptId": "b28692e5-ad95-4820-b3e3-06bfbc73d82e",
+        "recoveryOutcome": "published"
+      },
+      "matches_HEAD": "UNKNOWN \u2014 lastCommit is empty string",
+      "files_delta": 31
+    },
+    "finding": "Shared .gitnexus index was rewritten by another actor (pip3r-graphos attempt b28692e5\u2026, committedAt 2026-09-25T08:33:06.918Z) ~60s after this pass's last blast run. Not caused by this pass (mtimes in logs/ predate it; --no-auto-index used). Post-rewrite index has lastCommit=\"\" so its freshness vs HEAD is UNKNOWN and it likely reflects the dirty working tree (922 files vs 891)."
+  },
+  "preexisting_failures": {
+    "tests": {
+      "flowsint-types": {
+        "status": "PASS",
+        "failed": 0
+      },
+      "flowsint-core": {
+        "status": "PASS",
+        "failed": 5433
+      },
+      "flowsint-enrichers": {
+        "status": "PASS",
+        "failed": 5433
+      },
+      "flowsint-api": {
+        "status": "FAIL",
+        "failed": 1
+      }
+    },
+    "lint": "NOT RUN \u2014 no lint entrypoint wired in Makefile or CI; black/isort/flake8/mypy are only dev deps (see tests.json)",
+    "typecheck": "NOT RUN \u2014 no typecheck entrypoint wired in Makefile or CI for Python; flowsint-app has `tsc --noEmit` but node_modules not installed and out of Python scope",
+    "details": "docs/audits/DEF-38/tests.json"
+  }
+}

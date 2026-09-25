@@ -1,0 +1,267 @@
+{
+  "issue": "DEF-38",
+  "capability": "website_to_text (URL \u2192 visible page text)",
+  "source_sha": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+  "branch": "feat/graph-projection-connectors",
+  "base_sha": "6c21c3a76c4098c29b743a8aed77c7c7faa31b83",
+  "entrypoint": {
+    "class": "flowsint_enrichers.website.to_text.WebsiteToText",
+    "registry_name": "website_to_text",
+    "file": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+    "class_line": 63,
+    "execute": "flowsint_core.core.enricher_base.Enricher.execute (enricher_base.py:632)"
+  },
+  "implementation_digest": {
+    "algorithm": "sha256 over concatenated file bytes at HEAD, in listed order",
+    "combined": "6fc1b8c5fd378891f063d9a1e524dcd0a11e020cb77a697f82bf07e9cb8456e4",
+    "files": [
+      {
+        "path": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "sha256": "b985b93991790daf97aadfddeb8f21b3e4f3f9c79b1afffe82bdc57b669ecfcb",
+        "git_blob": "2fdb320382fd9e75496f17213b30994373ceee08",
+        "lines": 381,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-enrichers/src/flowsint_enrichers/registry.py",
+        "sha256": "e9a75c6d91f0f569bc7adf57f08e578d8370362e140f5485aa0f5ea07eb690c8",
+        "git_blob": "f21fc95a68ed64c747c786e2b92ad8aec2c23140",
+        "lines": 231,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+        "sha256": "9f4070f7f35df9d737c9bdef88188034baca0d541968faa94433262453277f52",
+        "git_blob": "cfe11aaf30b1fdb4421e390d51f25292ce989113",
+        "lines": 721,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/graph/service.py",
+        "sha256": "4879f31e75a8c53b5c7873e5b2c98d763580016384622261056d7aee4f74842d",
+        "git_blob": "1054b403c40e8f62f269aaa8f835b930299e08de",
+        "lines": 373,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/graph/repository.py",
+        "sha256": "07265ec3164288c72746949998ec06d2dd494a0731a6684c130d3e3055fcdf30",
+        "git_blob": "d1c93df60fd8eb92240095053419e9ff9b42a03e",
+        "lines": 989,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/graph/connection.py",
+        "sha256": "0e2a53ecb9d6bcd46d5fbaf71af1b893eb148a620b4756cfec9a0cb11eafdc21",
+        "git_blob": "f4986a6da70d0161875ecc13c3d8c0bd314d28b6",
+        "lines": 214,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/graph/serializer.py",
+        "sha256": "c27e535b5bdaf102a6e18155ecaffb84c13927d6c939c3672e55aca43442c50f",
+        "git_blob": "2dbad02e7b5b679fcf05d986abf211e3f34ce123",
+        "lines": 235,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/logger.py",
+        "sha256": "6aff8cc4080309e9770007572c3f1942818ae86788f9a1c3c7c92e9bb3074d54",
+        "git_blob": "21a7a286c65b0dd89da8000d655491a575fe14e2",
+        "lines": 301,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/tasks/event.py",
+        "sha256": "861fa319b6888f13485eac75889aecadb86b7ff2c1da884ca1649de054c23139",
+        "git_blob": "b79b0fe13534619f7aa1bd618ef4853cf72d18e6",
+        "lines": 41,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+        "sha256": "bd326c9e6ef00533b2ac2fd4fb4ac39c871b99744232d6dc40ac612a9cc7fe41",
+        "git_blob": "215b660057ce7a1575a0e7433a36e9aec6dd7cc3",
+        "lines": 372,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/celery.py",
+        "sha256": "87e654735ed097ddf9e868006762b4a5baf78bd8c72c0362e9588fb3d3bf3b7c",
+        "git_blob": "0bd32c9376795d2c33e3426e4ebfc2184c9df338",
+        "lines": 32,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/config.py",
+        "sha256": "31e96a99799ab9de35192352d8cf79644e2280e6606bac41710104a318e681b5",
+        "git_blob": "1bcea46be8033e8138a3153090b7572e7b698a34",
+        "lines": 25,
+        "main_checkout_differs_from_HEAD": true
+      },
+      {
+        "path": "flowsint-core/src/flowsint_core/core/postgre_db.py",
+        "sha256": "bc3deb1112443bc0490102cf8c4687e358812a1d3ed9955197bfd3251bb8f37a",
+        "git_blob": "94b6030b1bbdf655d50819685f73f380c23d127f",
+        "lines": 36,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-types/src/flowsint_types/website.py",
+        "sha256": "00f7aef4aff944957977e346fadecc0705a9c5feca00e37a5572b36f6d9e40b5",
+        "git_blob": "3b1a82c6c46bc29d19a60b2f9db8c1a5f7e5b12f",
+        "lines": 66,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-types/src/flowsint_types/phrase.py",
+        "sha256": "87b7c4c5bd1bf06ca10fb14e8a94241b6bba47c586c4935c884d9a3ea9a631cd",
+        "git_blob": "4934f551d46212d5405261eb0e2b710358362a76",
+        "lines": 31,
+        "main_checkout_differs_from_HEAD": false
+      },
+      {
+        "path": "flowsint-api/app/api/routes/enrichers.py",
+        "sha256": "c5eb824d847b1b1a3e3da63ecd7f1733982eeea4892d6052d7abefe322e4de3a",
+        "git_blob": "e78dc1ffcc0c092014741816f529d3552773ec7d",
+        "lines": 160,
+        "main_checkout_differs_from_HEAD": true
+      }
+    ]
+  },
+  "parameter_digest": {
+    "params_schema_source": "to_text.py:85-108 get_params_schema",
+    "params": [
+      {
+        "name": "enable_quic",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "max_concurrency",
+        "type": "int",
+        "default": 10
+      },
+      {
+        "name": "request_timeout",
+        "type": "int",
+        "default": 10
+      }
+    ],
+    "sha256_of_params_json": "94546dbc2b9047fea5e4b737deba44578dd69dbd8cba879cdd91bf985034859c",
+    "note": "build_params_model (enricher_base.py:27-57) coerces non-bool types to str; int params are therefore validated as Optional[str] \u2014 an int default passes but a supplied value arrives as str (preexisting quirk, not fixed)"
+  },
+  "supported_inputs": {
+    "type": "flowsint_types.website.Website",
+    "primary_field": "url (pydantic HttpUrl, http/https only)",
+    "accepted_forms": [
+      "Website model",
+      "dict with url",
+      "bare string (mapped to {url: <str>} by Enricher._validate_single_input, enricher_base.py:404-405)"
+    ],
+    "invalid_inputs": "silently dropped in preprocess (enricher_base.py:431-432); if none valid, raw values are passed through"
+  },
+  "output_status_contract": {
+    "legacy_execute": "List[Phrase] (text=visible text, nodeLabel truncated to 100 chars); on any exception returns [] and logs \"errored\" (enricher_base.py:651-657) \u2014 no per-input status",
+    "execute_structured": "StructuredExecutionResult{enricher_name, outcomes: [InputOutcome{input_ref=sha of input, status SUCCESS|FAILURE, outputs, diagnostic RedactedDiagnostic{code,safe_message,retryable}, evidence}]} (enricher_base.py:566-625); WebsiteToText does not override evidence hooks so evidence is always ()",
+    "fetch_failure": "_fetch_text_async returns None after all transports fail \u2192 no Phrase for that URL (to_text.py:184-189); empty text \u2192 no Phrase (to_text.py:128)"
+  },
+  "limits": {
+    "concurrency": "asyncio.Semaphore(max_concurrency=10) (to_text.py:119) + httpx.Limits(max_connections)",
+    "timeout": "request_timeout=10s per request; QUIC capped at min(timeout,5)",
+    "redirects": "followed (httpx follow_redirects=True; requests allow_redirects=True)",
+    "size": "none \u2014 full response body is parsed by BeautifulSoup html.parser",
+    "tls": "QUIC path sets verify_mode=False (to_text.py:204) \u2014 certificate verification disabled on the experimental transport",
+    "fallback_chain": "httpx(HTTP/2) \u2192 aioquic (opt-in) \u2192 requests (sync, blocks event loop)"
+  },
+  "source_retention_policy": {
+    "raw_html": "not retained; only soup.get_text() result kept",
+    "headers_status": "not retained (Website.status_code/headers/title fields not populated)",
+    "evidence": "_build_structured_evidence not overridden \u2192 no EvidenceEnvelope",
+    "persisted_copies": "legacy path: Phrase node + HAS_INNER_TEXT edge in Neo4j; Scan.details JSON in Postgres via run_enricher (tasks/enricher.py:118); log rows in Postgres + Redis pub/sub events via Logger"
+  },
+  "disabled_paths_for_first_slice": [
+    {
+      "path": "Neo4j graph writes",
+      "symbols": [
+        "WebsiteToText.postprocess to_text.py:317-330",
+        "Enricher.create_node enricher_base.py:659",
+        "Enricher.create_relationship enricher_base.py:680",
+        "Enricher.log_graph_message enricher_base.py:704",
+        "GraphService.create_node_from_flowsint_type service.py:110",
+        "GraphService.create_relationship service.py:160",
+        "GraphService.flush service.py:305",
+        "Neo4jGraphRepository.add_to_batch/flush_batch repository.py:84,159",
+        "Neo4jConnection.execute_batch connection.py:141"
+      ],
+      "how": "inject a non-Neo4j GraphRepositoryProtocol / null GraphService via the graph_service ctor arg (enricher_base.py:128); postprocess guards on self._graph_service truthiness (to_text.py:320)",
+      "decision": "EXCLUDE"
+    },
+    {
+      "path": "Celery task wrapper run_enricher + Postgres Scan row",
+      "symbols": [
+        "flowsint_core.tasks.enricher.run_enricher tasks/enricher.py:63-129",
+        "module-level db = next(get_db()) tasks/enricher.py:37"
+      ],
+      "decision": "EXCLUDE (call Enricher.execute / execute_structured directly)"
+    },
+    {
+      "path": "Logger \u2192 Postgres batch insert + Redis event publish",
+      "symbols": [
+        "LoggerSingleton._flush_batch logger.py:117-176",
+        "LoggerSingleton._emit_event logger.py:181-198",
+        "emit_event_task tasks/event.py:15-25"
+      ],
+      "decision": "EXCLUDE (substitute LoggerProtocol / TestLogger as tests do); note Enricher imports Logger at module import so REDIS_URL must still be set for import (config.py:15)"
+    },
+    {
+      "path": "Jev",
+      "evidence": "rg -i jev across tracked source at HEAD: 0 hits outside package-lock.json; only in untracked docs/jev-fl0sint-unified-prd.md",
+      "decision": "NOT REQUIRED / not present at HEAD"
+    },
+    {
+      "path": "MetaHarness",
+      "evidence": "rg -i metaharness: 0 hits in tracked source at HEAD",
+      "decision": "NOT REQUIRED / not present at HEAD"
+    },
+    {
+      "path": "Connector credentials / vault",
+      "symbols": [
+        "Enricher.resolve_params enricher_base.py:166-201 (only for vaultSecret params)",
+        "run_enricher vault creation tasks/enricher.py:86-93"
+      ],
+      "evidence": "WebsiteToText declares no vaultSecret params; required_params() False",
+      "decision": "NOT REQUIRED"
+    },
+    {
+      "path": "GPU postprocess (cupy/cudf)",
+      "symbols": [
+        "to_text.py:45-57, 301-315, 336-377"
+      ],
+      "evidence": "optional-dependency group gpu; not in default install; guarded by HAS_CUPY/HAS_CUDF",
+      "decision": "EXCLUDE (CPU path is the default)"
+    },
+    {
+      "path": "QUIC/HTTP3 transport",
+      "symbols": [
+        "to_text.py:169-175, 194-280"
+      ],
+      "evidence": "opt-in param enable_quic=False; verify_mode=False",
+      "decision": "EXCLUDE (keep default off)"
+    },
+    {
+      "path": "API launch route + Neo4j read of input nodes",
+      "symbols": [
+        "flowsint-api/app/api/routes/enrichers.py:117-160 launch_enricher \u2192 GraphService.get_nodes_by_ids_for_task \u2192 celery.send_task(\"run_enricher\")"
+      ],
+      "decision": "EXCLUDE"
+    }
+  ],
+  "reused_paths": [
+    "Website/Phrase pydantic types",
+    "Enricher.execute / execute_structured orchestration (async_init \u2192 preprocess \u2192 scan \u2192 postprocess)",
+    "WebsiteToText.scan/_fetch_text_async/_extract_text (httpx + BeautifulSoup)",
+    "EnricherRegistry / @flowsint_enricher (optional, for name lookup)"
+  ],
+  "dirty_tree_warning": "In the main checkout, to_text.py, enricher_base.py, graph/service.py, graph/repository.py, tasks/enricher.py, registry.py, config.py, celery.py and flowsint-enrichers/pyproject.toml are locally modified (uncommitted). The digests above are HEAD content only; the dirty to_text.py adds enable_gpu/gpu_provider params (seen in pip3r index content, which was built from the working tree)."
+}
