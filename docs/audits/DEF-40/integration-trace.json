@@ -1,0 +1,40 @@
+{
+  "kind": "source/config supplement, not graph impact",
+  "baseline": "02467e96ac71708863776ad2732980344a9532e7",
+  "references": [
+    {
+      "path": "Makefile",
+      "lines": "139-143",
+      "fact": "Canonical tests run pytest in each package; new executable tests remain enrichers/tests/enrichers/test_acquisition_fixtures.py."
+    },
+    {
+      "path": "flowsint-enrichers/tests/conftest.py",
+      "lines": "5-25",
+      "fact": "Existing package autouse mocks logger/emit_event and supplies dummy graph constructor credentials; fixture CLI avoids all production imports."
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/execution.py",
+      "lines": "16-21,65-83",
+      "fact": "Runtime success/failure/hold retained unchanged. Corpus labels classify fixture expectations only, not a new API."
+    },
+    {
+      "path": "docs/jev-fl0sint-unified-prd.md",
+      "lines": "313-350,672-708",
+      "fact": "Extraction is not acceptance; hashes not occurrence identity; copied origin and stale dates matter; dynamic rendering and public interaction separate."
+    }
+  ],
+  "new_entrypoint": "python3 scripts/acquisition_fixtures.py validate|smoke|serve",
+  "intended_consumers": [
+    "package pytest tests (manifest integrity/negative cases)",
+    "local standalone smoke and browser verification",
+    "future scraper/crawler/review issues; NOT wired to current production"
+  ],
+  "forbidden_dependencies": [
+    "flowsint imports in standalone CLI",
+    "Neo4j/Postgres/Redis",
+    "Jev/MetaHarness",
+    "credentials",
+    "live/private source collection"
+  ],
+  "scope_addendum": "Add package-local test_acquisition_fixtures.py before implementation; deliberate integration with existing pytest discovery. No root test framework."
+}

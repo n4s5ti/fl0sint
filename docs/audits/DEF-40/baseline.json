@@ -1,0 +1,44 @@
+{
+  "issue": "DEF-40",
+  "base_sha": "02467e96ac71708863776ad2732980344a9532e7",
+  "branch": "work/def-40-fixtures",
+  "clean_before_scope_artifacts": true,
+  "python": "3.14.5",
+  "pip3r": "1.2.6",
+  "package_config_sha256": {
+    "pyproject.toml": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+    "uv.lock": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f",
+    "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
+    ".github/workflows/tests.yml": "c44f9832963dd2cf1357b3b874a2790c93ab86924497434a5b78f061dc14bf63",
+    "flowsint-enrichers/pyproject.toml": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b",
+    "flowsint-enrichers/tests/conftest.py": "ce32262470747085bc3fd23bf1ce3f97c579b25af4de8988a2713554f8bd3c00",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": "c717f33b90063ceb5c0fb9630417808e4593cc7f252f026f980afc93d69f40cb",
+    "flowsint-core/src/flowsint_core/core/execution.py": "dfbff64db850c5c99b0cd619571244f11e6a1081d261793f475b1fed7ece65d4"
+  },
+  "shared_index_before_sha256": {
+    ".gitnexus/index.lock.reclaim.mode": "8a1eb3d0b3d5c74a5ef77a096f02241389061970fdf83cd7bb737c0230cd9a48",
+    ".gitnexus/index.lock.reclaim": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".gitnexus/.gitignore": "cdbcae15105d6b781e620813c79c7e868740d4e9cc53ce6f5fcbbc12387adf4b",
+    ".gitnexus/run.cjs": "f6986b2c8e65fa53956d714cea251575420aa920b6dd2159d0b6d41ee7c8f718",
+    ".gitnexus/lbug": "2572cc46bf276281b05f6f2146d0f5b9a987a156a588aca564ca5df3192a6fa1",
+    ".gitnexus/gitnexus.json": "5b71191ce4ba996cf9ee433738b5241887ce3cbc1e71c01af79ce2f67a0a6c26",
+    ".gitnexus/meta.json": "5b71191ce4ba996cf9ee433738b5241887ce3cbc1e71c01af79ce2f67a0a6c26",
+    ".gitnexus/pip3r-workspace-edges.json": "fd6e2856b05e441e4b1113c131bfa2fc1e1b8183320853b550747b197b918054",
+    ".gitnexus/pip3r-content-manifest.json": "c04881b3712818e7f550b767218a9c074796bcf5450d46e847211089c0848815",
+    ".gitnexus/pip3r-generation.json": "49ab876696f990a1992254ce420eb845e6f1fec356b14f7dc85f5cb7d9bc4b55"
+  },
+  "preexisting_debt": [
+    "DEF-39 Python/dynamic impact UNKNOWN",
+    "DEF-38 API baseline failures recorded; not rerun here",
+    "No raw baseline pytest logs in committed DEF-38 packet",
+    "Upstream production image mismatch unchanged"
+  ],
+  "enabled": "synthetic local fixture corpus only",
+  "disabled": [
+    "production services",
+    "live data",
+    "models",
+    "graph writes",
+    "real scraper implementation"
+  ]
+}

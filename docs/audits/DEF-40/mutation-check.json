@@ -1,0 +1,37 @@
+{
+  "purpose": "Prove test_acquisition_fixtures.py defends behaviour: each defect was injected into scripts/acquisition_fixtures.py, the test module run, then the file restored byte-identically (cmp exit 0).",
+  "command": "cd <pkg>-enrichers && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest tests/enrichers/test_acquisition_fixtures.py -q -p no:cacheprovider",
+  "mutations": [
+    {
+      "id": "M1",
+      "defect": "source sha256 check disabled in load_manifest",
+      "result": "1 failed, 21 passed",
+      "killed_by": "test_loader_rejects_tampered_corpus[source hash mismatch]"
+    },
+    {
+      "id": "M2",
+      "defect": "server maps /static.html to /static (non-allowlisted route served)",
+      "result": "1 failed, 21 passed",
+      "killed_by": "test_server_serves_only_manifest_routes"
+    },
+    {
+      "id": "M3",
+      "defect": "smoke reports success_nonempty for an empty 200 page",
+      "result": "1 failed, 21 passed",
+      "killed_by": "test_smoke_exercises_real_http_and_matches_every_expected_label"
+    },
+    {
+      "id": "M4",
+      "defect": "smoke classifies a timeout as failure_http",
+      "result": "1 failed, 21 passed",
+      "killed_by": "test_smoke_exercises_real_http_and_matches_every_expected_label"
+    },
+    {
+      "id": "M5",
+      "defect": "manifest verdict flip: stale-role-not-current current_role unresolved -> accepted (reviewer DEF40-R1 reproduction)",
+      "result": "1 failed, 23 passed",
+      "killed_by": "test_trap_fixtures_keep_their_negative_verdicts"
+    }
+  ],
+  "restored": "24 passed (after R1/R3 fixes)"
+}

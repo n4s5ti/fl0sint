@@ -1,0 +1,986 @@
+{
+  "version": 1,
+  "corpus_id": "def40-acquisition-v1",
+  "development_only": true,
+  "as_of": "2026-09-25T22:25:00Z",
+  "provenance": {
+    "partition": "development",
+    "synthetic": true,
+    "no_live_persons": true,
+    "authoring": "Synthetic source artifacts, raw-byte observations, acquisition expectations, and factual acceptance labels were authored before the DEF-40 acquisition implementation. Labels are human-readable fixture author judgments, not outputs computed by a scraper, runner, validator, or model evaluation.",
+    "reviewer_requirement": "Before any future benchmark promotion, an independent adjudicator who did not author acquisition behavior must review each source span, entity/company binding, temporal label, and acceptance decision against retained bytes. The current corpus is development data, not an independently adjudicated holdout.",
+    "grouped_split_requirement": "Future development/evaluation partitioning must group every shared origin_id (including byte-identical copies), repeated source/URL occurrences, and connected subject/company identity cluster together. Splits require explicit independent review; content hashes are integrity markers, never source or occurrence identity.",
+    "claims": "Fixture transport, raw-byte provenance, and authored factual-boundary examples only. No production scraper correctness, generalization, accuracy, or statistical significance claim. Script-literal spans are source evidence, not proof of rendered visibility."
+  },
+  "retention": {
+    "permission": "synthetic_author_permission",
+    "policy": "These artifacts are newly authored synthetic development fixtures. All names, companies, roles, and contact addresses are fictional; all email domains use reserved .example names. Permission is granted to retain, copy, modify, and redistribute this synthetic fixture data with this repository for development and verification. No live-person data, credentials, third-party scraped content, or network acquisition is included. Retain original UTF-8 artifact bytes and this policy alongside hashes and byte-span evidence. These labels are development-only and must not be promoted to a locked benchmark or statistical claim without future independent adjudication and origin/entity-grouped splitting.",
+    "sha256": "d2fb13efa179880e881aebd79273fb2b9ce3a16aadfc8a3b87cb8ce61e50d3e3"
+  },
+  "sources": [
+    {
+      "id": "static",
+      "route": "/static",
+      "artifact": "static.html",
+      "sha256": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+      "origin_id": "static",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "named",
+      "route": "/named",
+      "artifact": "named.html",
+      "sha256": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+      "origin_id": "lume-directory",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "malformed",
+      "route": "/malformed",
+      "artifact": "malformed.html",
+      "sha256": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+      "origin_id": "malformed",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "redirect",
+      "route": "/redirect",
+      "artifact": "redirect.html",
+      "sha256": "a6303cfd81ab62f12b55ff80dd766bd2e5309e0e6c770c488a49a190da0c829a",
+      "origin_id": "redirect",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 302,
+        "delay_ms": 0,
+        "location": "/named"
+      }
+    },
+    {
+      "id": "slow",
+      "route": "/slow",
+      "artifact": "slow.html",
+      "sha256": "56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010",
+      "origin_id": "slow",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 750
+      }
+    },
+    {
+      "id": "failure",
+      "route": "/failure",
+      "artifact": "failure.html",
+      "sha256": "301fceb2dfd01818c4243b7eb747baa085fcb0c73bfd7844f8111063563e8054",
+      "origin_id": "failure",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 503,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "empty",
+      "route": "/empty",
+      "artifact": "empty.html",
+      "sha256": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+      "origin_id": "empty",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "same-name-amber",
+      "route": "/same-name-amber",
+      "artifact": "same-name-amber.html",
+      "sha256": "f65fca5436d662a3935b44c95928ac84fd3e65f6dbce7d1c4dc870014132e6b6",
+      "origin_id": "same-name-amber",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "same-name-cobalt",
+      "route": "/same-name-cobalt",
+      "artifact": "same-name-cobalt.html",
+      "sha256": "e638664566623f921baae541c5c49463a1ea8ac1fdb5a96da3ff0b165b596221",
+      "origin_id": "same-name-cobalt",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "generic",
+      "route": "/generic",
+      "artifact": "generic.html",
+      "sha256": "ddce4a8a7f8bbb243235c0f190494ceb62499c6f25e8b6f4fd664d1c94e0c55c",
+      "origin_id": "generic",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "stale",
+      "route": "/stale",
+      "artifact": "stale.html",
+      "sha256": "15ee29927f0248d3dda97adf9c7a58e72ccab32d13efea370991f1a7ed76fda8",
+      "origin_id": "stale",
+      "event_at": "2022-04-15T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "dynamic",
+      "route": "/dynamic",
+      "artifact": "dynamic.html",
+      "sha256": "13f6d65d0d23596a81dfbf95cc8cd37e5eced198e6890bc8fbfda49cdf2db79e",
+      "origin_id": "dynamic",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "click",
+      "route": "/click",
+      "artifact": "click.html",
+      "sha256": "08ccc7a79ca5e88338948148834919cd98fe82bdc21aeb88c51b11363d36a478",
+      "origin_id": "click",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "copy-a",
+      "route": "/copy-a",
+      "artifact": "copy-a.html",
+      "sha256": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+      "origin_id": "lume-directory",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    },
+    {
+      "id": "copy-b",
+      "route": "/copy-b",
+      "artifact": "copy-b.html",
+      "sha256": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+      "origin_id": "lume-directory",
+      "event_at": "2026-09-01T00:00:00Z",
+      "response": {
+        "status": 200,
+        "delay_ms": 0
+      }
+    }
+  ],
+  "observations": [
+    {
+      "id": "static-text",
+      "source_id": "static",
+      "start_byte": 141,
+      "end_byte": 209,
+      "quote": "Lumé Lantern publishes café lighting notes — résumé available.",
+      "kind": "text",
+      "value": "Lumé Lantern"
+    },
+    {
+      "id": "static-link",
+      "source_id": "static",
+      "start_byte": 213,
+      "end_byte": 265,
+      "quote": "<a href=\"/named\">Lumé Lantern contact directory</a>",
+      "kind": "link",
+      "value": "/named"
+    },
+    {
+      "id": "named-contact",
+      "source_id": "named",
+      "start_byte": 154,
+      "end_byte": 263,
+      "quote": "Néra Vale is the design lead at Lumé Lantern. Her published work contact is nera.vale@lume-lantern.example.",
+      "kind": "contact",
+      "value": "nera.vale@lume-lantern.example"
+    },
+    {
+      "id": "copy-a-contact",
+      "source_id": "copy-a",
+      "start_byte": 154,
+      "end_byte": 263,
+      "quote": "Néra Vale is the design lead at Lumé Lantern. Her published work contact is nera.vale@lume-lantern.example.",
+      "kind": "contact",
+      "value": "nera.vale@lume-lantern.example"
+    },
+    {
+      "id": "copy-b-contact",
+      "source_id": "copy-b",
+      "start_byte": 154,
+      "end_byte": 263,
+      "quote": "Néra Vale is the design lead at Lumé Lantern. Her published work contact is nera.vale@lume-lantern.example.",
+      "kind": "contact",
+      "value": "nera.vale@lume-lantern.example"
+    },
+    {
+      "id": "malformed-contact",
+      "source_id": "malformed",
+      "start_byte": 184,
+      "end_byte": 266,
+      "quote": "Oren Fenn works for Amber Loom. Contact Oren Fenn at oren.fenn@amber-loom.example.",
+      "kind": "contact",
+      "value": "oren.fenn@amber-loom.example"
+    },
+    {
+      "id": "amber-contact",
+      "source_id": "same-name-amber",
+      "start_byte": 107,
+      "end_byte": 195,
+      "quote": "Ari Vale is the studio manager at Amber Loom. Work contact: ari.vale@amber-loom.example.",
+      "kind": "contact",
+      "value": "ari.vale@amber-loom.example"
+    },
+    {
+      "id": "amber-distinction",
+      "source_id": "same-name-amber",
+      "start_byte": 202,
+      "end_byte": 268,
+      "quote": "This Ari Vale is not the person with the same name at Cobalt Kite.",
+      "kind": "text",
+      "value": "distinct people"
+    },
+    {
+      "id": "cobalt-contact",
+      "source_id": "same-name-cobalt",
+      "start_byte": 108,
+      "end_byte": 202,
+      "quote": "Ari Vale is the production manager at Cobalt Kite. Work contact: ari.vale@cobalt-kite.example.",
+      "kind": "contact",
+      "value": "ari.vale@cobalt-kite.example"
+    },
+    {
+      "id": "cobalt-distinction",
+      "source_id": "same-name-cobalt",
+      "start_byte": 209,
+      "end_byte": 274,
+      "quote": "This Ari Vale is not the person with the same name at Amber Loom.",
+      "kind": "text",
+      "value": "distinct people"
+    },
+    {
+      "id": "generic-inbox",
+      "source_id": "generic",
+      "start_byte": 115,
+      "end_byte": 238,
+      "quote": "Lumé Lantern general enquiries: hello@lume-lantern.example. This shared company inbox is not assigned to any named person.",
+      "kind": "contact",
+      "value": "hello@lume-lantern.example"
+    },
+    {
+      "id": "stale-role",
+      "source_id": "stale",
+      "start_byte": 117,
+      "end_byte": 238,
+      "quote": "Archived as of 2022-04-15: Sora Pell was operations lead at Cobalt Kite, with work contact sora.pell@cobalt-kite.example.",
+      "kind": "contact",
+      "value": "sora.pell@cobalt-kite.example"
+    },
+    {
+      "id": "stale-caveat",
+      "source_id": "stale",
+      "start_byte": 245,
+      "end_byte": 349,
+      "quote": "This historical record does not establish a current role or contact address. All entities are fictional.",
+      "kind": "text",
+      "value": "historical only"
+    },
+    {
+      "id": "dynamic-contact",
+      "source_id": "dynamic",
+      "start_byte": 277,
+      "end_byte": 375,
+      "quote": "Mira Quill is the studio lead at Violet Loom. Public work contact: mira.quill@violet-loom.example.",
+      "kind": "script_literal",
+      "value": "mira.quill@violet-loom.example"
+    },
+    {
+      "id": "click-contact",
+      "source_id": "click",
+      "start_byte": 420,
+      "end_byte": 517,
+      "quote": "Ivo Reed is the project lead at Copper Finch. Public work contact: ivo.reed@copper-finch.example.",
+      "kind": "script_literal",
+      "value": "ivo.reed@copper-finch.example"
+    }
+  ],
+  "occurrences": [
+    {
+      "id": "input-static",
+      "source_id": "static",
+      "input_index": 0
+    },
+    {
+      "id": "input-named",
+      "source_id": "named",
+      "input_index": 1
+    },
+    {
+      "id": "input-malformed",
+      "source_id": "malformed",
+      "input_index": 2
+    },
+    {
+      "id": "input-redirect",
+      "source_id": "redirect",
+      "input_index": 3
+    },
+    {
+      "id": "input-slow",
+      "source_id": "slow",
+      "input_index": 4
+    },
+    {
+      "id": "input-failure",
+      "source_id": "failure",
+      "input_index": 5
+    },
+    {
+      "id": "input-empty",
+      "source_id": "empty",
+      "input_index": 6
+    },
+    {
+      "id": "input-same-name-amber",
+      "source_id": "same-name-amber",
+      "input_index": 7
+    },
+    {
+      "id": "input-same-name-cobalt",
+      "source_id": "same-name-cobalt",
+      "input_index": 8
+    },
+    {
+      "id": "input-generic",
+      "source_id": "generic",
+      "input_index": 9
+    },
+    {
+      "id": "input-stale",
+      "source_id": "stale",
+      "input_index": 10
+    },
+    {
+      "id": "input-dynamic",
+      "source_id": "dynamic",
+      "input_index": 11
+    },
+    {
+      "id": "input-click",
+      "source_id": "click",
+      "input_index": 12
+    },
+    {
+      "id": "input-copy-a",
+      "source_id": "copy-a",
+      "input_index": 13
+    },
+    {
+      "id": "input-copy-b",
+      "source_id": "copy-b",
+      "input_index": 14
+    },
+    {
+      "id": "input-named-repeat",
+      "source_id": "named",
+      "input_index": 15
+    }
+  ],
+  "cases": [
+    {
+      "id": "static-text-link-unicode",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-static"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-static",
+          "status": "success_nonempty",
+          "final_source_id": "static",
+          "observation_ids": [
+            "static-text",
+            "static-link"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Lumé Lantern",
+          "company": "Lumé Lantern",
+          "predicate": "publishes",
+          "value": "café lighting notes",
+          "verdict": "accepted",
+          "reason": "The retained text explicitly names the fictional publisher and topic; accents and em dash are preserved as UTF-8 bytes.",
+          "evidence_observation_ids": [
+            "static-text"
+          ]
+        },
+        {
+          "subject": "Lumé Lantern",
+          "company": "Lumé Lantern",
+          "predicate": "contact_directory_route",
+          "value": "/named",
+          "verdict": "accepted",
+          "reason": "The exact anchor associates this relative directory route with the company.",
+          "evidence_observation_ids": [
+            "static-link"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "named-person-company-contact",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-named"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-named",
+          "status": "success_nonempty",
+          "final_source_id": "named",
+          "observation_ids": [
+            "named-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "published_work_contact",
+          "value": "nera.vale@lume-lantern.example",
+          "verdict": "accepted",
+          "reason": "A single statement explicitly binds name, company, and published work address. This does not establish mailbox deliverability or control.",
+          "evidence_observation_ids": [
+            "named-contact"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "malformed-html-contact",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-malformed"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-malformed",
+          "status": "success_nonempty",
+          "final_source_id": "malformed",
+          "observation_ids": [
+            "malformed-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Oren Fenn",
+          "company": "Amber Loom",
+          "predicate": "published_work_contact",
+          "value": "oren.fenn@amber-loom.example",
+          "verdict": "accepted",
+          "reason": "Unclosed markup does not remove the explicit name/company/contact association in retained source.",
+          "evidence_observation_ids": [
+            "malformed-contact"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "redirect-to-contact",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-redirect"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-redirect",
+          "status": "success_nonempty",
+          "final_source_id": "named",
+          "observation_ids": [
+            "named-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "published_work_contact",
+          "value": "nera.vale@lume-lantern.example",
+          "verdict": "accepted",
+          "reason": "The redirect resolves to the named directory; evidence is from the final body, not the redirect body.",
+          "evidence_observation_ids": [
+            "named-contact"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "slow-page-timeout",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-slow"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-slow",
+          "status": "failure_timeout",
+          "final_source_id": "slow",
+          "observation_ids": [],
+          "diagnostic": "deadline exceeded",
+          "timeout_ms": 100
+        }
+      ],
+      "acceptance": [],
+      "browser": null
+    },
+    {
+      "id": "http-503-failure",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-failure"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-failure",
+          "status": "failure_http",
+          "final_source_id": "failure",
+          "observation_ids": [],
+          "diagnostic": "HTTP 503",
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [],
+      "browser": null
+    },
+    {
+      "id": "legitimate-empty-page",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-empty"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-empty",
+          "status": "success_empty",
+          "final_source_id": "empty",
+          "observation_ids": [],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [],
+      "browser": null
+    },
+    {
+      "id": "same-name-different-companies",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-same-name-amber",
+        "input-same-name-cobalt"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-same-name-amber",
+          "status": "success_nonempty",
+          "final_source_id": "same-name-amber",
+          "observation_ids": [
+            "amber-contact",
+            "amber-distinction"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        },
+        {
+          "occurrence_id": "input-same-name-cobalt",
+          "status": "success_nonempty",
+          "final_source_id": "same-name-cobalt",
+          "observation_ids": [
+            "cobalt-contact",
+            "cobalt-distinction"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Ari Vale",
+          "company": "Amber Loom",
+          "predicate": "published_work_contact",
+          "value": "ari.vale@amber-loom.example",
+          "verdict": "accepted",
+          "reason": "The Amber Loom statement binds this address to its own Ari Vale.",
+          "evidence_observation_ids": [
+            "amber-contact"
+          ]
+        },
+        {
+          "subject": "Ari Vale",
+          "company": "Cobalt Kite",
+          "predicate": "published_work_contact",
+          "value": "ari.vale@cobalt-kite.example",
+          "verdict": "accepted",
+          "reason": "The Cobalt Kite statement binds this address to its own Ari Vale.",
+          "evidence_observation_ids": [
+            "cobalt-contact"
+          ]
+        },
+        {
+          "subject": "Ari Vale",
+          "company": "Amber Loom",
+          "predicate": "published_work_contact",
+          "value": "ari.vale@cobalt-kite.example",
+          "verdict": "rejected",
+          "reason": "Matching names cannot transfer the other company contact; both pages explicitly distinguish the two fictional people.",
+          "evidence_observation_ids": [
+            "amber-contact",
+            "amber-distinction",
+            "cobalt-contact",
+            "cobalt-distinction"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "generic-inbox-not-person",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-generic"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-generic",
+          "status": "success_nonempty",
+          "final_source_id": "generic",
+          "observation_ids": [
+            "generic-inbox"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Lumé Lantern",
+          "company": "Lumé Lantern",
+          "predicate": "general_enquiries_contact",
+          "value": "hello@lume-lantern.example",
+          "verdict": "accepted",
+          "reason": "The page explicitly labels this as the company shared inbox.",
+          "evidence_observation_ids": [
+            "generic-inbox"
+          ]
+        },
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "published_work_contact",
+          "value": "hello@lume-lantern.example",
+          "verdict": "rejected",
+          "reason": "The evidence explicitly excludes assignment to a named person; it cannot support attributing the inbox to Néra Vale.",
+          "evidence_observation_ids": [
+            "generic-inbox"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "copied-pages-one-origin",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-copy-a",
+        "input-copy-b"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-copy-a",
+          "status": "success_nonempty",
+          "final_source_id": "copy-a",
+          "observation_ids": [
+            "copy-a-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        },
+        {
+          "occurrence_id": "input-copy-b",
+          "status": "success_nonempty",
+          "final_source_id": "copy-b",
+          "observation_ids": [
+            "copy-b-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "published_work_contact",
+          "value": "nera.vale@lume-lantern.example",
+          "verdict": "accepted",
+          "reason": "Both pages repeat the same explicit association, but they are one evidence origin.",
+          "evidence_observation_ids": [
+            "copy-a-contact",
+            "copy-b-contact"
+          ]
+        },
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "independent_contact_evidence_origins",
+          "value": "2",
+          "verdict": "rejected",
+          "reason": "Byte-identical retained copies share origin_id lume-directory; separate routes or occurrences are not independent corroboration.",
+          "evidence_observation_ids": [
+            "copy-a-contact",
+            "copy-b-contact"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "stale-role-not-current",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-stale"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-stale",
+          "status": "success_nonempty",
+          "final_source_id": "stale",
+          "observation_ids": [
+            "stale-role",
+            "stale-caveat"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Sora Pell",
+          "company": "Cobalt Kite",
+          "predicate": "role_as_of_2022-04-15",
+          "value": "operations lead",
+          "verdict": "accepted",
+          "reason": "The archive explicitly dates the historical role.",
+          "evidence_observation_ids": [
+            "stale-role"
+          ]
+        },
+        {
+          "subject": "Sora Pell",
+          "company": "Cobalt Kite",
+          "predicate": "current_role",
+          "value": "operations lead",
+          "verdict": "unresolved",
+          "reason": "As of 2026-09-25 the 2022 archive provides no current-role assertion; stale is not equivalent to disproved.",
+          "evidence_observation_ids": [
+            "stale-role",
+            "stale-caveat"
+          ]
+        },
+        {
+          "subject": "Sora Pell",
+          "company": "Cobalt Kite",
+          "predicate": "current_work_contact",
+          "value": "sora.pell@cobalt-kite.example",
+          "verdict": "unresolved",
+          "reason": "The historical address may or may not remain current; the retained page explicitly disclaims that inference.",
+          "evidence_observation_ids": [
+            "stale-role",
+            "stale-caveat"
+          ]
+        }
+      ],
+      "browser": null
+    },
+    {
+      "id": "render-only-contact",
+      "capability": "render",
+      "occurrence_ids": [
+        "input-dynamic"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-dynamic",
+          "status": "success_nonempty",
+          "final_source_id": "dynamic",
+          "observation_ids": [
+            "dynamic-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Mira Quill",
+          "company": "Violet Loom",
+          "predicate": "published_work_contact",
+          "value": "mira.quill@violet-loom.example",
+          "verdict": "accepted",
+          "reason": "The authored script literal explicitly binds person/company/contact; separate browser proof must establish visible rendered content. Raw retrieval alone is not render proof.",
+          "evidence_observation_ids": [
+            "dynamic-contact"
+          ]
+        }
+      ],
+      "browser": {
+        "selector": "#contact",
+        "before_text": "Loading public contact card.",
+        "after_text": "Mira Quill is the studio lead at Violet Loom. Public work contact: mira.quill@violet-loom.example.",
+        "action_selector": null
+      }
+    },
+    {
+      "id": "public-click-reveal-contact",
+      "capability": "interaction",
+      "occurrence_ids": [
+        "input-click"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-click",
+          "status": "success_nonempty",
+          "final_source_id": "click",
+          "observation_ids": [
+            "click-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Ivo Reed",
+          "company": "Copper Finch",
+          "predicate": "published_work_contact",
+          "value": "ivo.reed@copper-finch.example",
+          "verdict": "accepted",
+          "reason": "The authored script literal explicitly binds person/company/contact. The public button requires neither authentication nor consent bypass; visible click behavior requires separate browser proof.",
+          "evidence_observation_ids": [
+            "click-contact"
+          ]
+        }
+      ],
+      "browser": {
+        "selector": "#contact",
+        "before_text": "Public contact card is collapsed.",
+        "after_text": "Ivo Reed is the project lead at Copper Finch. Public work contact: ivo.reed@copper-finch.example.",
+        "action_selector": "#reveal"
+      }
+    },
+    {
+      "id": "duplicate-url-occurrences",
+      "capability": "http",
+      "occurrence_ids": [
+        "input-named",
+        "input-named-repeat"
+      ],
+      "expected": [
+        {
+          "occurrence_id": "input-named",
+          "status": "success_nonempty",
+          "final_source_id": "named",
+          "observation_ids": [
+            "named-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        },
+        {
+          "occurrence_id": "input-named-repeat",
+          "status": "success_nonempty",
+          "final_source_id": "named",
+          "observation_ids": [
+            "named-contact"
+          ],
+          "diagnostic": null,
+          "timeout_ms": 2000
+        }
+      ],
+      "acceptance": [
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "published_work_contact",
+          "value": "nera.vale@lume-lantern.example",
+          "verdict": "accepted",
+          "reason": "Two input positions independently require acquisition outcomes, while factual evidence still has only one source origin.",
+          "evidence_observation_ids": [
+            "named-contact"
+          ]
+        },
+        {
+          "subject": "Néra Vale",
+          "company": "Lumé Lantern",
+          "predicate": "independent_contact_evidence_origins",
+          "value": "2",
+          "verdict": "rejected",
+          "reason": "Repeated URL inputs preserve occurrence identity, not independent evidence; neither URL nor content digest is an occurrence identifier.",
+          "evidence_observation_ids": [
+            "named-contact"
+          ]
+        }
+      ],
+      "browser": null
+    }
+  ]
+}

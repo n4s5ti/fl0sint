@@ -1,0 +1,67 @@
+{
+  "issue": "DEF-40",
+  "reviewer": {
+    "identity": "OMP reviewer subagent Def40AdversarialReview (self-reported model anthropic/claude-fable-5)",
+    "independence": "Separate agent context. It did not author the corpus, loader or tests, and it was read-only on the repository. It was spawned by the implementing session, so it is not a separate human or organisation; this is recorded as a self-review limitation.",
+    "transcript": "history://Def40AdversarialReview (session-local)"
+  },
+  "round_1": {
+    "commands": [
+      "python3 scripts/acquisition_fixtures.py validate -> exit 0",
+      "timeout 60 python3 scripts/acquisition_fixtures.py smoke -> exit 0",
+      "uv run --no-sync pytest tests/enrichers/test_acquisition_fixtures.py -> 22 passed",
+      "29-case loader tamper battery on /tmp copies -> 25 rejected; 4 accepted (DEF40-R1 x3, DEF40-R3)",
+      "server battery: 127.0.0.1-only bind; 404 for manifest/artifact/traversal/query paths; 501 for HEAD/POST/OPTIONS; 16-slot concurrency with no semaphore leak across two 24-connection floods; clean SIGTERM shutdown",
+      "smoke falsification: served-body hash mismatch, label confusion in both directions, redirect target change, span shift and wrong final source were all detected; a relocated tampered corpus made validate/smoke exit 1"
+    ],
+    "criteria": {
+      "known_spans_and_contacts_checkable_offline": "PASS",
+      "identical_url_inputs_distinct_occurrences_shared_content": "PASS",
+      "empty_output_vs_execution_failure_distinct": "PASS",
+      "implementation_steps_1_to_5": "PASS"
+    },
+    "overall": "correct, confidence 0.92"
+  },
+  "findings": [
+    {
+      "id": "DEF40-R1",
+      "severity": "minor",
+      "introduced": true,
+      "summary": "Some verdict flips on the same-name and stale trap labels were missed by the loader and tests: 3 of 6 went undetected.",
+      "fix": "Added test_trap_fixtures_keep_their_negative_verdicts, which pins all 6 non-accepted labels.",
+      "disposition": "RESOLVED, re-verified: all 6 flips caught and the pristine corpus passes. Mutation M5 in mutation-check.json."
+    },
+    {
+      "id": "DEF40-R2",
+      "severity": "info",
+      "introduced": true,
+      "summary": "The top-level smoke passed field does not count NOT_RUN_BROWSER results.",
+      "fix": "The report now lists not_run_browser_cases, and the claim states that passed covers HTTP cases only. Browser evidence is in browser-proof.json.",
+      "disposition": "ACCEPTED-AS-DOCUMENTED, re-verified"
+    },
+    {
+      "id": "DEF40-R3a",
+      "severity": "info",
+      "introduced": true,
+      "summary": "The loader accepted orphan observations that no expected entry cited.",
+      "fix": "load_manifest now rejects them with 'orphan observation'; a mutation test was added.",
+      "disposition": "RESOLVED, re-verified on redirect-body and uncited-200 tampers"
+    },
+    {
+      "id": "DEF40-R3b",
+      "severity": "info",
+      "introduced": true,
+      "summary": "Values on kind=text observations are free-form summaries and are not checked against the quote.",
+      "fix": null,
+      "disposition": "ACCEPTED-AS-DOCUMENTED. Known limitation that must be revisited before any locked-benchmark promotion."
+    }
+  ],
+  "round_2": {
+    "commands": [
+      "validate -> exit 0",
+      "smoke -> exit 0",
+      "pytest test module -> 24 passed"
+    ],
+    "overall": "correct; no new findings"
+  }
+}

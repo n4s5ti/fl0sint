@@ -1,0 +1,23 @@
+{
+  "blast": {
+    "status": "UNKNOWN",
+    "reason": "Fresh isolated-index WebsiteToText lookup resolves root but completeness partial/query-interrupted; no production-source modifications planned."
+  },
+  "hunt": {
+    "status": "UNKNOWN",
+    "coverage_commands": 0,
+    "scope": "Probes pip3r CLI, not fixture runner or Fl0sint Python behavior",
+    "finding": "Root --help must exit 0, evidence 1",
+    "classification": "preexisting per DEF-39, contradicted by direct pip3r --help exit 0 in this run"
+  },
+  "invocation_correction": {
+    "command": "pip3r doctor --no-auto-index --hunt",
+    "exit": 252,
+    "reason": "doctor does not accept --no-auto-index; reran verified B02 command without that flag only against isolated worktree"
+  },
+  "baseline": {
+    "status": "recorded, not rerun",
+    "reason": "Prior full Python baseline from DEF-38; new fixture CLI/tests verified separately"
+  },
+  "policy": "No clean graph assurance claimed. Explicit source/config tracing and behavioral/adversarial fixtures supplement tool gaps accepted in prior B02 closure."
+}

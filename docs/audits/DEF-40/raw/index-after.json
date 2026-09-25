@@ -1,0 +1,20 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03/.gitnexus/lbug",
+        "success": true,
+        "warnings": [
+            "No workspace packages with recognised entry files — sidecar will be empty"
+        ],
+        "generation": "sha256:e5275987b2785c7f67a528bbd6f3c1889eff55f7e42dcf52101b72291d24e43f",
+        "planAction": "incremental",
+        "deltaAdded": 0,
+        "deltaModified": 3,
+        "deltaDeleted": 0,
+        "deltaRenamed": 0,
+        "deltaUnreadable": 0,
+        "indexLatencyMs": 53998,
+        "filesParsed": 1022
+    }
+}

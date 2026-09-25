@@ -1,0 +1,75 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-fixtures",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "def-40-fixtures",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-fixtures/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 1010,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "hunt": {
+        "findings": [
+            {
+                "symbol": "pip3r",
+                "filePath": "pip3r-cli",
+                "category": "flag_inconsistency",
+                "severity": "medium",
+                "evidence": "1",
+                "explanation": "Root --help must exit 0"
+            }
+        ],
+        "counts": {
+            "total": 1,
+            "critical": 0,
+            "high": 0,
+            "medium": 1,
+            "low": 0,
+            "info": 0
+        },
+        "durationMs": 130,
+        "coverage": {
+            "commandsDiscovered": 0,
+            "commandsProbed": 0,
+            "jsonContractsExercised": 0,
+            "delegatedSurfacesCaptured": 0,
+            "spawns": 2,
+            "discoveryCap": null,
+            "commands": []
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "issue": "DEF-40",
+  "captured_at": "2026-09-25T23:20:00Z",
+  "tool": "OMP managed headless Chromium (Puppeteer), allowed_domains=[127.0.0.1]",
+  "server": "python3 scripts/acquisition_fixtures.py serve --port 18740 (loopback only)",
+  "claim": "Optional dynamic fixtures behave as authored in a real browser. This is fixture behaviour proof, not scraper render/interaction capability.",
+  "results": [
+    {
+      "case_id": "render-only-contact",
+      "capability": "render",
+      "url": "http://127.0.0.1:18740/dynamic",
+      "raw_contains_before_text": true,
+      "after_observed": "Mira Quill is the studio lead at Violet Loom. Public work contact: mira.quill@violet-loom.example.",
+      "before_matches": true,
+      "after_matches": true,
+      "visible": true,
+      "passed": true
+    },
+    {
+      "case_id": "public-click-reveal-contact",
+      "capability": "interaction",
+      "url": "http://127.0.0.1:18740/click",
+      "before_observed": "Public contact card is collapsed.",
+      "after_observed": "Ivo Reed is the project lead at Copper Finch. Public work contact: ivo.reed@copper-finch.example.",
+      "before_matches": true,
+      "after_matches": true,
+      "visible": true,
+      "passed": true
+    }
+  ],
+  "offhost_requests": []
+}
