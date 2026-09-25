@@ -1,0 +1,39 @@
+Usage: f0rg3 doctor [options]
+
+Diagnostics, bug hunting, and refactoring — scout to ship
+
+Options:
+  --section <name>             [ship] Run specific section only
+                               (runtime|tools|services|python-bridge|storage|credentials)
+  -v, --verbose                Show detailed output for each check
+  --fix                        Attempt automatic fixes where possible
+  --json                       Structured JSON output
+  --timeout <secs>             Timeout per check in seconds (default: "10")
+  --skip <checks>              Comma-separated checks to skip
+  --deep                       [ship] Full diagnostic: env + typecheck + tests +
+                               hunt(drift)
+  --test                       [test] Auto-detect and run project test suite
+  --typecheck                  [test] Auto-detect and run type checker
+  --hunt [scope]               [test] Adversarial bug hunt
+                               (drift|full|trace:<concept>|<symbol>)
+  --no-probe                   [test] Skip behavioral probe phase during hunt
+  --logs [since]               [test] Analyze logs for errors/crashes (default:
+                               1h, or specify window)
+  --investigate                [test] When tests fail, trace symbols to root
+                               cause
+  --verify-refactor <symbols>  [test] Compare blast prediction vs actual drift
+  --blast                      [plan] Graph blast audit on all exported
+                               functions
+  --refactor <concept>         [plan] Refactoring advisor — safety-ranked wave
+                               order
+  --path <prefix>              [plan] Filter blast to files under this path
+  --module <name>              [plan] Filter blast to a community/module
+  -r, --repo <name>            Target repository for hunt/blast/refactor
+  --sweep                      [review] Validate --json + exit codes for every
+                               command
+  --contracts                  [review] Learn or enforce JSON output shape
+                               contracts
+  --learn                      Learn contracts from current sweep (use with
+                               --contracts)
+  --enforce                    Enforce saved contracts (use with --contracts)
+  -h, --help                   display help for command

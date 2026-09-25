@@ -1,0 +1,76 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "columns": [
+            "type",
+            "n"
+        ],
+        "rows": [
+            {
+                "type": "HAS_PROPERTY",
+                "n": 1766
+            },
+            {
+                "type": "IMPORTS",
+                "n": 2156
+            },
+            {
+                "type": "HANDLES_TOOL",
+                "n": 23
+            },
+            {
+                "type": "DEFINES",
+                "n": 7835
+            },
+            {
+                "type": "EXTENDS",
+                "n": 225
+            },
+            {
+                "type": "STEP_IN_PROCESS",
+                "n": 849
+            },
+            {
+                "type": "METHOD_OVERRIDES",
+                "n": 596
+            },
+            {
+                "type": "MEMBER_OF",
+                "n": 3612
+            },
+            {
+                "type": "CALLS",
+                "n": 5540
+            },
+            {
+                "type": "ACCESSES",
+                "n": 544
+            },
+            {
+                "type": "CONTAINS",
+                "n": 1564
+            },
+            {
+                "type": "HANDLES_ROUTE",
+                "n": 88
+            },
+            {
+                "type": "ENTRY_POINT_OF",
+                "n": 539
+            },
+            {
+                "type": "USES",
+                "n": 135
+            },
+            {
+                "type": "HAS_METHOD",
+                "n": 2304
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

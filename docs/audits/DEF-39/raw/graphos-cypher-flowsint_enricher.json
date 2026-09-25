@@ -1,0 +1,324 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "columns": [
+            "a.id",
+            "r.type"
+        ],
+        "rows": [
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/asn/to_cidrs.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/cidr/to_ips.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/crypto/to_nfts.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/crypto/to_transactions.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_asn.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dehashed.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dns.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_dummy_individuals.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_history.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_ip.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_root_domain.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_ssl.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_subdomains.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_website.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_whois.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/domain/to_whois_history.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_dehashed.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_domain.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_domains.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_google.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_gravatar.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_hudsonrock.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_leaks.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_linkedin.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_username.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/email/to_zuckered.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/individual/to_domains.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/individual/to_org.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_asn.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_dehashed.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_domain.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_dummy_domains.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_fraudscore.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_infos.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/ip/to_ports.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/n8n/connector.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_company.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_funding.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_leadership.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_metrics.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_profile.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/fire_enrich_tech.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_asn.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_domains.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_company_socials.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_emails.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_individuals.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_people.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/organization/to_infos.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_carrier.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_getcontact.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_hudsonrock.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_infos.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phone/to_zuckered.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_emails.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_individuals.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_phones.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/registry.py",
+                "r.type": "DEFINES"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_blackbird.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_dehashed.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_gaia.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_hudsonrock.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_maigret.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_namechk.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_osintgram.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_searchsystems.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_sherlock.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/social/to_whatsmyname.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_crawler.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_domain.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_fire_enrich_company.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_scrapling.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_subdomain.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_technologies.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                "r.type": "CALLS"
+            },
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_webtrackers.py",
+                "r.type": "CALLS"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

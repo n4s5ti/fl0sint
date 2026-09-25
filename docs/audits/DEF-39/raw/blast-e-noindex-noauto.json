@@ -1,0 +1,40 @@
+{
+    "symbol": "helper",
+    "repo": "noindex-repo",
+    "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": null,
+    "symbols": [],
+    "edges": [],
+    "files": [],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "rootPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "repo": "noindex-repo",
+        "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+        "symbol": "helper",
+        "rootSymbols": 0,
+        "totalSymbols": 0,
+        "totalEdges": 0,
+        "filesMatched": 0,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "reason": "graph index missing",
+    "hint": "No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one.",
+    "warnings": [
+        "No Ladybug graph index found at default location: /home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug. Run 'pip3r graphos --index' to build one."
+    ],
+    "completeness": "partial",
+    "completenessReasons": [
+        "index-unavailable"
+    ],
+    "indexStatus": "missing"
+}

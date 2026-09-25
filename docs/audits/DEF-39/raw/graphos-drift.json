@@ -1,0 +1,17 @@
+{
+    "mode": "drift",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "changed_symbols": [],
+        "summary": {
+            "total": 0,
+            "file_modified": 0,
+            "file_removed": 0,
+            "file_unindexed": 0,
+            "symbol_stale": 0
+        }
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

@@ -1,0 +1,46 @@
+Usage: f0rg3 graph [options]
+
+Graph-powered code intelligence — scout, plan, build, test, ship
+
+Options:
+  --trace <concept>     [scout] Search execution flows by concept
+  --search <query>      [scout] Find code + execution flows in one shot
+  --inspect <symbol>    [scout] 360-degree symbol view (callers, callees,
+                        processes)
+  --dead-code           [scout] Find unreferenced symbols + unwired exports
+  --hotspots            [scout] Rank symbols by connection count (refactoring
+                        risk)
+  --explain <question>  [scout] Natural language → execution flow
+  --blast <symbol>      [plan] Impact / blast radius analysis (run before EVERY
+                        edit)
+  --rename <symbol>     [build] Graph-aware multi-file rename
+  --to <name>           New name for rename
+  --index [path]        [build] Index a repository
+  --drift               [test] Detect uncommitted changes and affected symbols
+  --cypher <query>      Raw graph query (Cypher)
+  --repos               List indexed repositories
+  --wiki [repo]         [scout] Generate repository documentation
+  --serve               Launch web UI for wiki (use with --wiki)
+  --host <host>         Server host (default: 127.0.0.1) (default: "127.0.0.1")
+  --port <port>         Server port (default: 8000) (default: "8000")
+  --status              Show index status for current repo
+  --clean               Delete index for current repo
+  -r, --repo <name>     Target repository (when multiple indexed)
+  --json                Structured JSON output
+  -n, --limit <n>       Max results (trace, cypher)
+  --content             Include source content (trace, inspect)
+  --flows               Show execution flows (trace)
+  --clusters            Show cluster grouping (trace)
+  -d, --depth <n>       Traversal depth (inspect, blast)
+  --direction <dir>     upstream or downstream (inspect, blast)
+  --communities         Show community membership (inspect)
+  --risk-only           Only show risk summary (blast)
+  --scope <scope>       Change scope: unstaged, staged, all, compare (drift)
+  --base <ref>          Base ref for comparison (drift --scope compare)
+  --force               Force re-index or confirm clean
+  --embeddings          Enable embedding generation (index)
+  --shallow             Shallow index — skip embeddings and processes (index)
+  --all                 Clean all indexed repos (clean)
+  -o, --output <path>   Output path (wiki)
+  --format <fmt>        Output format (wiki)
+  -h, --help            display help for command

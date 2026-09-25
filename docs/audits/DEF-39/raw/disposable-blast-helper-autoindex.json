@@ -1,0 +1,200 @@
+{
+    "symbol": "helper",
+    "repo": "noindex-repo",
+    "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:src/lib.py:helper",
+        "name": "helper",
+        "filePath": "src/lib.py",
+        "nodeType": "Function",
+        "startLine": 1,
+        "endLine": 2,
+        "content": "def helper():     return 1"
+    },
+    "symbols": [
+        {
+            "id": "Function:src/lib.py:helper",
+            "name": "helper",
+            "filePath": "src/lib.py",
+            "nodeType": "Function",
+            "startLine": 1,
+            "endLine": 2,
+            "content": "def helper():     return 1"
+        },
+        {
+            "id": "Function:src/app.py:caller",
+            "name": "caller",
+            "filePath": "src/app.py",
+            "nodeType": "Function",
+            "startLine": 3,
+            "endLine": 4,
+            "content": "def caller():     return helper() + 1"
+        },
+        {
+            "id": "Function:src/app.py:top",
+            "name": "top",
+            "filePath": "src/app.py",
+            "nodeType": "Function",
+            "startLine": 6,
+            "endLine": 7,
+            "content": "def top():     return caller()"
+        },
+        {
+            "id": "Function:src/app.py:extra",
+            "name": "extra",
+            "filePath": "src/app.py",
+            "nodeType": "Function",
+            "startLine": 9,
+            "endLine": 10,
+            "content": "def extra():     return top()"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:src/app.py:caller",
+            "to": "Function:src/lib.py:helper",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:src/app.py:top",
+            "to": "Function:src/app.py:caller",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:src/app.py:extra",
+            "to": "Function:src/app.py:top",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "src/lib.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:src/lib.py:helper",
+                    "name": "helper",
+                    "filePath": "src/lib.py",
+                    "nodeType": "Function",
+                    "startLine": 1,
+                    "endLine": 2,
+                    "content": "def helper():     return 1"
+                }
+            ]
+        },
+        {
+            "filePath": "src/app.py",
+            "count": 3,
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:caller",
+                    "name": "caller",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 3,
+                    "endLine": 4,
+                    "content": "def caller():     return helper() + 1"
+                },
+                {
+                    "id": "Function:src/app.py:top",
+                    "name": "top",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 6,
+                    "endLine": 7,
+                    "content": "def top():     return caller()"
+                },
+                {
+                    "id": "Function:src/app.py:extra",
+                    "name": "extra",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 9,
+                    "endLine": 10,
+                    "content": "def extra():     return top()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "src",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:caller",
+                    "name": "caller",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 3,
+                    "endLine": 4,
+                    "content": "def caller():     return helper() + 1"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:top",
+                    "name": "top",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 6,
+                    "endLine": 7,
+                    "content": "def top():     return caller()"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:extra",
+                    "name": "extra",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 9,
+                    "endLine": 10,
+                    "content": "def extra():     return top()"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "rootPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "repo": "noindex-repo",
+        "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+        "symbol": "helper",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "source_generation": "sha256:4dd89c45a99c99efcd4f0628e9021998d0f0268fac67031c319fde6aaec5703e",
+    "indexStatus": "ready"
+}
