@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "release": "P0-baseline-fixtures-1",
+  "issue": "DEF-23",
+  "recorded_at": "2026-09-26T01:36:41.965Z",
+  "source_revision": "44f62863d208703982f8f50e6fcda30363a9a27d",
+  "branch": "dev",
+  "verdict": "pass_with_observations",
+  "acceptance_scope": "Accepted discovery baseline, installed-tool limitations/procedure, synthetic development fixture utility; no production scraper or deployment release.",
+  "children": [
+    "DEF-38",
+    "DEF-39",
+    "DEF-40"
+  ],
+  "criteria": [
+    {
+      "criterion": "child_completion_version_reconciliation",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    },
+    {
+      "criterion": "public_fixture_interface",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    },
+    {
+      "criterion": "impact_drift_hunt_doctor_evidence_review",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    },
+    {
+      "criterion": "negative_cases_and_blocking_findings",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    },
+    {
+      "criterion": "fixture_source_identity_acceptance_and_no_production_budget_mutation",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    },
+    {
+      "criterion": "enabled_disabled_capability_disclosure",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    },
+    {
+      "criterion": "separate_agent_review_and_recovery",
+      "result": "PASS",
+      "evidence": "docs/audits/DEF-23/release.md"
+    }
+  ],
+  "tool_assurance": {
+    "production_blast": "UNKNOWN: no-call-edges/query-interrupted",
+    "fixture_blast": "Observed LOW/complete main -> load_manifest; dynamic pytest import remains uncovered",
+    "hunt": "UNKNOWN: zero commands discovered/probed",
+    "doctor": "UNKNOWN for correctness/test coverage: score90, fragile_single, results=[]",
+    "isolated_drift": "PASS: total0 after explicit refresh",
+    "shared_index": "PASS: before/after byte hashes unchanged"
+  },
+  "review": {
+    "agent": "P0GateEvidenceReview",
+    "model": "anthropic/claude-fable-5",
+    "independence": "Separate context in same implementing session, not human-independent",
+    "substantive_conclusion": "Gate may close after source reconciliation saved and checksum manifest generated; both present in this release.",
+    "transport_limitation": "Second report schema failed missing overall_correctness/confidence; substantive report retained in review.json, not represented as schema-valid."
+  },
+  "entrypoints": [
+    "python3 scripts/acquisition_fixtures.py validate",
+    "python3 scripts/acquisition_fixtures.py smoke",
+    "python3 scripts/acquisition_fixtures.py serve --port 18741"
+  ],
+  "commands": [
+    "docs/audits/DEF-23/raw/commands.json",
+    "docs/audits/DEF-23/raw/refresh-commands.json",
+    "docs/audits/DEF-23/raw/integration-checks.json"
+  ],
+  "enabled": [
+    "synthetic fixture validation",
+    "loopback fixture serving",
+    "HTTP-only fixture smoke",
+    "optional synthetic browser pages"
+  ],
+  "disabled": [
+    "production scraper release",
+    "hosted execution",
+    "live contact collection",
+    "graph publication",
+    "Jev/MetaHarness",
+    "locked evaluator",
+    "production audit-packet validator DEF-90"
+  ],
+  "rollback": "release.md#recovery; reviewed git revert 44f62863 preserves history, stop CLI invocation to disable; do not force conflicts.",
+  "artifact_sha256": {
+    ".github/workflows/tests.yml": "c44f9832963dd2cf1357b3b874a2790c93ab86924497434a5b78f061dc14bf63",
+    "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
+    "docs/audits/DEF-23/raw/browser.json": "8a50d0a6c067bfd68fe3cca0d86aba360e290464187c3dca350bc5328309b611",
+    "docs/audits/DEF-23/raw/commands.json": "f4c47e788639e285ecfa48d3b1dc53f4e11f7d26cb29392bf577a354e5ca8338",
+    "docs/audits/DEF-23/raw/doctor-fresh.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/doctor-fresh.stdout": "202f14ed71e2cf6b76e719bbd9740d8a8640785fa6b8ee5af70dfc37b6302261",
+    "docs/audits/DEF-23/raw/doctor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/doctor.stdout": "a39ff7c4af667a4ded16036cd2f2122a1e02505f245554ce223d6a05d20e7660",
+    "docs/audits/DEF-23/raw/drift-fresh.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/drift-fresh.stdout": "2da5441bf75d9c7043721fdf5f936bfc5c6f5b1eccc6070d80b1c704a874d76b",
+    "docs/audits/DEF-23/raw/drift.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/drift.stdout": "55a7ae8ca5b61f3d5c0f59b2d32e79465847ba5bb712e7a325fd1251023e5227",
+    "docs/audits/DEF-23/raw/hunt.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/hunt.stdout": "7c675ec82c17896d05eaea63cd19188bceb6178c25621ae1926d62f955ebfd55",
+    "docs/audits/DEF-23/raw/impact-fresh.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/impact-fresh.stdout": "054b67dfa2d34866d4e9dd5be5850f80b8e76e32e2a4644a7014c6bb6af6bd57",
+    "docs/audits/DEF-23/raw/impact.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/impact.stdout": "054b67dfa2d34866d4e9dd5be5850f80b8e76e32e2a4644a7014c6bb6af6bd57",
+    "docs/audits/DEF-23/raw/index-refresh.stderr": "0277936f4584577459fb8bdd9154d5f4caad0b1bfaf4ec274cbf5b1f90f75d3e",
+    "docs/audits/DEF-23/raw/index-refresh.stdout": "e200892ccbd15b00a97d630b39b43d021d497bab2d4935937e1c5b17e254be7b",
+    "docs/audits/DEF-23/raw/integration-checks.json": "bc63dd85b48587a6b05189204044043268ec79866edcb914a083ce79dd1adb54",
+    "docs/audits/DEF-23/raw/refresh-commands.json": "f11dcf49fe838f6c1aac13d139c5fb9cf4a84320767c04d08584bbe69fa51835",
+    "docs/audits/DEF-23/raw/shared-index-after-refresh.json": "4bf6302f014991489e7f96b499f56a62b93da170213665c733da4d7bca7c990b",
+    "docs/audits/DEF-23/raw/shared-index-integrity.json": "c7d45ed0f4a21237c0e2b5217d81bc9eb16e75285f5170d814250f5964d71da8",
+    "docs/audits/DEF-23/raw/smoke.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/smoke.stdout": "256780c613d46ce93b4853f8dd27ba28ee6a7174c0126d96cce9ec254b2f6c33",
+    "docs/audits/DEF-23/raw/source-pins.json": "cd5f4c9aff4f4ab8ffa7ed5a70a78d88c9e9e9d6073dd82783ce97ca3c59e573",
+    "docs/audits/DEF-23/raw/source-reconciliation.diff": "aab0b68d454145914ce1f60dcc9ab0209ce6769e8be7d435eda1a1729bea172e",
+    "docs/audits/DEF-23/raw/validate.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/audits/DEF-23/raw/validate.stdout": "dbd54658b05d88ce11039f0a98b81b1870b61e1fd92eb734f3855a8c74df7a88",
+    "docs/audits/DEF-23/release.md": "e6a0419d9e3494115b28ea000b017b238f59f0a656934ed993cc317a592cf5d9",
+    "docs/audits/DEF-23/review.json": "63970e09eee4040e88b37dcb3db53e4a8a7a93a98a9a6a2fbeefd7c7384f2842",
+    "docs/audits/DEF-23/source-reconciliation.md": "7fc05a72a4e5f32838f97bc5131218610055b36368e2d96d7360db8227a5cc86",
+    "flowsint-api/app/api/routes/enrichers.py": "9a76070abceb4b111cd9ca9865437f3186167294f545c78cffce383ea81004a2",
+    "flowsint-core/src/flowsint_core/core/celery.py": "dd1b49833f28e51d1d67f1a5875d31c13e97302a48a1a9e2065155fd40f90b59",
+    "flowsint-core/src/flowsint_core/core/config.py": "35d8cbf9ca4973002dbc2d1aa350c33d6dcf2fcd62a58c78021d88dcbb27090a",
+    "flowsint-core/src/flowsint_core/core/enricher_base.py": "6385565e36d27b5a54475e32eded72f4a249c646cc5a602d27d3981c5bffbe26",
+    "flowsint-core/src/flowsint_core/core/execution.py": "dfbff64db850c5c99b0cd619571244f11e6a1081d261793f475b1fed7ece65d4",
+    "flowsint-core/src/flowsint_core/core/graph/connection.py": "0e2a53ecb9d6bcd46d5fbaf71af1b893eb148a620b4756cfec9a0cb11eafdc21",
+    "flowsint-core/src/flowsint_core/core/graph/repository.py": "8f0e787b69ca564ce1174a018f50f3b6d42089a63ffbb3cf6632162d7a4f8cc5",
+    "flowsint-core/src/flowsint_core/core/graph/serializer.py": "c27e535b5bdaf102a6e18155ecaffb84c13927d6c939c3672e55aca43442c50f",
+    "flowsint-core/src/flowsint_core/core/graph/service.py": "922e1f5f5948423174b12ad692260e0c77559ebe8270f968becaedf3b7dc164f",
+    "flowsint-core/src/flowsint_core/core/logger.py": "6aff8cc4080309e9770007572c3f1942818ae86788f9a1c3c7c92e9bb3074d54",
+    "flowsint-core/src/flowsint_core/core/postgre_db.py": "bc3deb1112443bc0490102cf8c4687e358812a1d3ed9955197bfd3251bb8f37a",
+    "flowsint-core/src/flowsint_core/tasks/enricher.py": "2c0526a8bdbed3ae355d1931fd14e6e67c540dcd0a6ef5c066db5108acd5f394",
+    "flowsint-core/src/flowsint_core/tasks/event.py": "861fa319b6888f13485eac75889aecadb86b7ff2c1da884ca1649de054c23139",
+    "flowsint-enrichers/pyproject.toml": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b",
+    "flowsint-enrichers/src/flowsint_enrichers/registry.py": "11924de53602fc6d829d1397b32cf612189fdd3fb9f673811b91b2935e8eea43",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": "c717f33b90063ceb5c0fb9630417808e4593cc7f252f026f980afc93d69f40cb",
+    "flowsint-enrichers/tests/conftest.py": "ce32262470747085bc3fd23bf1ce3f97c579b25af4de8988a2713554f8bd3c00",
+    "flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py": "0930dffb6c01fd71c5b3e881795fd864ca12f5185eff8248cfc3123734433068",
+    "flowsint-enrichers/tests/fixtures/acquisition/click.html": "08ccc7a79ca5e88338948148834919cd98fe82bdc21aeb88c51b11363d36a478",
+    "flowsint-enrichers/tests/fixtures/acquisition/copy-a.html": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+    "flowsint-enrichers/tests/fixtures/acquisition/copy-b.html": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+    "flowsint-enrichers/tests/fixtures/acquisition/dynamic.html": "13f6d65d0d23596a81dfbf95cc8cd37e5eced198e6890bc8fbfda49cdf2db79e",
+    "flowsint-enrichers/tests/fixtures/acquisition/empty.html": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+    "flowsint-enrichers/tests/fixtures/acquisition/failure.html": "301fceb2dfd01818c4243b7eb747baa085fcb0c73bfd7844f8111063563e8054",
+    "flowsint-enrichers/tests/fixtures/acquisition/generic.html": "ddce4a8a7f8bbb243235c0f190494ceb62499c6f25e8b6f4fd664d1c94e0c55c",
+    "flowsint-enrichers/tests/fixtures/acquisition/malformed.html": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+    "flowsint-enrichers/tests/fixtures/acquisition/manifest.json": "3c7efb5db9ab08c62d706483020834bf0e96c63ee9be577948afb8d3cd107053",
+    "flowsint-enrichers/tests/fixtures/acquisition/named.html": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+    "flowsint-enrichers/tests/fixtures/acquisition/redirect.html": "a6303cfd81ab62f12b55ff80dd766bd2e5309e0e6c770c488a49a190da0c829a",
+    "flowsint-enrichers/tests/fixtures/acquisition/same-name-amber.html": "f65fca5436d662a3935b44c95928ac84fd3e65f6dbce7d1c4dc870014132e6b6",
+    "flowsint-enrichers/tests/fixtures/acquisition/same-name-cobalt.html": "e638664566623f921baae541c5c49463a1ea8ac1fdb5a96da3ff0b165b596221",
+    "flowsint-enrichers/tests/fixtures/acquisition/slow.html": "56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010",
+    "flowsint-enrichers/tests/fixtures/acquisition/stale.html": "15ee29927f0248d3dda97adf9c7a58e72ccab32d13efea370991f1a7ed76fda8",
+    "flowsint-enrichers/tests/fixtures/acquisition/static.html": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+    "flowsint-types/src/flowsint_types/phrase.py": "87b7c4c5bd1bf06ca10fb14e8a94241b6bba47c586c4935c884d9a3ea9a631cd",
+    "flowsint-types/src/flowsint_types/website.py": "00f7aef4aff944957977e346fadecc0705a9c5feca00e37a5572b36f6d9e40b5",
+    "pyproject.toml": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+    "scripts/acquisition_fixtures.py": "524c69f6fbc35e15d8d176bcdb1c8aea20dfbe90d5c0c5e24d8019ba7a932278",
+    "uv.lock": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f"
+  },
+  "manifest_hash_policy": "Manifest excludes itself; integrity and revision are pinned by the enclosing Git commit."
+}

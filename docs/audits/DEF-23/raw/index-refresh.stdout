@@ -1,0 +1,13 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03/.gitnexus/lbug",
+        "success": true,
+        "warnings": [],
+        "generation": "sha256:71ba40e191c87c01f8e3dbe98fe302d2f920309ab48cbb7840c201cf90c5187f",
+        "planAction": "noop",
+        "indexLatencyMs": 0,
+        "filesParsed": 0
+    }
+}

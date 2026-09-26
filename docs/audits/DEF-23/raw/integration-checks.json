@@ -1,0 +1,28 @@
+{
+  "source_revision": "44f62863d208703982f8f50e6fcda30363a9a27d",
+  "checkout": "/home/n4s5ti/Documents/dev/fl0sint",
+  "branch": "dev",
+  "integration": "Fast-forward from 02467e96; no merge edits",
+  "commands": [
+    {
+      "command": "mpg-batch -- bash -lc 'cd /home/n4s5ti/Documents/dev/fl0sint/flowsint-enrichers && /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python -m pytest tests/enrichers/test_acquisition_fixtures.py -q -p no:cacheprovider'",
+      "exit_code": 0,
+      "observed_summary": "24 passed, 2 warnings in 3.19s"
+    },
+    {
+      "command": "mpg-batch -- bash -lc 'cd /home/n4s5ti/Documents/dev/fl0sint/flowsint-enrichers && /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python -m pytest -q -p no:cacheprovider'",
+      "exit_code": 0,
+      "observed_summary": "156 passed, 2 warnings in 3.68s"
+    }
+  ],
+  "evidence_kind": "Observed session tool-output summaries; these are not verbatim raw pytest logs. Pre-integration raw logs remain in DEF-40/raw.",
+  "residual_noise": ["passlib crypt deprecation", "Pydantic class Config deprecation", "Neo4j destructor deprecation in focused run", "Postgres localhost:5433 teardown log insertion refused in full suite; same as recorded base"],
+  "hash_verification": {
+    "checked_at": "2026-09-26T01:25:57.530859+00:00",
+    "reference": "docs/audits/DEF-40/post-edit.json deliverable_sha256 and docs/audits/DEF-40/baseline.json package_config_sha256",
+    "deliverables_checked": 18,
+    "deliverable_mismatches": [],
+    "configuration_pins_checked": 8,
+    "configuration_mismatches": []
+  }
+}
