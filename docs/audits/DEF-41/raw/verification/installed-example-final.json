@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "env",
+    "-i",
+    "PATH=/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/examples/acquisition_contract.py",
+    "/home/n4s5ti/Documents/dev/def41-evidence/example-final"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/def41-evidence",
+  "environment_overrides": {},
+  "started_at": 1790477466.7471867,
+  "elapsed_seconds": 0.23774957656860352,
+  "returncode": 0
+}

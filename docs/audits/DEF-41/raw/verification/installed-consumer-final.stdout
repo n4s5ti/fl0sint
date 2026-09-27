@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "module": "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/lib/python3.12/site-packages/flowsint_execution/acquisition.py",
+  "absent": {
+    "neo4j": true,
+    "celery": true,
+    "sqlalchemy": true
+  },
+  "source_sha256": "d40790f02b9b0bf5a1bbbadd7eb8fde43cdd09ee7085d0f10c4707ce164f7c0c",
+  "source_value": "Example Organization",
+  "candidate_disposition": "unreviewed",
+  "failure": "invalid_input",
+  "input_occurrence": "input-1"
+}

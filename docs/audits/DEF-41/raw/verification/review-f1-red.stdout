@@ -1,0 +1,202 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_constructed_diagnostic_is_rejected_without_warning_or_secret_echo[update0] _
+
+update = {'safe_message': b'input-secret'}
+
+    @pytest.mark.parametrize("update", [{"safe_message": b"input-secret"}, {"retryable": "false"}])
+    def test_constructed_diagnostic_is_rejected_without_warning_or_secret_echo(update):
+        import warnings
+    
+        corrupt = diagnostic().model_copy(update=update)
+        outcome = unknown().model_copy(update={"diagnostic": corrupt})
+        with warnings.catch_warnings(record=True) as caught:
+            with pytest.raises(a.ContractError) as exc:
+>               a.build_bundle(request=request(), outcomes=(outcome,), bundle_id="bad",
+                               created_at=NOW, actual_resources=a.Resources())
+
+tests/acquisition/test_contract.py:396: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:559: in build_bundle
+    **payload.model_dump(), origin_digest=_digest(payload)
+                                          ^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:426: in _digest
+    data = payload.model_dump(mode="json", exclude={"origin_digest"}, warnings="error")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = _BundlePayload(format_version='1.0', bundle_id='bad', request=AcquisitionRequest(format_version='1.0', operation_id='o..._actions=None, concurrency=None, fanout=None, money_usd=None), artifacts=(), spans=(), evidence_list=(), candidates=())
+mode = 'json', include = None, exclude = {'origin_digest'}, context = None
+by_alias = None, exclude_unset = False, exclude_defaults = False
+exclude_none = False, exclude_computed_fields = False, round_trip = False
+warnings = 'error', fallback = None, serialize_as_any = False
+
+    def model_dump(
+        self,
+        *,
+        mode: Literal['json', 'python'] | str = 'python',
+        include: IncEx | None = None,
+        exclude: IncEx | None = None,
+        context: Any | None = None,
+        by_alias: bool | None = None,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        exclude_computed_fields: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal['none', 'warn', 'error'] = True,
+        fallback: Callable[[Any], Any] | None = None,
+        serialize_as_any: bool = False,
+    ) -> dict[str, Any]:
+        """!!! abstract "Usage Documentation"
+            [`model_dump`](../concepts/serialization.md#python-mode)
+    
+        Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+    
+        Args:
+            mode: The mode in which `to_python` should run.
+                If mode is 'json', the output will only contain JSON serializable types.
+                If mode is 'python', the output may contain non-JSON-serializable Python objects.
+            include: A set of fields to include in the output.
+            exclude: A set of fields to exclude from the output.
+            context: Additional context to pass to the serializer.
+            by_alias: Whether to use the field's alias in the dictionary key if defined.
+            exclude_unset: Whether to exclude fields that have not been explicitly set.
+            exclude_defaults: Whether to exclude fields that are set to their default value.
+            exclude_none: Whether to exclude fields that have a value of `None`.
+            exclude_computed_fields: Whether to exclude computed fields.
+                While this can be useful for round-tripping, it is usually recommended to use the dedicated
+                `round_trip` parameter instead.
+            round_trip: If True, dumped values should be valid as input for non-idempotent types such as Json[T].
+            warnings: How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
+                "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
+            fallback: A function to call when an unknown value is encountered. If not provided,
+                a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
+            serialize_as_any: Whether to serialize fields with duck-typing serialization behavior.
+    
+        Returns:
+            A dictionary representation of the model.
+        """
+>       return self.__pydantic_serializer__.to_python(
+            self,
+            mode=mode,
+            by_alias=by_alias,
+            include=include,
+            exclude=exclude,
+            context=context,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            exclude_computed_fields=exclude_computed_fields,
+            round_trip=round_trip,
+            warnings=warnings,
+            fallback=fallback,
+            serialize_as_any=serialize_as_any,
+        )
+E       pydantic_core._pydantic_core.PydanticSerializationError: Pydantic serializer warnings:
+E         PydanticSerializationUnexpectedValue(Expected `str` - serialized value may not be as expected [field_name='safe_message', input_value=b'input-secret', input_type=bytes])
+
+../../fl0sint/.venv/lib/python3.12/site-packages/pydantic/main.py:464: PydanticSerializationError
+_ test_constructed_diagnostic_is_rejected_without_warning_or_secret_echo[update1] _
+
+update = {'retryable': 'false'}
+
+    @pytest.mark.parametrize("update", [{"safe_message": b"input-secret"}, {"retryable": "false"}])
+    def test_constructed_diagnostic_is_rejected_without_warning_or_secret_echo(update):
+        import warnings
+    
+        corrupt = diagnostic().model_copy(update=update)
+        outcome = unknown().model_copy(update={"diagnostic": corrupt})
+        with warnings.catch_warnings(record=True) as caught:
+            with pytest.raises(a.ContractError) as exc:
+>               a.build_bundle(request=request(), outcomes=(outcome,), bundle_id="bad",
+                               created_at=NOW, actual_resources=a.Resources())
+
+tests/acquisition/test_contract.py:396: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:559: in build_bundle
+    **payload.model_dump(), origin_digest=_digest(payload)
+                                          ^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:426: in _digest
+    data = payload.model_dump(mode="json", exclude={"origin_digest"}, warnings="error")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = _BundlePayload(format_version='1.0', bundle_id='bad', request=AcquisitionRequest(format_version='1.0', operation_id='o..._actions=None, concurrency=None, fanout=None, money_usd=None), artifacts=(), spans=(), evidence_list=(), candidates=())
+mode = 'json', include = None, exclude = {'origin_digest'}, context = None
+by_alias = None, exclude_unset = False, exclude_defaults = False
+exclude_none = False, exclude_computed_fields = False, round_trip = False
+warnings = 'error', fallback = None, serialize_as_any = False
+
+    def model_dump(
+        self,
+        *,
+        mode: Literal['json', 'python'] | str = 'python',
+        include: IncEx | None = None,
+        exclude: IncEx | None = None,
+        context: Any | None = None,
+        by_alias: bool | None = None,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        exclude_computed_fields: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal['none', 'warn', 'error'] = True,
+        fallback: Callable[[Any], Any] | None = None,
+        serialize_as_any: bool = False,
+    ) -> dict[str, Any]:
+        """!!! abstract "Usage Documentation"
+            [`model_dump`](../concepts/serialization.md#python-mode)
+    
+        Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+    
+        Args:
+            mode: The mode in which `to_python` should run.
+                If mode is 'json', the output will only contain JSON serializable types.
+                If mode is 'python', the output may contain non-JSON-serializable Python objects.
+            include: A set of fields to include in the output.
+            exclude: A set of fields to exclude from the output.
+            context: Additional context to pass to the serializer.
+            by_alias: Whether to use the field's alias in the dictionary key if defined.
+            exclude_unset: Whether to exclude fields that have not been explicitly set.
+            exclude_defaults: Whether to exclude fields that are set to their default value.
+            exclude_none: Whether to exclude fields that have a value of `None`.
+            exclude_computed_fields: Whether to exclude computed fields.
+                While this can be useful for round-tripping, it is usually recommended to use the dedicated
+                `round_trip` parameter instead.
+            round_trip: If True, dumped values should be valid as input for non-idempotent types such as Json[T].
+            warnings: How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
+                "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
+            fallback: A function to call when an unknown value is encountered. If not provided,
+                a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
+            serialize_as_any: Whether to serialize fields with duck-typing serialization behavior.
+    
+        Returns:
+            A dictionary representation of the model.
+        """
+>       return self.__pydantic_serializer__.to_python(
+            self,
+            mode=mode,
+            by_alias=by_alias,
+            include=include,
+            exclude=exclude,
+            context=context,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            exclude_computed_fields=exclude_computed_fields,
+            round_trip=round_trip,
+            warnings=warnings,
+            fallback=fallback,
+            serialize_as_any=serialize_as_any,
+        )
+E       pydantic_core._pydantic_core.PydanticSerializationError: Pydantic serializer warnings:
+E         PydanticSerializationUnexpectedValue(Expected `bool` - serialized value may not be as expected [field_name='retryable', input_value='false', input_type=str])
+
+../../fl0sint/.venv/lib/python3.12/site-packages/pydantic/main.py:464: PydanticSerializationError
+=========================== short test summary info ============================
+FAILED tests/acquisition/test_contract.py::test_constructed_diagnostic_is_rejected_without_warning_or_secret_echo[update0] - pydantic_core._pydantic_core.PydanticSerializationError: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected `str` - serialized value may not be as expected [field_name='safe_message', input_value=b'input-secret', input_type=bytes])
+FAILED tests/acquisition/test_contract.py::test_constructed_diagnostic_is_rejected_without_warning_or_secret_echo[update1] - pydantic_core._pydantic_core.PydanticSerializationError: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected `bool` - serialized value may not be as expected [field_name='retryable', input_value='false', input_type=str])
+2 failed, 44 deselected in 0.27s

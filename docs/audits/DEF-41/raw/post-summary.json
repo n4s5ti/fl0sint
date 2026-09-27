@@ -1,0 +1,231 @@
+{
+  "provenance": {
+    "scope_base": "1b48c428e2e32a5179005df288ac669bdae82409",
+    "implementation_commit": "b7828cc968860f8376ac2ff251523fb2e8dfa391",
+    "head": "b7828cc968860f8376ac2ff251523fb2e8dfa391",
+    "working_tree_source_diff": "none (git diff and git diff --cached both exit 0)"
+  },
+  "index_and_drift": {
+    "refresh": {
+      "argv": [
+        "pip3r",
+        "graphos",
+        "--index",
+        "--cwd",
+        ".",
+        "--json"
+      ],
+      "rc": 0,
+      "stderr": "empty",
+      "timing_ms": 34227.867,
+      "generation": "sha256:ec8e06b94bcb974cfcd2d68b5abf3e27442dbfd689c93b3ebab1c3218f2131bf",
+      "plan_action": "incremental",
+      "delta": {
+        "added": 6,
+        "modified": 12,
+        "deleted": 0,
+        "renamed": 1,
+        "unreadable": 0
+      },
+      "warning": "No workspace packages with recognised entry files — sidecar will be empty"
+    },
+    "drift_after_refresh": {
+      "rc": 0,
+      "timing_ms": 921.991,
+      "summary": {
+        "total": 0,
+        "file_modified": 0,
+        "file_removed": 0,
+        "file_unindexed": 0,
+        "symbol_stale": 0
+      }
+    },
+    "drift_after_packet_state": {
+      "rc": 0,
+      "timing_ms": 994.4,
+      "summary": {
+        "total": 0,
+        "file_modified": 0,
+        "file_removed": 0,
+        "file_unindexed": 0,
+        "symbol_stale": 0
+      }
+    },
+    "interpretation": "The graph reports zero drift. This is graph freshness evidence only; it does not establish complete caller/test coverage."
+  },
+  "blast": {
+    "all_calls": {
+      "flags": [
+        "--include-tests",
+        "--no-auto-index",
+        "--json"
+      ],
+      "rc": 0,
+      "stderr": "empty",
+      "execution": "serial; each process bounded with timeout 60s"
+    },
+    "coverage": [
+      {
+        "root": "InputOutcome",
+        "upstream": {
+          "completeness": "partial",
+          "reason": "no-call-edges",
+          "symbols": 1,
+          "edges": 0,
+          "timing_ms": 793.627,
+          "verdict": "UNKNOWN"
+        },
+        "downstream": {
+          "completeness": "complete",
+          "symbols": 7,
+          "edges": 6,
+          "timing_ms": 826.653,
+          "verdict": "UNKNOWN for external-consumer coverage; discovered edges are class properties/method only"
+        }
+      },
+      {
+        "root": "EvidenceEnvelope",
+        "upstream": {
+          "completeness": "partial",
+          "reason": "no-call-edges",
+          "symbols": 1,
+          "edges": 0,
+          "timing_ms": 797.495,
+          "verdict": "UNKNOWN"
+        },
+        "downstream": {
+          "completeness": "complete",
+          "symbols": 17,
+          "edges": 16,
+          "timing_ms": 826.897,
+          "verdict": "UNKNOWN for external-consumer coverage; discovered edges are structural members"
+        }
+      },
+      {
+        "root": "StructuredExecutionResult",
+        "upstream": {
+          "completeness": "partial",
+          "reason": "no-call-edges",
+          "symbols": 1,
+          "edges": 0,
+          "timing_ms": 769.607,
+          "verdict": "UNKNOWN"
+        },
+        "downstream": {
+          "completeness": "complete",
+          "symbols": 3,
+          "edges": 2,
+          "timing_ms": 804.733,
+          "verdict": "UNKNOWN for external-consumer coverage; discovered edges are structural members"
+        }
+      },
+      {
+        "root": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "upstream": {
+          "completeness": "partial",
+          "reason": "no-call-edges",
+          "symbols": 1,
+          "edges": 0,
+          "timing_ms": 811.226,
+          "verdict": "UNKNOWN"
+        },
+        "downstream": {
+          "completeness": "complete",
+          "symbols": 4,
+          "edges": 3,
+          "timing_ms": 861.244,
+          "verdict": "UNKNOWN for external consumers; only internal helper edges discovered"
+        }
+      },
+      {
+        "root": "flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+        "upstream": {
+          "completeness": "complete",
+          "symbols": 4,
+          "edges": 3,
+          "timing_ms": 837.282,
+          "verdict": "complete only for the indexed internal serialize chain"
+        },
+        "downstream": {
+          "completeness": "complete",
+          "symbols": 5,
+          "edges": 4,
+          "timing_ms": 832.086,
+          "verdict": "complete only for the indexed internal parse chain"
+        }
+      }
+    ],
+    "conclusion": "Every query resolved one root and ran cleanly, but the class roots’ upstream graph coverage is explicitly partial and the path-qualified helper roots do not discover the static example/test consumers. Do not interpret rc=0 or the complete internal helper chains as a complete graph or test proof."
+  },
+  "doctor_and_hunt": {
+    "verify_refactor": {
+      "argv": [
+        "pip3r",
+        "doctor",
+        "--cwd",
+        ".",
+        "--verify-refactor",
+        "build_bundle",
+        "--json"
+      ],
+      "rc": 0,
+      "stderr": "empty",
+      "timing_ms": 1767.329,
+      "tool_output": {
+        "concept": "build_bundle",
+        "total_symbols": 1,
+        "total_flows": 3,
+        "finding": "dead_code",
+        "recommendation": "safe to delete",
+        "safety_score": 100
+      },
+      "verdict": "UNKNOWN / not accepted as PASS. Static callers in the example and behavior test contradict treating this as dead code; the command does not prove a whole-consumer map."
+    },
+    "hunt": {
+      "scope_discovery": "Live Doctor help exposes repeatable --scope. Scoped invocation used flowsint-core/src/flowsint_execution and flowsint-core/tests; no whole-repository Hunt was run.",
+      "rc": 0,
+      "stderr": "empty",
+      "timing_ms": 1680.006,
+      "coverage": {
+        "commandsDiscovered": 0,
+        "commandsProbed": 0,
+        "jsonContractsExercised": 0,
+        "delegatedSurfacesCaptured": 0,
+        "spawns": 2
+      },
+      "finding": {
+        "symbol": "pip3r",
+        "filePath": "pip3r-cli",
+        "category": "flag_inconsistency",
+        "severity": "medium",
+        "explanation": "Root --help must exit 0"
+      },
+      "verdict": "UNKNOWN, not PASS: zero probes and a root-help finding do not exercise the contract."
+    }
+  },
+  "scope_and_inventory": {
+    "scope_base_to_head": {
+      "total": 19,
+      "added": 6,
+      "modified": 12,
+      "renamed": 1,
+      "matches": "The planned canonical move, package/wheel updates, migrated integrated imports, API/test updates, portable module, behavior test, example, and contract document."
+    },
+    "literal_extra": "flowsint-core/tests/acquisition/__init__.py is the only literal addition beyond the explicitly named behavior test. It is the initial agent’s existing-package-convention scaffold and falls under the plan’s behavior-focused acquisition test package, not unrelated scope.",
+    "untracked": {
+      "total": 73,
+      "outside_docs_audits_DEF41_raw": 0,
+      "classification": "all are the expected DEF-41 audit packet; none are an extra source path."
+    },
+    "main_gitnexus": {
+      "algorithm": "recomputed every baseline entry with sha256sum using the same .gitnexus-relative path algorithm from pre/main-gitnexus-hashes.txt",
+      "total": 17,
+      "same": 17,
+      "missing": 0,
+      "different": 0,
+      "verdict": "main shared .gitnexus unchanged"
+    },
+    "historical_base_note": "The origin/main merge-base-to-HEAD inventory is 349 paths because it includes prior branch history. The relevant scope-plan baseline is 1b48c428; its exact 19-path delta is the reconciliation above."
+  },
+  "artifact_limit": "No file was written to /home/n4s5ti/Documents/dev/def41-evidence/post: that directory did not exist and this assignment is read-only. Raw command capture is preserved in the session artifact listed above; index/drift/Doctor/Hunt raw captures include argv/stdout/stderr/rc/timing in the corresponding tool-session results."
+}

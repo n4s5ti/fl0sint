@@ -1,0 +1,7 @@
+{
+  "text": "__ARGV__=[\"pip3r\",\"graphos\",\"--index\",\"--cwd\",\".\",\"--json\"]\n__STDOUT__\n{\n    \"mode\": \"index\",\n    \"result\": {\n        \"targetPath\": \"/home/n4s5ti/Documents/dev/fl0sint-def41-s01\",\n        \"lbugPath\": \"/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug\",\n        \"success\": true,\n        \"warnings\": [\n            \"No workspace packages with recognised entry files — sidecar will be empty\"\n        ],\n        \"generation\": \"sha256:ec8e06b94bcb974cfcd2d68b5abf3e27442dbfd689c93b3ebab1c3218f2131bf\",\n        \"planAction\": \"incremental\",\n        \"deltaAdded\": 6,\n        \"deltaModified\": 12,\n        \"deltaDeleted\": 0,\n        \"deltaRenamed\": 1,\n        \"deltaUnreadable\": 0,\n        \"indexLatencyMs\": 33048,\n        \"filesParsed\": 1074\n    }\n}\n\n__STDERR__\n\n__RC__=0\n__TIMING_NS__=34222472398\n\n\nWall time: 34.23 seconds",
+  "details": {
+    "timeoutSeconds": 60,
+    "wallTimeMs": 34227.86720499396
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "uv",
+    "pip",
+    "freeze",
+    "--python",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {},
+  "started_at": 1790477741.5611606,
+  "elapsed_seconds": 0.007451295852661133,
+  "returncode": 0
+}

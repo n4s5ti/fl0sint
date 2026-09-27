@@ -1,0 +1,7 @@
+Using Python 3.12.13 environment at: /home/n4s5ti/Documents/dev/def41-evidence/pure-venv
+Resolved 1 package in 1ms
+Prepared 1 package in 16ms
+Uninstalled 1 package in 4ms
+Installed 1 package in 23ms
+ - flowsint-core==1.2.8 (from file:///home/n4s5ti/Documents/dev/def41-evidence/wheels/flowsint_core-1.2.8-py3-none-any.whl)
+ + flowsint-core==1.2.8 (from file:///home/n4s5ti/Documents/dev/def41-evidence/wheels-final/flowsint_core-1.2.8-py3-none-any.whl)
