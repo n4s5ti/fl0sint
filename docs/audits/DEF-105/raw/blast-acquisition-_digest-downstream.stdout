@@ -1,0 +1,115 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+        "name": "_digest",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 427,
+        "endLine": 429,
+        "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 427,
+            "endLine": 429,
+            "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 421,
+            "endLine": 424,
+            "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 427,
+                    "endLine": 429,
+                    "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

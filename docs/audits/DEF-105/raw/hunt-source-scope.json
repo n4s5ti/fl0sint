@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "doctor",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--hunt",
+    "--hunt-target",
+    "/home/n4s5ti/Documents/dev/pip3r/bin/pip3r.mjs",
+    "--scope",
+    "flowsint-core/src/flowsint_execution",
+    "--json"
+  ],
+  "rc": 1,
+  "wallSeconds": 1.497,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e75c299d6c01fa713f329810d1ddab07f566c358ac95a8171854bb533008796a"
+}

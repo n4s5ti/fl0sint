@@ -1,0 +1,38 @@
+{
+    "mode": "status",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "is_open": true,
+        "discovered_tables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ]
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

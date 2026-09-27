@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+        "name": "RedactedDiagnostic",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 24,
+        "endLine": 31,
+        "content": "class RedactedDiagnostic(BaseModel):     \"\"\"A stable diagnostic that is safe to retain outside process memory.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")     safe_message: str = Field(min_length=1, max_length=512)     retryable: bool"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+            "name": "RedactedDiagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 24,
+            "endLine": 31,
+            "content": "class RedactedDiagnostic(BaseModel):     \"\"\"A stable diagnostic that is safe to retain outside process memory.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")     safe_message: str = Field(min_length=1, max_length=512)     retryable: bool"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+                    "name": "RedactedDiagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 24,
+                    "endLine": 31,
+                    "content": "class RedactedDiagnostic(BaseModel):     \"\"\"A stable diagnostic that is safe to retain outside process memory.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")     safe_message: str = Field(min_length=1, max_length=512)     retryable: bool"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

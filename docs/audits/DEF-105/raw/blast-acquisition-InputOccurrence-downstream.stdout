@@ -1,0 +1,358 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+        "name": "InputOccurrence",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 113,
+        "endLine": 124,
+        "content": "class InputOccurrence(ContractModel):     occurrence_id: Identifier     input_ref: Digest     type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]     value: FiniteJSON     lineage: ImportedLineage | None = None     @model_validator(mode=\"after\")     def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "name": "InputOccurrence",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 113,
+            "endLine": 124,
+            "content": "class InputOccurrence(ContractModel):     occurrence_id: Identifier     input_ref: Digest     type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]     value: FiniteJSON     lineage: ImportedLineage | None = None     @model_validator(mode=\"after\")     def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+            "name": "check_input_hash",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Method",
+            "startLine": 121,
+            "endLine": 124,
+            "content": "    def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "name": "canonical_input_hash",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 139,
+            "endLine": 149,
+            "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.occurrence_id",
+            "name": "occurrence_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 114,
+            "endLine": 114,
+            "content": "    occurrence_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 115,
+            "endLine": 115,
+            "content": "    input_ref: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.type_tag",
+            "name": "type_tag",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 116,
+            "endLine": 116,
+            "content": "    type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.value",
+            "name": "value",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 117,
+            "endLine": 117,
+            "content": "    value: FiniteJSON"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.lineage",
+            "name": "lineage",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 118,
+            "endLine": 118,
+            "content": "    lineage: ImportedLineage | None = None"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "name": "ContractModel",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 63,
+            "endLine": 70,
+            "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.occurrence_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.type_tag",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.value",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.lineage",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "to": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 8,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                    "name": "InputOccurrence",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 113,
+                    "endLine": 124,
+                    "content": "class InputOccurrence(ContractModel):     occurrence_id: Identifier     input_ref: Digest     type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]     value: FiniteJSON     lineage: ImportedLineage | None = None     @model_validator(mode=\"after\")     def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                    "name": "check_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 121,
+                    "endLine": 124,
+                    "content": "    def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.occurrence_id",
+                    "name": "occurrence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 114,
+                    "endLine": 114,
+                    "content": "    occurrence_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 115,
+                    "endLine": 115,
+                    "content": "    input_ref: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.type_tag",
+                    "name": "type_tag",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 116,
+                    "endLine": 116,
+                    "content": "    type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.value",
+                    "name": "value",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 117,
+                    "endLine": 117,
+                    "content": "    value: FiniteJSON"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.lineage",
+                    "name": "lineage",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 118,
+                    "endLine": 118,
+                    "content": "    lineage: ImportedLineage | None = None"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 139,
+                    "endLine": 149,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 8
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.occurrence_id",
+                    "name": "occurrence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 114,
+                    "endLine": 114,
+                    "content": "    occurrence_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 115,
+                    "endLine": 115,
+                    "content": "    input_ref: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.type_tag",
+                    "name": "type_tag",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 116,
+                    "endLine": 116,
+                    "content": "    type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.value",
+                    "name": "value",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 117,
+                    "endLine": 117,
+                    "content": "    value: FiniteJSON"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.lineage",
+                    "name": "lineage",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 118,
+                    "endLine": 118,
+                    "content": "    lineage: ImportedLineage | None = None"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                    "name": "check_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 121,
+                    "endLine": 124,
+                    "content": "    def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 139,
+                    "endLine": 149,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+        "rootSymbols": 1,
+        "totalSymbols": 9,
+        "totalEdges": 8,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 7,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

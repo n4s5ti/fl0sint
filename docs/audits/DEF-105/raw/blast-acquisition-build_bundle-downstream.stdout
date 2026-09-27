@@ -1,0 +1,187 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "name": "build_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 535,
+        "endLine": 567,
+        "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "name": "build_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 535,
+            "endLine": 567,
+            "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 421,
+            "endLine": 424,
+            "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 427,
+            "endLine": 429,
+            "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+            "name": "_error",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 442,
+            "endLine": 459,
+            "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                    "name": "build_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 535,
+                    "endLine": 567,
+                    "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 427,
+                    "endLine": 429,
+                    "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                    "name": "_error",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 442,
+                    "endLine": 459,
+                    "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 427,
+                    "endLine": 429,
+                    "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                    "name": "_error",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 442,
+                    "endLine": 459,
+                    "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 2,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

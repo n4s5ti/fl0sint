@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+        "name": "serialize_request",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 527,
+        "endLine": 528,
+        "content": "def serialize_request(request: AcquisitionRequest) -> str:     return _serialize(request, parse_request)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+            "name": "serialize_request",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 527,
+            "endLine": 528,
+            "content": "def serialize_request(request: AcquisitionRequest) -> str:     return _serialize(request, parse_request)"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+                    "name": "serialize_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 527,
+                    "endLine": 528,
+                    "content": "def serialize_request(request: AcquisitionRequest) -> str:     return _serialize(request, parse_request)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

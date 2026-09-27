@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--cypher",
+    "MATCH (a)-[r]->(b) WHERE (a.filePath CONTAINS 'services/execution_service.py' OR b.filePath CONTAINS 'services/execution_service.py') AND r.type='CALLS' RETURN a.id,r.type,b.id",
+    "--limit",
+    "1000",
+    "--json",
+    "--no-auto-index"
+  ],
+  "rc": 0,
+  "wallSeconds": 0.731,
+  "stdout_sha256": "1b93f5d4acf6c82ab86608ede6837b44d6cf536c9e0beb323314d8c012c88ef4",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

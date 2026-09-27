@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "doctor",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--hunt",
+    "--hunt-target",
+    "/home/n4s5ti/Documents/dev/pip3r/bin/pip3r.mjs",
+    "--scope",
+    "blast",
+    "--json"
+  ],
+  "rc": 0,
+  "wallSeconds": 3.457,
+  "stdout_sha256": "69e4efcbb3322176a49a272dd8b811611ad1d65a2b6766cf95d0850abc56a691",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

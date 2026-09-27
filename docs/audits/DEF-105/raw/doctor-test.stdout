@@ -1,0 +1,54 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [
+        "test"
+    ],
+    "results": [
+        {
+            "name": "test",
+            "command": "npm run test",
+            "status": "skipped",
+            "reason": "script missing"
+        }
+    ],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 1156,
+        "indexStatus": "ready",
+        "warnings": []
+    }
+}

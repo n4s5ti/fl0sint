@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--drift",
+    "--json",
+    "--no-auto-index"
+  ],
+  "rc": 0,
+  "wallSeconds": 0.957,
+  "stdout_sha256": "6d310726de0d1526ef6bc9ce2de009c7345c231760a724d635876eb881f468fe",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

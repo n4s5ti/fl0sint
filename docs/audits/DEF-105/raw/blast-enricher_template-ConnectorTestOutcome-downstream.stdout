@@ -1,0 +1,214 @@
+{
+    "symbol": "flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+        "name": "ConnectorTestOutcome",
+        "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+        "nodeType": "Class",
+        "startLine": 73,
+        "endLine": 77,
+        "content": "class ConnectorTestOutcome(BaseModel):     status: Literal[\"success\", \"failure\", \"hold\"]     visible_outputs: int = Field(ge=0)     diagnostic: RedactedDiagnostic | None = None     evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+            "name": "ConnectorTestOutcome",
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "nodeType": "Class",
+            "startLine": 73,
+            "endLine": 77,
+            "content": "class ConnectorTestOutcome(BaseModel):     status: Literal[\"success\", \"failure\", \"hold\"]     visible_outputs: int = Field(ge=0)     diagnostic: RedactedDiagnostic | None = None     evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+        },
+        {
+            "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.status",
+            "name": "status",
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "nodeType": "Property",
+            "startLine": 74,
+            "endLine": 74,
+            "content": "    status: Literal[\"success\", \"failure\", \"hold\"]"
+        },
+        {
+            "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.visible_outputs",
+            "name": "visible_outputs",
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "nodeType": "Property",
+            "startLine": 75,
+            "endLine": 75,
+            "content": "    visible_outputs: int = Field(ge=0)"
+        },
+        {
+            "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.diagnostic",
+            "name": "diagnostic",
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "nodeType": "Property",
+            "startLine": 76,
+            "endLine": 76,
+            "content": "    diagnostic: RedactedDiagnostic | None = None"
+        },
+        {
+            "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.evidence",
+            "name": "evidence",
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "nodeType": "Property",
+            "startLine": 77,
+            "endLine": 77,
+            "content": "    evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+            "to": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.status",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+            "to": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.visible_outputs",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+            "to": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.diagnostic",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+            "to": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.evidence",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+                    "name": "ConnectorTestOutcome",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Class",
+                    "startLine": 73,
+                    "endLine": 77,
+                    "content": "class ConnectorTestOutcome(BaseModel):     status: Literal[\"success\", \"failure\", \"hold\"]     visible_outputs: int = Field(ge=0)     diagnostic: RedactedDiagnostic | None = None     evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 74,
+                    "endLine": 74,
+                    "content": "    status: Literal[\"success\", \"failure\", \"hold\"]"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.visible_outputs",
+                    "name": "visible_outputs",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 75,
+                    "endLine": 75,
+                    "content": "    visible_outputs: int = Field(ge=0)"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 76,
+                    "endLine": 76,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.evidence",
+                    "name": "evidence",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 77,
+                    "endLine": 77,
+                    "content": "    evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-api",
+            "direct": true,
+            "symbolCount": 4
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 74,
+                    "endLine": 74,
+                    "content": "    status: Literal[\"success\", \"failure\", \"hold\"]"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.visible_outputs",
+                    "name": "visible_outputs",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 75,
+                    "endLine": 75,
+                    "content": "    visible_outputs: int = Field(ge=0)"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 76,
+                    "endLine": 76,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome.evidence",
+                    "name": "evidence",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Property",
+                    "startLine": 77,
+                    "endLine": 77,
+                    "content": "    evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 5,
+        "totalEdges": 4,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 4,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

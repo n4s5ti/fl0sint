@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+        "name": "OutcomeStatus",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 16,
+        "endLine": 21,
+        "content": "class OutcomeStatus(str, Enum):     \"\"\"Terminal status of one original enricher input.\"\"\"     SUCCESS = \"success\"     FAILURE = \"failure\"     HOLD = \"hold\""
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+            "name": "OutcomeStatus",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 16,
+            "endLine": 21,
+            "content": "class OutcomeStatus(str, Enum):     \"\"\"Terminal status of one original enricher input.\"\"\"     SUCCESS = \"success\"     FAILURE = \"failure\"     HOLD = \"hold\""
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+                    "name": "OutcomeStatus",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 16,
+                    "endLine": 21,
+                    "content": "class OutcomeStatus(str, Enum):     \"\"\"Terminal status of one original enricher input.\"\"\"     SUCCESS = \"success\"     FAILURE = \"failure\"     HOLD = \"hold\""
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

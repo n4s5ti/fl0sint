@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+        "name": "OccurrenceOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 327,
+        "endLine": 350,
+        "content": "class OccurrenceOutcome(_Result):     occurrence_id: Identifier     suboutcomes: tuple[Suboutcome, ...] = ()     @model_validator(mode=\"after\")     def check_partial(self):         if self.status != OutcomeStatus.PARTIAL:             if self.suboutcomes:                 raise ValueError(\"only partial outcomes contain suboutcomes\")             return self         _unique((s.child_id for s in self.suboutcomes), \"child outcome\")         states = [s.status in _SUCCESS for s in self.suboutcomes]         if not any(states) or all(states):             raise ValueError(\"partial requires successful and unsuccessful children\")         children = tuple(c for s in self.suboutcomes for c in s.candidate_ids)         if _unique(children, \"child candidate\") != set(self.candidate_ids):             raise ValueError(                 \"partial candidates must equal successful child candidates\"             )         if set(a for s in self.suboutcomes for a in s.artifact_ids) != set(             self.artifact_ids         ):             raise ValueError(\"partial artifacts must equal successful child artifacts\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+            "name": "OccurrenceOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 327,
+            "endLine": 350,
+            "content": "class OccurrenceOutcome(_Result):     occurrence_id: Identifier     suboutcomes: tuple[Suboutcome, ...] = ()     @model_validator(mode=\"after\")     def check_partial(self):         if self.status != OutcomeStatus.PARTIAL:             if self.suboutcomes:                 raise ValueError(\"only partial outcomes contain suboutcomes\")             return self         _unique((s.child_id for s in self.suboutcomes), \"child outcome\")         states = [s.status in _SUCCESS for s in self.suboutcomes]         if not any(states) or all(states):             raise ValueError(\"partial requires successful and unsuccessful children\")         children = tuple(c for s in self.suboutcomes for c in s.candidate_ids)         if _unique(children, \"child candidate\") != set(self.candidate_ids):             raise ValueError(                 \"partial candidates must equal successful child candidates\"             )         if set(a for s in self.suboutcomes for a in s.artifact_ids) != set(             self.artifact_ids         ):             raise ValueError(\"partial artifacts must equal successful child artifacts\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+                    "name": "OccurrenceOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 327,
+                    "endLine": 350,
+                    "content": "class OccurrenceOutcome(_Result):     occurrence_id: Identifier     suboutcomes: tuple[Suboutcome, ...] = ()     @model_validator(mode=\"after\")     def check_partial(self):         if self.status != OutcomeStatus.PARTIAL:             if self.suboutcomes:                 raise ValueError(\"only partial outcomes contain suboutcomes\")             return self         _unique((s.child_id for s in self.suboutcomes), \"child outcome\")         states = [s.status in _SUCCESS for s in self.suboutcomes]         if not any(states) or all(states):             raise ValueError(\"partial requires successful and unsuccessful children\")         children = tuple(c for s in self.suboutcomes for c in s.candidate_ids)         if _unique(children, \"child candidate\") != set(self.candidate_ids):             raise ValueError(                 \"partial candidates must equal successful child candidates\"             )         if set(a for s in self.suboutcomes for a in s.artifact_ids) != set(             self.artifact_ids         ):             raise ValueError(\"partial artifacts must equal successful child artifacts\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

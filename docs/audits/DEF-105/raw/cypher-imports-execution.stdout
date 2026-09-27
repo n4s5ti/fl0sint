@@ -1,0 +1,1587 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "columns": [
+            "a.id",
+            "a.filePath",
+            "r.type",
+            "b.id",
+            "b.filePath"
+        ],
+        "rows": [
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._execute_structured_input#4",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ContractError.__init__#2",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ContractError.__init__#2",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_Result.check_status#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome.check_partial#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.check_reference_graph#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle.check_origin_digest#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "a.filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_json_value",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_json_value",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:docs/audits/DEF-41/raw/review/adversarial_review.py",
+                "a.filePath": "docs/audits/DEF-41/raw/review/adversarial_review.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            },
+            {
+                "a.id": "File:docs/audits/DEF-41/raw/verify_installed.py",
+                "a.filePath": "docs/audits/DEF-41/raw/verify_installed.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_core/core/services/execution_service.py",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_core/core/template_enricher.py",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_core/tasks/enricher.py",
+                "a.filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Resources",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractError",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_object",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_http_url",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_json_value",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:origin_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:candidates",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:evidence_list",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:spans",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:artifacts",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:outcomes",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:created_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:request",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:bundle_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:suboutcomes",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:child_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:actual_resources",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:completion_witness",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:diagnostic",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:artifact_ids",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:candidate_ids",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:underlying_status",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:status",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:completed_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:reference",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:_FAILURE",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:_SUCCESS",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:RETENTION_HOLD",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:UNKNOWN_OUTCOME",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:POLICY_DENIED",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:INVALID_INPUT",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:TOOL_ERROR",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:TIMEOUT",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:RATE_LIMITED",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:PARTIAL",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:VALID_NO_RESULT",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:SUCCESS_WITH_OUTPUT",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:disposition",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:candidate_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:subject_attribution",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:extraction_version",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:extraction_method",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:evidence_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:field_pointer",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:byte_end",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:byte_start",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:span_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:final_url",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:requested_url",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:event_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:retrieved_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:origin",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:source_family",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:locator",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:byte_length",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:content_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:snapshot_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:artifact_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:URL",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:retention_policy_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:projection_profile_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:endpoint_policy_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:need_ref",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:parent_operation_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:allocation",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:inputs",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:capability_digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:scope",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:caller_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:operation_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:format_version",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:lineage",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:value",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:type_tag",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:input_ref",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:occurrence_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:seed_entity_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:input_index",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:attempt",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:step_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:run_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:money_usd",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:fanout",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:concurrency",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:browser_actions",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:output_tokens",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:input_tokens",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:model_calls",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:elapsed_seconds",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:bytes",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:pages",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:requests",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:model_config",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:FiniteJSON",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Timestamp",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Amount",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Count",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Digest",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Identifier",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:FORMAT_VERSION",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:outcomes",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:enricher_name",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:evidence",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:diagnostic",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:outputs",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:status",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:ingested_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:retrieved_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:event_at",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:verification_state",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:confidence",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:parser_version",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:schema_version",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:source_rights",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:artifact_reference",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:artifact_sha256",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:policy_version",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:capability",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:endpoint_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:destination_id",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:input_ref",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:retryable",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:safe_message",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:code",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:model_config",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:HOLD",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:FAILURE",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Variable:flowsint-core/src/flowsint_execution/models.py:SUCCESS",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/tests/acquisition/test_contract.py",
+                "a.filePath": "flowsint-core/tests/acquisition/test_contract.py",
+                "r.type": "IMPORTS",
+                "b.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractError",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ContractError.__init__#2",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Resources",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.check_url_pair#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.check_span#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_Result.check_status#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_Result.check_diagnostic_scalar#1",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome.reject_nested_partial#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome.check_partial#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.check_reference_graph#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle.check_origin_digest#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.normalize_timestamp#1",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

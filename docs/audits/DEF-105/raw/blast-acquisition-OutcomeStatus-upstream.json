@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--no-auto-index",
+    "--include-tests",
+    "--direction",
+    "upstream",
+    "--max-depth",
+    "3",
+    "--json",
+    "flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus"
+  ],
+  "rc": 0,
+  "wallSeconds": 0.756,
+  "stdout_sha256": "6eceb12de9dce2e275341e76a1ab57da4366a88e630a47efc00868bf7dfaef7c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
