@@ -79,6 +79,10 @@ Understanding the two execution phases is crucial for writing effective enricher
 
 **Postprocessing** creates the graph database structure. After scanning completes, this method receives both the results and the original input. It creates Neo4j nodes for each entity, establishes relationships between them, and returns the final results. This separation keeps graph logic separate from business logic.
 
+### Concurrent batches and source ownership
+
+A concurrent enricher must carry an immutable per-occurrence record containing the original input, input index, terminal status, and output tuple from task creation through graph capture. Do not associate a flattened completion-ordered result list to inputs by position. Preserve one record for failures, holds or cancellations, duplicates, and successful empty outputs. WebsiteToText publishes this record as WebsiteTextOccurrence: scan returns those envelopes and postprocess accepts only those envelopes before adapting them to the legacy list[Phrase].
+
 ## Creating a simple enricher
 
 Let's walk through creating a complete enricher from scratch. We'll build an enricher that converts domains to IP addresses using DNS resolution.

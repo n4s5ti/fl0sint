@@ -1,0 +1,23 @@
+{
+  "results": {
+    "files": [
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py — approved clean typed scan→postprocess cutover.",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/tests/enrichers/test_website_to_text.py — 9 targeted regressions, verified passing.",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/docs/audits/DEF-42/pre-fix-regression.md:20 — explicitly lacks immutable pre-fix receipt.",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/docs/audits/DEF-42/post-fix-runtime.md:30 — explicitly marks Pip3r Blast stale/UNKNOWN. "
+    ],
+    "relationships": [
+      "Main approved the typed scan→typed postprocess clean cutover. `execute()` remains the legacy `list[Phrase]` adapter, and no enabled in-repository caller outside the definition/dedicated tests was concretely reproduced as broken.",
+      "The audit markdown itself establishes that the external Blast gate remains unresolved: it has no immutable pre-fix capture and no usable current-source Blast result."
+    ],
+    "answer": {
+      "functional_verdict": "PASS after approved cutover. I independently ran the targeted suite through mpg-batch with main/.venv and worktree PYTHONPATH: 9 passed, 2 existing warnings. Direct runtime also confirmed the typed chain behavior.",
+      "exercised_criteria": [
+        "Slow/fast pairing; middle and leading failures; duplicates; retry/reinvocation; one-to-many; child and parent cancellation-to-HOLD; graph capture; raw input refs and JSON; empty versus failure; redacted unexpected failure."
+      ],
+      "remaining_blocker": "External audit/evidence gate only. There is no valid pre/post Blast completeness proof: pre-fix-regression.md:20 says no persisted raw stdout/stderr or immutable pre-fix snapshot exists; post-fix-runtime.md:30 says Blast returned stale pre-edit content and is UNKNOWN/not used. No shared reindex was run.",
+      "delivery_note": "The new tests and audit receipts are currently untracked, which Main explicitly classified as expected before staging rather than a functional defect."
+    },
+    "next_steps": "Functional implementation is ready under the approved typed cutover. Resolve or explicitly waive the external Blast evidence gate before asserting full DEF42 audit completeness."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "issue": "DEF-42",
+  "baseline": "cbad468df16b0e6f3046379b4f33931b613e1b60",
+  "branch": "work/def-42-occurrences",
+  "functional_verdict": "PASS",
+  "acceptance_verdict": "BLOCKED",
+  "verification": {
+    "parent_focused": "9 passed; parent-enricher-verification.json",
+    "parent_contract_boundaries": "17 passed; parent-core-verification.json",
+    "independent_final": "9 passed after public envelope rename; independent-final-review.json",
+    "runtime": "Loopback slow/fast execute, typed scan/postprocess graph capture and separate-process JSON consumer; post-fix-runtime.md"
+  },
+  "sha256": {
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": "2f23716b57523737f8991e21ae2621559616d8226ceaf731c714257ba0e809bc",
+    "flowsint-enrichers/tests/enrichers/test_website_to_text.py": "25421d0e63a3cee4bb4cdd9b18ca349c3d887e8ecb2a4834b682eb6019afcece",
+    "CHANGELOG.md": "c7fd7de94e14f93f592656b47e771301d50a6d905d49a35c8576f454ed10a592",
+    "docs/developers/managing-enrichers.mdx": "b101363ddc6412f060f080f48997bd776218df63c9012a224a6359c1fc4faf19"
+  },
+  "unresolved": [
+    "No immutable pre-edit Blast receipt was preserved. This is a local evidence omission, not solely an external tool defect; it cannot be backdated.",
+    "Post-edit Blast returned stale baseline content and is UNKNOWN, not PASS.",
+    "Scoped Hunt and Doctor acceptance is not established by this packet; tooling defects are coordinated under DEF-105 and DEF-106/107/108.",
+    "Full base/head/package/configuration provenance and valid pre/post impact comparison remain incomplete.",
+    "DEF-41 remains a native prerequisite; conditional parallel implementation did not waive its gate."
+  ],
+  "recovery": "No deployment or merge occurred. Leave this branch isolated to retain the baseline runtime. If subsequently applied, revert only the S02 implementation commit with git revert after preserving any intervening changes; retain this evidence packet and all input lineage. No collection budgets were consumed by the controlled fixtures.",
+  "next_gate": "After tool repair acceptance, collect fresh isolated baseline/head impact and scoped Doctor/Hunt evidence. Label any baseline reconstruction retrospective, never historical; independent review must explicitly adjudicate the missing pre-edit receipt before closure."
+}

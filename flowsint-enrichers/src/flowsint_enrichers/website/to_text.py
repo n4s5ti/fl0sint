@@ -1,25 +1,30 @@
-"""
-Website text extraction enricher with async HTTP transport and optional GPU
-postprocessing.
+"""Website text extraction with source-owned asynchronous occurrences.
 
 Transport:
   httpx (HTTP/2 + HTTP/1.1, async, connection-pooled) — primary
   aioquic (HTTP/3 via QUIC) — experimental, gated by enricher param
   requests (sync) — last-resort fallback
 
-GPU postprocess (optional, requires cupy-cuda13x / cudf-cu13):
-  Batch deduplication via cupy GPU arrays
-  Bulk text stats via cuDF DataFrames
-  Graceful CPU fallback when CUDA unavailable
+Each transport future retains its original Website, input index, terminal status,
+and output tuple until graph capture and the final legacy list adapter.
 """
 
 import asyncio
 import logging
-from typing import Any, Dict, List, Optional
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Sequence
 
 from bs4 import BeautifulSoup
 from flowsint_core.core.enricher_base import Enricher
+from flowsint_core.core.forensics import legacy_execution_boundary
 from flowsint_core.core.logger import Logger
+from flowsint_execution.models import (
+    InputOutcome,
+    OutcomeStatus,
+    RedactedDiagnostic,
+    StructuredExecutionResult,
+    canonical_input_hash,
+)
 from flowsint_types.phrase import Phrase
 from flowsint_types.website import Website
 
@@ -39,24 +44,27 @@ try:
 except ImportError:
     HAS_QUIC = False
 
-# ---------------------------------------------------------------------------
-# Optional: GPU compute (cupy / cudf)
-# ---------------------------------------------------------------------------
-try:
-    import cupy as cp
-
-    HAS_CUPY = True
-except ImportError:
-    HAS_CUPY = False
-
-try:
-    import cudf
-
-    HAS_CUDF = True
-except ImportError:
-    HAS_CUDF = False
 
 log = logging.getLogger(__name__)
+
+@dataclass(frozen=True)
+class WebsiteTextOccurrence:
+    """Immutable ownership record that survives concurrent transport work."""
+
+    source: Website
+    index: int
+    input_ref: str
+    status: OutcomeStatus
+    outputs: tuple[Phrase, ...] = ()
+    diagnostic: RedactedDiagnostic | None = None
+
+    def to_input_outcome(self) -> InputOutcome:
+        return InputOutcome(
+            input_ref=self.input_ref,
+            status=self.status,
+            outputs=self.outputs,
+            diagnostic=self.diagnostic,
+        )
 
 
 @flowsint_enricher
@@ -105,52 +113,128 @@ class WebsiteToText(Enricher):
                 "label": "Request timeout (seconds)",
                 "description": "Timeout for each HTTP request",
             },
-            {
-                "name": "enable_gpu",
-                "type": "bool",
-                "default": True,
-                "label": "Enable GPU postprocessing",
-                "description": "Use GPU-accelerated dedupe and batch transforms when available",
-            },
-            {
-                "name": "gpu_provider",
-                "type": "string",
-                "default": "auto",
-                "label": "GPU provider",
-                "description": "GPU implementation selector: auto/cupy/cudf/none",
-            },
         ]
 
     # ------------------------------------------------------------------
     # scan — async concurrent fetches
     # ------------------------------------------------------------------
-    async def scan(self, data: List[InputType]) -> List[OutputType]:
-        """Crawl websites concurrently using async HTTP."""
-        concurrency = self.params.get("max_concurrency", 10)
-        timeout = self.params.get("request_timeout", 10)
-        enable_quic = self.params.get("enable_quic", False)
+    def _outputs_from_text(self, text: str) -> tuple[Phrase, ...]:
+        """Build the per-occurrence outputs without flattening their ownership."""
+        return (Phrase(text=text),) if text else ()
 
-        sem = asyncio.Semaphore(concurrency)
+    @staticmethod
+    def _diagnostic(code: str, message: str) -> RedactedDiagnostic:
+        return RedactedDiagnostic(code=code, safe_message=message, retryable=False)
 
-        async def _fetch_one(website: Website) -> Optional[Phrase]:
-            async with sem:
+    def _cancelled_occurrence(
+        self, index: int, source: Website, input_ref: str
+    ) -> WebsiteTextOccurrence:
+        return WebsiteTextOccurrence(
+            source=source,
+            index=index,
+            input_ref=input_ref,
+            status=OutcomeStatus.HOLD,
+            diagnostic=self._diagnostic(
+                "cancelled", "The operation was cancelled before completion."
+            ),
+        )
+
+    def _failed_occurrence(
+        self, index: int, source: Website, input_ref: str
+    ) -> WebsiteTextOccurrence:
+        return WebsiteTextOccurrence(
+            source=source,
+            index=index,
+            input_ref=input_ref,
+            status=OutcomeStatus.FAILURE,
+            diagnostic=self._diagnostic(
+                "unexpected_error", "Unexpected processing failure."
+            ),
+        )
+
+    async def _fetch_occurrence(
+        self, index: int, source: Website, input_ref: str, semaphore: asyncio.Semaphore
+    ) -> WebsiteTextOccurrence:
+        """Return one terminal, source-owned outcome from one transport future."""
+        try:
+            async with semaphore:
                 text = await self._fetch_text_async(
-                    str(website.url),
-                    timeout=timeout,
-                    enable_quic=enable_quic,
+                    str(source.url),
+                    timeout=self.params.get("request_timeout", 10),
+                    enable_quic=self.params.get("enable_quic", False),
                 )
-                return Phrase(text=text) if text else None
+            if text is None:
+                return WebsiteTextOccurrence(
+                    source=source,
+                    index=index,
+                    input_ref=input_ref,
+                    status=OutcomeStatus.FAILURE,
+                    diagnostic=self._diagnostic(
+                        "transport_failed", "All configured transports failed."
+                    ),
+                )
+            return WebsiteTextOccurrence(
+                source=source,
+                index=index,
+                input_ref=input_ref,
+                status=OutcomeStatus.SUCCESS,
+                outputs=self._outputs_from_text(text),
+            )
+        except asyncio.CancelledError:
+            return self._cancelled_occurrence(index, source, input_ref)
+        except Exception:
+            return self._failed_occurrence(index, source, input_ref)
 
-        tasks = [_fetch_one(w) for w in data]
-        results: List[OutputType] = []
-        for coro in asyncio.as_completed(tasks):
-            result = await coro
-            if result is not None:
-                results.append(result)
-        return results
+    async def _scan_occurrence_specs(
+        self, specs: Sequence[tuple[int, Website, str]]
+    ) -> tuple[WebsiteTextOccurrence, ...]:
+        semaphore = asyncio.Semaphore(self.params.get("max_concurrency", 10))
+        tasks = tuple(
+            asyncio.create_task(self._fetch_occurrence(index, source, input_ref, semaphore))
+            for index, source, input_ref in specs
+        )
+        try:
+            results = await asyncio.gather(*tasks)
+        except asyncio.CancelledError:
+            for task in tasks:
+                task.cancel()
+            results = await asyncio.gather(*tasks, return_exceptions=True)
 
-    # ------------------------------------------------------------------
-    # Multi-protocol fetch
+        occurrences: list[WebsiteTextOccurrence] = []
+        for position, result in enumerate(results):
+            index, source, input_ref = specs[position]
+            if isinstance(result, WebsiteTextOccurrence):
+                occurrences.append(result)
+            elif isinstance(result, asyncio.CancelledError):
+                occurrences.append(self._cancelled_occurrence(index, source, input_ref))
+            else:
+                occurrences.append(self._failed_occurrence(index, source, input_ref))
+        return tuple(occurrences)
+
+    async def _scan_occurrences(
+        self, data: Sequence[Website], *, start_index: int = 0
+    ) -> tuple[WebsiteTextOccurrence, ...]:
+        return await self._scan_occurrence_specs(
+            tuple(
+                (start_index + offset, source, canonical_input_hash(source))
+                for offset, source in enumerate(data)
+            )
+        )
+
+    @staticmethod
+    def _legacy_outputs(
+        occurrences: Sequence[WebsiteTextOccurrence],
+    ) -> List[OutputType]:
+        return [
+            output
+            for occurrence in occurrences
+            if occurrence.status is OutcomeStatus.SUCCESS
+            for output in occurrence.outputs
+        ]
+
+    async def scan(self, data: List[InputType]) -> List[WebsiteTextOccurrence]:
+        """Return source-owned occurrence envelopes for postprocess graph capture."""
+        return list(await self._scan_occurrences(data))
     # ------------------------------------------------------------------
     async def _fetch_text_async(
         self,
@@ -303,97 +387,162 @@ class WebsiteToText(Enricher):
         return soup.get_text(separator=" ", strip=True)
 
     # ------------------------------------------------------------------
-    # postprocess — GPU batch if available, CPU fallback
+    # postprocess — source-owned graph capture and legacy adaptation
     # ------------------------------------------------------------------
     def postprocess(
-        self, results: List[OutputType], original_input: List[InputType]
+        self, occurrences: Sequence[WebsiteTextOccurrence]
     ) -> List[OutputType]:
-        """Postprocess results with optional GPU acceleration."""
-        if not results:
-            return results
+        """Capture graph edges from source-owned occurrence envelopes only."""
+        retained = tuple(occurrences)
+        if any(not isinstance(occurrence, WebsiteTextOccurrence) for occurrence in retained):
+            raise TypeError("WebsiteToText.postprocess requires occurrence envelopes from scan().")
+        self._postprocess_occurrences(retained)
+        return self._legacy_outputs(retained)
 
-        enable_gpu = bool(self.params.get("enable_gpu", True))
-        gpu_provider = str(self.params.get("gpu_provider", "auto")).strip().lower()
+    def _postprocess_occurrences(
+        self, occurrences: Sequence[WebsiteTextOccurrence]
+    ) -> None:
 
-        if enable_gpu and gpu_provider not in {"none", "false", "0", "off"}:
-            if gpu_provider in {"auto", "cupy"} and HAS_CUPY:
-                results = self._gpu_deduplicate(results)
-            if gpu_provider in {"auto", "cudf"} and HAS_CUDF:
-                results = self._gpu_batch_transform(results)
-
-        if HAS_CUPY or HAS_CUDF:
-            Logger.info(
-                self.sketch_id,
-                {
-                    "message": (
-                        f"GPU postprocess enabled: provider={gpu_provider}, "
-                        f"cupy={HAS_CUPY}, cudf={HAS_CUDF}, "
-                        f"processed {len(results)} results"
-                    )
-                },
-            )
-
-        # Neo4j writes (CPU / I/O)
-        for input_website, result in zip(original_input, results):
-            website_url = str(input_website.url)
-            if self._graph_service:
-                self.create_node(input_website)
-                if result.text:
-                    self.create_node(result)
-                    self.create_relationship(
-                        input_website, result, "HAS_INNER_TEXT"
-                    )
-                    self.log_graph_message(
-                        f"Extracted text from {website_url} "
-                        f"({len(result.text)} chars)."
-                    )
-        return results
-
-    # ------------------------------------------------------------------
-    # GPU helpers with CPU fallback
-    # ------------------------------------------------------------------
-    def _gpu_deduplicate(
-        self, results: List[OutputType]
-    ) -> List[OutputType]:
-        if len(results) < 2:
-            return results
-        try:
-            seen: set = set()
-            deduped: list = []
-            for r in results:
-                if r.text and r.text not in seen:
-                    seen.add(r.text)
-                    deduped.append(r)
-                elif not r.text:
-                    deduped.append(r)
-            return deduped
-        except Exception as exc:
-            log.warning("Dedup fallback to CPU: %s", exc)
-            return results
-
-    def _gpu_batch_transform(
-        self, results: List[OutputType]
-    ) -> List[OutputType]:
-        if len(results) < 2:
-            return results
-        try:
-            texts = [r.text for r in results if r.text]
-            if texts:
-                df = cudf.DataFrame({"text": texts})
-                total = df["text"].str.len().sum()
-                Logger.info(
-                    self.sketch_id,
-                    {
-                        "message": (
-                            f"GPU batch: {len(texts)} texts, "
-                            f"{total} total chars"
-                        )
-                    },
+        if not self._graph_service:
+            return
+        for occurrence in occurrences:
+            if occurrence.status is not OutcomeStatus.SUCCESS:
+                continue
+            self.create_node(occurrence.source)
+            for output in occurrence.outputs:
+                if not output.text:
+                    continue
+                self.create_node(output)
+                self.create_relationship(
+                    occurrence.source, output, "HAS_INNER_TEXT"
                 )
-            return results
-        except Exception as exc:
-            log.warning("cuDF fallback to CPU: %s", exc)
-            return results
+                self.log_graph_message(
+                    f"Extracted text from {occurrence.source.url} "
+                    f"({len(output.text)} chars)."
+                )
+
+    @legacy_execution_boundary("legacy_enricher_execute")
+    async def execute(self, values: List[Any]) -> List[OutputType]:
+        if self.name() != "enricher_orchestrator":
+            Logger.info(self.sketch_id, {"message": f"Enricher {self.name()} started."})
+        try:
+            await self.async_init()
+            occurrences = await self.scan(self.preprocess(values))
+            processed = self.postprocess(occurrences)
+            self._graph_service.flush()
+            if self.name() != "enricher_orchestrator":
+                Logger.completed(
+                    self.sketch_id, {"message": f"Enricher {self.name()} finished."}
+                )
+            return processed
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            if self.name() != "enricher_orchestrator":
+                Logger.error(
+                    self.sketch_id, {"message": f"Enricher {self.name()} errored."}
+                )
+            return []
+
+    async def execute_structured(self, values: List[Any]) -> StructuredExecutionResult:
+        """Preserve every original input as one terminal structured outcome."""
+        outcomes: list[InputOutcome | None] = [None] * len(values)
+        if self.name() != "enricher_orchestrator":
+            Logger.info(self.sketch_id, {"message": f"Enricher {self.name()} started."})
+
+        try:
+            await self.async_init()
+        except asyncio.CancelledError:
+            outcomes = [
+                InputOutcome(
+                    input_ref=canonical_input_hash(value),
+                    status=OutcomeStatus.HOLD,
+                    diagnostic=self._diagnostic(
+                        "cancelled", "The operation was cancelled before completion."
+                    ),
+                )
+                for value in values
+            ]
+        except Exception as error:
+            diagnostic = self._classify_structured_exception(error)
+            outcomes = [
+                InputOutcome(
+                    input_ref=canonical_input_hash(value),
+                    status=OutcomeStatus.FAILURE,
+                    diagnostic=diagnostic,
+                )
+                for value in values
+            ]
+        else:
+            adapter, primary_field = self._input_validation_context()
+            specs: list[tuple[int, Website, str]] = []
+            for index, value in enumerate(values):
+                try:
+                    source = self._validate_single_input(
+                        value, adapter=adapter, primary_field=primary_field
+                    )
+                except Exception as error:
+                    outcomes[index] = InputOutcome(
+                        input_ref=canonical_input_hash(value),
+                        status=OutcomeStatus.FAILURE,
+                        diagnostic=self._classify_structured_exception(error),
+                    )
+                else:
+                    specs.append((index, source, canonical_input_hash(value)))
+            try:
+                occurrences = await self._scan_occurrence_specs(specs)
+                self.postprocess(occurrences)
+            except asyncio.CancelledError:
+                for index, value in enumerate(values):
+                    if outcomes[index] is None:
+                        outcomes[index] = InputOutcome(
+                            input_ref=canonical_input_hash(value),
+                            status=OutcomeStatus.HOLD,
+                            diagnostic=self._diagnostic(
+                                "cancelled", "The operation was cancelled before completion."
+                            ),
+                        )
+            except Exception as error:
+                diagnostic = self._classify_structured_exception(error)
+                for index, value in enumerate(values):
+                    if outcomes[index] is None:
+                        outcomes[index] = InputOutcome(
+                            input_ref=canonical_input_hash(value),
+                            status=OutcomeStatus.FAILURE,
+                            diagnostic=diagnostic,
+                        )
+            else:
+                for occurrence in occurrences:
+                    outcomes[occurrence.index] = occurrence.to_input_outcome()
+        finally:
+            try:
+                self._graph_service.flush()
+            except Exception:
+                Logger.error(
+                    self.sketch_id,
+                    {"message": f"Enricher {self.name()} graph flush failed."},
+                )
+
+        final_outcomes: list[InputOutcome] = []
+        for index, value in enumerate(values):
+            outcome = outcomes[index]
+            if outcome is None:
+                outcome = InputOutcome(
+                    input_ref=canonical_input_hash(value),
+                    status=OutcomeStatus.FAILURE,
+                    diagnostic=self._diagnostic(
+                        "unexpected_error", "Processing ended without a terminal outcome."
+                    ),
+                )
+            final_outcomes.append(outcome)
+        if self.name() != "enricher_orchestrator":
+            Logger.completed(self.sketch_id, {"message": f"Enricher {self.name()} finished."})
+        return StructuredExecutionResult(
+            enricher_name=self.name(),
+            outcomes=tuple(final_outcomes),
+        )
+
+
 
 
 InputType = WebsiteToText.InputType
