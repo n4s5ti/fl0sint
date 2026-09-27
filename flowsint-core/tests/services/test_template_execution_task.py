@@ -14,7 +14,7 @@ from sqlalchemy.orm import sessionmaker
 
 from flowsint_core.core.connector_egress import connector_template_digest
 from flowsint_core.core.enums import EventLevel
-from flowsint_core.core.execution import (
+from flowsint_execution.models import (
     EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,

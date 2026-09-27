@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Any, Dict, Literal, Optional
 
-from flowsint_core.core.execution import RedactedDiagnostic
+from flowsint_execution.models import RedactedDiagnostic
 from flowsint_core.templates.types import Template
 from pydantic import UUID4, BaseModel, Field
 

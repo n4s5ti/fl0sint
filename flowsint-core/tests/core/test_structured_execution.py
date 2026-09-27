@@ -9,7 +9,7 @@ from flowsint_types.domain import Domain
 from pydantic import ValidationError
 
 from flowsint_core.core.enricher_base import Enricher
-from flowsint_core.core.execution import (
+from flowsint_execution.models import (
     EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,

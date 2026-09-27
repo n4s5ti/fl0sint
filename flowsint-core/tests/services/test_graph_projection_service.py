@@ -10,7 +10,7 @@ from uuid import uuid4
 
 import pytest
 
-from flowsint_core.core.execution import (
+from flowsint_execution.models import (
     EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,

@@ -24,7 +24,7 @@ from flowsint_core.core.connector_egress import (
     EgressAuthorizer,
 )
 from flowsint_core.core.enricher_base import Enricher
-from flowsint_core.core.execution import (
+from flowsint_execution.models import (
     EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,

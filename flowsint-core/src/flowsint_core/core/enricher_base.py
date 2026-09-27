@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, TypeAdapter, ValidationError, create_mode
 from pydantic.config import ConfigDict
 
 from ..utils import resolve_type
-from .execution import (
+from flowsint_execution.models import (
     EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,

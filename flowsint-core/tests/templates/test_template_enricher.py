@@ -19,7 +19,7 @@ from flowsint_core.core.connector_egress import (
     DestinationRegistryDocument,
     EgressAuthorizer,
 )
-from flowsint_core.core.execution import OutcomeStatus
+from flowsint_execution.models import OutcomeStatus
 from flowsint_core.core.template_enricher import TemplateEnricher
 from flowsint_core.templates.loader.yaml_loader import YamlLoader
 from flowsint_core.templates.types import (

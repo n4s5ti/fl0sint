@@ -8,7 +8,7 @@ from flowsint_core.core.connector_egress import (
     DestinationRegistry,
     DestinationRegistryDocument,
 )
-from flowsint_core.core.execution import EvidenceEnvelope, InputOutcome, OutcomeStatus, StructuredExecutionResult
+from flowsint_execution.models import EvidenceEnvelope, InputOutcome, OutcomeStatus, StructuredExecutionResult
 from flowsint_core.core.models import EnricherTemplate, Profile
 from flowsint_core.templates.types import Template
 from flowsint_types import Location

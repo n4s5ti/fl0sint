@@ -166,7 +166,7 @@ def _safe_connector_scan_details(result) -> dict[str, Any]:
 
 
 def _connector_failure_diagnostic(error):
-    from ..core.execution import RedactedDiagnostic
+    from flowsint_execution.models import RedactedDiagnostic
 
     if isinstance(error, ProjectionError):
         return RedactedDiagnostic(
@@ -204,7 +204,7 @@ def run_connector_template(
     idempotency_key: Optional[str] = None,
 ):
     """Run a registry-backed template with Stage 3 replay and lease fencing intact."""
-    from ..core.execution import RedactedDiagnostic, canonical_input_hash
+    from flowsint_execution.models import RedactedDiagnostic, canonical_input_hash
     from ..core.services.execution_service import (
         FINAL_RUN_STATUSES,
         RunLeaseLost,
