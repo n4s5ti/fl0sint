@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--drift",
+    "--json",
+    "--no-auto-index"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {
+    "PIP3R_DISCLOSURE": "off"
+  },
+  "started_at": 1790478983.099835,
+  "elapsed_seconds": 1.0015883445739746,
+  "returncode": 0
+}

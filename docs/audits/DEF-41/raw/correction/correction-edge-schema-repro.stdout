@@ -1,0 +1,44 @@
+{
+  "schema": "file:///home/n4s5ti/Documents/dev/pip3r/packages/graphos-schemas/dist/index.js",
+  "rows": 18,
+  "failures": [
+    {
+      "edge": {
+        "fromId": "Class:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher",
+        "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+        "type": "METHOD_OVERRIDES",
+        "confidence": 0.9
+      },
+      "issues": [
+        {
+          "received": "METHOD_OVERRIDES",
+          "code": "invalid_enum_value",
+          "options": [
+            "CONTAINS",
+            "DEFINES",
+            "IMPORTS",
+            "CALLS",
+            "INHERITS",
+            "USES",
+            "DECORATES",
+            "EXTENDS",
+            "IMPLEMENTS",
+            "HAS_METHOD",
+            "HAS_PROPERTY",
+            "ACCESSES",
+            "OVERRIDES",
+            "MEMBER_OF",
+            "STEP_IN_PROCESS",
+            "BRANCHES_ON",
+            "THROWS",
+            "FAILS_WITH"
+          ],
+          "path": [
+            "type"
+          ],
+          "message": "Invalid enum value. Expected 'CONTAINS' | 'DEFINES' | 'IMPORTS' | 'CALLS' | 'INHERITS' | 'USES' | 'DECORATES' | 'EXTENDS' | 'IMPLEMENTS' | 'HAS_METHOD' | 'HAS_PROPERTY' | 'ACCESSES' | 'OVERRIDES' | 'MEMBER_OF' | 'STEP_IN_PROCESS' | 'BRANCHES_ON' | 'THROWS' | 'FAILS_WITH', received 'METHOD_OVERRIDES'"
+        }
+      ]
+    }
+  ]
+}

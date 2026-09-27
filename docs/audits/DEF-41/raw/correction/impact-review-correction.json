@@ -1,0 +1,24 @@
+{
+  "correction": {
+    "baseline_ast_imports": {
+      "revision": "1b48c428e2e32a5179005df288ac669bdae82409",
+      "occurrences": 12,
+      "unique_files": 11,
+      "exact_occurrences": [
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/schemas/enricher_template.py:6",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-api/tests/test_template_egress.py:11",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/core/enricher_base.py:10",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/core/services/execution_service.py:15",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/core/template_enricher.py:27",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/tasks/enricher.py:169",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/tasks/enricher.py:207",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/tests/core/test_structured_execution.py:12",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/tests/services/test_execution_service.py:9",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/tests/services/test_graph_projection_service.py:13",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/tests/services/test_template_execution_task.py:17",
+        "/home/n4s5ti/Documents/dev/fl0sint/flowsint-core/tests/templates/test_template_enricher.py:22"
+      ]
+    },
+    "revised_verdict": "Do not treat absence of a product AcquisitionBundle importer as a finding: the accepted scope is a standalone callable local contract, and installed-wheel example/consumer proof is appropriate. Do treat the Blast/semantic-coverage result as the only remaining impact-evidence blocker: recorded targets are empty; canonical upstream queries are UNKNOWN/partial/no-call-edges; LSP references are unavailable; and B02 requires UNKNOWN-with-supplement rather than PASS. Existing behavior tests whose only patch is an import move remain meaningful regression proof because canonical models moved byte-exactly."
+  }
+}

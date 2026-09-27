@@ -1,6 +1,6 @@
 # DEF-41 / S01 acceptance
 
-Decision: accept the versioned standalone **data contract**, not the P1 scraper release. No deployment, live collection, graph writes, admission runtime, database migration or bundle importer was added.
+Decision corrected on 2026-09-27: **BLOCKED — acceptance withdrawn**, pending [DEF-105](https://linear.app/def2/issue/DEF-105). The prior implementation and behavioral results remain recorded below, but they do not satisfy the required impact-verification gate. The former acceptance is preserved in Git at `1198f29e`; it must not be used to authorize downstream work. No deployment, live collection, graph writes, admission runtime, database migration or bundle importer was added.
 
 - Baseline: `1b48c428e2e32a5179005df288ac669bdae82409` (accepted P0 gate DEF-23).
 - Implementation: `b7828cc968860f8376ac2ff251523fb2e8dfa391`.
@@ -55,12 +55,12 @@ Pre-edit scope: `raw/scope-plan.md`. Raw pre-index/root outputs: `raw/pre/`. Raw
 - After generation: `sha256:ec8e06b94bcb974cfcd2d68b5abf3e27442dbfd689c93b3ebab1c3218f2131bf`.
 - Isolated index refreshed successfully; tool-reported drift was zero after refresh and after the first packet-copy state. These are timestamped observations, not a claim that later audit-document additions were indexed.
 - Canonical class upstream queries report `no-call-edges`; downstream edges are largely class members. **External-consumer graph completeness is UNKNOWN.** New `build_bundle` callers in the executable example/tests also evade upstream discovery. `parse_bundle` internal chains are discoverable, not whole-consumer proof.
-- LSP references were attempted; pyright-langserver was unavailable (ENOENT). Exact absolute/relative import tracing and runtime consumer exercises supply the missing boundary evidence. No leftover old production import was found.
-- Doctor `--verify-refactor build_bundle` returned `dead_code`, “safe to delete,” score 100 despite exercised example/test callers. **UNKNOWN, not PASS**; this recommendation was rejected and reported as a tool issue.
-- Scoped Hunt ran on the execution namespace and core tests. It discovered/probed **0 commands** and exercised **0 JSON contracts**, returning a pip3r root-help finding. **UNKNOWN, not PASS**; not evidence that the Python contract has no bugs.
+- LSP references were attempted; pyright-langserver was unavailable (ENOENT). Absolute/relative import tracing and runtime consumer exercises provide bounded supplementary evidence, not complete semantic reference coverage. No leftover old production import was found.
+- Doctor `--verify-refactor build_bundle` returned `dead_code`, “safe to delete,” score 100 despite exercised example/test callers. **FAIL for trustworthy deletion advice**; its zero-indexed-caller heuristic has no completeness guard. This is not a product dead-code finding.
+- The previous Hunt invocation passed Python source directories to CLI-command selectors. It discovered/probed **0 commands** and exercised **0 JSON contracts** because it attempted `<Fl0sint cwd>/bin/pip3r.mjs`, which is absent, before validating those selectors. **INVALID TARGET / ZERO COVERAGE**, not a scoped Python audit.
 - Main repository shared index: **17/17 baseline hashes identical**, zero missing/different. Only the isolated worktree index was refreshed.
 
-These known analyzer limitations were disclosed by P0 and are not upgraded to successful coverage. Narrow S01 acceptance rests on explicit source tracing, preserved raw analysis, consumer/runtime proof and independent adversarial verification. This does not waive downstream P1 gate criteria.
+The earlier decision incorrectly carried P0 discovery limitations into S01 acceptance. Source tracing, tests and contract review do not turn the failed or inapplicable impact checks into PASS. DEF-41 remains incomplete until DEF-105 establishes meaningful coverage and the corrected evidence is independently accepted.
 
 ## Scope and recovery
 
@@ -69,3 +69,14 @@ Base-to-implementation delta: 19 paths = 6 additions, 12 modifications, one R100
 Recovery is documented in `docs/developers/acquisition-contract.md`: stop new producers before rollback once consumers adopt the contract; revert implementation as a unit; retain immutable bundles, original identities/digests, lineage and actual resources. Do not erase evidence or reset spent budgets or mint new operation IDs to hide uncertain completion. No runtime service was deployed, so no service-disable action is needed.
 
 Workspace note: the first nested worktree setup failed and left a recursively copied plain directory at `.worktrees/def-41-contract` (observed 28 GiB, no `.git` link). It was reported as a tool anomaly and preserved rather than deleting potentially unrelated bytes. Implementation used the verified sibling Git worktree `fl0sint-def41-s01`. This residue is not in the commit or runtime artifact.
+
+## Acceptance correction evidence
+
+The correction is post-implementation investigation, not manufactured pre-edit proof. Only this audit packet changes. `raw/correction/` retains exact argv/cwd/env/return codes plus stdout/stderr, independent reviews and adjudication. The original pre-summary has an empty `targets` object; the correction derives an explicit summary from the preserved raw pre-results, without inventing missing baseline queries.
+
+- Fresh isolated generation `sha256:51feb3012224314f60c99bc3c79990ff7c3c9e6d340fa98689717f15920e3d72`, drift zero before queries. Initial drift was nine audit files, no source-symbol staleness. Shared-index 17/17 hashes, 19 implementation hashes and five configuration hashes still match; source remains `b7828cc9`.
+- Expanded roots cover `canonical_input_hash`, `persist_structured_result`, `reconstruct_structured_result` and `aggregate_status`. Real task/persistence/status/serialization edges are now retained. Tool-reported complete bounded traversals do not establish whole-program completeness; raw Cypher and source traces remain separate evidence.
+- Hash upstream finds five CALLS then aborts. Its next frontier contains 18 rows. Both installed-schema validation and direct installed `GraphosLadybugClient.queryIncomingEdges(..., ["CALLS"], 0)` reject `METHOD_OVERRIDES`. GraphOS validates before filtering, then discards the exception; Blast emits only `query-interrupted`. This is a concrete schema/traversal defect, not a timeout or stale index.
+- Independent `S01ImpactCoverageCorrection` confirms 12 baseline import occurrences across 11 files, including both lazy task imports, migrated with byte-identical models. Its original count of 13 and proposed requirement for a production bundle importer were challenged and retracted; the correction is retained. The standalone installed-wheel caller is valid S01 scope.
+- Independent `S01AuditToolGapDiagnosis` traced the three tool failures to source. Neither reviewer accepts incomplete impact evidence as a clean gate. Original contract-only adversarial PASS remains limited to its stated behavioral scope.
+- DEF-105 tracks GraphOS compatibility/error propagation, Doctor completeness-aware advice, and a correctly targeted, meaningful Python audit route. No Pip3r source changes, deployment, shared reindex or next-ticket implementation were performed in this correction.

@@ -1,0 +1,94 @@
+{
+  "files": [
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/execution.py — baseline canonical-model root; R100-renamed to the new module.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_execution/models.py — current canonical root: OutcomeStatus:16, RedactedDiagnostic:24, EvidenceEnvelope:34, InputOutcome:65, StructuredExecutionResult:87, canonical_input_hash:139.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_execution/acquisition.py — new standalone interchange surface: InputOccurrence:113 (hash invariant at :122), AcquisitionRequest:127, interchange OutcomeStatus:226, OccurrenceOutcome:327, AcquisitionBundle:432, parse_request:506, parse_bundle:510, serialize_request:527, serialize_bundle:531, build_bundle:535.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/pyproject.toml:50 — wheel package list changed from only the core package to core plus the new execution package.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_execution/__init__.py:1 — package initializer is a docstring only; it re-exports no symbols and declares no __all__.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/enricher_base.py — direct canonical producer; imports at :10-16, creates input hashes at :523/:577/:601, constructs outcomes :515-619.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/template_enricher.py — alternate structured producer; import :27-33, execute_structured :356-416, hash :362.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/services/execution_service.py — persistence/status reader: aggregate_status:231, persist_structured_result:241, reconstruct_structured_result:397, record conversion:437, envelope reconstruction:485.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/tasks/enricher.py — late (function-local) import consumer, not importlib: _connector_failure_diagnostic:168 imports at :169; run_connector_template:197 imports at :207 and hashes serialized input at :231.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-api/app/api/schemas/enricher_template.py — API boundary; ConnectorTestOutcome:73 carries RedactedDiagnostic at :76.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/repositories/execution_repository.py — persistence-side evidence lookup/index sink (get_evidence:95, list_evidence_for_attempt:113, next_evidence_index:129).",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/projection/repository.py — indirect persistence/projection sink: enqueue:47, hydrate:215.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/tests/acquisition/test_contract.py — the only direct test consumer of every new parse/build/serialize entrypoint; 16 behavioral tests at :157-391.",
+    "/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/examples/acquisition_contract.py — only non-test source caller of the new interchange API; hashes at :54 and imports build/parse/serialize at :16-34.",
+    "/home/n4s5ti/Documents/dev/fl0sint/docs/audits/DEF-41/release.md — makes the disputed 46/47-test and blast assertions.",
+    "/home/n4s5ti/Documents/dev/fl0sint/docs/audits/DEF-41/raw/pre/blast-coverage-summary.json — recorded coverage summary has targets: {}.",
+    "/home/n4s5ti/Documents/dev/fl0sint/docs/audits/DEF-39/audit-procedure.md:75-89,120-130 — authoritative B02 interpretation: UNKNOWN/partial is not a clean verdict; lexical tracing remains UNKNOWN-with-supplement."
+  ],
+  "relationships": [
+    "Baseline→implementation: `git diff --name-status 1b48… b782…` records `R100` from `/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_core/core/execution.py` to `/home/n4s5ti/Documents/dev/fl0sint/$$MAHGNEQE0CNV:L$$-core/src/$$MAHGNEQE0CNV:L$$_execution/models.py`. The six canonical symbols remain at identical lines (16/24/34/65/87/139); this is a location/package change, not a model-shape change.",
+    "The exact baseline migration envelope is 11 unique consumer files (13 import statements because the task module has two function-local imports). All eleven migrated import paths; no current `core.execution` reference remains. The 11 are: API schema :6; API egress test :11; enricher base :10; execution service :15; template enricher :27; task module :169/:207; structured-execution test :12; execution-service test :9; graph-projection test :13; template-task test :17; template-enricher test :22. This reconciles the promised 11: it is 11 files, not 11 import statements.",
+    "Root→caller→sink: canonical models → Enricher._execute_structured_input/execute_structured (:515/:565) or TemplateEnricher.execute_structured (:356) → StructuredExecutionResult/InputOutcome → ExecutionService.persist_structured_result (:241) → EvidenceEnvelopeRecord/repository/projection jobs. Statuses are read by aggregate_status (:231) and reconstructed at :397. Existing focused tests name real behavior: structured cardinality/grouping and empty-vs-failure; persistence grouping, HOLD and evidence supersession; graph retry/evidence persistence; and connector durable-result/replay flows.",
+    "Hash/ID construction is not merely type annotation: `canonical_input_hash` is invoked by Enricher at :523/:577/:601, TemplateEnricher :362, and the connector task :231. The new contract independently requires `InputOccurrence.input_ref == canonical_input_hash(value)` at acquisition.py:122, and builds request/occurrence/bundle identities through the request (:127), occurrence (:327), and bundle (:432/:535) model flow.",
+    "The new acquisition contract is a separate root, not an integration of the old structured runtime. It imports only RedactedDiagnostic and canonical_input_hash at acquisition.py:32; it defines a distinct interchange OutcomeStatus at :226. Its public parse/build/serialize functions have no production source/API callers: implementation-wide source/API search found none outside acquisition.py. Their only consumers are the executable example and test_contract.py. This is why a `build_bundle` dead-code finding is false as a local lexical claim, but it also proves no product runtime seam exercises it.",
+    "API serialization is a narrow parallel path: ConnectorTestOutcome.diagnostic (:76) uses RedactedDiagnostic, with test_template_egress exercising the API schema/redaction path. It does not consume AcquisitionBundle or the new parse/build/serialize API.",
+    "Dynamic/export/config review: there is no importlib/import_module/__import__/pkgutil/entry-point lookup for these packages in core source or API app. The two task imports are lazy function-local imports and must be treated as runtime edges. The new package has no facade exports; consumers must import `.models` or `.acquisition`. Packaging is solely the Hatch wheel package-list addition at pyproject.toml:50."
+  ],
+  "matrix": [
+    {
+      "root": "Canonical moved models and hash",
+      "caller": "11 baseline consumer files listed above",
+      "sink": "structured execution, persistence, API diagnostic schema, task scan handling",
+      "verification": "R100 rename; source import trace confirms all 11 migrate and no old production import remains. Existing changed tests are meaningful domain tests, but their diffs change only import paths."
+    },
+    {
+      "root": "Enricher/Template structured producers",
+      "caller": "enricher_base :515/:565; template_enricher :356",
+      "sink": "InputOutcome/StructuredExecutionResult; canonical hash references",
+      "verification": "Existing structured-execution tests cover cardinality, grouping, empty-success/failure, hash stability, and evidence metadata. Recorded as part of the 47 integration suite; not independently re-run."
+    },
+    {
+      "root": "Persistence/status/evidence",
+      "caller": "ExecutionService :231/:241/:397",
+      "sink": "EvidenceEnvelopeRecord, execution repository, projection repository",
+      "verification": "Existing execution-service and graph-projection tests cover grouping, HOLD, append-only/superseding evidence, retry and atomic projection persistence. Recorded 47-suite evidence, not fresh proof of every moved import boundary."
+    },
+    {
+      "root": "Late task imports",
+      "caller": "_connector_failure_diagnostic :168; run_connector_template :197",
+      "sink": "scan details, input digest, durable/replay task behavior",
+      "verification": "Existing template-execution-task tests cover durable result, cross-sketch replay, changed-template replay, lease recovery and concurrent replay. The two imports are dynamic-in-timing and evade a class-call graph."
+    },
+    {
+      "root": "API schema",
+      "caller": "ConnectorTestOutcome :73",
+      "sink": "Pydantic serialization/reload of diagnostic :76",
+      "verification": "test_template_egress and recorded api-schema-smoke exercise the diagnostic path; no evidence it crosses the new acquisition interchange."
+    },
+    {
+      "root": "New acquisition entrypoints",
+      "caller": "example :16-34; test_contract.py",
+      "sink": "serialized AcquisitionBundle / parse validation",
+      "verification": "46 recorded contract tests cover duplicate ownership, digest tamper, roundtrip, completion ordering, typed failure/partial, malformed values, nonfinite values and construct/copy diagnostic bypass. No production runtime caller exists."
+    },
+    {
+      "root": "Package availability",
+      "caller": "consumer imports of execution.models/acquisition",
+      "sink": "wheel import boundary",
+      "verification": "Recorded wheel build/install proves package inclusion and old-module absence, but it does not execute all 11 integrated consumers from that wheel."
+    }
+  ],
+  "answer": {
+    "promised_11_comparison": "The promised 11 is accurate only as a static baseline migration count: 11 unique files, 13 import occurrences. All 11 source consumer files moved to the new module and the old module has no remaining production import. It is not a count of the new acquisition API's consumers: that API has zero production callers, one example, and one dedicated test module.",
+    "blast_assessment": "The recorded Blast material cannot close the impact question. `blast-coverage-summary.json` contains an empty `targets` object. The raw baseline InputOutcome upstream result is `risk: UNKNOWN`, `completeness: partial`, `completenessReasons: [\"no-call-edges\"]`, 0 edges and 0 direct consumers. Release.md itself concedes that all three canonical class queries have no call edges, external-consumer completeness is UNKNOWN, and build_bundle callers evade discovery. B02 says this condition is never a clean impact verdict and lexical import tracing must remain UNKNOWN-with-supplement. LSP references also failed because pyright-langserver was absent; this removes, rather than replaces, semantic reference evidence.",
+    "evidence_gaps": [
+      "No authoritative Blast target coverage was recorded (`targets: {}`), and the individual canonical-class results are explicitly UNKNOWN/partial.",
+      "No semantic-reference result exists: all LSP reference requests fail with pyright-langserver ENOENT.",
+      "The release's 46/47 counts are recorded test outcomes, not full consumer discovery. The six migrated integration test files changed only their import line; they demonstrate their pre-existing behaviors when executed but do not independently establish all consumer edges or external consumers.",
+      "The only callers of the new public parse/build/serialize interface are the new example and contract test. No source/API production route, callback, service, importer, configuration entry point, or dynamic loader consumes it.",
+      "Wheel proof shows the new package is included and legacy module absent, but does not prove that every migrated production consumer imports/runs against the installed wheel.",
+      "Indirect DB/projection sinks are downstream of ExecutionService, not direct consumers of the moved Python models; conflating EvidenceEnvelopeRecord lexical matches with model consumers would overstate coverage."
+    ],
+    "focused_verification_needed": [
+      "Keep the conclusion UNKNOWN-with-supplement unless an isolated-index B02-compliant Blast can resolve each canonical root and explicitly report target coverage; do not use the shared graph index.",
+      "In a dependency-complete isolated environment, execute a narrow import-and-behavior matrix for the five production runtime consumers (API schema, base producer, template producer, execution service, connector task) against the packaged wheel; include both lazy task-import branches.",
+      "Run/retain only the already-existing focused behavior tests mapped above if fresh proof is required, rather than a broad suite. Their assertions exercise status, hash, persistence, API serialization, and callback/replay effects rather than import wiring.",
+      "For the standalone contract, retain the installed example/consumer process as package proof, but label it explicitly as contract-only. A real product caller for parse/build/serialize would require an approved integration change; it cannot be claimed now."
+    ],
+    "verdict": "INSUFFICIENT for DEF-41 closure as meaningful full impact/blast evidence. The local static migration and contract behavior are well mapped, and all 11 baseline source consumer files are migrated, but the canonical graph evidence is explicitly UNKNOWN/partial under the authoritative B02 rule, semantic references are unavailable, and the new public contract has no production runtime consumer. Existing release acceptance must not override those gaps."
+  },
+  "next_steps": "Ready for Main to treat this as a non-acceptance finding. No source, index, deployment, commit, or tracker mutation was performed; no graph command was run."
+}
