@@ -11,13 +11,14 @@ import hashlib
 import json
 import math
 import re
+import threading
 import time
 from enum import Enum
 from typing import Annotated, Literal
 from urllib.parse import urljoin, urlsplit
 
 import httpx
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, model_validator
+from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, StrictInt, model_validator
 
 from .acquisition import AcquisitionRequest, Resources
 from .models import RedactedDiagnostic, canonical_input_hash
@@ -108,6 +109,21 @@ class AdmittedInput(_Frozen):
     url: str
 
 
+class _ExecutionClaim:
+    """Process-local, concurrency-safe claim state for one admitted capability."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._claimed = False
+
+    def claim(self) -> bool:
+        with self._lock:
+            if self._claimed:
+                return False
+            self._claimed = True
+            return True
+
+
 class AdmittedFetchOperation(_Frozen):
     operation_id: str
     inputs: tuple[AdmittedInput, ...]
@@ -118,6 +134,7 @@ class AdmittedFetchOperation(_Frozen):
     policy_digest: Digest
     parameter_digest: Digest
     operation_seal: Digest
+    _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)
 
     def validate_seal(self) -> None:
         expected = _operation_seal(
@@ -132,6 +149,10 @@ class AdmittedFetchOperation(_Frozen):
         )
         if expected != self.operation_seal:
             raise ValueError("admitted operation seal mismatch")
+
+    def claim_execution(self) -> None:
+        if not self._execution_claim.claim():
+            raise ValueError("admitted operation has already been claimed for execution")
 
 
 class FetchStatus(str, Enum):
@@ -329,6 +350,7 @@ async def execute_fetch(
     """Execute only a sealed operation using verified async HTTP streaming."""
 
     operation.validate_seal()
+    operation.claim_execution()
     ledger = _Ledger(operation)
     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)
     semaphore = asyncio.Semaphore(concurrency)
@@ -562,62 +584,83 @@ async def execute_fetch(
                     await response.aclose()
 
     tasks = [asyncio.create_task(one(item)) for item in operation.inputs]
-    outcomes: list[FetchOutcome]
-    try:
-        async with asyncio.timeout(timeout):
-            outcomes = list(await asyncio.gather(*tasks))
-    except TimeoutError:
-        for task in tasks:
-            task.cancel()
-        partial = await asyncio.gather(*tasks, return_exceptions=True)
-        outcomes = []
-        for item, value in zip(operation.inputs, partial):
-            if (
-                isinstance(value, FetchOutcome)
-                and value.status is not FetchStatus.CANCELLED
-            ):
-                outcomes.append(value)
-            else:
-                outcomes.append(
-                    FetchOutcome(
-                        occurrence_id=item.occurrence_id,
-                        input_ref=item.input_ref,
-                        status=FetchStatus.TIMEOUT,
-                        requested_origin=_origin(item.url),
-                        diagnostic=_diagnostic(
-                            "timeout", "The operation deadline expired.", retryable=True
-                        ),
-                        actual_resources=ledger.occurrence_resources(
-                            item.occurrence_id
-                        ),
-                    )
-                )
-    except asyncio.CancelledError:
-        for task in tasks:
-            task.cancel()
-        partial = await asyncio.gather(*tasks, return_exceptions=True)
-        outcomes = []
-        for item, value in zip(operation.inputs, partial):
-            if isinstance(value, FetchOutcome):
-                outcomes.append(value)
-            else:
-                outcomes.append(
-                    FetchOutcome(
-                        occurrence_id=item.occurrence_id,
-                        input_ref=item.input_ref,
-                        status=FetchStatus.CANCELLED,
-                        requested_origin=_origin(item.url),
-                        diagnostic=_diagnostic(
-                            "cancelled",
-                            "The operation was cancelled before completion.",
-                        ),
-                        actual_resources=ledger.occurrence_resources(
-                            item.occurrence_id
-                        ),
-                    )
-                )
-    finally:
+    cleanup_budget = min(0.05, max(0.01, timeout))
+
+    def consume_background_result(task: asyncio.Task) -> None:
+        try:
+            task.result()
+        except (asyncio.CancelledError, Exception):
+            pass
+
+    async def finish_cleanup(pending: set[asyncio.Task]) -> None:
+        if pending:
+            await asyncio.wait(pending)
         await client.aclose()
+
+    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:
+        cleanup = asyncio.create_task(finish_cleanup(pending))
+        done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)
+        if not done:
+            cleanup.add_done_callback(consume_background_result)
+
+    def terminal_outcomes(
+        pending_at_boundary: set[asyncio.Task],
+        status: FetchStatus,
+        code: str,
+        message: str,
+    ):
+        outcomes = []
+        for item, task in zip(operation.inputs, tasks):
+            if task not in pending_at_boundary:
+                outcomes.append(task.result())
+                continue
+            outcomes.append(
+                FetchOutcome(
+                    occurrence_id=item.occurrence_id,
+                    input_ref=item.input_ref,
+                    status=status,
+                    requested_origin=_origin(item.url),
+                    diagnostic=_diagnostic(
+                        code, message, retryable=status is FetchStatus.TIMEOUT
+                    ),
+                    actual_resources=ledger.occurrence_resources(item.occurrence_id),
+                )
+            )
+        return outcomes
+
+    outcomes: list[FetchOutcome]
+    waiter = asyncio.create_task(asyncio.wait(tasks, timeout=timeout))
+    try:
+        done, pending = await asyncio.shield(waiter)
+        if pending:
+            for task in pending:
+                task.cancel()
+            await bounded_cleanup(pending)
+            outcomes = terminal_outcomes(
+                pending,
+                FetchStatus.TIMEOUT,
+                "timeout",
+                "The operation deadline expired.",
+            )
+        else:
+            outcomes = [task.result() for task in tasks]
+            await bounded_cleanup(set())
+    except asyncio.CancelledError:
+        current = asyncio.current_task()
+        if current is not None:
+            current.uncancel()
+        waiter.cancel()
+        waiter.add_done_callback(consume_background_result)
+        pending = {task for task in tasks if not task.done()}
+        for task in pending:
+            task.cancel()
+        await bounded_cleanup(pending)
+        outcomes = terminal_outcomes(
+            pending,
+            FetchStatus.CANCELLED,
+            "cancelled",
+            "The operation was cancelled before completion.",
+        )
 
     return FetchResult(
         operation_id=operation.operation_id,

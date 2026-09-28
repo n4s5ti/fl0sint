@@ -23,6 +23,7 @@ from flowsint_execution.acquisition import (
 )
 from flowsint_execution.fetch import (
     FetchParameters,
+    FetchResult,
     FetchStatus,
     TrustedFetchPolicy,
     admit_fetch,
@@ -271,6 +272,118 @@ async def test_deadline_preserves_per_occurrence_accounting_during_stream_and_wa
     assert [outcome.actual_resources.bytes for outcome in result.outcomes] == [4, 0]
     assert result.actual_resources.requests == 2
     assert result.actual_resources.bytes == 4
+
+
+@pytest.mark.asyncio
+async def test_deadline_wins_when_stream_consumes_cancellation():
+    class CancellationResistant(httpx.AsyncByteStream):
+        async def __aiter__(self):
+            yield b"used"
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                await asyncio.sleep(0.25)
+
+    async def handler(_request):
+        return httpx.Response(200, stream=CancellationResistant())
+
+    operation = admit_fetch(
+        _request(elapsed_seconds=0.03), _policy(), FetchParameters()
+    )
+    started = time.monotonic()
+    result = await execute_fetch(operation, transport=httpx.MockTransport(handler))
+    elapsed = time.monotonic() - started
+
+    assert elapsed < 0.15
+    assert result.outcomes[0].status is FetchStatus.TIMEOUT
+    assert result.outcomes[0].actual_resources.requests == 1
+    assert result.outcomes[0].actual_resources.bytes == 4
+    assert result.actual_resources.requests == 1
+    assert result.actual_resources.bytes == 4
+
+
+@pytest.mark.asyncio
+async def test_parent_cancellation_cleanup_is_bounded_when_stream_resists():
+    entered = asyncio.Event()
+
+    class CancellationResistant(httpx.AsyncByteStream):
+        async def __aiter__(self):
+            if False:
+                yield b""
+            entered.set()
+            try:
+                await asyncio.Event().wait()
+            except asyncio.CancelledError:
+                await asyncio.sleep(0.25)
+
+    async def handler(_request):
+        return httpx.Response(200, stream=CancellationResistant())
+
+    operation = admit_fetch(_request(), _policy(), FetchParameters())
+    task = asyncio.create_task(
+        execute_fetch(operation, transport=httpx.MockTransport(handler))
+    )
+    await entered.wait()
+    started = time.monotonic()
+    task.cancel()
+    result = await task
+    elapsed = time.monotonic() - started
+
+    assert elapsed < 0.15
+    assert result.outcomes[0].status is FetchStatus.CANCELLED
+    assert result.outcomes[0].actual_resources.requests == 1
+    await asyncio.sleep(0.3)
+
+
+@pytest.mark.asyncio
+async def test_same_admission_cannot_reset_its_allocation():
+    hits = 0
+
+    async def handler(_request):
+        nonlocal hits
+        hits += 1
+        return httpx.Response(200, content=b"ok")
+
+    operation = admit_fetch(_request(), _policy(), FetchParameters())
+    copied_capability = operation.model_copy()
+    assert "_execution_claim" not in operation.model_dump()
+    transport = httpx.MockTransport(handler)
+    first = await execute_fetch(operation, transport=transport)
+
+    with pytest.raises(ValueError, match="already been claimed"):
+        await execute_fetch(copied_capability, transport=transport)
+
+    assert first.outcomes[0].status is FetchStatus.SUCCESS
+    assert hits == 1
+
+
+@pytest.mark.asyncio
+async def test_concurrent_execution_has_one_admission_claim_winner():
+    entered = asyncio.Event()
+    release = asyncio.Event()
+    hits = 0
+
+    async def handler(_request):
+        nonlocal hits
+        hits += 1
+        entered.set()
+        await release.wait()
+        return httpx.Response(200, content=b"ok")
+
+    operation = admit_fetch(_request(), _policy(), FetchParameters())
+    transport = httpx.MockTransport(handler)
+    first = asyncio.create_task(execute_fetch(operation, transport=transport))
+    await entered.wait()
+    second = asyncio.create_task(execute_fetch(operation, transport=transport))
+    await asyncio.sleep(0)
+    release.set()
+    results = await asyncio.gather(first, second, return_exceptions=True)
+
+    assert sum(isinstance(item, FetchResult) for item in results) == 1
+    errors = [item for item in results if isinstance(item, ValueError)]
+    assert len(errors) == 1
+    assert "already been claimed" in str(errors[0])
+    assert hits == 1
 
 
 @pytest.mark.asyncio

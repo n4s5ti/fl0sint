@@ -267,38 +267,37 @@ class WebsiteToText(Enricher):
             return tuple(self._cancelled_occurrence(*spec) for spec in specs)
         except Exception:
             return tuple(self._failed_occurrence(*spec) for spec in specs)
-        outcome_by_id = {}
-        for result in fetched.outcomes:
-            if result.occurrence_id in outcome_by_id:
-                return tuple(
-                    self._failed_occurrence(
-                        *spec,
-                        self._diagnostic(
-                            "invalid_fetch_result",
-                            "The fetch returned duplicate occurrence identities.",
-                        ),
-                    )
-                    for spec in specs
+        expected = {
+            item.occurrence_id: item.input_ref for item in operation.inputs
+        }
+        returned_ids = [result.occurrence_id for result in fetched.outcomes]
+        result_is_bound = (
+            fetched.operation_id == operation.operation_id
+            and len(fetched.outcomes) == len(operation.inputs)
+            and len(set(returned_ids)) == len(returned_ids)
+            and set(returned_ids) == set(expected)
+            and all(
+                result.input_ref == expected.get(result.occurrence_id)
+                for result in fetched.outcomes
+            )
+        )
+        if not result_is_bound:
+            return tuple(
+                self._failed_occurrence(
+                    *spec,
+                    self._diagnostic(
+                        "invalid_fetch_result",
+                        "The fetch result did not match the admitted operation.",
+                    ),
                 )
-            outcome_by_id[result.occurrence_id] = result
+                for spec in specs
+            )
+        outcome_by_id = {
+            result.occurrence_id: result for result in fetched.outcomes
+        }
         occurrences = []
         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):
             result = outcome_by_id.get(admitted.occurrence_id)
-            if result is None:
-                occurrences.append(
-                    self._failed_occurrence(
-                        index,
-                        source,
-                        input_ref,
-                        self._diagnostic(
-                            "missing_fetch_result",
-                            "The fetch returned no result for this occurrence.",
-                        ),
-                        Resources(requests=0, bytes=0, elapsed_seconds=0.0),
-                        FetchStatus.TOOL_ERROR,
-                    )
-                )
-                continue
             if result.status is FetchStatus.SUCCESS:
                 try:
                     text = self._extract_text(result.text or "")

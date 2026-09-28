@@ -263,7 +263,7 @@ async def test_max_response_bytes_is_enforced_for_each_input(make_enricher, monk
 
 
 @pytest.mark.asyncio
-async def test_occurrence_reconstruction_uses_id_and_marks_missing_result(
+async def test_occurrence_reconstruction_rejects_missing_result(
     make_enricher, monkeypatch
 ):
     enricher, _graph = make_enricher()
@@ -285,9 +285,64 @@ async def test_occurrence_reconstruction_uses_id_and_marks_missing_result(
     occurrences = await enricher._scan_occurrences([first, second])
 
     assert [item.source for item in occurrences] == [first, second]
-    assert occurrences[0].status is OutcomeStatus.FAILURE
-    assert occurrences[0].diagnostic.code == "missing_fetch_result"
-    assert occurrences[1].outputs[0].text == "second.example"
+    assert [item.status for item in occurrences] == [
+        OutcomeStatus.FAILURE,
+        OutcomeStatus.FAILURE,
+    ]
+    assert {item.diagnostic.code for item in occurrences} == {"invalid_fetch_result"}
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "mutation",
+    ["operation", "input_ref", "missing", "unknown", "duplicate", "extra"],
+)
+async def test_occurrence_reconstruction_rejects_unbound_results(
+    make_enricher, monkeypatch, mutation
+):
+    enricher, _graph = make_enricher()
+
+    async def execute(operation):
+        fetched = await real_execute_fetch(
+            operation,
+            transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, text=request.url.host)
+            ),
+        )
+        outcomes = list(fetched.outcomes)
+        operation_id = fetched.operation_id
+        if mutation == "operation":
+            operation_id = "wrong-operation"
+        elif mutation == "input_ref":
+            outcomes[0] = outcomes[0].model_copy(update={"input_ref": "c" * 64})
+        elif mutation == "missing":
+            outcomes.pop()
+        elif mutation == "unknown":
+            outcomes[0] = outcomes[0].model_copy(update={"occurrence_id": "unknown"})
+        elif mutation == "duplicate":
+            outcomes[1] = outcomes[1].model_copy(
+                update={"occurrence_id": outcomes[0].occurrence_id}
+            )
+        else:
+            outcomes.append(
+                outcomes[0].model_copy(update={"occurrence_id": "unexpected"})
+            )
+        return FetchResult(
+            operation_id=operation_id,
+            outcomes=tuple(outcomes),
+            actual_resources=fetched.actual_resources,
+        )
+
+    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    occurrences = await enricher._scan_occurrences(
+        [Website(url="https://first.example"), Website(url="https://second.example")]
+    )
+
+    assert [item.status for item in occurrences] == [
+        OutcomeStatus.FAILURE,
+        OutcomeStatus.FAILURE,
+    ]
+    assert {item.diagnostic.code for item in occurrences} == {"invalid_fetch_result"}
 
 
 @pytest.mark.parametrize(
