@@ -1,0 +1,37 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:CandidateReference",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": null,
+    "symbols": [],
+    "edges": [],
+    "files": [],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:CandidateReference",
+        "rootSymbols": 0,
+        "totalSymbols": 0,
+        "totalEdges": 0,
+        "filesMatched": 0,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "hint": "Symbol \"CandidateReference\" not found in \"flowsint-core/src/flowsint_execution/models.py\" — found in: flowsint-core/src/flowsint_execution/acquisition.py",
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "qualified-symbol-not-found"
+    ],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,1 @@
+{"command": ["pip3r", "blast", "--cwd", "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction", "--no-auto-index", "--json", "--include-tests", "--max-depth", "3", "--direction", "upstream", "flowsint-types/src/flowsint_types/email.py:Email"], "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction", "rc": 0, "seconds": 1.1251709461212158}

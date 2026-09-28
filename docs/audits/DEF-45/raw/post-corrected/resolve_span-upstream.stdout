@@ -1,0 +1,121 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+        "name": "resolve_span",
+        "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+        "nodeType": "Function",
+        "startLine": 367,
+        "endLine": 389,
+        "content": "def resolve_span(store: FilesystemArtifactStore, context: ArtifactContext,                  decision: RetentionDecision | None, artifact: ArtifactReference, span: SourceProofSpanReference, *,                  authority: RetentionAuthority | None = None, now: datetime | None = None) -> SpanResolveResult:     resolved = resolve_source(store, context, decision, artifact, authority=authority, now=now)     if resolved.state is not ArtifactState.AVAILABLE or resolved.body is None:         return SpanResolveResult(resolved.state, resolved.reason)     if decision is None or not decision.retain_normalized_text:         return SpanResolveResult(ArtifactState.REVIEW, \"normalized_retention_prohibited\")     fresh = normalize_html(resolved.body)     for index, mapped in enumerate(fresh.spans):         if (getattr(span, \"span_id\", None) == f\"span-{artifact.snapshot_id}-{index}\"             and getattr(span, \"artifact_id\", None) == artifact.artifact_id             and getattr(span, \"field_pointer\", None) is None             and getattr(span, \"byte_start\", None) == mapped.raw_start             and getattr(span, \"byte_end\", None) == mapped.raw_end             and getattr(span, \"normalized_start\", None) == mapped.normalized_start             and getattr(span, \"normalized_end\", None) == mapped.normalized_end             and getattr(span, \"raw_offset_unit\", None) == \"byte\"             and getattr(span, \"normalized_offset_unit\", None) == \"unicode_code_point\"             and getattr(span, \"source_encoding\", None) == \"utf-8\"):             return SpanResolveResult(ArtifactState.AVAILABLE, \"resolved\",                 fresh.text[mapped.normalized_start:mapped.normalized_end])     return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+            "name": "resolve_span",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 367,
+            "endLine": 389,
+            "content": "def resolve_span(store: FilesystemArtifactStore, context: ArtifactContext,                  decision: RetentionDecision | None, artifact: ArtifactReference, span: SourceProofSpanReference, *,                  authority: RetentionAuthority | None = None, now: datetime | None = None) -> SpanResolveResult:     resolved = resolve_source(store, context, decision, artifact, authority=authority, now=now)     if resolved.state is not ArtifactState.AVAILABLE or resolved.body is None:         return SpanResolveResult(resolved.state, resolved.reason)     if decision is None or not decision.retain_normalized_text:         return SpanResolveResult(ArtifactState.REVIEW, \"normalized_retention_prohibited\")     fresh = normalize_html(resolved.body)     for index, mapped in enumerate(fresh.spans):         if (getattr(span, \"span_id\", None) == f\"span-{artifact.snapshot_id}-{index}\"             and getattr(span, \"artifact_id\", None) == artifact.artifact_id             and getattr(span, \"field_pointer\", None) is None             and getattr(span, \"byte_start\", None) == mapped.raw_start             and getattr(span, \"byte_end\", None) == mapped.raw_end             and getattr(span, \"normalized_start\", None) == mapped.normalized_start             and getattr(span, \"normalized_end\", None) == mapped.normalized_end             and getattr(span, \"raw_offset_unit\", None) == \"byte\"             and getattr(span, \"normalized_offset_unit\", None) == \"unicode_code_point\"             and getattr(span, \"source_encoding\", None) == \"utf-8\"):             return SpanResolveResult(ArtifactState.AVAILABLE, \"resolved\",                 fresh.text[mapped.normalized_start:mapped.normalized_end])     return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+            "name": "resolve_persisted_span",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 224,
+            "endLine": 261,
+            "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+                    "name": "resolve_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 367,
+                    "endLine": 389,
+                    "content": "def resolve_span(store: FilesystemArtifactStore, context: ArtifactContext,                  decision: RetentionDecision | None, artifact: ArtifactReference, span: SourceProofSpanReference, *,                  authority: RetentionAuthority | None = None, now: datetime | None = None) -> SpanResolveResult:     resolved = resolve_source(store, context, decision, artifact, authority=authority, now=now)     if resolved.state is not ArtifactState.AVAILABLE or resolved.body is None:         return SpanResolveResult(resolved.state, resolved.reason)     if decision is None or not decision.retain_normalized_text:         return SpanResolveResult(ArtifactState.REVIEW, \"normalized_retention_prohibited\")     fresh = normalize_html(resolved.body)     for index, mapped in enumerate(fresh.spans):         if (getattr(span, \"span_id\", None) == f\"span-{artifact.snapshot_id}-{index}\"             and getattr(span, \"artifact_id\", None) == artifact.artifact_id             and getattr(span, \"field_pointer\", None) is None             and getattr(span, \"byte_start\", None) == mapped.raw_start             and getattr(span, \"byte_end\", None) == mapped.raw_end             and getattr(span, \"normalized_start\", None) == mapped.normalized_start             and getattr(span, \"normalized_end\", None) == mapped.normalized_end             and getattr(span, \"raw_offset_unit\", None) == \"byte\"             and getattr(span, \"normalized_offset_unit\", None) == \"unicode_code_point\"             and getattr(span, \"source_encoding\", None) == \"utf-8\"):             return SpanResolveResult(ArtifactState.AVAILABLE, \"resolved\",                 fresh.text[mapped.normalized_start:mapped.normalized_end])     return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+                    "name": "resolve_persisted_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 224,
+                    "endLine": 261,
+                    "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+                    "name": "resolve_persisted_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 224,
+                    "endLine": 261,
+                    "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

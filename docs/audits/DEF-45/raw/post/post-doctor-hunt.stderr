@@ -1,0 +1,9 @@
+Command failed, Error: --hunt has no CLI probe target: /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/bin/pip3r.mjs does not exist. --hunt probes a CLI executable, not the sources in --cwd; pass --hunt-target <cli entry> (e.g. the installed pip3r bin/pip3r.mjs) or run from a Pip3r checkout.
+    at resolveProbeTarget (file:///home/n4s5ti/Documents/dev/pip3r/packages/doctor/dist/chunk-XG4FBP63.js:2247:11)
+    at probeCli (file:///home/n4s5ti/Documents/dev/pip3r/packages/doctor/dist/chunk-XG4FBP63.js:2260:22)
+    at Object.runDoctorChecks (file:///home/n4s5ti/Documents/dev/pip3r/packages/doctor/dist/chunk-XG4FBP63.js:3445:52)
+    at async Object.impl_default (file:///home/n4s5ti/Documents/dev/pip3r/packages/doctor/dist/chunk-XG4FBP63.js:3518:19)
+    at async runCommand (file:///home/n4s5ti/Documents/dev/pip3r/packages/core/dist/index.js:1217:20)
+    at async run (file:///home/n4s5ti/Documents/dev/pip3r/packages/core/dist/index.js:2253:20)
+    at async runRootCli (file:///home/n4s5ti/Documents/dev/pip3r/packages/runtime/dist/bin/pip3r.js:950:7)
+    at async file:///home/n4s5ti/Documents/dev/pip3r/packages/runtime/dist/bin/pip3r.js:991:3

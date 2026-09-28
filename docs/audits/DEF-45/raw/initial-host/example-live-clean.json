@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/examples/observed_extraction.py",
+    "--url",
+    "http://127.0.0.1:45629/seed",
+    "--runtime-config",
+    "/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/def45-host-store-00z6caw4/policy.json"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+  "rc": 1,
+  "seconds": 0.19420099258422852
+}

@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/examples/observed_extraction.py", line 48, in <module>
+    main()
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/examples/observed_extraction.py", line 44, in main
+    output = asyncio.run(_live(args.url) if args.url else _saved(args))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4s5ti/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/home/n4s5ti/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/n4s5ti/.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/examples/observed_extraction.py", line 12, in _live
+    from flowsint_enrichers.website.to_text import WebsiteToText
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/__init__.py", line 6, in <module>
+    from .registry import ENRICHER_REGISTRY, flowsint_enricher, load_all_enrichers
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/registry.py", line 15, in <module>
+    from flowsint_core.core.enricher_base import Enricher
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/__init__.py", line 5, in <module>
+    from .core.auth import *
+  File "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/auth.py", line 13, in <module>
+    raise ValueError(
+ValueError: AUTH_SECRET environment variable is not set. Please set it in your .env file.
+1ed802c86858c6bc58f2daa525908e7aff6279f57c80ca6a574e18d256710011  /tmp/def45-host/example-live-clean.stderr

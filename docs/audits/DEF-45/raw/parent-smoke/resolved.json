@@ -1,0 +1,114 @@
+[
+  {
+    "id": "observation-dd71ae7f555733e8fa3692e41203fd42",
+    "kind": "observed_person_associated",
+    "value": "ada@directory.test",
+    "person": "Ada Example",
+    "raw": "ada@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-6dec5ad95ca355117755ee809b00ae0c",
+    "kind": "observed_person_associated",
+    "value": "ada@directory.test",
+    "person": "Ada Example",
+    "raw": "mailto:ada@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-3c1b57f6b643c081010541a23055a160",
+    "kind": "observed_phone_contact",
+    "value": "+1 202 555 0101",
+    "person": null,
+    "raw": "+1 202 555 0101",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-125d326f61ca0562fbfdb5c5a5be9438",
+    "kind": "observed_phone_contact",
+    "value": "+12025550101",
+    "person": null,
+    "raw": "tel:+12025550101",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-2a2e051651fcc903a3e77a9302b97fae",
+    "kind": "observed_person_associated",
+    "value": "bo@directory.test",
+    "person": "Bo Example",
+    "raw": "bo@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-c7d6c87162625add961767add421e0d3",
+    "kind": "observed_person_associated",
+    "value": "bo@directory.test",
+    "person": "Bo Example",
+    "raw": "mailto:bo@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-d38ec495abc3c60305a248da34362d56",
+    "kind": "observed_general_inbox",
+    "value": "info@directory.test",
+    "person": null,
+    "raw": "info@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-6d952de11d6bf41b52632ba64341c09f",
+    "kind": "observed_role_inbox",
+    "value": "press@directory.test",
+    "person": null,
+    "raw": "press@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-e1dc7f360873c85c589be1fedead9192",
+    "kind": "observed_unknown_contact",
+    "value": "ada@directory.test",
+    "person": null,
+    "raw": "ada@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-1a55245affeacd92bd96d9c8711e1d4b",
+    "kind": "observed_link",
+    "value": "http://127.0.0.1:33715/directory?page=1",
+    "person": null,
+    "raw": "../directory?page=1",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-d6849dfe063b4f7da0ade8c5f41aeda6",
+    "kind": "observed_link",
+    "value": "http://127.0.0.1:33715/directory?page=2",
+    "person": null,
+    "raw": "../directory?page=2",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-bc17f29c4b86d50fbf3b3f159e9f627a",
+    "kind": "observed_link",
+    "value": "https://outside.test/team?view=full",
+    "person": null,
+    "raw": "https://outside.test/team?view=full",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-f14a6feb3717cfb06cbba10eec89b7ed",
+    "kind": "observed_form_candidate",
+    "value": "http://127.0.0.1:33715/contact?department=research",
+    "person": null,
+    "raw": "/contact?department=research",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  },
+  {
+    "id": "observation-5df19c7c803b9e9a606507fd2d8ed0f0",
+    "kind": "observed_unknown_contact",
+    "value": "malformed@directory.test",
+    "person": null,
+    "raw": "malformed@directory.test",
+    "source": "http://127.0.0.1:33715/people/team.html?edition=2026"
+  }
+]

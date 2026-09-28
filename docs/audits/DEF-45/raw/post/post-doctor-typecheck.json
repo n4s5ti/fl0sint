@@ -1,0 +1,13 @@
+{
+  "command": [
+    "pip3r",
+    "doctor",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "--typecheck",
+    "--json"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+  "rc": 1,
+  "seconds": 2.4028875827789307
+}

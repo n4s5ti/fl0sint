@@ -1,0 +1,108 @@
+....F................F..                                                 [100%]
+=================================== FAILURES ===================================
+___ test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip ____
+
+make_enricher = <function make_enricher.<locals>.make at 0x7d36101c58a0>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d36101930b0>
+
+    @pytest.mark.asyncio
+    async def test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip(
+        make_enricher, monkeypatch
+    ):
+        monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+        enricher, graph = make_enricher()
+>       with _loopback_pages() as base:
+             ^^^^^^^^^^^^^^^^^
+
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:258: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:119: in _loopback_pages
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socket.py:233: PermissionError
+______ test_public_scan_then_postprocess_captures_owned_occurrence_edges _______
+
+make_enricher = <function make_enricher.<locals>.make at 0x7d360f970360>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7d360f9757f0>
+
+    @pytest.mark.asyncio
+    async def test_public_scan_then_postprocess_captures_owned_occurrence_edges(
+        make_enricher, monkeypatch
+    ):
+        monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+        enricher, graph = make_enricher()
+>       with _loopback_pages() as base:
+             ^^^^^^^^^^^^^^^^^
+
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:577: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:119: in _loopback_pages
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socket.py:233: PermissionError
+=============================== warnings summary ===============================
+../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED flowsint-enrichers/tests/enrichers/test_website_to_text.py::test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip - PermissionError: [Errno 1] Operation not permitted
+FAILED flowsint-enrichers/tests/enrichers/test_website_to_text.py::test_public_scan_then_postprocess_captures_owned_occurrence_edges - PermissionError: [Errno 1] Operation not permitted
+2 failed, 22 passed, 2 warnings in 4.57s

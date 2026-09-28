@@ -1,0 +1,121 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+        "name": "parse_observed_extraction_metadata",
+        "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+        "nodeType": "Function",
+        "startLine": 266,
+        "endLine": 300,
+        "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "name": "parse_observed_extraction_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 266,
+            "endLine": 300,
+            "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "name": "resolve_persisted_observation",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 264,
+            "endLine": 314,
+            "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+                    "name": "parse_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 266,
+                    "endLine": 300,
+                    "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

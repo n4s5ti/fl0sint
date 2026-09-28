@@ -1,0 +1,19 @@
+{
+  "command": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "--no-auto-index",
+    "--json",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "upstream",
+    "flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+  "rc": 0,
+  "seconds": 0.9104518890380859
+}

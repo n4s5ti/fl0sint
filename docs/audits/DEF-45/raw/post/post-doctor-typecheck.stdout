@@ -1,0 +1,56 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [
+        "typecheck"
+    ],
+    "results": [
+        {
+            "name": "typecheck",
+            "command": "npm run typecheck --workspaces --if-present",
+            "status": "failed",
+            "exitCode": 127,
+            "stdout": "\n> flowsint-app@1.0.0 typecheck\n> tsc --noEmit\n\n",
+            "stderr": "sh: line 1: tsc: command not found\nnpm error Lifecycle script `typecheck` failed with error:\nnpm error code 127\nnpm error path /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-app\nnpm error workspace flowsint-app@1.0.0\nnpm error location /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-app\nnpm error command failed\nnpm error command sh -c tsc --noEmit\n"
+        }
+    ],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 2229,
+        "indexStatus": "ready",
+        "warnings": []
+    }
+}

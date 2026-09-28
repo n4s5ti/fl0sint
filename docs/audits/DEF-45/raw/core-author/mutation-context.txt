@@ -1,0 +1,48 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_explicit_cards_bind_separate_people_but_generic_inboxes_never_bind ____
+
+    def test_explicit_cards_bind_separate_people_but_generic_inboxes_never_bind():
+        body = b"""
+        <section class='person'><h2>Ada Example</h2><p>Lead ada@example.test support@example.test</p></section>
+        <section class='person'><h2>Bo Example</h2><p>Lead bo@example.test info@example.test</p></section>
+        <h1>Chief Executive Cara Example</h1><footer>cara@example.test press@example.test</footer>
+        """
+        by_value = {o.value: o for o in contacts(extract(body))}
+>       assert (by_value["ada@example.test"].kind, by_value["ada@example.test"].person_name) == (ObservationKind.PERSON_ASSOCIATED, "Ada Example")
+E       AssertionError: assert (<Observation...ntact'>, None) == (<Observation...'Ada Example')
+E         
+E         At index 0 diff: <ObservationKind.UNKNOWN_CONTACT: 'observed_unknown_contact'> != <ObservationKind.PERSON_ASSOCIATED: 'observed_person_associated'>
+E         
+E         Full diff:
+E           (
+E         -     <ObservationKind.PERSON_ASSOCIATED: 'observed_person_associated'>,
+E         -     'Ada Example',
+E         +     <ObservationKind.UNKNOWN_CONTACT: 'observed_unknown_contact'>,
+E         +     None,
+E           )
+
+flowsint-core/tests/acquisition/test_observed_extraction.py:77: AssertionError
+=============================== warnings summary ===============================
+../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED flowsint-core/tests/acquisition/test_observed_extraction.py::test_explicit_cards_bind_separate_people_but_generic_inboxes_never_bind - AssertionError: assert (<Observation...ntact'>, None) == (<Observation...'Ada Example')
+  
+  At index 0 diff: <ObservationKind.UNKNOWN_CONTACT: 'observed_unknown_contact'> != <ObservationKind.PERSON_ASSOCIATED: 'observed_person_associated'>
+  
+  Full diff:
+    (
+  -     <ObservationKind.PERSON_ASSOCIATED: 'observed_person_associated'>,
+  -     'Ada Example',
+  +     <ObservationKind.UNKNOWN_CONTACT: 'observed_unknown_contact'>,
+  +     None,
+    )
+1 failed, 2 warnings in 0.22s

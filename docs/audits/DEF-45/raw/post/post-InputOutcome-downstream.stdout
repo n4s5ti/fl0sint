@@ -1,0 +1,313 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+        "name": "InputOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 74,
+        "endLine": 94,
+        "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     metadata: tuple[PersistedMetadata, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "name": "InputOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 74,
+            "endLine": 94,
+            "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     metadata: tuple[PersistedMetadata, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 79,
+            "endLine": 79,
+            "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+            "name": "status",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 80,
+            "endLine": 80,
+            "content": "    status: OutcomeStatus"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+            "name": "outputs",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 81,
+            "endLine": 81,
+            "content": "    outputs: tuple[Any, ...] = ()"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+            "name": "diagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 82,
+            "endLine": 82,
+            "content": "    diagnostic: RedactedDiagnostic | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+            "name": "evidence",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 83,
+            "endLine": 83,
+            "content": "    evidence: tuple[EvidenceEnvelope, ...] = ()"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.metadata",
+            "name": "metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 84,
+            "endLine": 84,
+            "content": "    metadata: tuple[PersistedMetadata, ...] = ()"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+            "name": "require_diagnostic_for_non_success",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Method",
+            "startLine": 87,
+            "endLine": 94,
+            "content": "    def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.metadata",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 8,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                    "name": "InputOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 74,
+                    "endLine": 94,
+                    "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     metadata: tuple[PersistedMetadata, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 79,
+                    "endLine": 79,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 80,
+                    "endLine": 80,
+                    "content": "    status: OutcomeStatus"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+                    "name": "outputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 81,
+                    "endLine": 81,
+                    "content": "    outputs: tuple[Any, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 82,
+                    "endLine": 82,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+                    "name": "evidence",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 83,
+                    "endLine": 83,
+                    "content": "    evidence: tuple[EvidenceEnvelope, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.metadata",
+                    "name": "metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 84,
+                    "endLine": 84,
+                    "content": "    metadata: tuple[PersistedMetadata, ...] = ()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+                    "name": "require_diagnostic_for_non_success",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Method",
+                    "startLine": 87,
+                    "endLine": 94,
+                    "content": "    def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 7
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 79,
+                    "endLine": 79,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 80,
+                    "endLine": 80,
+                    "content": "    status: OutcomeStatus"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+                    "name": "outputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 81,
+                    "endLine": 81,
+                    "content": "    outputs: tuple[Any, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 82,
+                    "endLine": 82,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+                    "name": "evidence",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 83,
+                    "endLine": 83,
+                    "content": "    evidence: tuple[EvidenceEnvelope, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.metadata",
+                    "name": "metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 84,
+                    "endLine": 84,
+                    "content": "    metadata: tuple[PersistedMetadata, ...] = ()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+                    "name": "require_diagnostic_for_non_success",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Method",
+                    "startLine": 87,
+                    "endLine": 94,
+                    "content": "    def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 8,
+        "totalEdges": 7,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 7,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

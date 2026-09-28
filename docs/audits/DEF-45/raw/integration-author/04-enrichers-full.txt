@@ -1,0 +1,204 @@
+....FF.................................................................. [ 40%]
+..............................................F................F........ [ 80%]
+....................................                                     [100%]
+=================================== FAILURES ===================================
+_______ test_smoke_exercises_real_http_and_matches_every_expected_label ________
+
+corpus = ({'version': 1, 'corpus_id': 'def40-acquisition-v1', 'development_only': True, 'as_of': '2026-09-25T22:25:00Z', ...}, ...charset="utf-8"><title>Directory moved</title></head><body><a href="/named">Directory moved</a></body></html>\n', ...})
+
+    def test_smoke_exercises_real_http_and_matches_every_expected_label(corpus):
+        manifest, bodies = corpus
+>       report = fixtures.smoke(manifest, bodies)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py:159: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/acquisition_fixtures.py:295: in smoke
+    with fixture_server(manifest, bodies) as base_url:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts/acquisition_fixtures.py:270: in fixture_server
+    server = Server()
+             ^^^^^^^^
+scripts/acquisition_fixtures.py:251: in __init__
+    super().__init__(("127.0.0.1", port), Handler)
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socket.py:233: PermissionError
+___________________ test_server_serves_only_manifest_routes ____________________
+
+corpus = ({'version': 1, 'corpus_id': 'def40-acquisition-v1', 'development_only': True, 'as_of': '2026-09-25T22:25:00Z', ...}, ...charset="utf-8"><title>Directory moved</title></head><body><a href="/named">Directory moved</a></body></html>\n', ...})
+
+    def test_server_serves_only_manifest_routes(corpus):
+        manifest, bodies = corpus
+        opener = build_opener(ProxyHandler({}))
+>       with fixtures.fixture_server(manifest, bodies) as base_url:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+scripts/acquisition_fixtures.py:270: in fixture_server
+    server = Server()
+             ^^^^^^^^
+scripts/acquisition_fixtures.py:251: in __init__
+    super().__init__(("127.0.0.1", port), Handler)
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socket.py:233: PermissionError
+___ test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip ____
+
+make_enricher = <function make_enricher.<locals>.make at 0x7c8fd5ce5760>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7c8fd5c08590>
+
+    @pytest.mark.asyncio
+    async def test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip(
+        make_enricher, monkeypatch
+    ):
+        monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+        enricher, graph = make_enricher()
+>       with _loopback_pages() as base:
+             ^^^^^^^^^^^^^^^^^
+
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:258: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:119: in _loopback_pages
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socket.py:233: PermissionError
+______ test_public_scan_then_postprocess_captures_owned_occurrence_edges _______
+
+make_enricher = <function make_enricher.<locals>.make at 0x7c8fd5d98d60>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7c8fd6ff7710>
+
+    @pytest.mark.asyncio
+    async def test_public_scan_then_postprocess_captures_owned_occurrence_edges(
+        make_enricher, monkeypatch
+    ):
+        monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+        enricher, graph = make_enricher()
+>       with _loopback_pages() as base:
+             ^^^^^^^^^^^^^^^^^
+
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:577: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+flowsint-enrichers/tests/enrichers/test_website_to_text.py:119: in _loopback_pages
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/socket.py:233: PermissionError
+=============================== warnings summary ===============================
+../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py::test_smoke_exercises_real_http_and_matches_every_expected_label - PermissionError: [Errno 1] Operation not permitted
+FAILED flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py::test_server_serves_only_manifest_routes - PermissionError: [Errno 1] Operation not permitted
+FAILED flowsint-enrichers/tests/enrichers/test_website_to_text.py::test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip - PermissionError: [Errno 1] Operation not permitted
+FAILED flowsint-enrichers/tests/enrichers/test_website_to_text.py::test_public_scan_then_postprocess_captures_owned_occurrence_edges - PermissionError: [Errno 1] Operation not permitted
+4 failed, 176 passed, 2 warnings in 5.27s
+ERROR:root:Failed to batch insert logs: (psycopg2.OperationalError) 
+(Background on this error at: https://sqlalche.me/e/20/e3q8)

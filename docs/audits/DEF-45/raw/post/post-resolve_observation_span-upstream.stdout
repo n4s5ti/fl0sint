@@ -1,0 +1,121 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+        "name": "resolve_observation_span",
+        "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+        "nodeType": "Function",
+        "startLine": 320,
+        "endLine": 352,
+        "content": "def resolve_observation_span(body: bytes, artifact: ArtifactReference,                              observation: Observation, *,                              expected_occurrence_id: str,                              expected_input_ref: str,                              policy: ExtractionPolicy | None = None) -> ResolvedObservation:     _verify_artifact(body, artifact)     if type(observation) is not Observation:         raise TypeError(\"observation must be Observation\")     if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:         raise ArtifactBindingError(\"observation ownership mismatch\")     if (observation.artifact_id != artifact.artifact_id             or observation.snapshot_id != artifact.snapshot_id             or observation.content_digest != artifact.content_digest             or observation.source_url != artifact.final_url):         raise ArtifactBindingError(\"observation artifact binding mismatch\")     canonical = extract_observations(         body, artifact=artifact, occurrence_id=expected_occurrence_id,         input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,     )     matches = tuple(item for item in canonical.observations                     if item.observation_id == observation.observation_id)     if len(matches) != 1 or matches[0] != observation:         raise ArtifactBindingError(\"observation does not match canonical extraction\")     span = observation.raw_span     raw = body[span.start_byte:span.end_byte]     try:         text = raw.decode(\"utf-8\")         context_raw = None if observation.context_span is None else body[             observation.context_span.start_byte:observation.context_span.end_byte]         context_text = None if context_raw is None else context_raw.decode(\"utf-8\")         return ResolvedObservation(raw, text, context_raw, context_text)     except UnicodeDecodeError as exc:         raise ValueError(\"observation span is not valid UTF-8\") from exc"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+            "name": "resolve_observation_span",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 320,
+            "endLine": 352,
+            "content": "def resolve_observation_span(body: bytes, artifact: ArtifactReference,                              observation: Observation, *,                              expected_occurrence_id: str,                              expected_input_ref: str,                              policy: ExtractionPolicy | None = None) -> ResolvedObservation:     _verify_artifact(body, artifact)     if type(observation) is not Observation:         raise TypeError(\"observation must be Observation\")     if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:         raise ArtifactBindingError(\"observation ownership mismatch\")     if (observation.artifact_id != artifact.artifact_id             or observation.snapshot_id != artifact.snapshot_id             or observation.content_digest != artifact.content_digest             or observation.source_url != artifact.final_url):         raise ArtifactBindingError(\"observation artifact binding mismatch\")     canonical = extract_observations(         body, artifact=artifact, occurrence_id=expected_occurrence_id,         input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,     )     matches = tuple(item for item in canonical.observations                     if item.observation_id == observation.observation_id)     if len(matches) != 1 or matches[0] != observation:         raise ArtifactBindingError(\"observation does not match canonical extraction\")     span = observation.raw_span     raw = body[span.start_byte:span.end_byte]     try:         text = raw.decode(\"utf-8\")         context_raw = None if observation.context_span is None else body[             observation.context_span.start_byte:observation.context_span.end_byte]         context_text = None if context_raw is None else context_raw.decode(\"utf-8\")         return ResolvedObservation(raw, text, context_raw, context_text)     except UnicodeDecodeError as exc:         raise ValueError(\"observation span is not valid UTF-8\") from exc"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "name": "resolve_persisted_observation",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 264,
+            "endLine": 314,
+            "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+                    "name": "resolve_observation_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 320,
+                    "endLine": 352,
+                    "content": "def resolve_observation_span(body: bytes, artifact: ArtifactReference,                              observation: Observation, *,                              expected_occurrence_id: str,                              expected_input_ref: str,                              policy: ExtractionPolicy | None = None) -> ResolvedObservation:     _verify_artifact(body, artifact)     if type(observation) is not Observation:         raise TypeError(\"observation must be Observation\")     if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:         raise ArtifactBindingError(\"observation ownership mismatch\")     if (observation.artifact_id != artifact.artifact_id             or observation.snapshot_id != artifact.snapshot_id             or observation.content_digest != artifact.content_digest             or observation.source_url != artifact.final_url):         raise ArtifactBindingError(\"observation artifact binding mismatch\")     canonical = extract_observations(         body, artifact=artifact, occurrence_id=expected_occurrence_id,         input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,     )     matches = tuple(item for item in canonical.observations                     if item.observation_id == observation.observation_id)     if len(matches) != 1 or matches[0] != observation:         raise ArtifactBindingError(\"observation does not match canonical extraction\")     span = observation.raw_span     raw = body[span.start_byte:span.end_byte]     try:         text = raw.decode(\"utf-8\")         context_raw = None if observation.context_span is None else body[             observation.context_span.start_byte:observation.context_span.end_byte]         context_text = None if context_raw is None else context_raw.decode(\"utf-8\")         return ResolvedObservation(raw, text, context_raw, context_text)     except UnicodeDecodeError as exc:         raise ValueError(\"observation span is not valid UTF-8\") from exc"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

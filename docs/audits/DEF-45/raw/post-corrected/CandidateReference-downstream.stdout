@@ -1,0 +1,247 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+        "name": "CandidateReference",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 244,
+        "endLine": 248,
+        "content": "class CandidateReference(ContractModel):     candidate_id: Identifier     occurrence_id: Identifier     evidence_id: Identifier     disposition: Literal[\"unreviewed\"] = \"unreviewed\""
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+            "name": "CandidateReference",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 244,
+            "endLine": 248,
+            "content": "class CandidateReference(ContractModel):     candidate_id: Identifier     occurrence_id: Identifier     evidence_id: Identifier     disposition: Literal[\"unreviewed\"] = \"unreviewed\""
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "name": "ContractModel",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 63,
+            "endLine": 70,
+            "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.candidate_id",
+            "name": "candidate_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 245,
+            "endLine": 245,
+            "content": "    candidate_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.occurrence_id",
+            "name": "occurrence_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 246,
+            "endLine": 246,
+            "content": "    occurrence_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.evidence_id",
+            "name": "evidence_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 247,
+            "endLine": 247,
+            "content": "    evidence_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.disposition",
+            "name": "disposition",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 248,
+            "endLine": 248,
+            "content": "    disposition: Literal[\"unreviewed\"] = \"unreviewed\""
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+            "to": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.candidate_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.occurrence_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.evidence_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.disposition",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 6,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+                    "name": "CandidateReference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 244,
+                    "endLine": 248,
+                    "content": "class CandidateReference(ContractModel):     candidate_id: Identifier     occurrence_id: Identifier     evidence_id: Identifier     disposition: Literal[\"unreviewed\"] = \"unreviewed\""
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.candidate_id",
+                    "name": "candidate_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 245,
+                    "endLine": 245,
+                    "content": "    candidate_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.occurrence_id",
+                    "name": "occurrence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 246,
+                    "endLine": 246,
+                    "content": "    occurrence_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.evidence_id",
+                    "name": "evidence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 247,
+                    "endLine": 247,
+                    "content": "    evidence_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.disposition",
+                    "name": "disposition",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 248,
+                    "endLine": 248,
+                    "content": "    disposition: Literal[\"unreviewed\"] = \"unreviewed\""
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 5
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.candidate_id",
+                    "name": "candidate_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 245,
+                    "endLine": 245,
+                    "content": "    candidate_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.occurrence_id",
+                    "name": "occurrence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 246,
+                    "endLine": 246,
+                    "content": "    occurrence_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.evidence_id",
+                    "name": "evidence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 247,
+                    "endLine": 247,
+                    "content": "    evidence_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.disposition",
+                    "name": "disposition",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 248,
+                    "endLine": 248,
+                    "content": "    disposition: Literal[\"unreviewed\"] = \"unreviewed\""
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+        "rootSymbols": 1,
+        "totalSymbols": 6,
+        "totalEdges": 5,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 5,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,3 @@
+ERROR:root:Failed to batch insert logs: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5432 failed: FATAL:  role "n4s5ti" does not exist
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
