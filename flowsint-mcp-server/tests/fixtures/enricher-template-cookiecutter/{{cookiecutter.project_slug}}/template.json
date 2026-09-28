@@ -1,0 +1,12 @@
+{
+  "name": "{{cookiecutter.template_name}}",
+  "category": "{{cookiecutter.template_category}}",
+  "version": 1.0,
+  "input": {"type": "string"},
+  "request": {
+    "method": "GET",
+    "url": "{{cookiecutter.template_request_url}}"
+  },
+  "output": {"type": "json"},
+  "response": {"expect": "json"}
+}

@@ -1,0 +1,1097 @@
+{
+  "roots": 24,
+  "upstream_graph_pass": 8,
+  "upstream_graph_unknown": 16,
+  "downstream_graph_pass": 24,
+  "downstream_graph_unknown": 0,
+  "query_interrupted_or_unsupported_relation_runs": [],
+  "calls_only_control": {
+    "name": "blast-models-canonical_input_hash-upstream-callsonly",
+    "rc": 0,
+    "wallSeconds": 0.811,
+    "risk": "HIGH",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 17,
+    "edges": 18,
+    "files": 8,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ],
+    "target": {
+      "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+      "name": "canonical_input_hash",
+      "filePath": "flowsint-core/src/flowsint_execution/models.py",
+      "nodeType": "Function",
+      "startLine": 139,
+      "endLine": 149,
+      "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+    }
+  },
+  "matrix": [
+    {
+      "target": "flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+      "upstream": {
+        "risk": "HIGH",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 105,
+        "edges": 116,
+        "files": 90,
+        "edgeTypes": [
+          "CALLS",
+          "EXTENDS",
+          "HAS_METHOD",
+          "METHOD_OVERRIDES"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 2,
+        "edges": 2,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py",
+          "flowsint-core/src/flowsint_core/tasks/enricher.py",
+          "flowsint-core/src/flowsint_execution/acquisition.py"
+        ],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py",
+          "flowsint-core/tests/core/test_structured_execution.py",
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_template_execution_task.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "ID/hash creation",
+        "lazy task import (tasks/enricher.py)"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "CRITICAL",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 17,
+        "edges": 16,
+        "files": 1,
+        "edgeTypes": [
+          "HAS_METHOD",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py"
+        ],
+        "test": [
+          "flowsint-api/tests/test_template_egress.py",
+          "flowsint-core/tests/core/test_structured_execution.py",
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_graph_projection_service.py",
+          "flowsint-core/tests/services/test_template_execution_task.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "constructor",
+        "serializer-field"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "HIGH",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 7,
+        "edges": 6,
+        "files": 1,
+        "edgeTypes": [
+          "HAS_METHOD",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py"
+        ],
+        "test": [
+          "flowsint-api/tests/test_template_egress.py",
+          "flowsint-core/tests/core/test_structured_execution.py",
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_graph_projection_service.py",
+          "flowsint-core/tests/services/test_template_execution_task.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "constructor",
+        "serializer-field"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 3,
+        "edges": 2,
+        "files": 1,
+        "edgeTypes": [
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py"
+        ],
+        "test": [
+          "flowsint-api/tests/test_template_egress.py",
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_graph_projection_service.py",
+          "flowsint-core/tests/services/test_template_execution_task.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "constructor",
+        "serializer-field"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py",
+          "flowsint-core/src/flowsint_execution/acquisition.py"
+        ],
+        "test": [
+          "flowsint-api/tests/test_template_egress.py",
+          "flowsint-core/tests/acquisition/test_contract.py",
+          "flowsint-core/tests/core/test_structured_execution.py",
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_graph_projection_service.py",
+          "flowsint-core/tests/services/test_template_execution_task.py",
+          "flowsint-core/tests/templates/test_template_enricher.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "status reader",
+        "alias import (as CanonicalStatus)"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 1,
+        "edgeTypes": [
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-api/app/api/schemas/enricher_template.py",
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py",
+          "flowsint-core/src/flowsint_core/tasks/enricher.py",
+          "flowsint-core/src/flowsint_execution/acquisition.py"
+        ],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py",
+          "flowsint-core/tests/core/test_structured_execution.py",
+          "flowsint-core/tests/services/test_execution_service.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "constructor",
+        "lazy task import (tasks/enricher.py)",
+        "API schema field"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "builder via module alias `a.`"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+      "upstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 5,
+        "edges": 4,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "parser/serializer"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+      "upstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 5,
+        "edges": 4,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "parser/serializer"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 6,
+        "edges": 6,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "serializer via module alias `a.`"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 6,
+        "edges": 6,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "serializer via module alias `a.`"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 17,
+        "edges": 16,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS",
+          "EXTENDS",
+          "HAS_METHOD",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [],
+        "example": []
+      },
+      "consumer_forms": [
+        "constructor"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "CRITICAL",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 16,
+        "edges": 15,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS",
+          "EXTENDS",
+          "HAS_METHOD",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "constructor"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "HIGH",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 9,
+        "edges": 8,
+        "files": 2,
+        "edgeTypes": [
+          "CALLS",
+          "EXTENDS",
+          "HAS_METHOD",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "constructor"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 16,
+        "edges": 15,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS",
+          "EXTENDS",
+          "HAS_METHOD",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "constructor"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 1,
+        "edgeTypes": [
+          "EXTENDS",
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/acquisition/test_contract.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "constructor"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+      "upstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS",
+          "HAS_METHOD"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 2,
+        "edges": 1,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/core/test_forensic_observations_repository.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "ID creation (origin digest)"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/core/enricher_base.py",
+          "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+          "flowsint-core/src/flowsint_core/core/template_enricher.py",
+          "flowsint-core/src/flowsint_execution/models.py"
+        ],
+        "test": [
+          "flowsint-api/tests/test_template_egress.py",
+          "flowsint-core/tests/acquisition/test_contract.py",
+          "flowsint-core/tests/core/test_structured_execution.py",
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_graph_projection_service.py",
+          "flowsint-core/tests/services/test_template_execution_task.py",
+          "flowsint-core/tests/templates/test_template_enricher.py"
+        ],
+        "example": [
+          "flowsint-core/examples/acquisition_contract.py"
+        ]
+      },
+      "consumer_forms": [
+        "status reader"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_core/core/services/execution_service.py:persist_structured_result",
+      "upstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 3,
+        "edgeTypes": [
+          "CALLS",
+          "HAS_METHOD"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "HIGH",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 8,
+        "edges": 10,
+        "files": 2,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/tasks/enricher.py"
+        ],
+        "test": [
+          "flowsint-core/tests/services/test_execution_service.py",
+          "flowsint-core/tests/services/test_graph_projection_service.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "persistence sink"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_core/core/services/execution_service.py:reconstruct_structured_result",
+      "upstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 4,
+        "edges": 3,
+        "files": 2,
+        "edgeTypes": [
+          "CALLS",
+          "HAS_METHOD"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 3,
+        "edges": 2,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-core/src/flowsint_core/tasks/enricher.py"
+        ],
+        "test": [
+          "flowsint-core/tests/services/test_execution_service.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "reconstruction/status reader"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_core/core/services/execution_service.py:aggregate_status",
+      "upstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 5,
+        "edges": 5,
+        "files": 3,
+        "edgeTypes": [
+          "CALLS",
+          "HAS_METHOD"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [
+          "flowsint-core/tests/services/test_execution_service.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "status reader"
+      ]
+    },
+    {
+      "target": "flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "CRITICAL",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 37,
+        "edges": 51,
+        "files": 9,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-api/app/api/routes/enrichers.py"
+        ],
+        "test": [
+          "flowsint-core/tests/services/test_template_execution_task.py"
+        ],
+        "example": []
+      },
+      "consumer_forms": [
+        "Celery task; lazy import site; registry consumer"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    },
+    {
+      "target": "flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+      "upstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 2,
+        "edges": 1,
+        "files": 1,
+        "edgeTypes": [
+          "CALLS"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "downstream": {
+        "risk": "LOW",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [],
+        "test": [],
+        "example": []
+      },
+      "consumer_forms": [
+        "lazy import site"
+      ]
+    },
+    {
+      "target": "flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+      "upstream": {
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "warnings": [],
+        "symbols": 1,
+        "edges": 0,
+        "files": 1,
+        "edgeTypes": [],
+        "graph_verdict": "UNKNOWN"
+      },
+      "downstream": {
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "warnings": [],
+        "symbols": 5,
+        "edges": 4,
+        "files": 1,
+        "edgeTypes": [
+          "HAS_PROPERTY"
+        ],
+        "graph_verdict": "PASS"
+      },
+      "source_consumers": {
+        "production": [
+          "flowsint-api/app/api/routes/enricher_templates.py"
+        ],
+        "test": [],
+        "example": []
+      },
+      "consumer_forms": [
+        "API schema serializer"
+      ],
+      "graph_gap": "upstream no-call-edges: GraphOS/gitnexus does not emit CALLS for Python class instantiation, attribute access through a module alias (e.g. `a.build_bundle`), or name imports; treated as UNKNOWN for graph impact. Consumers are established by the exact source inventory below and exercised by the executed Python route (pytest/example/wheel caller), which is bounded behavioral evidence, not graph completeness."
+    }
+  ]
+}

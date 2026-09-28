@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "mpg-batch",
+    "--",
+    "uv",
+    "build",
+    "--wheel",
+    "--out-dir",
+    "/home/n4s5ti/Documents/dev/def41-evidence/wheels-final"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core",
+  "environment_overrides": {},
+  "started_at": 1790477444.6442149,
+  "elapsed_seconds": 0.36334657669067383,
+  "returncode": 0
+}

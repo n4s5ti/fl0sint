@@ -1,0 +1,30 @@
+version: 1
+destinations:
+  - destination_id: census_geocoder
+    base_url: https://geocoding.geo.census.gov
+    endpoints:
+      - endpoint_id: location_oneline
+        capability: enrich.read
+        method: GET
+        path: /geocoder/locations/onelineaddress
+        input_type: Location
+        output_type: Location
+        fixed_query:
+          benchmark: Public_AR_Current
+          format: json
+        request_fields:
+          - name: address
+            source_field: address
+            location: query
+            value_type: string
+            required: true
+            max_length: 512
+        response_mappings:
+          address: result.addressMatches.0.matchedAddress
+          city: result.addressMatches.0.addressComponents.city
+          country: result.addressMatches.0.addressComponents.country
+          zip: result.addressMatches.0.addressComponents.zip
+          latitude: result.addressMatches.0.coordinates.y
+          longitude: result.addressMatches.0.coordinates.x
+        timeout_seconds: 10
+        max_response_bytes: 65536

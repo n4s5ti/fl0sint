@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+    "--json",
+    "--no-auto-index",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "downstream",
+    "flowsint-core/src/flowsint_core/core/enricher_base.py:execute_structured"
+  ],
+  "rc": 0,
+  "seconds": 0.7974037439998938
+}

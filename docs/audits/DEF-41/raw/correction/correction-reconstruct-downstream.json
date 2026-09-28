@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--no-auto-index",
+    "--include-tests",
+    "--direction",
+    "downstream",
+    "--max-depth",
+    "2",
+    "--json",
+    "flowsint-core/src/flowsint_core/core/services/execution_service.py:reconstruct_structured_result"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {
+    "PIP3R_DISCLOSURE": "off"
+  },
+  "started_at": 1790479122.1813014,
+  "elapsed_seconds": 1.041200876235962,
+  "returncode": 0
+}

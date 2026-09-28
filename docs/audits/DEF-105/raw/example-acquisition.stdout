@@ -1,0 +1,2 @@
+{"file": "success.json", "status": "success_with_output", "candidates": ["unreviewed"], "origin_digest": "c6d64a0414538ce225a9ca14b53ef1d9b0f6384b64df269c1181c58c84a9f8ac"}
+{"file": "failed.json", "status": "invalid_input", "candidates": [], "origin_digest": "ef18caac5de2b7736048117c46709c52500cc45bd7b58678b08f29bc765dce3e"}

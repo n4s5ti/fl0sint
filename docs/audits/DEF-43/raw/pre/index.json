@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "--index",
+    "--json"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+  "environment": {},
+  "rc": 0,
+  "started": 1790558065.2229483,
+  "seconds": 31.340333700180054
+}

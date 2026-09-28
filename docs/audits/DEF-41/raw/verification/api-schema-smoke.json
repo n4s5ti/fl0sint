@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "mpg-batch",
+    "--",
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-c",
+    "from app.api.schemas.enricher_template import ConnectorTestOutcome; from flowsint_execution.models import RedactedDiagnostic; d=RedactedDiagnostic(code='timeout',safe_message='Timed out',retryable=True); result=ConnectorTestOutcome(status='failure',visible_outputs=0,diagnostic=d); restored=ConnectorTestOutcome.model_validate_json(result.model_dump_json()); assert restored.diagnostic == d; assert isinstance(restored.diagnostic,RedactedDiagnostic); print(restored.model_dump_json())"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-api",
+  "environment_overrides": {
+    "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-api",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "AUTH_SECRET": "fixture-only-not-production",
+    "REDIS_URL": "redis://127.0.0.1:1/0",
+    "DATABASE_URL": "sqlite:///:memory:",
+    "PYTHON_DOTENV_DISABLED": "1"
+  },
+  "started_at": 1790477467.491299,
+  "elapsed_seconds": 4.01107931137085,
+  "returncode": 0
+}

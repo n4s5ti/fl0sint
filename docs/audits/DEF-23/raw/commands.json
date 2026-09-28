@@ -1,0 +1,90 @@
+[
+  {
+    "name": "validate",
+    "argv": [
+      "python3",
+      "scripts/acquisition_fixtures.py",
+      "validate"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+    "started_at": "2026-09-26T01:25:15.020215+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "dbd54658b05d88ce11039f0a98b81b1870b61e1fd92eb734f3855a8c74df7a88"
+  },
+  {
+    "name": "smoke",
+    "argv": [
+      "python3",
+      "scripts/acquisition_fixtures.py",
+      "smoke"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+    "started_at": "2026-09-26T01:25:15.130168+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "256780c613d46ce93b4853f8dd27ba28ee6a7174c0126d96cce9ec254b2f6c33"
+  },
+  {
+    "name": "drift",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "graphos",
+      "--drift",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--no-auto-index",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:25:15.421544+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "55a7ae8ca5b61f3d5c0f59b2d32e79465847ba5bb712e7a325fd1251023e5227"
+  },
+  {
+    "name": "impact",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "blast",
+      "scripts/acquisition_fixtures.py:load_manifest",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--no-auto-index",
+      "--include-tests",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:25:16.787349+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "054b67dfa2d34866d4e9dd5be5850f80b8e76e32e2a4644a7014c6bb6af6bd57"
+  },
+  {
+    "name": "doctor",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "doctor",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--verify-refactor",
+      "load_manifest",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:25:17.771118+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "a39ff7c4af667a4ded16036cd2f2122a1e02505f245554ce223d6a05d20e7660"
+  },
+  {
+    "name": "hunt",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "doctor",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--hunt",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:26:06.734346+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "7c675ec82c17896d05eaea63cd19188bceb6178c25621ae1926d62f955ebfd55"
+  }
+]

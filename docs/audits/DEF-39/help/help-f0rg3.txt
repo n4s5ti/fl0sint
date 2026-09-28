@@ -1,0 +1,74 @@
+Usage: f0rg3 [options] [command]
+
+Unified power tools for code intelligence, research, and shipping
+
+Options:
+  -V, --version                                      output the version number
+  --config <path>                                    Config file override
+  --no-color                                         Disable colors
+  --log-level <level>                                Log level (debug|info|warn|error) (default: "warn")
+  -v, --verbose                                      Debug output (alias for --log-level debug)
+  -q, --quiet                                        Errors only (alias for --log-level error)
+  -h, --help                                         display help for command
+
+Commands:
+  doctor [options]                                   Diagnostics, bug hunting, and refactoring — scout to ship
+  grep [options] <pattern> [path]                    [scout] Search code with literal pattern matching
+  grep-ast [options] <pattern> [path]                [scout] Structural code search using AST patterns ($NAME, $$$)
+  tree [options] [path]                              [scout] Display repository file tree structure
+  symbols [options] [path]                           [scout] Extract code symbols from the repository
+  refs [options] <symbol> [path]                     [scout] Find definitions and references of a symbol
+  read [options] <file> [path]                       [scout] Display file content from the repository
+  search-text [options] <query> [path]               [scout] Textual search (alias for grep)
+  search-semantic [options] <query> [path]           [scout] Semantic search using vector embeddings and natural language
+  deps [options] [path]                              [scout] Analyze code dependencies
+  context [options] <file-path> <line> [path]        [scout] Extract surrounding code context for a specific line
+  kit-index [options] [path]                         [build] Build repository index (alias for graph --index)
+  export [options] <data-type> <output-file> [path]  [build] Export repository data to JSON files
+  chunk-lines [options] <file-path> [path]           Chunk a file by line count
+  chunk-symbols [options] <file-path> [path]         Chunk a file by symbols (functions, classes)
+  cache [options] <action>                           [ship] Manage analysis cache
+  git-info [options] [path]                          [scout] Show git repository metadata
+  kit-review [options] [target]                      [review] AI code review for GitHub PRs or local diffs
+  review-cache [options] <action>                    [ship] Manage review cache
+  review-profile [options] <action>                  [review] Manage custom review profiles
+  summarize [options] <pr-url>                       [review] Generate a concise summary of a GitHub PR
+  kit-commit [options]                               [build] Generate intelligent commit messages
+  kit-serve [options]                                [ship] REST API server (alias for graph serve)
+  pkg-grep [options] <package> <pattern>             [scout] Search package source code using regex patterns
+  pkg-search [options] <package> <query>             [scout] Semantic search in package source code
+  pkg-read [options] <package> <file-path>           [scout] Read a specific file from an installed package
+  multi-search [options] <repos...>                  [scout] Search across multiple repositories
+  multi-symbols [options] <repos...>                 [scout] Find symbols across multiple repositories
+  multi-deps [options] <repos...>                    [scout] Audit dependencies across multiple repositories
+  multi-summary [options] <repos...>                 [scout] Generate summaries of multiple repositories
+  graph [options]                                    Graph-powered code intelligence — scout, plan, build, test, ship
+  piper [options]                                    Cross-repo feature piping — scout, plan, build, test
+  reason [options]                                   [research] Cognitive reasoning — single step, multi-step, replay
+  calc [options] <expression>                        [research] Evaluate symbolic math via wolframscript
+  solve [options] <equation>                         [research] Solve equations via wolframscript
+  search [options] <query>                           [research] AI-powered search via search backend
+  research [options] <query>                         [research] Multi-step deep research with evidence tagging
+  council [options] <query>                          [research] Multi-model consensus research
+  peer-review [options] <query>                      [review] Multi-model peer review with voting
+  fact-check [options] <draft>                       [review] Extract and verify claims in draft text
+  perspectives [options] <query>                     [research] STORM-pattern multi-perspective research
+  triangulate [options] <query>                      [research] Cross-source triangulation with agreement scoring
+  deep-dive [options] <query>                        [research] Full research pipeline composing multiple tools
+  recall [options] <query>                           [memory] Search cached prior research
+  youtube [options] <mode> <url>                     [research] Extract transcripts + metadata from YouTube
+  review-context [options]                           [review] Show structural impact context from the knowledge graph
+  review [options] <target>                          [review] AI code review with structural graph context
+  chat [options] <message>                           [research] AI conversation with model selection and context
+  remember [options] <content>                       [memory] Save an observation to persistent memory
+  recall-mem [options] <query>                       [memory] Search persistent memories
+  timeline [options]                                 [memory] Chronological memory view grouped by date
+  memory-import [options]                            [memory] Import data from claude-mem database
+  blueprint [options] [goal]                         [plan] Gap analysis, auditing & verification — find what's missing, weak, or broken
+  play                                               [review] Browser automation via Playwriter — connect to your running Chrome
+  beads                                              [review] Git-native issue tracking via Beads — tasks, deps, AI context
+  agent [options] <goal>                             [build] Autonomous AI agent — spec, plan, code, QA in one shot
+  dispatch [options]                                 [ship] Autonomous agent dispatch — watches graph, spawns agents
+  orchestrate [options] <goal>                       [build] Graph-native subagent orchestration — decompose, dispatch, learn
+  merge [options] [branch]                           [build] AI-powered semantic merge conflict resolution
+  help [command]                                     display help for command

@@ -1,0 +1,615 @@
+diff --git a/flowsint-api/app/api/routes/enrichers.py b/flowsint-api/app/api/routes/enrichers.py
+index e78dc1ff..bb615ac2 100644
+--- a/flowsint-api/app/api/routes/enrichers.py
++++ b/flowsint-api/app/api/routes/enrichers.py
+@@ -1,4 +1,4 @@
+-from typing import List, Optional
++from typing import Any, List, Optional
+ from uuid import UUID
+ 
+ 
+@@ -7,6 +7,11 @@ from flowsint_core.core.celery import celery
+ from flowsint_core.core.config import destination_registry
+ from flowsint_core.core.connector_egress import connector_template_digest
+ from flowsint_core.core.graph import create_graph_service
++from flowsint_core.core.forensics import (
++    dispatch_legacy_task,
++    legacy_execution_boundary,
++)
++
+ from flowsint_core.core.models import Profile
+ from flowsint_core.core.postgre_db import get_db
+ from flowsint_core.core.services import (
+@@ -16,7 +21,9 @@ from flowsint_core.core.services import (
+     create_enricher_template_service,
+     create_flow_service,
+ )
+-from flowsint_core.core.services.type_registry_service import create_type_registry_service
++from flowsint_core.core.services.type_registry_service import (
++    create_type_registry_service,
++)
+ from flowsint_core.templates.types import Template
+ from flowsint_enrichers import ENRICHER_REGISTRY, load_all_enrichers
+ from pydantic import BaseModel
+@@ -31,6 +38,8 @@ load_all_enrichers()
+ class launchEnricherPayload(BaseModel):
+     node_ids: List[str]
+     sketch_id: str
++    params: Optional[dict[str, Any]] = None
++
+ 
+ class launchTemplatePayload(BaseModel):
+     node_ids: List[str]
+@@ -99,8 +108,6 @@ async def launch_connector_template(
+         ) from error
+ 
+ 
+-
+-
+ @router.get("")
+ def get_enrichers(
+     category: Optional[str] = Query(None),
+@@ -115,6 +122,7 @@ def get_enrichers(
+ 
+ 
+ @router.post("/{enricher_name}/launch")
++@legacy_execution_boundary("legacy_enricher_launch")
+ async def launch_enricher(
+     enricher_name: str,
+     payload: launchEnricherPayload,
+@@ -125,7 +133,9 @@ async def launch_enricher(
+         # Retrieve nodes from Neo4J by their element IDs
+         type_registry = create_type_registry_service(db)
+         resolver = type_registry.build_type_resolver(current_user.id)
+-        graph_service = create_graph_service(sketch_id=payload.sketch_id, type_resolver=resolver)
++        graph_service = create_graph_service(
++            sketch_id=payload.sketch_id, type_resolver=resolver
++        )
+         entities = graph_service.get_nodes_by_ids_for_task(payload.node_ids)
+ 
+         # Send deserialized nodes
+@@ -138,16 +148,16 @@ async def launch_enricher(
+             )
+ 
+         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):
+-            raise HTTPException(
+-                status_code=404, detail={"code": "enricher_not_found"}
+-            )
+-        task = celery.send_task(
++            raise HTTPException(status_code=404, detail={"code": "enricher_not_found"})
++        task = dispatch_legacy_task(
++            celery,
+             "run_enricher",
+             args=[
+                 enricher_name,
+                 entities,
+                 payload.sketch_id,
+                 str(current_user.id),
++                payload.params or {},
+             ],
+         )
+         return {"id": task.id}
+diff --git a/flowsint-core/src/flowsint_core/core/celery.py b/flowsint-core/src/flowsint_core/core/celery.py
+index 0bd32c93..7bb75acd 100644
+--- a/flowsint-core/src/flowsint_core/core/celery.py
++++ b/flowsint-core/src/flowsint_core/core/celery.py
+@@ -8,8 +8,8 @@ celery = Celery(
+     include=[
+         "flowsint_core.tasks.event",
+         "flowsint_core.tasks.enricher",
+-        "flowsint_core.tasks.graph_projection",
+         "flowsint_core.tasks.flow",
++        "flowsint_core.tasks.graph_projection",
+     ],
+ )
+ 
+@@ -22,11 +22,14 @@ celery.conf.update(
+     task_track_started=True,
+     task_time_limit=3600,  # 1 hour
+     worker_max_tasks_per_child=1000,
++    worker_prefetch_multiplier=4,
++    # GPU / accelerator pool (overridden via --pool CLI flag at worker start)
++    worker_pool=settings.WORKER_POOL,
++    worker_concurrency=settings.WORKER_GPU_CONCURRENCY,
+     beat_schedule={
+         "sweep-graph-projection-jobs": {
+             "task": "sweep_graph_projection_jobs",
+             "schedule": 60.0,
+         }
+     },
+-    worker_prefetch_multiplier=4,  # Allow each worker to prefetch up to 4 tasks
+ )
+diff --git a/flowsint-core/src/flowsint_core/core/config.py b/flowsint-core/src/flowsint_core/core/config.py
+index 1bcea46b..5d8b5b66 100644
+--- a/flowsint-core/src/flowsint_core/core/config.py
++++ b/flowsint-core/src/flowsint_core/core/config.py
+@@ -14,11 +14,26 @@ load_dotenv()
+ class Settings:
+     CELERY_BROKER_URL = os.environ["REDIS_URL"]
+     CELERY_RESULT_BACKEND = os.environ["REDIS_URL"]
++
++    # GPU / accelerator worker pool
++    #   "prefork" — traditional process pool (default)
++    #   "threads" — thread pool (shared GPU context)
++    #   "gevent"  — gevent pool (alternative async)
++    WORKER_POOL: str = os.environ.get("WORKER_POOL", "prefork")
++
++    # Max GPU worker concurrency (tasks that can share the CUDA context)
++    WORKER_GPU_CONCURRENCY: int = int(os.environ.get("WORKER_GPU_CONCURRENCY", "4"))
++
++    # Default HTTP transport settings (used by flowsint_enrichers.transport)
++    HTTP_MAX_CONNECTIONS: int = int(os.environ.get("HTTP_MAX_CONNECTIONS", "50"))
++    HTTP_DEFAULT_TIMEOUT: int = int(os.environ.get("HTTP_DEFAULT_TIMEOUT", "15"))
++    HTTP_ENABLE_QUIC: bool = os.environ.get("HTTP_ENABLE_QUIC", "false").lower() in ("1", "true", "yes")
+     CONNECTOR_DESTINATIONS_PATH: Path | None = (
+         Path(value) if (value := os.environ.get("CONNECTOR_DESTINATIONS_PATH")) else None
+     )
+ 
+ 
++
+ settings = Settings()
+ destination_registry: DestinationRegistry = load_destination_registry(
+     settings.CONNECTOR_DESTINATIONS_PATH
+diff --git a/flowsint-core/src/flowsint_core/core/enricher_base.py b/flowsint-core/src/flowsint_core/core/enricher_base.py
+index cfe11aaf..b9445044 100644
+--- a/flowsint-core/src/flowsint_core/core/enricher_base.py
++++ b/flowsint-core/src/flowsint_core/core/enricher_base.py
+@@ -16,6 +16,8 @@ from .execution import (
+     canonical_input_hash,
+ )
+ from .graph import GraphService, create_graph_service
++from .forensics import legacy_execution_boundary
++
+ from .logger import Logger
+ from .vault import VaultProtocol
+ 
+@@ -458,9 +460,7 @@ class Enricher(ABC):
+         """Return retainable evidence captured while processing one input."""
+         return ()
+ 
+-    def _classify_structured_exception(
+-        self, error: Exception
+-    ) -> RedactedDiagnostic:
++    def _classify_structured_exception(self, error: Exception) -> RedactedDiagnostic:
+         """Classify failures without retaining exception text or request data."""
+         if isinstance(error, (InvalidEnricherParams, ValidationError)):
+             return RedactedDiagnostic(
+@@ -554,7 +554,6 @@ class Enricher(ABC):
+         if status is not OutcomeStatus.SUCCESS:
+             outputs = ()
+ 
+-
+         return InputOutcome(
+             input_ref=input_ref,
+             status=status,
+@@ -563,9 +562,7 @@ class Enricher(ABC):
+             evidence=evidence,
+         )
+ 
+-    async def execute_structured(
+-        self, values: List[Any]
+-    ) -> StructuredExecutionResult:
++    async def execute_structured(self, values: List[Any]) -> StructuredExecutionResult:
+         """Execute independently per original input without flattening outputs."""
+         outcomes: list[InputOutcome] = []
+         if self.name() != "enricher_orchestrator":
+@@ -629,6 +626,7 @@ class Enricher(ABC):
+     ) -> List[Dict[str, Any]]:
+         return results
+ 
++    @legacy_execution_boundary("legacy_enricher_execute")
+     async def execute(self, values: List[Any]) -> List[Dict[str, Any]]:
+         if self.name() != "enricher_orchestrator":
+             Logger.info(self.sketch_id, {"message": f"Enricher {self.name()} started."})
+diff --git a/flowsint-core/src/flowsint_core/core/graph/repository.py b/flowsint-core/src/flowsint_core/core/graph/repository.py
+index d1c93df6..27a76d6d 100644
+--- a/flowsint-core/src/flowsint_core/core/graph/repository.py
++++ b/flowsint-core/src/flowsint_core/core/graph/repository.py
+@@ -10,8 +10,10 @@ from typing import Any, Dict, List, Optional, Tuple
+ 
+ from .connection import Neo4jConnection
+ from .types import GraphDict
++from ..forensics import legacy_execution_class_boundary
+ 
+ 
++@legacy_execution_class_boundary("legacy_neo4j_graph_repository")
+ class Neo4jGraphRepository:
+     """
+     Neo4j main implementation of the graph repository.
+diff --git a/flowsint-core/src/flowsint_core/core/graph/service.py b/flowsint-core/src/flowsint_core/core/graph/service.py
+index 1054b403..7e5ab15a 100644
+--- a/flowsint-core/src/flowsint_core/core/graph/service.py
++++ b/flowsint-core/src/flowsint_core/core/graph/service.py
+@@ -9,6 +9,11 @@ from typing import Any, Dict, List, Optional, Protocol
+ 
+ from flowsint_types import FlowsintType
+ from pydantic import BaseModel
++from flowsint_core.core.forensics.fencing import (
++    LegacyExecutionMode,
++    require_legacy_graph_access,
++)
++
+ 
+ from .repository import Neo4jGraphRepository
+ from .repository_protocol import GraphRepositoryProtocol
+@@ -42,6 +47,8 @@ class GraphService:
+         logger: Optional[LoggerProtocol] = None,
+         enable_batching: bool = False,
+         type_resolver: Optional[TypeResolver] = None,
++        mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,
++        case_reference: str | None = None,
+     ):
+         """
+         Initialize the graph service.
+@@ -56,6 +63,12 @@ class GraphService:
+         Raises:
+             ValueError: If repository is not provided
+         """
++        require_legacy_graph_access(
++            mode,
++            operation="graph_service_construction",
++            case_reference=case_reference,
++        )
++
+         if repository is None:
+             raise ValueError(
+                 "repository is required. Use create_graph_service() factory "
+@@ -66,15 +79,26 @@ class GraphService:
+         self._logger = logger
+         self._enable_batching = enable_batching
+         self._type_resolver = type_resolver
++        self._mode = mode
++        self._case_reference = case_reference
++
++    def _require_access(self, operation: str) -> None:
++        require_legacy_graph_access(
++            self._mode,
++            operation=operation,
++            case_reference=self._case_reference,
++        )
+ 
+     @property
+     def sketch_id(self) -> str:
+         """Get the sketch ID."""
++        self._require_access("graph_service_sketch_id_access")
+         return self._sketch_id
+ 
+     @property
+     def repository(self) -> GraphRepositoryProtocol:
+         """Get the underlying repository."""
++        self._require_access("graph_service_repository_access")
+         return self._repository
+ 
+     def create_node(self, node_obj: GraphNode) -> str | None:
+@@ -87,6 +111,7 @@ class GraphService:
+         Args:
+             node_obj: a GraphNode object
+         """
++        self._require_access("graph_service_create_node")
+ 
+         if isinstance(node_obj, FlowsintType):
+             raise Exception(
+@@ -117,6 +142,7 @@ class GraphService:
+         Args:
+             node_obj: a FlowsintType object
+         """
++        self._require_access("graph_service_create_node_from_flowsint_type")
+ 
+         if isinstance(node_obj, GraphNode):
+             raise Exception(
+@@ -140,6 +166,7 @@ class GraphService:
+             )
+ 
+     def get_sketch_graph(self) -> GraphData:
++        self._require_access("graph_service_get_sketch_graph")
+         graph_data = self.repository.get_sketch_graph(self.sketch_id)
+         nodes = GraphSerializer.deserialize_nodes(
+             graph_data.get("nodes", []), type_resolver=self._type_resolver
+@@ -148,12 +175,14 @@ class GraphService:
+         return GraphData(nodes=nodes, edges=edges)
+ 
+     def get_nodes_by_ids(self, node_ids: List[str]) -> List[GraphNode]:
++        self._require_access("graph_service_get_nodes_by_ids")
+         nodes = self.repository.get_nodes_by_ids(node_ids, self.sketch_id)
+         return GraphSerializer.deserialize_nodes(
+             nodes, type_resolver=self._type_resolver
+         )
+ 
+     def get_nodes_by_ids_for_task(self, node_ids: List[str]) -> List[BaseModel]:
++        self._require_access("graph_service_get_nodes_by_ids_for_task")
+         nodes = self.get_nodes_by_ids(node_ids)
+         return [GraphSerializer.graph_node_to_flowsint_type(node) for node in nodes]
+ 
+@@ -175,6 +204,7 @@ class GraphService:
+             rel_label: Relationship label (ex: "IS_CONNECTED_TO")
+             **properties: Additional relationship properties
+         """
++        self._require_access("graph_service_create_relationship")
+ 
+         neo4j_rel_dict: GraphDict = GraphSerializer.graph_edge_to_neo4j_dict(
+             from_obj, to_obj, rel_label
+@@ -198,6 +228,7 @@ class GraphService:
+         to_element_id: str,
+         rel_label: str = "IS_RELATED_TO",
+     ):
++        self._require_access("graph_service_create_relationship_by_element_id")
+         return self._repository.create_relationship_by_element_id(
+             from_element_id=from_element_id,
+             to_element_id=to_element_id,
+@@ -206,6 +237,7 @@ class GraphService:
+         )
+ 
+     def get_neighbors(self, node_id: str) -> GraphData:
++        self._require_access("graph_service_get_neighbors")
+         graph_data = self._repository.get_neighbors(
+             node_id=node_id,
+             sketch_id=self._sketch_id,
+@@ -217,6 +249,7 @@ class GraphService:
+         return GraphData(nodes=nodes, edges=edges)
+ 
+     def update_node(self, element_id: str, updates: Dict[str, Any]) -> str | None:
++        self._require_access("graph_service_update_node")
+         flatten_updates = GraphSerializer.flatten(updates)
+         """Update a node by its element ID."""
+         return self._repository.update_node(
+@@ -226,6 +259,7 @@ class GraphService:
+         )
+ 
+     def update_nodes_positions(self, positions: List[Dict[str, Any]]) -> int:
++        self._require_access("graph_service_update_nodes_positions")
+         """Update positions (x, y) for multiple nodes in batch."""
+         return self._repository.update_nodes_positions(
+             positions=positions,
+@@ -233,6 +267,7 @@ class GraphService:
+         )
+ 
+     def delete_nodes(self, node_ids: List[str]) -> int:
++        self._require_access("graph_service_delete_nodes")
+         """Delete nodes by their element IDs."""
+         return self._repository.delete_nodes(
+             node_ids=node_ids,
+@@ -240,6 +275,7 @@ class GraphService:
+         )
+ 
+     def delete_relationships(self, relationship_ids: List[str]) -> int:
++        self._require_access("graph_service_delete_relationships")
+         """Delete relationships by their element IDs."""
+         return self._repository.delete_relationships(
+             relationship_ids=relationship_ids,
+@@ -247,6 +283,7 @@ class GraphService:
+         )
+ 
+     def delete_all_sketch_nodes(self) -> int:
++        self._require_access("graph_service_delete_all_sketch_nodes")
+         """Delete all nodes and relationships for the sketch."""
+         return self._repository.delete_all_sketch_nodes(
+             sketch_id=self._sketch_id,
+@@ -256,6 +293,7 @@ class GraphService:
+         self, element_id: str, properties: Dict[str, Any]
+     ) -> Dict[str, Any] | None:
+         """Update a relationship by its element ID."""
++        self._require_access("graph_service_update_relationship")
+         return self._repository.update_relationship(
+             element_id=element_id,
+             rel_obj=properties,
+@@ -269,6 +307,7 @@ class GraphService:
+         new_node_id: str | None = None,
+     ) -> str | None:
+         """Merge multiple nodes into one, transferring all relationships."""
++        self._require_access("graph_service_merge_nodes")
+         return self._repository.merge_nodes(
+             old_node_ids=old_node_ids,
+             new_node_data=new_node_data,
+@@ -278,6 +317,7 @@ class GraphService:
+ 
+     def batch_create_nodes(self, nodes: List[GraphDict]) -> Dict[str, Any]:
+         """Create multiple nodes in a single batch transaction."""
++        self._require_access("graph_service_batch_create_nodes")
+         return self._repository.batch_create_nodes(
+             nodes=nodes,
+             sketch_id=self._sketch_id,
+@@ -287,6 +327,7 @@ class GraphService:
+         self, edges: List[GraphDict]
+     ) -> Dict[str, Any]:
+         """Create multiple edges using element IDs in a single batch transaction."""
++        self._require_access("graph_service_batch_create_edges_by_element_id")
+         return self._repository.batch_create_edges_by_element_id(
+             edges=edges,
+             sketch_id=self._sketch_id,
+@@ -299,11 +340,13 @@ class GraphService:
+         Args:
+             message: Message to log
+         """
++        self._require_access("graph_service_log_graph_message")
+         if self._logger:
+             self._logger.graph_append(self._sketch_id, {"message": message})
+ 
+     def flush(self) -> None:
+         """Flush any pending batch operations."""
++        self._require_access("graph_service_flush")
+         if self._enable_batching:
+             self._repository.flush_batch()
+ 
+@@ -318,6 +361,7 @@ class GraphService:
+         Returns:
+             List of result records
+         """
++        self._require_access("graph_service_query")
+         return self._repository.query(cypher, parameters)
+ 
+     def set_batch_size(self, size: int) -> None:
+@@ -327,14 +371,17 @@ class GraphService:
+         Args:
+             size: Number of operations to batch
+         """
++        self._require_access("graph_service_set_batch_size")
+         self._repository.set_batch_size(size)
+ 
+     def __enter__(self):
+         """Context manager entry."""
++        self._require_access("graph_service_context_enter")
+         return self
+ 
+     def __exit__(self, exc_type, exc_val, exc_tb):
+         """Context manager exit - auto-flush batch."""
++        self._require_access("graph_service_context_exit")
+         if exc_type is None:
+             self.flush()
+ 
+@@ -343,6 +390,8 @@ def create_graph_service(
+     sketch_id: str,
+     enable_batching: bool = True,
+     type_resolver: Optional[TypeResolver] = None,
++    mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,
++    case_reference: str | None = None,
+ ) -> GraphService:
+     """
+     Factory function to create a GraphService instance with Neo4j repository.
+@@ -358,6 +407,12 @@ def create_graph_service(
+     Returns:
+         Configured GraphService instance
+     """
++    require_legacy_graph_access(
++        mode,
++        operation="graph_service_factory_construction",
++        case_reference=case_reference,
++    )
++
+     # Import Logger here to avoid circular imports
+     from flowsint_core.core.logger import Logger
+ 
+@@ -370,4 +425,6 @@ def create_graph_service(
+         logger=Logger,
+         enable_batching=enable_batching,
+         type_resolver=type_resolver,
++        mode=mode,
++        case_reference=case_reference,
+     )
+diff --git a/flowsint-core/src/flowsint_core/tasks/enricher.py b/flowsint-core/src/flowsint_core/tasks/enricher.py
+index 215b6600..1f8b8d08 100644
+--- a/flowsint-core/src/flowsint_core/tasks/enricher.py
++++ b/flowsint-core/src/flowsint_core/tasks/enricher.py
+@@ -22,6 +22,8 @@ from ..core.connector_egress import (
+ )
+ from ..core.enums import EventLevel
+ from ..core.logger import Logger
++from ..core.forensics import LegacyExecutionTask, legacy_execution_boundary
++
+ from ..core.models import Scan
+ from ..core.projection.contracts import ProjectionError
+ from ..core.projection.registry import projection_registry
+@@ -36,6 +38,7 @@ load_all_enrichers()
+ 
+ db: Session = next(get_db())
+ 
++
+ def _get_or_create_scan(session, scan_id, sketch_id):
+     dialect = session.get_bind().dialect.name
+     values = {
+@@ -59,14 +62,15 @@ def _get_or_create_scan(session, scan_id, sketch_id):
+     return current_scan
+ 
+ 
+-
+-@celery.task(name="run_enricher", bind=True)
++@celery.task(name="run_enricher", bind=True, base=LegacyExecutionTask)
++@legacy_execution_boundary("legacy_run_enricher_task")
+ def run_enricher(
+     self,
+     enricher_name: str,
+     serialized_objects: List[dict],
+     sketch_id: str | None,
+     owner_id: Optional[str] = None,
++    params: Dict[str, Any] | None = None,
+ ):
+     session = SessionLocal()
+ 
+@@ -94,11 +98,15 @@ def run_enricher(
+         if not ENRICHER_REGISTRY.enricher_exists(enricher_name):
+             raise ValueError(f"Enricher '{enricher_name}' not found in registry")
+ 
++        run_params = params or {}
++        run_params = ENRICHER_REGISTRY.filter_params(enricher_name, run_params)
++
+         enricher = ENRICHER_REGISTRY.get_enricher(
+             name=enricher_name,
+             sketch_id=sketch_id,
+             scan_id=scan_id,
+             vault=vault,
++            params=run_params,
+         )
+ 
+         # Deserialize objects back into Pydantic models
+diff --git a/flowsint-enrichers/src/flowsint_enrichers/registry.py b/flowsint-enrichers/src/flowsint_enrichers/registry.py
+index f21fc95a..c01eced9 100644
+--- a/flowsint-enrichers/src/flowsint_enrichers/registry.py
++++ b/flowsint-enrichers/src/flowsint_enrichers/registry.py
+@@ -48,6 +48,15 @@ class EnricherRegistry:
+             raise Exception(f"Enricher '{name}' not found")
+         return self._enrichers[name](sketch_id=sketch_id, scan_id=scan_id, **kwargs)
+ 
++    def get_enricher_params(self, name: str) -> Dict[str, Dict[str, Any]]:
++        if name not in self._enrichers:
++            raise Exception(f"Enricher '{name}' not found")
++        return {param["name"]: param for param in self._enrichers[name].get_params_schema()}
++
++    def filter_params(self, name: str, params: Dict[str, Any]) -> Dict[str, Any]:
++        allowed = self.get_enricher_params(name).keys()
++        return {param_name: value for param_name, value in params.items() if param_name in allowed}
++
+     def _create_enricher_metadata(self, enricher: Type[Enricher]) -> Dict[str, str]:
+         """Helper method to create enricher metadata dictionary."""
+         return {
+diff --git a/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py b/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py
+index 2fdb3203..b0df927c 100644
+--- a/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py
++++ b/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py
+@@ -105,6 +105,20 @@ class WebsiteToText(Enricher):
+                 "label": "Request timeout (seconds)",
+                 "description": "Timeout for each HTTP request",
+             },
++            {
++                "name": "enable_gpu",
++                "type": "bool",
++                "default": True,
++                "label": "Enable GPU postprocessing",
++                "description": "Use GPU-accelerated dedupe and batch transforms when available",
++            },
++            {
++                "name": "gpu_provider",
++                "type": "string",
++                "default": "auto",
++                "label": "GPU provider",
++                "description": "GPU implementation selector: auto/cupy/cudf/none",
++            },
+         ]
+ 
+     # ------------------------------------------------------------------
+@@ -298,17 +312,22 @@ class WebsiteToText(Enricher):
+         if not results:
+             return results
+ 
+-        if HAS_CUPY:
+-            results = self._gpu_deduplicate(results)
+-        if HAS_CUDF:
+-            results = self._gpu_batch_transform(results)
++        enable_gpu = bool(self.params.get("enable_gpu", True))
++        gpu_provider = str(self.params.get("gpu_provider", "auto")).strip().lower()
++
++        if enable_gpu and gpu_provider not in {"none", "false", "0", "off"}:
++            if gpu_provider in {"auto", "cupy"} and HAS_CUPY:
++                results = self._gpu_deduplicate(results)
++            if gpu_provider in {"auto", "cudf"} and HAS_CUDF:
++                results = self._gpu_batch_transform(results)
+ 
+         if HAS_CUPY or HAS_CUDF:
+             Logger.info(
+                 self.sketch_id,
+                 {
+                     "message": (
+-                        f"GPU postprocess: cupy={HAS_CUPY} cudf={HAS_CUDF} "
++                        f"GPU postprocess enabled: provider={gpu_provider}, "
++                        f"cupy={HAS_CUPY}, cudf={HAS_CUDF}, "
+                         f"processed {len(results)} results"
+                     )
+                 },

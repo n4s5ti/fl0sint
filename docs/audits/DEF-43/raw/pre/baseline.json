@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+  "environment": {},
+  "rc": 0,
+  "started": 1790558065.220696,
+  "seconds": 0.002173185348510742
+}

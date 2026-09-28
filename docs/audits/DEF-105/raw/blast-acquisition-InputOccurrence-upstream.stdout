@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+        "name": "InputOccurrence",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 113,
+        "endLine": 124,
+        "content": "class InputOccurrence(ContractModel):     occurrence_id: Identifier     input_ref: Digest     type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]     value: FiniteJSON     lineage: ImportedLineage | None = None     @model_validator(mode=\"after\")     def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+            "name": "InputOccurrence",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 113,
+            "endLine": 124,
+            "content": "class InputOccurrence(ContractModel):     occurrence_id: Identifier     input_ref: Digest     type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]     value: FiniteJSON     lineage: ImportedLineage | None = None     @model_validator(mode=\"after\")     def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                    "name": "InputOccurrence",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 113,
+                    "endLine": 124,
+                    "content": "class InputOccurrence(ContractModel):     occurrence_id: Identifier     input_ref: Digest     type_tag: Annotated[str, Field(pattern=r\"^[a-z][a-z0-9_.-]{0,63}$\")]     value: FiniteJSON     lineage: ImportedLineage | None = None     @model_validator(mode=\"after\")     def check_input_hash(self):         if self.input_ref != canonical_input_hash(self.value):             raise ValueError(\"input_ref does not match canonical input value\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

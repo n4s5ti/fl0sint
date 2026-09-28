@@ -13,21 +13,16 @@ from flowsint_core.core.services.template_generator_service import (
 
 
 VALID_YAML = """\
-name: ip-api-lookup
+name: ip-directory-lookup
 category: Ip
 version: 1.0
 input:
   type: Ip
   key: address
-request:
-  method: GET
-  url: http://ip-api.com/json/{{address}}
-  timeout: 30
-response:
-  expect: json
-  map:
-    address: query
-    country: country
+connector:
+  destination_id: approved_ip_directory
+  endpoint_id: lookup
+  capability: enrich.read
 output:
   type: Ip
 """
@@ -39,6 +34,25 @@ Here is the template:
 {VALID_YAML}```
 
 Let me know if you need changes.
+"""
+
+
+LEGACY_ARBITRARY_URL_YAML = """\
+name: unsafe-legacy-lookup
+category: Ip
+version: 1.0
+input:
+  type: Ip
+  key: address
+request:
+  method: GET
+  url: https://unapproved.example/{{address}}
+response:
+  expect: json
+  map:
+    address: query
+output:
+  type: Ip
 """
 
 INVALID_YAML = """\
@@ -93,7 +107,7 @@ class TestTemplateGeneratorService:
         with patch.object(service, "_get_llm_provider", return_value=mock_provider):
             result = await service.generate("lookup IP geolocation", uuid4())
 
-        assert "name: ip-api-lookup" in result
+        assert "name: ip-directory-lookup" in result
         assert "category: Ip" in result
         # Verify provider.complete was called with system + user messages
         mock_provider.complete.assert_called_once()
@@ -113,7 +127,7 @@ class TestTemplateGeneratorService:
             result = await service.generate("lookup IP geolocation", uuid4())
 
         assert "```" not in result
-        assert "name: ip-api-lookup" in result
+        assert "name: ip-directory-lookup" in result
 
     @pytest.mark.asyncio
     async def test_generate_invalid_yaml_raises(self):
@@ -134,6 +148,16 @@ class TestTemplateGeneratorService:
         with patch.object(service, "_get_llm_provider", return_value=mock_provider):
             with pytest.raises(ValidationError, match="failed validation"):
                 await service.generate("do something", uuid4())
+
+    @pytest.mark.asyncio
+    async def test_generate_rejects_legacy_arbitrary_url_template(self):
+        service = _make_service()
+        mock_provider = MagicMock()
+        mock_provider.complete = AsyncMock(return_value=LEGACY_ARBITRARY_URL_YAML)
+
+        with patch.object(service, "_get_llm_provider", return_value=mock_provider):
+            with pytest.raises(ValidationError, match="failed validation"):
+                await service.generate("use an arbitrary URL", uuid4())
 
     @pytest.mark.asyncio
     async def test_generate_non_dict_yaml_raises(self):
@@ -160,10 +184,13 @@ class TestTemplateGeneratorService:
         assert "name" in system_prompt
         assert "category" in system_prompt
         assert "input" in system_prompt
-        assert "request" in system_prompt
-        assert "response" in system_prompt
+        assert "connector" in system_prompt
+        assert "destination_id" in system_prompt
+        assert "endpoint_id" in system_prompt
+        assert "enrich.read" in system_prompt
         assert "output" in system_prompt
-        assert "secrets" in system_prompt
+        assert "projection" in system_prompt
         # Verify examples are present
-        assert "ip-api-lookup" in system_prompt
-        assert "api-with-secrets" in system_prompt
+        assert "ip-directory-lookup" in system_prompt
+        assert "projected-ip-lookup" in system_prompt
+        assert "Never emit URLs" in system_prompt

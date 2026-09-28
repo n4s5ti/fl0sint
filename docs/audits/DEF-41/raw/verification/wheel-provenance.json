@@ -1,0 +1,22 @@
+{
+  "wheel": "flowsint_core-1.2.8-py3-none-any.whl",
+  "wheel_sha256": "bd3e8fbc60fa29649da7a47abec8005bccf84ae462b03b18444f7924d223d086",
+  "source_members": [
+    {
+      "path": "flowsint-core/src/flowsint_execution/__init__.py",
+      "wheel_member": "flowsint_execution/__init__.py",
+      "sha256": "fd5ae93fdce1ef02f5994098d350b135bf4067a6ec81c22cca83b9999ca06c63"
+    },
+    {
+      "path": "flowsint-core/src/flowsint_execution/models.py",
+      "wheel_member": "flowsint_execution/models.py",
+      "sha256": "dfbff64db850c5c99b0cd619571244f11e6a1081d261793f475b1fed7ece65d4"
+    },
+    {
+      "path": "flowsint-core/src/flowsint_execution/acquisition.py",
+      "wheel_member": "flowsint_execution/acquisition.py",
+      "sha256": "faaec3e705ac4db321053e292d34bc6fc58b3d1d05585ca14ee8435433b1d10c"
+    }
+  ],
+  "old_module_absent": true
+}

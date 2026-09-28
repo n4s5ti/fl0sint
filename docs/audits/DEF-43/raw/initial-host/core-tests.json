@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-core",
+  "pythonpath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-mcp-server/src",
+  "rc": 1,
+  "seconds": 29.512664079666138
+}

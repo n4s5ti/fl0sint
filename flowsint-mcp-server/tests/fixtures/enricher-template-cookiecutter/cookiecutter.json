@@ -1,0 +1,6 @@
+{
+  "project_slug": "flowsint-template",
+  "template_name": "template-cookiecutter",
+  "template_category": "test",
+  "template_request_url": "https://example.com/{value}"
+}

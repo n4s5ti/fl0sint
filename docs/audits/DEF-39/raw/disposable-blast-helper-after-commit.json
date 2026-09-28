@@ -1,0 +1,160 @@
+{
+    "symbol": "helper",
+    "repo": "noindex-repo",
+    "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:src/lib.py:helper",
+        "name": "helper",
+        "filePath": "src/lib.py",
+        "nodeType": "Function",
+        "startLine": 1,
+        "endLine": 2,
+        "content": "def helper():     return 1"
+    },
+    "symbols": [
+        {
+            "id": "Function:src/lib.py:helper",
+            "name": "helper",
+            "filePath": "src/lib.py",
+            "nodeType": "Function",
+            "startLine": 1,
+            "endLine": 2,
+            "content": "def helper():     return 1"
+        },
+        {
+            "id": "Function:src/app.py:caller",
+            "name": "caller",
+            "filePath": "src/app.py",
+            "nodeType": "Function",
+            "startLine": 3,
+            "endLine": 4,
+            "content": "def caller():     return helper() + 1"
+        },
+        {
+            "id": "Function:src/app.py:top",
+            "name": "top",
+            "filePath": "src/app.py",
+            "nodeType": "Function",
+            "startLine": 6,
+            "endLine": 7,
+            "content": "def top():     return caller()"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:src/app.py:caller",
+            "to": "Function:src/lib.py:helper",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:src/app.py:top",
+            "to": "Function:src/app.py:caller",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "src/lib.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:src/lib.py:helper",
+                    "name": "helper",
+                    "filePath": "src/lib.py",
+                    "nodeType": "Function",
+                    "startLine": 1,
+                    "endLine": 2,
+                    "content": "def helper():     return 1"
+                }
+            ]
+        },
+        {
+            "filePath": "src/app.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:caller",
+                    "name": "caller",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 3,
+                    "endLine": 4,
+                    "content": "def caller():     return helper() + 1"
+                },
+                {
+                    "id": "Function:src/app.py:top",
+                    "name": "top",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 6,
+                    "endLine": 7,
+                    "content": "def top():     return caller()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "src",
+            "direct": true,
+            "symbolCount": 2
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:caller",
+                    "name": "caller",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 3,
+                    "endLine": 4,
+                    "content": "def caller():     return helper() + 1"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:src/app.py:top",
+                    "name": "top",
+                    "filePath": "src/app.py",
+                    "nodeType": "Function",
+                    "startLine": 6,
+                    "endLine": 7,
+                    "content": "def top():     return caller()"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "rootPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo",
+        "repo": "noindex-repo",
+        "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+        "symbol": "helper",
+        "rootSymbols": 1,
+        "totalSymbols": 3,
+        "totalEdges": 2,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

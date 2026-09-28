@@ -1,0 +1,7 @@
+{
+  "command": "pip3r blast InputOutcome --direction upstream --include-tests --no-auto-index --json",
+  "argv": ["pip3r", "blast", "InputOutcome", "--direction", "upstream", "--include-tests", "--no-auto-index", "--json"],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "env": {"PIP3R_DISCLOSURE": "off"},
+  "timestamp": "2026-09-26T00:00:00Z"
+}

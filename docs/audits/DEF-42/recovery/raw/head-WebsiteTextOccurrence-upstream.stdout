@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+    "repo": "fl0sint-def42-s02",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+        "name": "WebsiteTextOccurrence",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Class",
+        "startLine": 51,
+        "endLine": 67,
+        "content": "class WebsiteTextOccurrence:     \"\"\"Immutable ownership record that survives concurrent transport work.\"\"\"     source: Website     index: int     input_ref: str     status: OutcomeStatus     outputs: tuple[Phrase, ...] = ()     diagnostic: RedactedDiagnostic | None = None     def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "name": "WebsiteTextOccurrence",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Class",
+            "startLine": 51,
+            "endLine": 67,
+            "content": "class WebsiteTextOccurrence:     \"\"\"Immutable ownership record that survives concurrent transport work.\"\"\"     source: Website     index: int     input_ref: str     status: OutcomeStatus     outputs: tuple[Phrase, ...] = ()     diagnostic: RedactedDiagnostic | None = None     def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+                    "name": "WebsiteTextOccurrence",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Class",
+                    "startLine": 51,
+                    "endLine": 67,
+                    "content": "class WebsiteTextOccurrence:     \"\"\"Immutable ownership record that survives concurrent transport work.\"\"\"     source: Website     index: int     input_ref: str     status: OutcomeStatus     outputs: tuple[Phrase, ...] = ()     diagnostic: RedactedDiagnostic | None = None     def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+        "repo": "fl0sint-def42-s02",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

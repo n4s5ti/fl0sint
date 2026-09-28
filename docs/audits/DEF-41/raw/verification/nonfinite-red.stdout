@@ -1,0 +1,16 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_serializer_rejects_nonfinite_before_json_can_turn_it_into_null ______
+
+    def test_serializer_rejects_nonfinite_before_json_can_turn_it_into_null():
+        inp = a.InputOccurrence(occurrence_id="null", input_ref=canonical_input_hash(None), type_tag="json", value=None)
+        req = request((inp,))
+        corrupt = inp.model_copy(update={"value": float("nan")})
+>       with pytest.raises(a.ContractError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ContractError
+
+tests/acquisition/test_contract.py:216: Failed
+=========================== short test summary info ============================
+FAILED tests/acquisition/test_contract.py::test_serializer_rejects_nonfinite_before_json_can_turn_it_into_null - Failed: DID NOT RAISE ContractError
+1 failed, 43 deselected in 0.17s

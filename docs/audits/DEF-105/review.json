@@ -1,0 +1,58 @@
+{
+  "reviewer": {
+    "identity": "OMP task subagent `reviewer` (adversarial-review, anthropic/claude-fable-5), agent id Def105PacketReview, read-only, separate process from the author session",
+    "author": "OMP session anthropic/claude-fable-5-1 (same model family as reviewer \u2014 self-review limitation: both are Claude models; the reviewer independently re-ran Blast/Cypher/Doctor commands and recomputed inventories, but is not a human or a different vendor)"
+  },
+  "verdict": "PASS (after re-verification of F1/F2)",
+  "confirmed": [
+    "R1 traversal repair reproduced live (105/116/90; CALLS-only 17/18/8)",
+    "R2 UNKNOWN roots have no CALLS edges in the index (fresh Cypher, only DEFINES)",
+    "R3 import inventory 15 vs 8 (7 external) and the 8 missing files recomputed",
+    "R4 Doctor build_bundle: unwired_export/60/wave 2/'verify consumers before deleting', rerun identical",
+    "R5 Hunt exit paths and N/A classification",
+    "R6 provenance: pip3r HEAD, clean repaired packages, six dist hashes, clean worktree",
+    "R7 drift 0 before/after",
+    "R8 93/2 passed, verify-installed PASS, wheel hash equals DEF-41 final wheel",
+    "R9 no promotion of UNKNOWN/N-A to PASS; DEF-41 not claimed closed",
+    "R10 counts 24/8/16/24/49 consistent with raw/summary.json"
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "minor",
+      "finding": "Executed Python route resolved package bytes from the shared venv editable install (main checkout), not the worktree; disclose.",
+      "resolution": "Disclosed in acceptance.md \u00a75 with the cmp/diff proof that the bytes are identical; wheel-based second caller uses worktree-built bytes.",
+      "status": "fixed"
+    },
+    {
+      "id": "F2",
+      "severity": "minor",
+      "finding": "Rebuilt wheel SHA-256 not captured under raw/.",
+      "resolution": "raw/wheel-sha256.txt added; acceptance.md points to it.",
+      "status": "fixed"
+    }
+  ],
+  "full_output": "agent://Def105PacketReview (transcript history://Def105PacketReview) \u2014 not persisted beyond the session; the confirmed/finding lists above are the retained record.",
+  "reverification": {
+    "requested": "F1/F2 fixes sent back to the same reviewer agent (Def105PacketReview) per pickup skill \u00a74",
+    "result": [
+      {
+        "id": "F1",
+        "status": "verified",
+        "evidence": "Reviewer read acceptance.md:102-110; independently re-ran git diff --name-only 1198f29e cbad468d (non-docs empty) and cmp of acquisition.py/models.py/__init__.py between main checkout and worktree (identical); confirmed worktree-built bytes are claimed only for the wheel-based second caller."
+      },
+      {
+        "id": "F2",
+        "status": "verified",
+        "evidence": "raw/wheel-sha256.txt present; fresh sha256sum of /tmp/def105/wheel/*.whl = bd3e8fbc60fa29649da7a47abec8005bccf84ae462b03b18444f7924d223d086, equal to recorded line and DEF-41 release.md."
+      },
+      {
+        "id": "commit",
+        "status": "verified",
+        "evidence": "git show --stat c9296e3c includes acceptance.md and raw/wheel-sha256.txt."
+      }
+    ],
+    "final_verdict": "PASS",
+    "new_findings": []
+  }
+}

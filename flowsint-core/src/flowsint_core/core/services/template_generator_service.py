@@ -22,114 +22,87 @@ from flowsint_core.templates.types import Template
 
 _SYSTEM_PROMPT = """\
 You are a YAML template generator for Flowsint enrichers. Given a user's description, \
-generate a valid enricher template in YAML format.
+generate a valid registry-backed enricher template in YAML format.
+
+## Security Boundary
+
+Templates select deployment-approved connector identifiers. They never define network \
+destinations, HTTP methods, paths, headers, query parameters, request bodies, response \
+mappings, or secret placement. Never emit a `request` or `response` section and never \
+emit a URL. Inventing an identifier is not authority: runtime rejects identifiers that \
+are absent from the deployment's destination registry.
 
 ## Template Schema
 
-A template has the following fields:
-
 ### Required fields:
-- `name` (str): Unique name for the template (lowercase, hyphenated, e.g. "ip-api-lookup")
-- `category` (str): Category matching the input type (e.g. "Ip", "Domain", "Username", "Email")
-- `version` (float): Template version, start at 1.0
-- `input`: Input configuration
-  - `type` (str, required): The Flowsint type this template accepts (e.g. "Ip", "Domain", "Username", "Email")
-  - `key` (str, default "nodeLabel"): The attribute to extract from the input for use in the template URL/body
-- `request`: HTTP request configuration
-  - `method` (str): "GET" or "POST"
-  - `url` (str): URL with {{variable}} placeholders (e.g. "http://api.example.com/lookup/{{address}}")
-  - `headers` (dict, optional): HTTP headers, values can use {{variable}} or {{secrets.SECRET_NAME}} placeholders
-  - `params` (dict, optional): Query parameters
-  - `body` (str, optional): Request body for POST requests
-  - `timeout` (float, default 30): Request timeout in seconds (1-300)
-- `response`: Response parsing configuration
-  - `expect` (str): Expected format - "json", "xml", or "text"
-  - `map` (dict): Mapping from output type field names to response paths (supports dot notation for nested fields)
-- `output`: Output configuration
-  - `type` (str, required): The Flowsint type to return (e.g. "Ip", "Domain", "SocialAccount")
-  - `is_array` (bool, default false): Whether the response produces multiple outputs
-  - `array_path` (str, optional): Dot-notation path to the array in response (e.g. "data.results")
+- `name` (str): Unique lowercase, hyphenated template name
+- `category` (str): Category matching the input type
+- `version` (float): Template version, starting at 1.0
+- `input`:
+  - `type` (str): Flowsint input type
+  - `key` (str, default `nodeLabel`): Input field used by the approved endpoint
+- `connector`:
+  - `destination_id` (str): Deployment-approved destination identifier
+  - `endpoint_id` (str): Approved endpoint identifier under that destination
+  - `capability`: Must be exactly `enrich.read`
+- `output`:
+  - `type` (str): Flowsint output type configured for the approved endpoint
 
 ### Optional fields:
-- `description` (str): Human-readable description of what the template does
-- `secrets`: List of secrets the template requires (fetched from user's vault)
-  - `name` (str): Secret name, used as {{secrets.NAME}} in the template
-  - `required` (bool, default true): Whether the secret is required
-  - `description` (str, optional): What the secret is used for
-- `retry`: Retry configuration for failed requests
-  - `max_retries` (int, default 3, 0-10)
-  - `backoff_factor` (float, default 0.5, 0.1-10.0)
-  - `retry_on_status` (list[int], default [429, 500, 502, 503, 504])
-
-## Variable Placeholders
-
-- `{{key}}` — replaced with the input value (where `key` is `input.key`, e.g. `{{address}}` for IP)
-- `{{secrets.SECRET_NAME}}` — replaced with the secret value from the user's vault
+- `description` (str): Human-readable description
+- `execution_mode`: Must remain `preview`
+- `evidence`: Bounded provenance metadata (`source_rights`, `schema_version`, \
+  `parser_version`, `confidence`, and `verification_state`)
+- `projection`: Reference to a system-approved graph projection profile
+  - `profile_id` (str): Approved profile identifier
+  - `revision` (int): Approved profile revision
 
 ## Examples
 
-### Example 1: Simple GET lookup (no auth)
+### Example 1: Approved IP lookup
 ```yaml
-name: ip-api-lookup
+name: ip-directory-lookup
 category: Ip
 version: 1.0
 input:
   type: Ip
   key: address
-request:
-  method: GET
-  url: http://ip-api.com/json/{{address}}
-  params:
-    fields: query,status,country,city,lat,lon,isp
-  timeout: 30
-response:
-  expect: json
-  map:
-    address: query
-    latitude: lat
-    longitude: lon
-    country: country
-    city: city
-    isp: isp
+connector:
+  destination_id: approved_ip_directory
+  endpoint_id: lookup
+  capability: enrich.read
 output:
   type: Ip
 ```
 
-### Example 2: With API key authentication
+### Example 2: Approved lookup with graph projection
 ```yaml
-name: api-with-secrets
+name: projected-ip-lookup
 category: Ip
 version: 1.0
 input:
   type: Ip
   key: address
-secrets:
-  - name: API_KEY
-    required: true
-    description: API key for the service
-request:
-  method: GET
-  url: https://api.example.com/lookup/{{address}}
-  headers:
-    Authorization: "Bearer {{secrets.API_KEY}}"
-  timeout: 30
+connector:
+  destination_id: approved_commercial_ip
+  endpoint_id: lookup
+  capability: enrich.read
 output:
   type: Ip
-response:
-  expect: json
-  map:
-    address: ip
-    country: country
+projection:
+  profile_id: ip_observations
+  revision: 1
 ```
 
 ## Instructions
 
-- Output ONLY the YAML template. No explanations, no markdown fences, no extra text.
-- Infer the appropriate category, input type, and output type from the user's description.
-- Use realistic field mappings based on common API response structures.
-- If the API likely requires authentication, include a `secrets` section.
-- Keep the template simple and focused on what the user asked for.
-- IMPORTANT: Always quote values that contain {{...}} placeholders, e.g. `x-apikey: "{{secrets.API_KEY}}"`. Unquoted curly braces are invalid YAML.
+- Output only the YAML template: no explanations or markdown fences.
+- Infer category and input/output types from the user's description.
+- Select only connector identifiers supplied by the user or deployment context; do not \
+  invent destination authority.
+- Capability must be exactly `enrich.read`. Never emit outreach or transaction authority.
+- Never emit URLs, methods, paths, headers, parameters, bodies, response mappings, or \
+  secret values/placement.
 """
 
 
@@ -142,14 +115,6 @@ def _extract_yaml(text: str) -> str:
     return text.strip()
 
 
-def _quote_template_placeholders(yaml_str: str) -> str:
-    """Quote unquoted {{...}} placeholders that would break YAML parsing."""
-    return re.sub(
-        r"(:\s+)(\{\{[^}]+\}\})\s*$",
-        r'\1"\2"',
-        yaml_str,
-        flags=re.MULTILINE,
-    )
 
 
 class TemplateGeneratorService(BaseService):
@@ -185,7 +150,8 @@ class TemplateGeneratorService(BaseService):
             parts.append(
                 f"## Output type: {output_type}\n"
                 f"The template MUST use `output.type: {output_type}`.\n"
-                f"The `response.map` keys MUST only use fields from this schema:\n"
+                "Select only an approved connector endpoint configured to return this type.\n"
+                f"Schema (fields produced by that endpoint):\n"
                 f"```json\n{json.dumps(output_schema, indent=2)}\n```"
             )
         return "\n\n".join(parts)
@@ -226,8 +192,8 @@ class TemplateGeneratorService(BaseService):
             system_content += (
                 "\n\n## Type Constraints (from the user's selection)\n\n"
                 + type_context
-                + "\n\nYou MUST respect the input and output types above. "
-                "Only use fields that exist in the provided schemas for the response.map keys."
+                + "\n\nThe selected approved connector endpoint must match both types. "
+                "Never add template-authored transport or response-mapping fields."
             )
 
         messages = [
@@ -237,7 +203,6 @@ class TemplateGeneratorService(BaseService):
 
         response = await provider.complete(messages)
         yaml_str = _extract_yaml(response)
-        yaml_str = _quote_template_placeholders(yaml_str)
 
         # Validate the YAML
         try:

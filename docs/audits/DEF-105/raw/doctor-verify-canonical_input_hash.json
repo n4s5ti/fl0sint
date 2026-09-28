@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "pip3r",
+    "doctor",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--verify-refactor",
+    "canonical_input_hash",
+    "--json"
+  ],
+  "rc": 0,
+  "wallSeconds": 1.716,
+  "stdout_sha256": "7821688f4f04f5be3b85f6542189b3d4a63deea2a69d9a3d88b0cef73e8228e0",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

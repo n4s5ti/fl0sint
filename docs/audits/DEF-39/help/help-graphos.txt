@@ -1,0 +1,49 @@
+USAGE
+  pip3r graphos [--status] [--repos] [--cypher value] [--search value] [--from value] [--to value] [--drift] [--deps] [--refs value] [--tree] [--symbols value] [--file-path value] [--line value] [--hotspots] [--explain value] [--clean] [--all] [--force] [--export-flag] [--write] [--inspect value] [--cwd value] [--path value] [--repo value] [--lbug-path value] [--json] [--limit value] [--content] [--depth value] [--direction value] [--index] [--index-path value] [--shallow] [--incremental] [--embeddings] [--write-context] [--no-auto-index]
+  pip3r graphos --help
+
+Graph-powered code intelligence — scout, plan, build, verify, ship
+
+ALIASES
+  pip3r graph
+
+FLAGS
+     [--status]         Show index status for current repo                                                                                                                    [default = false]
+     [--repos]          List indexed repositories visible to this GraphOS context                                                                                             [default = false]
+     [--cypher]         Raw graph query (Cypher)
+     [--search]         [scout] Search symbol/file graph content
+     [--from]           [trace] Source symbol name
+     [--to]             [trace] Target symbol name
+     [--drift]          [drift] Detect symbols that have drifted from the graph index                                                                                         [default = false]
+     [--deps]           [deps] List file-level import dependencies                                                                                                            [default = false]
+     [--refs]           [refs] Find callers and callees for a symbol
+     [--tree]           [tree] List indexed files from the graph                                                                                                              [default = false]
+     [--symbols]        [symbols] List symbols under a path prefix
+     [--file-path]      [tree/context] Tree mode: repository-relative path prefix to filter file listing. Context mode: file path for line-context lookup
+     [--line]           [context] Line number for context lookup
+     [--hotspots]       [hotspots] Find high-centrality symbols by fan-in/fan-out                                                                                             [default = false]
+     [--explain]        [explain] Summarize a symbol's role from its connectivity
+     [--clean]          [clean] Delete graph index registration for the current repo                                                                                          [default = false]
+     [--all]            [clean] Apply to all registered graph indexes                                                                                                         [default = false]
+     [--force]          [clean] Confirm deletion                                                                                                                              [default = false]
+     [--export-flag]    [export] Export file-tree and symbol data from the graph                                                                                              [default = false]
+     [--write]          Allow write/DDL Cypher with --cypher                                                                                                                  [default = false]
+     [--inspect]        [scout] 360-degree symbol view (callers, callees, processes)
+     [--cwd]            Target directory to analyze
+     [--path]           Repository path override — selects the repo root for the operation. Use --file-path for prefix-based subtree filtering within the resolved repository
+  -r [--repo]           Target repository (when multiple indexed)
+     [--lbug-path]      Path to the LadybugDB read model
+     [--json]           Structured JSON output                                                                                                                                [default = false]
+  -n [--limit]          Max results (search, cypher)
+     [--content]        Include source content (trace, inspect)                                                                                                               [default = false]
+  -d [--depth]          Traversal depth (inspect, blast)                                                                                                                      [default = 1]
+     [--direction]      upstream or downstream (inspect, blast)                                                                                                               [default = upstream]
+     [--index]          [build] Index a repository (creates .gitnexus/lbug)                                                                                                   [default = false]
+     [--index-path]     [index] Path to repository to index
+     [--shallow]        [index] Unsupported by the transitional GitNexus backend                                                                                              [default = false]
+     [--incremental]    [index] Only process changed files (requires existing index)                                                                                          [default = false]
+     [--embeddings]     [index] Enable embedding generation                                                                                                                   [default = false]
+     [--write-context]  [index] Unsupported by the transitional GitNexus backend                                                                                              [default = false]
+     [--no-auto-index]  Do not build or register graph indexes during read operations                                                                                         [default = false]
+  -h  --help            Print help information and exit
+      --                All subsequent inputs should be interpreted as arguments

@@ -1,0 +1,37 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured",
+    "repo": "fl0sint-def42-baseline-audit",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+    "direction": "downstream",
+    "risk": "UNKNOWN",
+    "target": null,
+    "symbols": [],
+    "edges": [],
+    "files": [],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+        "repo": "fl0sint-def42-baseline-audit",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured",
+        "rootSymbols": 0,
+        "totalSymbols": 0,
+        "totalEdges": 0,
+        "filesMatched": 0,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "hint": "Symbol \"execute_structured\" not found in \"flowsint-enrichers/src/flowsint_enrichers/website/to_text.py\" — found in: flowsint-api/tests/test_template_egress.py, flowsint-core/src/flowsint_core/core/enricher_base.py, flowsint-core/src/flowsint_core/core/template_enricher.py, flowsint-core/tests/services/test_template_execution_task.py",
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "qualified-symbol-not-found"
+    ],
+    "indexStatus": "ready"
+}

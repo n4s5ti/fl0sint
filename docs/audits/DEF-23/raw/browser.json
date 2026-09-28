@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-09-26T01:28:21.364Z",
+  "source_revision": "44f62863d208703982f8f50e6fcda30363a9a27d",
+  "results": [
+    {
+      "case": "render-only-contact",
+      "text": "Mira Quill is the studio lead at Violet Loom. Public work contact: mira.quill@violet-loom.example.",
+      "visible": true
+    },
+    {
+      "case": "public-click-reveal-contact",
+      "before": "Public contact card is collapsed.",
+      "after": "Ivo Reed is the project lead at Copper Finch. Public work contact: ivo.reed@copper-finch.example.",
+      "visible": true
+    }
+  ],
+  "offhost_requests": []
+}

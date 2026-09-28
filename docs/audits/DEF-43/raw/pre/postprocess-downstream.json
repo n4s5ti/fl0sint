@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "--json",
+    "--no-auto-index",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "downstream",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:postprocess"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+  "environment": {},
+  "rc": 0,
+  "started": 1790558102.8444934,
+  "seconds": 0.7542581558227539
+}

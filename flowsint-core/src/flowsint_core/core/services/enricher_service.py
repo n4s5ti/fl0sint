@@ -8,6 +8,7 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from ..repositories import CustomTypeRepository, EnricherTemplateRepository
+from flowsint_core.templates.types import Template
 from .base import BaseService
 
 
@@ -46,10 +47,41 @@ class EnricherService(BaseService):
     def get_all_enrichers(
         self, category: Optional[str], user_id: UUID, enricher_registry
     ) -> list:
-        base_enrichers = self.get_enrichers(category, user_id, enricher_registry)
-        template_enrichers = self._enricher_template_repo.get_by_owner(
-            user_id, category
-        )
+        base_enrichers = [
+            {
+                **enricher,
+                "id": enricher.get("id", enricher["name"]),
+                "source": "builtin",
+                "type": enricher.get("type", "builtin"),
+            }
+            for enricher in self.get_enrichers(category, user_id, enricher_registry)
+        ]
+        template_enrichers = []
+        for record in self._enricher_template_repo.get_by_owner(user_id, category):
+            try:
+                template = Template.model_validate(record.content)
+            except Exception:
+                continue
+            template_enrichers.append(
+                {
+                    "id": str(record.id),
+                    "source": "template",
+                    "type": "template",
+                    "name": template.name,
+                    "description": template.description,
+                    "category": template.category,
+                    "class_name": "TemplateEnricher",
+                    "module": "flowsint_core.core.template_enricher",
+                    "documentation": None,
+                    "inputs": {"type": template.input.type, "properties": []},
+                    "outputs": {"type": template.output.type, "properties": []},
+                    "required_params": False,
+                    "params": {},
+                    "params_schema": [],
+                    "icon": None,
+                    "wobblyType": False,
+                }
+            )
         return [*base_enrichers, *template_enrichers]
 
 

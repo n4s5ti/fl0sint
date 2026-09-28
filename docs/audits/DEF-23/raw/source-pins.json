@@ -1,0 +1,102 @@
+{
+  "base": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+  "head": "44f62863d208703982f8f50e6fcda30363a9a27d",
+  "files": [
+    {
+      "path": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+      "historical_sha256": "b985b93991790daf97aadfddeb8f21b3e4f3f9c79b1afffe82bdc57b669ecfcb",
+      "current_sha256": "c717f33b90063ceb5c0fb9630417808e4593cc7f252f026f980afc93d69f40cb",
+      "changed": true
+    },
+    {
+      "path": "flowsint-enrichers/src/flowsint_enrichers/registry.py",
+      "historical_sha256": "e9a75c6d91f0f569bc7adf57f08e578d8370362e140f5485aa0f5ea07eb690c8",
+      "current_sha256": "11924de53602fc6d829d1397b32cf612189fdd3fb9f673811b91b2935e8eea43",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+      "historical_sha256": "9f4070f7f35df9d737c9bdef88188034baca0d541968faa94433262453277f52",
+      "current_sha256": "6385565e36d27b5a54475e32eded72f4a249c646cc5a602d27d3981c5bffbe26",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/graph/service.py",
+      "historical_sha256": "4879f31e75a8c53b5c7873e5b2c98d763580016384622261056d7aee4f74842d",
+      "current_sha256": "922e1f5f5948423174b12ad692260e0c77559ebe8270f968becaedf3b7dc164f",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/graph/repository.py",
+      "historical_sha256": "07265ec3164288c72746949998ec06d2dd494a0731a6684c130d3e3055fcdf30",
+      "current_sha256": "8f0e787b69ca564ce1174a018f50f3b6d42089a63ffbb3cf6632162d7a4f8cc5",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/graph/connection.py",
+      "historical_sha256": "0e2a53ecb9d6bcd46d5fbaf71af1b893eb148a620b4756cfec9a0cb11eafdc21",
+      "current_sha256": "0e2a53ecb9d6bcd46d5fbaf71af1b893eb148a620b4756cfec9a0cb11eafdc21",
+      "changed": false
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/graph/serializer.py",
+      "historical_sha256": "c27e535b5bdaf102a6e18155ecaffb84c13927d6c939c3672e55aca43442c50f",
+      "current_sha256": "c27e535b5bdaf102a6e18155ecaffb84c13927d6c939c3672e55aca43442c50f",
+      "changed": false
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/logger.py",
+      "historical_sha256": "6aff8cc4080309e9770007572c3f1942818ae86788f9a1c3c7c92e9bb3074d54",
+      "current_sha256": "6aff8cc4080309e9770007572c3f1942818ae86788f9a1c3c7c92e9bb3074d54",
+      "changed": false
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/tasks/event.py",
+      "historical_sha256": "861fa319b6888f13485eac75889aecadb86b7ff2c1da884ca1649de054c23139",
+      "current_sha256": "861fa319b6888f13485eac75889aecadb86b7ff2c1da884ca1649de054c23139",
+      "changed": false
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+      "historical_sha256": "bd326c9e6ef00533b2ac2fd4fb4ac39c871b99744232d6dc40ac612a9cc7fe41",
+      "current_sha256": "2c0526a8bdbed3ae355d1931fd14e6e67c540dcd0a6ef5c066db5108acd5f394",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/celery.py",
+      "historical_sha256": "87e654735ed097ddf9e868006762b4a5baf78bd8c72c0362e9588fb3d3bf3b7c",
+      "current_sha256": "dd1b49833f28e51d1d67f1a5875d31c13e97302a48a1a9e2065155fd40f90b59",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/config.py",
+      "historical_sha256": "31e96a99799ab9de35192352d8cf79644e2280e6606bac41710104a318e681b5",
+      "current_sha256": "35d8cbf9ca4973002dbc2d1aa350c33d6dcf2fcd62a58c78021d88dcbb27090a",
+      "changed": true
+    },
+    {
+      "path": "flowsint-core/src/flowsint_core/core/postgre_db.py",
+      "historical_sha256": "bc3deb1112443bc0490102cf8c4687e358812a1d3ed9955197bfd3251bb8f37a",
+      "current_sha256": "bc3deb1112443bc0490102cf8c4687e358812a1d3ed9955197bfd3251bb8f37a",
+      "changed": false
+    },
+    {
+      "path": "flowsint-types/src/flowsint_types/website.py",
+      "historical_sha256": "00f7aef4aff944957977e346fadecc0705a9c5feca00e37a5572b36f6d9e40b5",
+      "current_sha256": "00f7aef4aff944957977e346fadecc0705a9c5feca00e37a5572b36f6d9e40b5",
+      "changed": false
+    },
+    {
+      "path": "flowsint-types/src/flowsint_types/phrase.py",
+      "historical_sha256": "87b7c4c5bd1bf06ca10fb14e8a94241b6bba47c586c4935c884d9a3ea9a631cd",
+      "current_sha256": "87b7c4c5bd1bf06ca10fb14e8a94241b6bba47c586c4935c884d9a3ea9a631cd",
+      "changed": false
+    },
+    {
+      "path": "flowsint-api/app/api/routes/enrichers.py",
+      "historical_sha256": "c5eb824d847b1b1a3e3da63ecd7f1733982eeea4892d6052d7abefe322e4de3a",
+      "current_sha256": "9a76070abceb4b111cd9ca9865437f3186167294f545c78cffce383ea81004a2",
+      "changed": true
+    }
+  ]
+}

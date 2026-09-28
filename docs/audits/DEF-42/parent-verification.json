@@ -1,0 +1,9 @@
+{
+  "text": "mpg-batch: running 1 command(s)\nmpg-batch: step 1/1: env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python -m pytest /home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/tests/enrichers/test_website_to_text.py /home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/tests/core/test_structured_execution.py /home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/tests/core/test_forensic_legacy_boundaries.py -q -p no:cacheprovider\nImportError while loading conftest '/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/tests/conftest.py'.\n_pytest.pathlib.ImportPathMismatchError: ('tests.conftest', '/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/tests/conftest.py', PosixPath('/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/tests/conftest.py'))\n\n\nWall time: 0.67 seconds\n\nCommand exited with code 4",
+  "details": {
+    "timeoutSeconds": 180,
+    "wallTimeMs": 669.0620950013399,
+    "exitCode": 4
+  },
+  "hasError": true
+}

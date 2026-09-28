@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--cypher",
+    "MATCH ()-[r]->() RETURN r.type AS type, count(*) AS n",
+    "--limit",
+    "1000",
+    "--json",
+    "--no-auto-index"
+  ],
+  "rc": 0,
+  "wallSeconds": 0.728,
+  "stdout_sha256": "786b32f2dc52bd06c6c67b7f5260b1d28d3292071e1678ea2a9f3d3e15dc65e7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

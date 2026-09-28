@@ -1,0 +1,23 @@
+name: wholesaler-address-preview
+category: Location
+version: 1.0
+execution_mode: preview
+evidence:
+  source_rights: test-only
+  schema_version: "1"
+  parser_version: "1"
+  confidence: 1.0
+  verification_state: verified
+
+
+input:
+  type: Location
+  key: address
+
+connector:
+  destination_id: census_geocoder
+  endpoint_id: location_oneline
+  capability: enrich.read
+
+output:
+  type: Location

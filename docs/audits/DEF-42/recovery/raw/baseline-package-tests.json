@@ -1,0 +1,19 @@
+{
+  "name": "baseline-package-tests",
+  "argv": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-enrichers",
+  "environment": {
+    "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-mcp-server/src",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "rc": 0,
+  "seconds": 7.701416459000029
+}

@@ -1,0 +1,29 @@
+[project]
+name = "flowsint-mcp-server"
+version = "1.2.8"
+description = "MCP server wrapping the FlowSint REST API for CLI generation"
+license = "Apache-2.0"
+authors = [{ name = "dextmorgn", email = "contact@flowsint.io" }]
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "mcp>=1.27.2,<2.0",
+    "httpx>=0.28,<0.29",
+    "PyYAML>=6.0.2,<7.0",
+    "cookiecutter>=2.6.0,<3.0",
+]
+[project.optional-dependencies]
+cookiecutter = ["cookiecutter>=2.6,<3"]
+jinja2 = ["jinja2>=3.1,<4"]
+
+[project.scripts]
+flowsint-mcp = "flowsint_mcp_server.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/flowsint_mcp_server"]
+
+[dependency-groups]
+dev = ["pytest>=8.0,<9", "pytest-asyncio>=0.24,<1", "jinja2>=3.1,<4"]

@@ -1,0 +1,226 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_fetch_text_async",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_text_async#3",
+        "name": "_fetch_text_async",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Method",
+        "startLine": 239,
+        "endLine": 287,
+        "content": "    async def _fetch_text_async(         self,         url: str,         timeout: int = 10,         enable_quic: bool = False,     ) -> Optional[str]:         \"\"\"Fetch URL using httpx (primary), aioquic (optional), requests (fallback).\"\"\"         # 1) httpx — async HTTP/2 + HTTP/1.1 with connection pooling         try:             import httpx             if self._http_client is None:                 self._http_client = httpx.AsyncClient(                     http2=True,                     timeout=timeout,                     follow_redirects=True,                     limits=httpx.Limits(                         max_connections=self.params.get(\"max_concurrency\", 10)                     ),                 )             resp = await self._http_client.get(url)             resp.raise_for_status()             return self._extract_text(html=resp.text)         except Exception as exc:             log.debug(\"httpx failed for %s: %s\", url, exc)         # 2) aioquic — experimental QUIC probe (opt-in)         if HAS_QUIC and enable_quic:             try:                 text = await self._fetch_via_quic(url, timeout=min(timeout, 5))                 if text:                     return text             except Exception as exc:                 log.debug(\"QUIC failed for %s: %s\", url, exc)         # 3) requests — sync fallback         try:             import requests             resp = requests.get(url, timeout=timeout, allow_redirects=True)             resp.raise_for_status()             return self._extract_text(html=resp.text)         except Exception as exc:             Logger.error(                 self.sketch_id,                 {\"message\": f\"All transports failed for {url}: {exc}\"},             )             return None"
+    },
+    "symbols": [
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_text_async#3",
+            "name": "_fetch_text_async",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 239,
+            "endLine": 287,
+            "content": "    async def _fetch_text_async(         self,         url: str,         timeout: int = 10,         enable_quic: bool = False,     ) -> Optional[str]:         \"\"\"Fetch URL using httpx (primary), aioquic (optional), requests (fallback).\"\"\"         # 1) httpx — async HTTP/2 + HTTP/1.1 with connection pooling         try:             import httpx             if self._http_client is None:                 self._http_client = httpx.AsyncClient(                     http2=True,                     timeout=timeout,                     follow_redirects=True,                     limits=httpx.Limits(                         max_connections=self.params.get(\"max_concurrency\", 10)                     ),                 )             resp = await self._http_client.get(url)             resp.raise_for_status()             return self._extract_text(html=resp.text)         except Exception as exc:             log.debug(\"httpx failed for %s: %s\", url, exc)         # 2) aioquic — experimental QUIC probe (opt-in)         if HAS_QUIC and enable_quic:             try:                 text = await self._fetch_via_quic(url, timeout=min(timeout, 5))                 if text:                     return text             except Exception as exc:                 log.debug(\"QUIC failed for %s: %s\", url, exc)         # 3) requests — sync fallback         try:             import requests             resp = requests.get(url, timeout=timeout, allow_redirects=True)             resp.raise_for_status()             return self._extract_text(html=resp.text)         except Exception as exc:             Logger.error(                 self.sketch_id,                 {\"message\": f\"All transports failed for {url}: {exc}\"},             )             return None"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_via_quic#2",
+            "name": "_fetch_via_quic",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 292,
+            "endLine": 378,
+            "content": "    async def _fetch_via_quic(self, url: str, timeout: int = 5) -> Optional[str]:         \"\"\"Fetch via QUIC/HTTP3. Times out fast — most servers ignore UDP 443.\"\"\"         from urllib.parse import urlparse         parsed = urlparse(url)         host = parsed.hostname or \"localhost\"         path = (parsed.path or \"/\") + ((\"?\" + parsed.query) if parsed.query else \"\")         config = QuicConfiguration(is_client=True, alpn_protocols=[\"h3\", \"h3-29\"])         config.server_name = host         config.verify_mode = False  # type: ignore[assignment]         response_data = bytearray()         headers_ok = asyncio.Event()         stream_ended = asyncio.Event()         class _QuicSession:             def __init__(self):                 self.http = None             async def run(self) -> Optional[str]:                 try:                     async with quic_connect(                         host,                         parsed.port or 443,                         configuration=config,                         create_protocol=self._build_proto,                         wait_connected=True,                     ) as protocol:                         await asyncio.wait_for(                             asyncio.gather(headers_ok.wait(), stream_ended.wait()),                             timeout=timeout,                         )                 except (asyncio.TimeoutError, Exception):                     return None                 body = bytes(response_data).decode(\"utf-8\", errors=\"replace\")                 return self._extract(html=body) if body else None             def _extract(self, html: str) -> str:                 soup = BeautifulSoup(html, \"html.parser\")                 return soup.get_text(separator=\" \", strip=True)             def _build_proto(self, *args, **kwargs):                 from aioquic.asyncio.protocol import QuicConnectionProtocol                 class _H3(QuicConnectionProtocol):                     def __init__(self, *args, **kwargs):                         super().__init__(*args, **kwargs)                         self._h3 = None                         self._sent = False                     def quic_event_received(self, event):                         if isinstance(event, quic_events.HandshakeCompleted) and not self._sent:                             self._sent = True                             self._h3 = H3Connection(self._quic)                             sid = self._quic.get_next_available_stream_id()                             self._h3.send_headers(                                 stream_id=sid,                                 headers=[                                     (b\":method\", b\"GET\"),                                     (b\":scheme\", b\"https\"),                                     (b\":authority\", host.encode()),                                     (b\":path\", path.encode()),                                 ],                             )                             return                         if isinstance(event, quic_events.ConnectionTerminated):                             stream_ended.set()                             return                         if not self._h3:                             return                         for ev in self._h3.handle_event(event):                             if isinstance(ev, HeadersReceived):                                 status = dict(ev.headers).get(b\":status\", b\"0\")                                 if status == b\"200\":                                     headers_ok.set()                             elif isinstance(ev, DataReceived):                                 response_data.extend(ev.data)                                 if ev.stream_ended:                                     stream_ended.set()                 return _H3(*args, **kwargs)         session = _QuicSession()         return await session.run()"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession.run#0",
+            "name": "run",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 312,
+            "endLine": 328,
+            "content": "            async def run(self) -> Optional[str]:                 try:                     async with quic_connect(                         host,                         parsed.port or 443,                         configuration=config,                         create_protocol=self._build_proto,                         wait_connected=True,                     ) as protocol:                         await asyncio.wait_for(                             asyncio.gather(headers_ok.wait(), stream_ended.wait()),                             timeout=timeout,                         )                 except (asyncio.TimeoutError, Exception):                     return None                 body = bytes(response_data).decode(\"utf-8\", errors=\"replace\")                 return self._extract(html=body) if body else None"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession._extract#1",
+            "name": "_extract",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 330,
+            "endLine": 332,
+            "content": "            def _extract(self, html: str) -> str:                 soup = BeautifulSoup(html, \"html.parser\")                 return soup.get_text(separator=\" \", strip=True)"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._extract_text#1",
+            "name": "_extract_text",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 384,
+            "endLine": 387,
+            "content": "    def _extract_text(html: str) -> str:         \"\"\"Extract visible text from HTML.\"\"\"         soup = BeautifulSoup(html, \"html.parser\")         return soup.get_text(separator=\" \", strip=True)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_text_async#3",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_via_quic#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_text_async#3",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._extract_text#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_via_quic#2",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession.run#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession.run#0",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession._extract#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_text_async#3",
+                    "name": "_fetch_text_async",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 239,
+                    "endLine": 287,
+                    "content": "    async def _fetch_text_async(         self,         url: str,         timeout: int = 10,         enable_quic: bool = False,     ) -> Optional[str]:         \"\"\"Fetch URL using httpx (primary), aioquic (optional), requests (fallback).\"\"\"         # 1) httpx — async HTTP/2 + HTTP/1.1 with connection pooling         try:             import httpx             if self._http_client is None:                 self._http_client = httpx.AsyncClient(                     http2=True,                     timeout=timeout,                     follow_redirects=True,                     limits=httpx.Limits(                         max_connections=self.params.get(\"max_concurrency\", 10)                     ),                 )             resp = await self._http_client.get(url)             resp.raise_for_status()             return self._extract_text(html=resp.text)         except Exception as exc:             log.debug(\"httpx failed for %s: %s\", url, exc)         # 2) aioquic — experimental QUIC probe (opt-in)         if HAS_QUIC and enable_quic:             try:                 text = await self._fetch_via_quic(url, timeout=min(timeout, 5))                 if text:                     return text             except Exception as exc:                 log.debug(\"QUIC failed for %s: %s\", url, exc)         # 3) requests — sync fallback         try:             import requests             resp = requests.get(url, timeout=timeout, allow_redirects=True)             resp.raise_for_status()             return self._extract_text(html=resp.text)         except Exception as exc:             Logger.error(                 self.sketch_id,                 {\"message\": f\"All transports failed for {url}: {exc}\"},             )             return None"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_via_quic#2",
+                    "name": "_fetch_via_quic",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 292,
+                    "endLine": 378,
+                    "content": "    async def _fetch_via_quic(self, url: str, timeout: int = 5) -> Optional[str]:         \"\"\"Fetch via QUIC/HTTP3. Times out fast — most servers ignore UDP 443.\"\"\"         from urllib.parse import urlparse         parsed = urlparse(url)         host = parsed.hostname or \"localhost\"         path = (parsed.path or \"/\") + ((\"?\" + parsed.query) if parsed.query else \"\")         config = QuicConfiguration(is_client=True, alpn_protocols=[\"h3\", \"h3-29\"])         config.server_name = host         config.verify_mode = False  # type: ignore[assignment]         response_data = bytearray()         headers_ok = asyncio.Event()         stream_ended = asyncio.Event()         class _QuicSession:             def __init__(self):                 self.http = None             async def run(self) -> Optional[str]:                 try:                     async with quic_connect(                         host,                         parsed.port or 443,                         configuration=config,                         create_protocol=self._build_proto,                         wait_connected=True,                     ) as protocol:                         await asyncio.wait_for(                             asyncio.gather(headers_ok.wait(), stream_ended.wait()),                             timeout=timeout,                         )                 except (asyncio.TimeoutError, Exception):                     return None                 body = bytes(response_data).decode(\"utf-8\", errors=\"replace\")                 return self._extract(html=body) if body else None             def _extract(self, html: str) -> str:                 soup = BeautifulSoup(html, \"html.parser\")                 return soup.get_text(separator=\" \", strip=True)             def _build_proto(self, *args, **kwargs):                 from aioquic.asyncio.protocol import QuicConnectionProtocol                 class _H3(QuicConnectionProtocol):                     def __init__(self, *args, **kwargs):                         super().__init__(*args, **kwargs)                         self._h3 = None                         self._sent = False                     def quic_event_received(self, event):                         if isinstance(event, quic_events.HandshakeCompleted) and not self._sent:                             self._sent = True                             self._h3 = H3Connection(self._quic)                             sid = self._quic.get_next_available_stream_id()                             self._h3.send_headers(                                 stream_id=sid,                                 headers=[                                     (b\":method\", b\"GET\"),                                     (b\":scheme\", b\"https\"),                                     (b\":authority\", host.encode()),                                     (b\":path\", path.encode()),                                 ],                             )                             return                         if isinstance(event, quic_events.ConnectionTerminated):                             stream_ended.set()                             return                         if not self._h3:                             return                         for ev in self._h3.handle_event(event):                             if isinstance(ev, HeadersReceived):                                 status = dict(ev.headers).get(b\":status\", b\"0\")                                 if status == b\"200\":                                     headers_ok.set()                             elif isinstance(ev, DataReceived):                                 response_data.extend(ev.data)                                 if ev.stream_ended:                                     stream_ended.set()                 return _H3(*args, **kwargs)         session = _QuicSession()         return await session.run()"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession.run#0",
+                    "name": "run",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 312,
+                    "endLine": 328,
+                    "content": "            async def run(self) -> Optional[str]:                 try:                     async with quic_connect(                         host,                         parsed.port or 443,                         configuration=config,                         create_protocol=self._build_proto,                         wait_connected=True,                     ) as protocol:                         await asyncio.wait_for(                             asyncio.gather(headers_ok.wait(), stream_ended.wait()),                             timeout=timeout,                         )                 except (asyncio.TimeoutError, Exception):                     return None                 body = bytes(response_data).decode(\"utf-8\", errors=\"replace\")                 return self._extract(html=body) if body else None"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession._extract#1",
+                    "name": "_extract",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 330,
+                    "endLine": 332,
+                    "content": "            def _extract(self, html: str) -> str:                 soup = BeautifulSoup(html, \"html.parser\")                 return soup.get_text(separator=\" \", strip=True)"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._extract_text#1",
+                    "name": "_extract_text",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 384,
+                    "endLine": 387,
+                    "content": "    def _extract_text(html: str) -> str:         \"\"\"Extract visible text from HTML.\"\"\"         soup = BeautifulSoup(html, \"html.parser\")         return soup.get_text(separator=\" \", strip=True)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-enrichers",
+            "direct": true,
+            "symbolCount": 4
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_via_quic#2",
+                    "name": "_fetch_via_quic",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 292,
+                    "endLine": 378,
+                    "content": "    async def _fetch_via_quic(self, url: str, timeout: int = 5) -> Optional[str]:         \"\"\"Fetch via QUIC/HTTP3. Times out fast — most servers ignore UDP 443.\"\"\"         from urllib.parse import urlparse         parsed = urlparse(url)         host = parsed.hostname or \"localhost\"         path = (parsed.path or \"/\") + ((\"?\" + parsed.query) if parsed.query else \"\")         config = QuicConfiguration(is_client=True, alpn_protocols=[\"h3\", \"h3-29\"])         config.server_name = host         config.verify_mode = False  # type: ignore[assignment]         response_data = bytearray()         headers_ok = asyncio.Event()         stream_ended = asyncio.Event()         class _QuicSession:             def __init__(self):                 self.http = None             async def run(self) -> Optional[str]:                 try:                     async with quic_connect(                         host,                         parsed.port or 443,                         configuration=config,                         create_protocol=self._build_proto,                         wait_connected=True,                     ) as protocol:                         await asyncio.wait_for(                             asyncio.gather(headers_ok.wait(), stream_ended.wait()),                             timeout=timeout,                         )                 except (asyncio.TimeoutError, Exception):                     return None                 body = bytes(response_data).decode(\"utf-8\", errors=\"replace\")                 return self._extract(html=body) if body else None             def _extract(self, html: str) -> str:                 soup = BeautifulSoup(html, \"html.parser\")                 return soup.get_text(separator=\" \", strip=True)             def _build_proto(self, *args, **kwargs):                 from aioquic.asyncio.protocol import QuicConnectionProtocol                 class _H3(QuicConnectionProtocol):                     def __init__(self, *args, **kwargs):                         super().__init__(*args, **kwargs)                         self._h3 = None                         self._sent = False                     def quic_event_received(self, event):                         if isinstance(event, quic_events.HandshakeCompleted) and not self._sent:                             self._sent = True                             self._h3 = H3Connection(self._quic)                             sid = self._quic.get_next_available_stream_id()                             self._h3.send_headers(                                 stream_id=sid,                                 headers=[                                     (b\":method\", b\"GET\"),                                     (b\":scheme\", b\"https\"),                                     (b\":authority\", host.encode()),                                     (b\":path\", path.encode()),                                 ],                             )                             return                         if isinstance(event, quic_events.ConnectionTerminated):                             stream_ended.set()                             return                         if not self._h3:                             return                         for ev in self._h3.handle_event(event):                             if isinstance(ev, HeadersReceived):                                 status = dict(ev.headers).get(b\":status\", b\"0\")                                 if status == b\"200\":                                     headers_ok.set()                             elif isinstance(ev, DataReceived):                                 response_data.extend(ev.data)                                 if ev.stream_ended:                                     stream_ended.set()                 return _H3(*args, **kwargs)         session = _QuicSession()         return await session.run()"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._extract_text#1",
+                    "name": "_extract_text",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 384,
+                    "endLine": 387,
+                    "content": "    def _extract_text(html: str) -> str:         \"\"\"Extract visible text from HTML.\"\"\"         soup = BeautifulSoup(html, \"html.parser\")         return soup.get_text(separator=\" \", strip=True)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession.run#0",
+                    "name": "run",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 312,
+                    "endLine": 328,
+                    "content": "            async def run(self) -> Optional[str]:                 try:                     async with quic_connect(                         host,                         parsed.port or 443,                         configuration=config,                         create_protocol=self._build_proto,                         wait_connected=True,                     ) as protocol:                         await asyncio.wait_for(                             asyncio.gather(headers_ok.wait(), stream_ended.wait()),                             timeout=timeout,                         )                 except (asyncio.TimeoutError, Exception):                     return None                 body = bytes(response_data).decode(\"utf-8\", errors=\"replace\")                 return self._extract(html=body) if body else None"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_QuicSession._extract#1",
+                    "name": "_extract",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 330,
+                    "endLine": 332,
+                    "content": "            def _extract(self, html: str) -> str:                 soup = BeautifulSoup(html, \"html.parser\")                 return soup.get_text(separator=\" \", strip=True)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_fetch_text_async",
+        "rootSymbols": 1,
+        "totalSymbols": 5,
+        "totalEdges": 4,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 2,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

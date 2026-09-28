@@ -1,0 +1,21 @@
+{
+  "name": "baseline-WebsiteToText-downstream",
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+    "--json",
+    "--no-auto-index",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "downstream",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+  ],
+  "cwd": "/tmp/def42-recovery",
+  "environment": {},
+  "rc": 0,
+  "seconds": 0.776438490000146
+}

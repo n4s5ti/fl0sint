@@ -1,0 +1,23 @@
+{
+    "name": "{{ cookiecutter.enricher_name }}",
+    "category": "{{ cookiecutter.category }}",
+    "version": 1.0,
+    "input": {
+        "type": "{{ cookiecutter.input_type }}",
+        "key": "{{ cookiecutter.input_key }}"
+    },
+    "request": {
+        "method": "GET",
+        "url": "{{ cookiecutter.url }}",
+        "timeout": 30
+    },
+    "output": {
+        "type": "{{ cookiecutter.output_type }}"
+    },
+    "response": {
+        "expect": "json",
+        "map": {
+            "address": "ip"
+        }
+    }
+}

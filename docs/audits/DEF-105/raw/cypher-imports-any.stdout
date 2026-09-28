@@ -1,0 +1,57 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "columns": [
+            "a.filePath",
+            "b.id",
+            "b.filePath"
+        ],
+        "rows": [
+            {
+                "a.filePath": "docs/audits/DEF-41/raw/review/adversarial_review.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            },
+            {
+                "a.filePath": "docs/audits/DEF-41/raw/verify_installed.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            },
+            {
+                "a.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.filePath": "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.filePath": "flowsint-core/tests/acquisition/test_contract.py",
+                "b.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "b.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

@@ -1,0 +1,34 @@
+{
+  "issue": "DEF-40",
+  "base_sha": "02467e96ac71708863776ad2732980344a9532e7",
+  "checkout": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-fixtures",
+  "baseline_clean": true,
+  "prerequisites": [
+    "DEF-38 done (accepted discovery)",
+    "DEF-39 done (accepted discovery with historical index FAIL)"
+  ],
+  "scope": "Synthetic controlled development source fixtures and independently authored expected evidence; no scraper or production behavior changes",
+  "planned_paths": [
+    "flowsint-enrichers/tests/fixtures/acquisition/",
+    "scripts/acquisition_fixtures.py",
+    "docs/audits/DEF-40/",
+    "flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py"
+  ],
+  "checks": [
+    "loopback-only local source server",
+    "offline raw span and expected-label verification",
+    "duplicate URL occurrence identities with shared content digest",
+    "empty success vs failed execution",
+    "optional browser render and public-interaction cases",
+    "independent adversarial review"
+  ],
+  "excluded": [
+    "live contact data",
+    "production changes",
+    "scraper implementation",
+    "accepted graph writes",
+    "model dependencies",
+    "locked release evaluation claims"
+  ],
+  "graph_policy": "Isolated worktree index only. Serial --no-auto-index, explicit drift. Python dynamic edge gaps UNKNOWN plus source/config tracing."
+}

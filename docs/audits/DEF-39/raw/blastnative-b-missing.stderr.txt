@@ -1,0 +1,1 @@
+blast: target symbol not indexed — No indexed definition was found for "DefinitelyNotASymbol_DEF39". The index may omit this language construct; rebuild or use a supported declaration form before relying on impact results.

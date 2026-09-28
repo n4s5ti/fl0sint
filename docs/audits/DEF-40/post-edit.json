@@ -1,0 +1,55 @@
+{
+  "issue": "DEF-40",
+  "base_sha": "02467e96ac71708863776ad2732980344a9532e7",
+  "head_before_commit": "02467e96ac71708863776ad2732980344a9532e7",
+  "checkout": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+  "package_config_unchanged": {
+    "pyproject.toml": true,
+    "uv.lock": true,
+    "Makefile": true,
+    ".github/workflows/tests.yml": true,
+    "flowsint-enrichers/pyproject.toml": true,
+    "flowsint-enrichers/tests/conftest.py": true,
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": true,
+    "flowsint-core/src/flowsint_core/core/execution.py": true
+  },
+  "tracked_modifications": [],
+  "deliverable_sha256": {
+    "scripts/acquisition_fixtures.py": "524c69f6fbc35e15d8d176bcdb1c8aea20dfbe90d5c0c5e24d8019ba7a932278",
+    "flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py": "0930dffb6c01fd71c5b3e881795fd864ca12f5185eff8248cfc3123734433068",
+    "flowsint-enrichers/tests/fixtures/acquisition/click.html": "08ccc7a79ca5e88338948148834919cd98fe82bdc21aeb88c51b11363d36a478",
+    "flowsint-enrichers/tests/fixtures/acquisition/copy-a.html": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+    "flowsint-enrichers/tests/fixtures/acquisition/copy-b.html": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+    "flowsint-enrichers/tests/fixtures/acquisition/dynamic.html": "13f6d65d0d23596a81dfbf95cc8cd37e5eced198e6890bc8fbfda49cdf2db79e",
+    "flowsint-enrichers/tests/fixtures/acquisition/empty.html": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+    "flowsint-enrichers/tests/fixtures/acquisition/failure.html": "301fceb2dfd01818c4243b7eb747baa085fcb0c73bfd7844f8111063563e8054",
+    "flowsint-enrichers/tests/fixtures/acquisition/generic.html": "ddce4a8a7f8bbb243235c0f190494ceb62499c6f25e8b6f4fd664d1c94e0c55c",
+    "flowsint-enrichers/tests/fixtures/acquisition/malformed.html": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+    "flowsint-enrichers/tests/fixtures/acquisition/manifest.json": "3c7efb5db9ab08c62d706483020834bf0e96c63ee9be577948afb8d3cd107053",
+    "flowsint-enrichers/tests/fixtures/acquisition/named.html": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+    "flowsint-enrichers/tests/fixtures/acquisition/redirect.html": "a6303cfd81ab62f12b55ff80dd766bd2e5309e0e6c770c488a49a190da0c829a",
+    "flowsint-enrichers/tests/fixtures/acquisition/same-name-amber.html": "f65fca5436d662a3935b44c95928ac84fd3e65f6dbce7d1c4dc870014132e6b6",
+    "flowsint-enrichers/tests/fixtures/acquisition/same-name-cobalt.html": "e638664566623f921baae541c5c49463a1ea8ac1fdb5a96da3ff0b165b596221",
+    "flowsint-enrichers/tests/fixtures/acquisition/slow.html": "56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010",
+    "flowsint-enrichers/tests/fixtures/acquisition/stale.html": "15ee29927f0248d3dda97adf9c7a58e72ccab32d13efea370991f1a7ed76fda8",
+    "flowsint-enrichers/tests/fixtures/acquisition/static.html": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa"
+  },
+  "drift_comparison": {
+    "planned_paths": [
+      "flowsint-enrichers/tests/fixtures/acquisition/",
+      "scripts/acquisition_fixtures.py",
+      "docs/audits/DEF-40/",
+      "flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py"
+    ],
+    "actual_untracked_count": 46,
+    "outside_plan": [],
+    "tracked_changes": 0,
+    "graph_drift_after_reindex": {
+      "total": 0,
+      "file_modified": 0,
+      "file_removed": 0,
+      "file_unindexed": 0,
+      "symbol_stale": 0
+    }
+  }
+}

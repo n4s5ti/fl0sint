@@ -75,6 +75,12 @@ export const queryKeys = {
   enrichers: {
     list: ['enrichers', 'list'],
     detail: (enricherId: string) => ['enrichers', enricherId]
+  },
+
+  // Grievances
+  grievances: {
+    list: ['grievances', 'list'],
+    detail: (id: string) => ['grievances', id]
   }
 }
 
@@ -90,3 +96,4 @@ export const logKeys = queryKeys.logs
 export const actionItemKeys = queryKeys.actionItems
 export const scanKeys = queryKeys.scans
 export const enricherKeys = queryKeys.enrichers
+export const grievanceKeys = queryKeys.grievances

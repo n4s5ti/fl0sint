@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+        "name": "admit_fetch",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Function",
+        "startLine": 220,
+        "endLine": 290,
+        "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "name": "admit_fetch",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 220,
+            "endLine": 290,
+            "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+                    "name": "admit_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 220,
+                    "endLine": 290,
+                    "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

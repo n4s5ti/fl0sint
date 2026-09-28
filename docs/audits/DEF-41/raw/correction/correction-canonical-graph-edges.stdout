@@ -1,0 +1,89 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "columns": [
+            "a.id",
+            "a.filePath",
+            "r.type",
+            "b.id",
+            "b.filePath"
+        ],
+        "rows": [
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._execute_structured_input#4",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "a.filePath": "flowsint-core/src/flowsint_core/core/template_enricher.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "a.filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                "b.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "a.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "a.filePath": "flowsint-core/src/flowsint_execution/models.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                "b.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

@@ -1,0 +1,181 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+        "name": "CompletionWitness",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 249,
+        "endLine": 253,
+        "content": "class CompletionWitness(ContractModel):     \"\"\"Producer's explicit completion declaration; not independent verification.\"\"\"     reference: Identifier     completed_at: Timestamp"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+            "name": "CompletionWitness",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 249,
+            "endLine": 253,
+            "content": "class CompletionWitness(ContractModel):     \"\"\"Producer's explicit completion declaration; not independent verification.\"\"\"     reference: Identifier     completed_at: Timestamp"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.reference",
+            "name": "reference",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 252,
+            "endLine": 252,
+            "content": "    reference: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.completed_at",
+            "name": "completed_at",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 253,
+            "endLine": 253,
+            "content": "    completed_at: Timestamp"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "name": "ContractModel",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 63,
+            "endLine": 70,
+            "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.reference",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.completed_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+            "to": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+                    "name": "CompletionWitness",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 249,
+                    "endLine": 253,
+                    "content": "class CompletionWitness(ContractModel):     \"\"\"Producer's explicit completion declaration; not independent verification.\"\"\"     reference: Identifier     completed_at: Timestamp"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.reference",
+                    "name": "reference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 252,
+                    "endLine": 252,
+                    "content": "    reference: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.completed_at",
+                    "name": "completed_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 253,
+                    "endLine": 253,
+                    "content": "    completed_at: Timestamp"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.reference",
+                    "name": "reference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 252,
+                    "endLine": 252,
+                    "content": "    reference: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.completed_at",
+                    "name": "completed_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 253,
+                    "endLine": 253,
+                    "content": "    completed_at: Timestamp"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 3,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

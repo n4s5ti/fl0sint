@@ -1,0 +1,38 @@
+{
+    "mode": "drift",
+    "result": {
+        "repo": "noindex-repo",
+        "lbugPath": "/home/n4s5ti/.local/share/hermes-home/cache/scratch/def39/noindex-repo/.gitnexus/lbug",
+        "changed_symbols": [
+            {
+                "symbol": "app.py",
+                "filePath": "src/app.py",
+                "category": "file_modified"
+            },
+            {
+                "symbol": "caller",
+                "filePath": "src/app.py",
+                "category": "symbol_stale"
+            },
+            {
+                "symbol": "top",
+                "filePath": "src/app.py",
+                "category": "symbol_stale"
+            }
+        ],
+        "summary": {
+            "total": 3,
+            "file_modified": 1,
+            "file_removed": 0,
+            "file_unindexed": 0,
+            "symbol_stale": 2
+        },
+        "drift_warnings": [
+            "Skipped table \"Community\": query failed (likely heterogeneous schema with no source fields)",
+            "Skipped table \"Folder\": query failed (likely heterogeneous schema with no source fields)",
+            "Skipped table \"Process\": query failed (likely heterogeneous schema with no source fields)"
+        ]
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

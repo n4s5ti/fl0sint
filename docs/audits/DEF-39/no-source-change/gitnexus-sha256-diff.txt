@@ -1,0 +1,16 @@
+1c1
+< 2ccd7ba5310751c2871c0277cad22742b81508cb816f668fd30310735f352885  .gitnexus/gitnexus.json
+---
+> 5b71191ce4ba996cf9ee433738b5241887ce3cbc1e71c01af79ce2f67a0a6c26  .gitnexus/gitnexus.json
+4,8c4,8
+< 7f675397b387c9596e513cd52edcfb71a50276af71dbeadec51f8c477661d408  .gitnexus/lbug
+< 2ccd7ba5310751c2871c0277cad22742b81508cb816f668fd30310735f352885  .gitnexus/meta.json
+< 3e00e6a00a351377df22bad2f7551546004457348d9db49c321ba7e791f47199  .gitnexus/pip3r-content-manifest.json
+< afce2aaed7863c23f3f3300f89a4189333ea51e3ac05a107f3edf7c66752d858  .gitnexus/pip3r-generation.json
+< 2eb30b9bb642efe5f87f10823acf82201b54621cd6f5248a022bf6bef2a48ec8  .gitnexus/pip3r-workspace-edges.json
+---
+> 2572cc46bf276281b05f6f2146d0f5b9a987a156a588aca564ca5df3192a6fa1  .gitnexus/lbug
+> 5b71191ce4ba996cf9ee433738b5241887ce3cbc1e71c01af79ce2f67a0a6c26  .gitnexus/meta.json
+> c04881b3712818e7f550b767218a9c074796bcf5450d46e847211089c0848815  .gitnexus/pip3r-content-manifest.json
+> 49ab876696f990a1992254ce420eb845e6f1fec356b14f7dc85f5cb7d9bc4b55  .gitnexus/pip3r-generation.json
+> fd6e2856b05e441e4b1113c131bfa2fc1e1b8183320853b550747b197b918054  .gitnexus/pip3r-workspace-edges.json

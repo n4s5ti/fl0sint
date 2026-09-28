@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Session
+from ..forensics import legacy_execution_boundary
+
 
 from ..graph import GraphNode, create_graph_service
 from ..graph.types import GraphData
@@ -53,14 +55,17 @@ class SketchService(BaseService):
         self._check_permission(user_id, sketch.investigation_id, actions)
         return sketch
 
+    @legacy_execution_boundary("sketch_service_list_sketches")
     def list_sketches(self, user_id: UUID) -> List[Sketch]:
         """Get all sketches owned by a user."""
         return self._sketch_repo.get_by_owner(user_id)
 
+    @legacy_execution_boundary("sketch_service_get_by_id")
     def get_by_id(self, sketch_id: UUID, user_id: UUID) -> Sketch:
         """Get a sketch by ID with permission check."""
         return self._get_sketch_with_permission(sketch_id, user_id, ["read"])
 
+    @legacy_execution_boundary("sketch_service_create")
     def create(
         self,
         title: str,
@@ -84,6 +89,7 @@ class SketchService(BaseService):
         self._refresh(sketch)
         return sketch
 
+    @legacy_execution_boundary("sketch_service_update")
     def update(self, sketch_id: UUID, user_id: UUID, updates: Dict[str, Any]) -> Sketch:
         sketch = self._get_sketch_with_permission(sketch_id, user_id, ["update"])
 
@@ -95,6 +101,7 @@ class SketchService(BaseService):
         self._refresh(sketch)
         return sketch
 
+    @legacy_execution_boundary("sketch_service_delete")
     def delete(self, sketch_id: UUID, user_id: UUID) -> None:
         sketch = self._get_sketch_with_permission(sketch_id, user_id, ["delete"])
 
@@ -112,6 +119,7 @@ class SketchService(BaseService):
 
     # --- Graph operations ---
 
+    @legacy_execution_boundary("sketch_service_get_graph")
     def get_graph(
         self, sketch_id: UUID, user_id: UUID, format: Optional[str] = None
     ) -> Dict[str, Any]:
@@ -137,6 +145,7 @@ class SketchService(BaseService):
         graph = graph_data.model_dump(mode="json", serialize_as_any=True)
         return {"nds": graph["nodes"], "rls": graph["edges"]}
 
+    @legacy_execution_boundary("sketch_service_add_node")
     def add_node(
         self, sketch_id: UUID, user_id: UUID, node: GraphNode
     ) -> Dict[str, Any]:
@@ -157,6 +166,7 @@ class SketchService(BaseService):
         node.id = node_id
         return {"status": "node added", "node": node}
 
+    @legacy_execution_boundary("sketch_service_add_relationship")
     def add_relationship(
         self,
         sketch_id: UUID,
@@ -185,6 +195,7 @@ class SketchService(BaseService):
 
         return {"status": "edge added", "edge": result}
 
+    @legacy_execution_boundary("sketch_service_update_node")
     def update_node(
         self, sketch_id: UUID, user_id: UUID, node_id: str, updates: Dict[str, Any]
     ) -> Dict[str, Any]:
@@ -206,6 +217,7 @@ class SketchService(BaseService):
 
         return {"status": "node updated", "node": {"id": updated_element_id}}
 
+    @legacy_execution_boundary("sketch_service_update_node_positions")
     def update_node_positions(
         self, sketch_id: UUID, user_id: UUID, positions: List[Dict[str, Any]]
     ) -> Dict[str, Any]:
@@ -225,6 +237,7 @@ class SketchService(BaseService):
 
         return {"status": "positions updated", "count": updated_count}
 
+    @legacy_execution_boundary("sketch_service_delete_nodes")
     def delete_nodes(
         self, sketch_id: UUID, user_id: UUID, node_ids: List[str]
     ) -> Dict[str, Any]:
@@ -241,6 +254,7 @@ class SketchService(BaseService):
 
         return {"status": "nodes deleted", "count": deleted_count}
 
+    @legacy_execution_boundary("sketch_service_delete_relationships")
     def delete_relationships(
         self, sketch_id: UUID, user_id: UUID, relationship_ids: List[str]
     ) -> Dict[str, Any]:
@@ -256,6 +270,7 @@ class SketchService(BaseService):
 
         return {"status": "relationships deleted", "count": deleted_count}
 
+    @legacy_execution_boundary("sketch_service_update_relationship")
     def update_relationship(
         self,
         sketch_id: UUID,
@@ -288,6 +303,7 @@ class SketchService(BaseService):
             },
         }
 
+    @legacy_execution_boundary("sketch_service_merge_nodes")
     def merge_nodes(
         self,
         sketch_id: UUID,
@@ -333,6 +349,7 @@ class SketchService(BaseService):
             "new_node_id": new_node_element_id,
         }
 
+    @legacy_execution_boundary("sketch_service_get_neighbors")
     def get_neighbors(
         self, sketch_id: UUID, user_id: UUID, node_id: str
     ) -> Dict[str, Any]:
@@ -358,6 +375,7 @@ class SketchService(BaseService):
 
         return {"nds": result.nodes, "rls": result.edges}
 
+    @legacy_execution_boundary("sketch_service_export_sketch")
     def export_sketch(
         self, sketch_id: UUID, user_id: UUID, format: str = "json"
     ) -> Dict[str, Any]:
@@ -389,6 +407,7 @@ class SketchService(BaseService):
             raise ValidationError(f"Unsupported format: {format}")
 
 
+@legacy_execution_boundary("create_sketch_service")
 def create_sketch_service(db: Session) -> SketchService:
     from ..repositories import CustomTypeRepository
     from .type_registry_service import TypeRegistryService

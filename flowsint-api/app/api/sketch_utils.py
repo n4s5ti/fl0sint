@@ -7,8 +7,14 @@ from uuid import UUID
 from fastapi import BackgroundTasks
 from sqlalchemy.orm import Session
 from flowsint_core.core.models import Sketch, Investigation
+from flowsint_core.core.forensics import (
+    legacy_execution_boundary,
+    LegacyExecutionMode,
+    require_legacy_graph_access,
+)
 
 
+@legacy_execution_boundary("sketch_timestamp_task")
 def update_sketch_last_modified(db: Session, sketch_id: str | UUID) -> None:
     """
     Update the last_updated_at timestamp for a sketch and its parent investigation.
@@ -31,9 +37,11 @@ def update_sketch_last_modified(db: Session, sketch_id: str | UUID) -> None:
 
             # Update parent investigation timestamp if it exists
             if sketch.investigation_id:
-                investigation = db.query(Investigation).filter(
-                    Investigation.id == sketch.investigation_id
-                ).first()
+                investigation = (
+                    db.query(Investigation)
+                    .filter(Investigation.id == sketch.investigation_id)
+                    .first()
+                )
                 if investigation:
                     investigation.last_updated_at = current_time
 
@@ -71,17 +79,26 @@ def update_sketch_timestamp(func: Callable) -> Callable:
         - Route must have 'background_tasks: BackgroundTasks' parameter
         - Route must have 'db: Session' parameter
     """
+
     @wraps(func)
     async def async_wrapper(*args, **kwargs):
+        require_legacy_graph_access(
+            LegacyExecutionMode.LEGACY_CANVAS,
+            operation="sketch_timestamp_update",
+        )
         # Extract required dependencies from kwargs
         sketch_id = kwargs.get("sketch_id")
         background_tasks: BackgroundTasks = kwargs.get("background_tasks")
         db: Session = kwargs.get("db")
 
         if not sketch_id:
-            raise ValueError("sketch_id parameter is required for @update_sketch_timestamp")
+            raise ValueError(
+                "sketch_id parameter is required for @update_sketch_timestamp"
+            )
         if not background_tasks:
-            raise ValueError("background_tasks parameter is required for @update_sketch_timestamp")
+            raise ValueError(
+                "background_tasks parameter is required for @update_sketch_timestamp"
+            )
         if not db:
             raise ValueError("db parameter is required for @update_sketch_timestamp")
 
@@ -93,15 +110,23 @@ def update_sketch_timestamp(func: Callable) -> Callable:
 
     @wraps(func)
     def sync_wrapper(*args, **kwargs):
+        require_legacy_graph_access(
+            LegacyExecutionMode.LEGACY_CANVAS,
+            operation="sketch_timestamp_update",
+        )
         # Extract required dependencies from kwargs
         sketch_id = kwargs.get("sketch_id")
         background_tasks: BackgroundTasks = kwargs.get("background_tasks")
         db: Session = kwargs.get("db")
 
         if not sketch_id:
-            raise ValueError("sketch_id parameter is required for @update_sketch_timestamp")
+            raise ValueError(
+                "sketch_id parameter is required for @update_sketch_timestamp"
+            )
         if not background_tasks:
-            raise ValueError("background_tasks parameter is required for @update_sketch_timestamp")
+            raise ValueError(
+                "background_tasks parameter is required for @update_sketch_timestamp"
+            )
         if not db:
             raise ValueError("db parameter is required for @update_sketch_timestamp")
 
@@ -113,6 +138,7 @@ def update_sketch_timestamp(func: Callable) -> Callable:
 
     # Return the appropriate wrapper based on whether the function is async
     import inspect
+
     if inspect.iscoroutinefunction(func):
         return async_wrapper
     else:

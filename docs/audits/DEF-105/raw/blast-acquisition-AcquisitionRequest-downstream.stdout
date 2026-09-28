@@ -1,0 +1,583 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "CRITICAL",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+        "name": "AcquisitionRequest",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 127,
+        "endLine": 144,
+        "content": "class AcquisitionRequest(ContractModel):     format_version: Literal[\"1.0\"] = FORMAT_VERSION     operation_id: Identifier     caller_id: Identifier     scope: Annotated[str, Field(min_length=1, max_length=1024)]     capability_digest: Digest     inputs: tuple[InputOccurrence, ...]     allocation: Resources     parent_operation_id: Identifier | None = None     need_ref: Identifier | None = None     endpoint_policy_digest: Digest | None = None     projection_profile_digest: Digest | None = None     retention_policy_digest: Digest | None = None     @model_validator(mode=\"after\")     def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "name": "AcquisitionRequest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 127,
+            "endLine": 144,
+            "content": "class AcquisitionRequest(ContractModel):     format_version: Literal[\"1.0\"] = FORMAT_VERSION     operation_id: Identifier     caller_id: Identifier     scope: Annotated[str, Field(min_length=1, max_length=1024)]     capability_digest: Digest     inputs: tuple[InputOccurrence, ...]     allocation: Resources     parent_operation_id: Identifier | None = None     need_ref: Identifier | None = None     endpoint_policy_digest: Digest | None = None     projection_profile_digest: Digest | None = None     retention_policy_digest: Digest | None = None     @model_validator(mode=\"after\")     def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+            "name": "check_occurrences",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Method",
+            "startLine": 142,
+            "endLine": 144,
+            "content": "    def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+            "name": "_unique",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 82,
+            "endLine": 86,
+            "content": "def _unique(values, label):     values = tuple(values)     if len(values) != len(set(values)):         raise ValueError(\"duplicate \" + label)     return set(values)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.format_version",
+            "name": "format_version",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 128,
+            "endLine": 128,
+            "content": "    format_version: Literal[\"1.0\"] = FORMAT_VERSION"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.operation_id",
+            "name": "operation_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 129,
+            "endLine": 129,
+            "content": "    operation_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.caller_id",
+            "name": "caller_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 130,
+            "endLine": 130,
+            "content": "    caller_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.scope",
+            "name": "scope",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 131,
+            "endLine": 131,
+            "content": "    scope: Annotated[str, Field(min_length=1, max_length=1024)]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.capability_digest",
+            "name": "capability_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 132,
+            "endLine": 132,
+            "content": "    capability_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.inputs",
+            "name": "inputs",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 133,
+            "endLine": 133,
+            "content": "    inputs: tuple[InputOccurrence, ...]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.allocation",
+            "name": "allocation",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 134,
+            "endLine": 134,
+            "content": "    allocation: Resources"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.parent_operation_id",
+            "name": "parent_operation_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 135,
+            "endLine": 135,
+            "content": "    parent_operation_id: Identifier | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.need_ref",
+            "name": "need_ref",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 136,
+            "endLine": 136,
+            "content": "    need_ref: Identifier | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.endpoint_policy_digest",
+            "name": "endpoint_policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 137,
+            "endLine": 137,
+            "content": "    endpoint_policy_digest: Digest | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.projection_profile_digest",
+            "name": "projection_profile_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 138,
+            "endLine": 138,
+            "content": "    projection_profile_digest: Digest | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.retention_policy_digest",
+            "name": "retention_policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 139,
+            "endLine": 139,
+            "content": "    retention_policy_digest: Digest | None = None"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "name": "ContractModel",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 63,
+            "endLine": 70,
+            "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.format_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.operation_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.caller_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.scope",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.capability_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.inputs",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.allocation",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.parent_operation_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.need_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.endpoint_policy_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.projection_profile_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.retention_policy_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "to": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 16,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+                    "name": "AcquisitionRequest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 127,
+                    "endLine": 144,
+                    "content": "class AcquisitionRequest(ContractModel):     format_version: Literal[\"1.0\"] = FORMAT_VERSION     operation_id: Identifier     caller_id: Identifier     scope: Annotated[str, Field(min_length=1, max_length=1024)]     capability_digest: Digest     inputs: tuple[InputOccurrence, ...]     allocation: Resources     parent_operation_id: Identifier | None = None     need_ref: Identifier | None = None     endpoint_policy_digest: Digest | None = None     projection_profile_digest: Digest | None = None     retention_policy_digest: Digest | None = None     @model_validator(mode=\"after\")     def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+                    "name": "check_occurrences",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 142,
+                    "endLine": 144,
+                    "content": "    def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                    "name": "_unique",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 82,
+                    "endLine": 86,
+                    "content": "def _unique(values, label):     values = tuple(values)     if len(values) != len(set(values)):         raise ValueError(\"duplicate \" + label)     return set(values)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.format_version",
+                    "name": "format_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 128,
+                    "endLine": 128,
+                    "content": "    format_version: Literal[\"1.0\"] = FORMAT_VERSION"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.operation_id",
+                    "name": "operation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 129,
+                    "endLine": 129,
+                    "content": "    operation_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.caller_id",
+                    "name": "caller_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 130,
+                    "endLine": 130,
+                    "content": "    caller_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.scope",
+                    "name": "scope",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 131,
+                    "endLine": 131,
+                    "content": "    scope: Annotated[str, Field(min_length=1, max_length=1024)]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.capability_digest",
+                    "name": "capability_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 132,
+                    "endLine": 132,
+                    "content": "    capability_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.inputs",
+                    "name": "inputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 133,
+                    "endLine": 133,
+                    "content": "    inputs: tuple[InputOccurrence, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.allocation",
+                    "name": "allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 134,
+                    "endLine": 134,
+                    "content": "    allocation: Resources"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.parent_operation_id",
+                    "name": "parent_operation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 135,
+                    "endLine": 135,
+                    "content": "    parent_operation_id: Identifier | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.need_ref",
+                    "name": "need_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 136,
+                    "endLine": 136,
+                    "content": "    need_ref: Identifier | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.endpoint_policy_digest",
+                    "name": "endpoint_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 137,
+                    "endLine": 137,
+                    "content": "    endpoint_policy_digest: Digest | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.projection_profile_digest",
+                    "name": "projection_profile_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 138,
+                    "endLine": 138,
+                    "content": "    projection_profile_digest: Digest | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.retention_policy_digest",
+                    "name": "retention_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 139,
+                    "endLine": 139,
+                    "content": "    retention_policy_digest: Digest | None = None"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 15
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+                    "name": "check_occurrences",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 142,
+                    "endLine": 144,
+                    "content": "    def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.format_version",
+                    "name": "format_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 128,
+                    "endLine": 128,
+                    "content": "    format_version: Literal[\"1.0\"] = FORMAT_VERSION"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.operation_id",
+                    "name": "operation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 129,
+                    "endLine": 129,
+                    "content": "    operation_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.caller_id",
+                    "name": "caller_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 130,
+                    "endLine": 130,
+                    "content": "    caller_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.scope",
+                    "name": "scope",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 131,
+                    "endLine": 131,
+                    "content": "    scope: Annotated[str, Field(min_length=1, max_length=1024)]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.capability_digest",
+                    "name": "capability_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 132,
+                    "endLine": 132,
+                    "content": "    capability_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.inputs",
+                    "name": "inputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 133,
+                    "endLine": 133,
+                    "content": "    inputs: tuple[InputOccurrence, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.allocation",
+                    "name": "allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 134,
+                    "endLine": 134,
+                    "content": "    allocation: Resources"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.parent_operation_id",
+                    "name": "parent_operation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 135,
+                    "endLine": 135,
+                    "content": "    parent_operation_id: Identifier | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.need_ref",
+                    "name": "need_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 136,
+                    "endLine": 136,
+                    "content": "    need_ref: Identifier | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.endpoint_policy_digest",
+                    "name": "endpoint_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 137,
+                    "endLine": 137,
+                    "content": "    endpoint_policy_digest: Digest | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.projection_profile_digest",
+                    "name": "projection_profile_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 138,
+                    "endLine": 138,
+                    "content": "    projection_profile_digest: Digest | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.retention_policy_digest",
+                    "name": "retention_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 139,
+                    "endLine": 139,
+                    "content": "    retention_policy_digest: Digest | None = None"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                    "name": "_unique",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 82,
+                    "endLine": 86,
+                    "content": "def _unique(values, label):     values = tuple(values)     if len(values) != len(set(values)):         raise ValueError(\"duplicate \" + label)     return set(values)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+        "rootSymbols": 1,
+        "totalSymbols": 16,
+        "totalEdges": 15,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 14,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

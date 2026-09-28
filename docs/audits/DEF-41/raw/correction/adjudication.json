@@ -1,0 +1,87 @@
+{
+  "scope": "Post-implementation correction to DEF-41 closure, no product/tool code edits",
+  "baseline": "1b48c428e2e32a5179005df288ac669bdae82409",
+  "implementation": "b7828cc968860f8376ac2ff251523fb2e8dfa391",
+  "prior_packet": "1198f29eea08141f06220d29c40cb98fc81a99bc",
+  "verdict": "BLOCKED",
+  "blocker": "DEF-105",
+  "retained_behavioral_verdict": "PASS only for previously exercised standalone contract behavior",
+  "impact_review_corrections": [
+    "12 imports in11 files, not13",
+    "No production bundle importer required by S01; original suggestion rejected and reviewer retracted",
+    "Existing import-only test edits are valid regression coverage for byte-identical moved models, not a defect"
+  ],
+  "bounded_source_matrix": [
+    {
+      "root": "Canonical moved models and hash",
+      "caller": "11 baseline consumer files listed above",
+      "sink": "structured execution, persistence, API diagnostic schema, task scan handling",
+      "verification": "R100 rename; source import trace confirms all 11 migrate and no old production import remains. Existing changed tests are meaningful domain tests, but their diffs change only import paths."
+    },
+    {
+      "root": "Enricher/Template structured producers",
+      "caller": "enricher_base :515/:565; template_enricher :356",
+      "sink": "InputOutcome/StructuredExecutionResult; canonical hash references",
+      "verification": "Existing structured-execution tests cover cardinality, grouping, empty-success/failure, hash stability, and evidence metadata. Recorded as part of the 47 integration suite; not independently re-run."
+    },
+    {
+      "root": "Persistence/status/evidence",
+      "caller": "ExecutionService :231/:241/:397",
+      "sink": "EvidenceEnvelopeRecord, execution repository, projection repository",
+      "verification": "Existing execution-service and graph-projection tests cover grouping, HOLD, append-only/superseding evidence, retry and atomic projection persistence. Recorded 47-suite evidence, not fresh proof of every moved import boundary."
+    },
+    {
+      "root": "Late task imports",
+      "caller": "_connector_failure_diagnostic :168; run_connector_template :197",
+      "sink": "scan details, input digest, durable/replay task behavior",
+      "verification": "Existing template-execution-task tests cover durable result, cross-sketch replay, changed-template replay, lease recovery and concurrent replay. The two imports are dynamic-in-timing and evade a class-call graph."
+    },
+    {
+      "root": "API schema",
+      "caller": "ConnectorTestOutcome :73",
+      "sink": "Pydantic serialization/reload of diagnostic :76",
+      "verification": "test_template_egress and recorded api-schema-smoke exercise the diagnostic path; no evidence it crosses the new acquisition interchange."
+    },
+    {
+      "root": "New acquisition entrypoints",
+      "caller": "example :16-34; test_contract.py",
+      "sink": "serialized AcquisitionBundle / parse validation",
+      "verification": "46 recorded contract tests cover duplicate ownership, digest tamper, roundtrip, completion ordering, typed failure/partial, malformed values, nonfinite values and construct/copy diagnostic bypass. No production runtime caller exists."
+    },
+    {
+      "root": "Package availability",
+      "caller": "consumer imports of execution.models/acquisition",
+      "sink": "wheel import boundary",
+      "verification": "Recorded wheel build/install proves package inclusion and old-module absence, but it does not execute all 11 integrated consumers from that wheel."
+    }
+  ],
+  "explicit_matrix_limit": "Matrix is source/review evidence. Existing47 tests and API schema smoke are prior exercised results; the API endpoint suite was not rerun. No count establishes exhaustive graph discovery.",
+  "findings": [
+    {
+      "id": "S01-C1",
+      "classification": "introduced workflow defect",
+      "status": "closure withdrawn",
+      "statement": "P0 discovery limitations carried into S01 acceptance without resolving mandatory impact gate"
+    },
+    {
+      "id": "S01-C2",
+      "classification": "tool defect",
+      "status": "blocked DEF-105",
+      "statement": "METHOD_OVERRIDES rejected before relation filter; next frontier abort hidden as query-interrupted",
+      "runtime": "correction-client-edge-repro.stdout"
+    },
+    {
+      "id": "S01-C3",
+      "classification": "tool defect",
+      "status": "blocked DEF-105",
+      "statement": "Doctor absent indexed callers become unsafe safe-to-delete advice"
+    },
+    {
+      "id": "S01-C4",
+      "classification": "tool targeting defect plus operator scope misuse",
+      "status": "blocked DEF-105",
+      "statement": "Hunt targets absent repository-local Pip3r launcher; source-path scopes are not CLI selectors; zero Python coverage"
+    }
+  ],
+  "no_pre_edit_fabrication": true
+}

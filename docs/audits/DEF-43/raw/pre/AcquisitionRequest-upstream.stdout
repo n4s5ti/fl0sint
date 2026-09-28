@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+        "name": "AcquisitionRequest",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 127,
+        "endLine": 144,
+        "content": "class AcquisitionRequest(ContractModel):     format_version: Literal[\"1.0\"] = FORMAT_VERSION     operation_id: Identifier     caller_id: Identifier     scope: Annotated[str, Field(min_length=1, max_length=1024)]     capability_digest: Digest     inputs: tuple[InputOccurrence, ...]     allocation: Resources     parent_operation_id: Identifier | None = None     need_ref: Identifier | None = None     endpoint_policy_digest: Digest | None = None     projection_profile_digest: Digest | None = None     retention_policy_digest: Digest | None = None     @model_validator(mode=\"after\")     def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+            "name": "AcquisitionRequest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 127,
+            "endLine": 144,
+            "content": "class AcquisitionRequest(ContractModel):     format_version: Literal[\"1.0\"] = FORMAT_VERSION     operation_id: Identifier     caller_id: Identifier     scope: Annotated[str, Field(min_length=1, max_length=1024)]     capability_digest: Digest     inputs: tuple[InputOccurrence, ...]     allocation: Resources     parent_operation_id: Identifier | None = None     need_ref: Identifier | None = None     endpoint_policy_digest: Digest | None = None     projection_profile_digest: Digest | None = None     retention_policy_digest: Digest | None = None     @model_validator(mode=\"after\")     def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+                    "name": "AcquisitionRequest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 127,
+                    "endLine": 144,
+                    "content": "class AcquisitionRequest(ContractModel):     format_version: Literal[\"1.0\"] = FORMAT_VERSION     operation_id: Identifier     caller_id: Identifier     scope: Annotated[str, Field(min_length=1, max_length=1024)]     capability_digest: Digest     inputs: tuple[InputOccurrence, ...]     allocation: Resources     parent_operation_id: Identifier | None = None     need_ref: Identifier | None = None     endpoint_policy_digest: Digest | None = None     projection_profile_digest: Digest | None = None     retention_policy_digest: Digest | None = None     @model_validator(mode=\"after\")     def check_occurrences(self):         _unique((i.occurrence_id for i in self.inputs), \"input occurrence\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

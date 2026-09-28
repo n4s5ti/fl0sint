@@ -1,0 +1,7 @@
+{
+  "text": "mpg-batch: running 1 command(s)\nmpg-batch: step 1/1: env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python -m pytest tests/core/test_structured_execution.py tests/core/test_forensic_legacy_boundaries.py -q -p no:cacheprovider\n.................                                                        [100%]\n=============================== warnings summary ===============================\n../../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854\n  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13\n    from crypt import crypt as _crypt\n\nsrc/flowsint_core/core/graph/types.py:16\n  /home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/\n    class NodeMetadata(BaseModel):\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n17 passed, 2 warnings in 1.32s\n\n\nWall time: 4.40 seconds",
+  "details": {
+    "timeoutSeconds": 180,
+    "wallTimeMs": 4401.640324994922
+  }
+}

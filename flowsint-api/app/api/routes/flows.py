@@ -4,6 +4,11 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from flowsint_core.core.celery import celery
 from flowsint_core.core.graph import create_graph_service
+from flowsint_core.core.forensics import (
+    dispatch_legacy_task,
+    legacy_execution_boundary,
+)
+
 from flowsint_core.core.models import Profile
 from flowsint_core.core.postgre_db import get_db
 from flowsint_core.core.services import (
@@ -193,6 +198,7 @@ def delete_flow(
 
 
 @router.post("/{flow_id}/launch")
+@legacy_execution_boundary("legacy_flow_launch")
 async def launch_flow(
     flow_id: str,
     payload: launchFlowPayload,
@@ -228,7 +234,8 @@ async def launch_flow(
         flow_branches = compute_flow_branches(sample_value, nodes, edges)
         serializable_branches = [branch.model_dump() for branch in flow_branches]
 
-        task = celery.send_task(
+        task = dispatch_legacy_task(
+            celery,
             "run_flow",
             args=[
                 serializable_branches,

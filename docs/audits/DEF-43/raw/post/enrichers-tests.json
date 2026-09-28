@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-enrichers",
+  "rc": 0,
+  "seconds": 7.227581977844238
+}

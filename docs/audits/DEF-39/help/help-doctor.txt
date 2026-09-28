@@ -1,0 +1,36 @@
+USAGE
+  pip3r doctor [--cwd value] [--json] [--deep] [--meta] [--graph] [--repo value] [--lbug-path value] [--has] [--format-check] [--typecheck] [--lint] [--test] [--continue-on-error] [--strict] [--logs value]... [--hunt] [--hunt-baseline value] [--scope value]... [--hunt-seed] [--hunt-seed-apply] [--seed-profile value] [--seed-workspace value] [--hunt-seed-max value] [--investigate] [--verify-refactor value]
+  pip3r doctor --help
+
+Run repository verification scripts
+
+PIP3R_JSON_PROBE: {"version":1,"bare":false}
+
+FLAGS
+  -c [--cwd]                                   Target directory to verify
+     [--json]                                  Emit JSON summary instead of plain text                                                                                              [default = false]
+     [--deep]                                  Compatibility flag for deep verification mode                                                                                        [default = false]
+     [--meta]                                  Wrap JSON output in a MetaReport-style envelope                                                                                      [default = false]
+     [--graph/--no-graph]                      Run graph health check when a LadybugDB read model exists                                                                            [default = true]
+     [--repo]                                  GraphOS repo name to open
+     [--lbug-path]                             Path to the LadybugDB read model
+     [--has/--no-has]                          Run has against .hasrc when present (passing any check flag selects only those checks)
+     [--format-check/--no-format-check]        Run the format:check script when present (passing any check flag selects only those checks)
+     [--typecheck/--no-typecheck]              Run the typecheck script when present (passing any check flag selects only those checks)
+     [--lint/--no-lint]                        Run the lint script when present (passing any check flag selects only those checks)
+     [--test/--no-test]                        Run the test script when present (passing any check flag selects only those checks)
+     [--continue-on-error]                     Continue executing checks after the first failure                                                                                    [default = false]
+     [--strict]                                Treat every diagnostic warning as a blocking failure                                                                                 [default = false]
+     [--logs]...                               Analyze journalctl and optional log files for warnings
+     [--hunt/--no-hunt]                        Probe Pip3r CLI behavioral contracts as diagnostic warnings
+     [--hunt-baseline]                         Previous HuntReport JSON file for a baseline diff
+     [--scope]...                              Restrict --hunt to command selectors (e.g. runtime, or a quoted nested path like "runtime graph"); repeatable and/or comma-separated [separator = ,]
+     [--hunt-seed/--no-hunt-seed]              List Multica issues that would be seeded from hunt findings
+     [--hunt-seed-apply/--no-hunt-seed-apply]  Create Multica issues selected by --hunt-seed
+     [--seed-profile]                          Multica profile for hunt issue seeding
+     [--seed-workspace]                        Multica workspace id for hunt issue seeding
+     [--hunt-seed-max]                         Maximum hunt issue groups to seed
+     [--investigate/--no-investigate]          Correlate Vitest failures with graph-backed structural findings
+     [--verify-refactor]                       Score graph-backed refactor safety for a symbol
+  -h  --help                                   Print help information and exit
+      --                                       All subsequent inputs should be interpreted as arguments

@@ -1,0 +1,16 @@
+{
+  "name": "head-drift",
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--drift",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+    "--json",
+    "--no-auto-index"
+  ],
+  "cwd": "/tmp/def42-recovery",
+  "environment": {},
+  "rc": 0,
+  "seconds": 0.9513032380000368
+}

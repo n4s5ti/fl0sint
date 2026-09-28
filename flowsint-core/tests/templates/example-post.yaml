@@ -4,17 +4,12 @@ version: 1.0
 input:
   type: Ip
   key: address
-request:
-  method: POST
-  url: https://api.example.com/lookup
-  headers:
-    Content-Type: application/json
-  body: '{"ip": "{{address}}"}'
-  timeout: 15
+connector:
+  destination_id: approved_directory
+  endpoint_id: ip_lookup_post
+  capability: enrich.read
 output:
   type: Ip
-response:
-  expect: json
-  map:
-    address: ip
-    country: country
+evidence:
+  source_rights: test-only
+

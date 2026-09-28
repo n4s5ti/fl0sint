@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+        "name": "EvidenceEnvelope",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 34,
+        "endLine": 62,
+        "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "name": "EvidenceEnvelope",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 34,
+            "endLine": 62,
+            "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                    "name": "EvidenceEnvelope",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 34,
+                    "endLine": 62,
+                    "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

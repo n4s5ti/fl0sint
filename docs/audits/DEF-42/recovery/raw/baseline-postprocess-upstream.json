@@ -1,0 +1,21 @@
+{
+  "name": "baseline-postprocess-upstream",
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+    "--json",
+    "--no-auto-index",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "upstream",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:postprocess"
+  ],
+  "cwd": "/tmp/def42-recovery",
+  "environment": {},
+  "rc": 0,
+  "seconds": 0.7712959359996603
+}

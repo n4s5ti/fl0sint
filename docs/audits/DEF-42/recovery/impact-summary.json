@@ -1,0 +1,196 @@
+[
+  {
+    "receipt": "baseline-WebsiteToText-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 104,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-WebsiteToText-upstream.stdout",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "edges": 0,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-execute-downstream.stdout",
+    "completeness": "partial",
+    "reasons": [
+      "qualified-symbol-not-found"
+    ],
+    "edges": 0,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-execute-upstream.stdout",
+    "completeness": "partial",
+    "reasons": [
+      "qualified-symbol-not-found"
+    ],
+    "edges": 0,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-execute_structured-downstream.stdout",
+    "completeness": "partial",
+    "reasons": [
+      "qualified-symbol-not-found"
+    ],
+    "edges": 0,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-execute_structured-upstream.stdout",
+    "completeness": "partial",
+    "reasons": [
+      "qualified-symbol-not-found"
+    ],
+    "edges": 0,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-inherited-execute-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 23,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-inherited-execute-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 90,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-inherited-execute_structured-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 30,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-inherited-execute_structured-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 89,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-postprocess-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 5,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-postprocess-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 1,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-scan-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 4,
+    "warnings": []
+  },
+  {
+    "receipt": "baseline-scan-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 1,
+    "warnings": []
+  },
+  {
+    "receipt": "head-WebsiteTextOccurrence-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 7,
+    "warnings": []
+  },
+  {
+    "receipt": "head-WebsiteTextOccurrence-upstream.stdout",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "edges": 0,
+    "warnings": []
+  },
+  {
+    "receipt": "head-WebsiteToText-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 140,
+    "warnings": []
+  },
+  {
+    "receipt": "head-WebsiteToText-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 1,
+    "warnings": []
+  },
+  {
+    "receipt": "head-execute-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 21,
+    "warnings": []
+  },
+  {
+    "receipt": "head-execute-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 3,
+    "warnings": []
+  },
+  {
+    "receipt": "head-execute_structured-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 27,
+    "warnings": []
+  },
+  {
+    "receipt": "head-execute_structured-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 3,
+    "warnings": []
+  },
+  {
+    "receipt": "head-postprocess-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 5,
+    "warnings": []
+  },
+  {
+    "receipt": "head-postprocess-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 9,
+    "warnings": []
+  },
+  {
+    "receipt": "head-scan-downstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 5,
+    "warnings": []
+  },
+  {
+    "receipt": "head-scan-upstream.stdout",
+    "completeness": "complete",
+    "reasons": [],
+    "edges": 6,
+    "warnings": []
+  }
+]

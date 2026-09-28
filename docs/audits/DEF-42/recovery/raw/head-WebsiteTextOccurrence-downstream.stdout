@@ -1,0 +1,313 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+    "repo": "fl0sint-def42-s02",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+        "name": "WebsiteTextOccurrence",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Class",
+        "startLine": 51,
+        "endLine": 67,
+        "content": "class WebsiteTextOccurrence:     \"\"\"Immutable ownership record that survives concurrent transport work.\"\"\"     source: Website     index: int     input_ref: str     status: OutcomeStatus     outputs: tuple[Phrase, ...] = ()     diagnostic: RedactedDiagnostic | None = None     def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "name": "WebsiteTextOccurrence",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Class",
+            "startLine": 51,
+            "endLine": 67,
+            "content": "class WebsiteTextOccurrence:     \"\"\"Immutable ownership record that survives concurrent transport work.\"\"\"     source: Website     index: int     input_ref: str     status: OutcomeStatus     outputs: tuple[Phrase, ...] = ()     diagnostic: RedactedDiagnostic | None = None     def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.to_input_outcome#0",
+            "name": "to_input_outcome",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 61,
+            "endLine": 67,
+            "content": "    def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+        },
+        {
+            "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.source",
+            "name": "source",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Property",
+            "startLine": 54,
+            "endLine": 54,
+            "content": "    source: Website"
+        },
+        {
+            "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.index",
+            "name": "index",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Property",
+            "startLine": 55,
+            "endLine": 55,
+            "content": "    index: int"
+        },
+        {
+            "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Property",
+            "startLine": 56,
+            "endLine": 56,
+            "content": "    input_ref: str"
+        },
+        {
+            "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.status",
+            "name": "status",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Property",
+            "startLine": 57,
+            "endLine": 57,
+            "content": "    status: OutcomeStatus"
+        },
+        {
+            "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.outputs",
+            "name": "outputs",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Property",
+            "startLine": 58,
+            "endLine": 58,
+            "content": "    outputs: tuple[Phrase, ...] = ()"
+        },
+        {
+            "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.diagnostic",
+            "name": "diagnostic",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Property",
+            "startLine": 59,
+            "endLine": 59,
+            "content": "    diagnostic: RedactedDiagnostic | None = None"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.to_input_outcome#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.source",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.index",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.status",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.outputs",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+            "to": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.diagnostic",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "count": 8,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+                    "name": "WebsiteTextOccurrence",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Class",
+                    "startLine": 51,
+                    "endLine": 67,
+                    "content": "class WebsiteTextOccurrence:     \"\"\"Immutable ownership record that survives concurrent transport work.\"\"\"     source: Website     index: int     input_ref: str     status: OutcomeStatus     outputs: tuple[Phrase, ...] = ()     diagnostic: RedactedDiagnostic | None = None     def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.to_input_outcome#0",
+                    "name": "to_input_outcome",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 61,
+                    "endLine": 67,
+                    "content": "    def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.source",
+                    "name": "source",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 54,
+                    "endLine": 54,
+                    "content": "    source: Website"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.index",
+                    "name": "index",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 55,
+                    "endLine": 55,
+                    "content": "    index: int"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 56,
+                    "endLine": 56,
+                    "content": "    input_ref: str"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.status",
+                    "name": "status",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 57,
+                    "endLine": 57,
+                    "content": "    status: OutcomeStatus"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.outputs",
+                    "name": "outputs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 58,
+                    "endLine": 58,
+                    "content": "    outputs: tuple[Phrase, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 59,
+                    "endLine": 59,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-enrichers",
+            "direct": true,
+            "symbolCount": 7
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.to_input_outcome#0",
+                    "name": "to_input_outcome",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 61,
+                    "endLine": 67,
+                    "content": "    def to_input_outcome(self) -> InputOutcome:         return InputOutcome(             input_ref=self.input_ref,             status=self.status,             outputs=self.outputs,             diagnostic=self.diagnostic,         )"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.source",
+                    "name": "source",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 54,
+                    "endLine": 54,
+                    "content": "    source: Website"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.index",
+                    "name": "index",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 55,
+                    "endLine": 55,
+                    "content": "    index: int"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 56,
+                    "endLine": 56,
+                    "content": "    input_ref: str"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.status",
+                    "name": "status",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 57,
+                    "endLine": 57,
+                    "content": "    status: OutcomeStatus"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.outputs",
+                    "name": "outputs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 58,
+                    "endLine": 58,
+                    "content": "    outputs: tuple[Phrase, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Property",
+                    "startLine": 59,
+                    "endLine": 59,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+        "repo": "fl0sint-def42-s02",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence",
+        "rootSymbols": 1,
+        "totalSymbols": 8,
+        "totalEdges": 7,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 7,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

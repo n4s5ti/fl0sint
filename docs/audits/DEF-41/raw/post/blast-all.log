@@ -1,0 +1,2002 @@
+
+__LABEL__=InputOutcome-upstream
+__ARGV__=["pip3r","blast",InputOutcome,"--cwd",".","--direction","upstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "InputOutcome",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+        "name": "InputOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 65,
+        "endLine": 84,
+        "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "name": "InputOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 65,
+            "endLine": 84,
+            "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                    "name": "InputOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 65,
+                    "endLine": 84,
+                    "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "InputOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=793627407
+
+__LABEL__=InputOutcome-downstream
+__ARGV__=["pip3r","blast",InputOutcome,"--cwd",".","--direction","downstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "InputOutcome",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+        "name": "InputOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 65,
+        "endLine": 84,
+        "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "name": "InputOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 65,
+            "endLine": 84,
+            "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+            "name": "require_diagnostic_for_non_success",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Method",
+            "startLine": 77,
+            "endLine": 84,
+            "content": "    def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 70,
+            "endLine": 70,
+            "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+            "name": "status",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 71,
+            "endLine": 71,
+            "content": "    status: OutcomeStatus"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+            "name": "outputs",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 72,
+            "endLine": 72,
+            "content": "    outputs: tuple[Any, ...] = ()"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+            "name": "diagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 73,
+            "endLine": 73,
+            "content": "    diagnostic: RedactedDiagnostic | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+            "name": "evidence",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 74,
+            "endLine": 74,
+            "content": "    evidence: tuple[EvidenceEnvelope, ...] = ()"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "to": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 7,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                    "name": "InputOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 65,
+                    "endLine": 84,
+                    "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+                    "name": "require_diagnostic_for_non_success",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Method",
+                    "startLine": 77,
+                    "endLine": 84,
+                    "content": "    def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 70,
+                    "endLine": 70,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 71,
+                    "endLine": 71,
+                    "content": "    status: OutcomeStatus"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+                    "name": "outputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 72,
+                    "endLine": 72,
+                    "content": "    outputs: tuple[Any, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 73,
+                    "endLine": 73,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+                    "name": "evidence",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 74,
+                    "endLine": 74,
+                    "content": "    evidence: tuple[EvidenceEnvelope, ...] = ()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 6
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 70,
+                    "endLine": 70,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 71,
+                    "endLine": 71,
+                    "content": "    status: OutcomeStatus"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+                    "name": "outputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 72,
+                    "endLine": 72,
+                    "content": "    outputs: tuple[Any, ...] = ()"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 73,
+                    "endLine": 73,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+                    "name": "evidence",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 74,
+                    "endLine": 74,
+                    "content": "    evidence: tuple[EvidenceEnvelope, ...] = ()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+                    "name": "require_diagnostic_for_non_success",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Method",
+                    "startLine": 77,
+                    "endLine": 84,
+                    "content": "    def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "InputOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 7,
+        "totalEdges": 6,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 6,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=826653041
+
+__LABEL__=EvidenceEnvelope-upstream
+__ARGV__=["pip3r","blast",EvidenceEnvelope,"--cwd",".","--direction","upstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "EvidenceEnvelope",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+        "name": "EvidenceEnvelope",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 34,
+        "endLine": 62,
+        "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "name": "EvidenceEnvelope",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 34,
+            "endLine": 62,
+            "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                    "name": "EvidenceEnvelope",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 34,
+                    "endLine": 62,
+                    "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "EvidenceEnvelope",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=797494701
+
+__LABEL__=EvidenceEnvelope-downstream
+__ARGV__=["pip3r","blast",EvidenceEnvelope,"--cwd",".","--direction","downstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "EvidenceEnvelope",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "CRITICAL",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+        "name": "EvidenceEnvelope",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 34,
+        "endLine": 62,
+        "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "name": "EvidenceEnvelope",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 34,
+            "endLine": 62,
+            "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.normalize_timestamp#1",
+            "name": "normalize_timestamp",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Method",
+            "startLine": 57,
+            "endLine": 62,
+            "content": "    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 39,
+            "endLine": 39,
+            "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.destination_id",
+            "name": "destination_id",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 40,
+            "endLine": 40,
+            "content": "    destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.endpoint_id",
+            "name": "endpoint_id",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 41,
+            "endLine": 41,
+            "content": "    endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.capability",
+            "name": "capability",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 42,
+            "endLine": 42,
+            "content": "    capability: str = Field(pattern=r\"^enrich\\.read$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.policy_version",
+            "name": "policy_version",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 43,
+            "endLine": 43,
+            "content": "    policy_version: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_sha256",
+            "name": "artifact_sha256",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 44,
+            "endLine": 44,
+            "content": "    artifact_sha256: str | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_reference",
+            "name": "artifact_reference",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 45,
+            "endLine": 45,
+            "content": "    artifact_reference: str | None = Field(default=None, max_length=256)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.source_rights",
+            "name": "source_rights",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 46,
+            "endLine": 46,
+            "content": "    source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.schema_version",
+            "name": "schema_version",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 47,
+            "endLine": 47,
+            "content": "    schema_version: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.parser_version",
+            "name": "parser_version",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 48,
+            "endLine": 48,
+            "content": "    parser_version: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.confidence",
+            "name": "confidence",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 49,
+            "endLine": 49,
+            "content": "    confidence: float = Field(ge=0.0, le=1.0)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.verification_state",
+            "name": "verification_state",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 50,
+            "endLine": 50,
+            "content": "    verification_state: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.event_at",
+            "name": "event_at",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 51,
+            "endLine": 51,
+            "content": "    event_at: datetime | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.retrieved_at",
+            "name": "retrieved_at",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 52,
+            "endLine": 52,
+            "content": "    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.ingested_at",
+            "name": "ingested_at",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 53,
+            "endLine": 53,
+            "content": "    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Method:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.normalize_timestamp#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.destination_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.endpoint_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.capability",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.policy_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_sha256",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_reference",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.source_rights",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.schema_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.parser_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.confidence",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.verification_state",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.event_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.retrieved_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.ingested_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 17,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                    "name": "EvidenceEnvelope",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 34,
+                    "endLine": 62,
+                    "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.normalize_timestamp#1",
+                    "name": "normalize_timestamp",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Method",
+                    "startLine": 57,
+                    "endLine": 62,
+                    "content": "    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 39,
+                    "endLine": 39,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.destination_id",
+                    "name": "destination_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 40,
+                    "endLine": 40,
+                    "content": "    destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.endpoint_id",
+                    "name": "endpoint_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 41,
+                    "endLine": 41,
+                    "content": "    endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.capability",
+                    "name": "capability",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 42,
+                    "endLine": 42,
+                    "content": "    capability: str = Field(pattern=r\"^enrich\\.read$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.policy_version",
+                    "name": "policy_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 43,
+                    "endLine": 43,
+                    "content": "    policy_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_sha256",
+                    "name": "artifact_sha256",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 44,
+                    "endLine": 44,
+                    "content": "    artifact_sha256: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_reference",
+                    "name": "artifact_reference",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 45,
+                    "endLine": 45,
+                    "content": "    artifact_reference: str | None = Field(default=None, max_length=256)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.source_rights",
+                    "name": "source_rights",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 46,
+                    "endLine": 46,
+                    "content": "    source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.schema_version",
+                    "name": "schema_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 47,
+                    "endLine": 47,
+                    "content": "    schema_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.parser_version",
+                    "name": "parser_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 48,
+                    "endLine": 48,
+                    "content": "    parser_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.confidence",
+                    "name": "confidence",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 49,
+                    "endLine": 49,
+                    "content": "    confidence: float = Field(ge=0.0, le=1.0)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.verification_state",
+                    "name": "verification_state",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 50,
+                    "endLine": 50,
+                    "content": "    verification_state: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.event_at",
+                    "name": "event_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 51,
+                    "endLine": 51,
+                    "content": "    event_at: datetime | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.retrieved_at",
+                    "name": "retrieved_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 52,
+                    "endLine": 52,
+                    "content": "    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.ingested_at",
+                    "name": "ingested_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 53,
+                    "endLine": 53,
+                    "content": "    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 16
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.normalize_timestamp#1",
+                    "name": "normalize_timestamp",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Method",
+                    "startLine": 57,
+                    "endLine": 62,
+                    "content": "    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 39,
+                    "endLine": 39,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.destination_id",
+                    "name": "destination_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 40,
+                    "endLine": 40,
+                    "content": "    destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.endpoint_id",
+                    "name": "endpoint_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 41,
+                    "endLine": 41,
+                    "content": "    endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.capability",
+                    "name": "capability",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 42,
+                    "endLine": 42,
+                    "content": "    capability: str = Field(pattern=r\"^enrich\\.read$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.policy_version",
+                    "name": "policy_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 43,
+                    "endLine": 43,
+                    "content": "    policy_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_sha256",
+                    "name": "artifact_sha256",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 44,
+                    "endLine": 44,
+                    "content": "    artifact_sha256: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_reference",
+                    "name": "artifact_reference",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 45,
+                    "endLine": 45,
+                    "content": "    artifact_reference: str | None = Field(default=None, max_length=256)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.source_rights",
+                    "name": "source_rights",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 46,
+                    "endLine": 46,
+                    "content": "    source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.schema_version",
+                    "name": "schema_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 47,
+                    "endLine": 47,
+                    "content": "    schema_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.parser_version",
+                    "name": "parser_version",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 48,
+                    "endLine": 48,
+                    "content": "    parser_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.confidence",
+                    "name": "confidence",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 49,
+                    "endLine": 49,
+                    "content": "    confidence: float = Field(ge=0.0, le=1.0)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.verification_state",
+                    "name": "verification_state",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 50,
+                    "endLine": 50,
+                    "content": "    verification_state: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.event_at",
+                    "name": "event_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 51,
+                    "endLine": 51,
+                    "content": "    event_at: datetime | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.retrieved_at",
+                    "name": "retrieved_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 52,
+                    "endLine": 52,
+                    "content": "    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.ingested_at",
+                    "name": "ingested_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 53,
+                    "endLine": 53,
+                    "content": "    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "EvidenceEnvelope",
+        "rootSymbols": 1,
+        "totalSymbols": 17,
+        "totalEdges": 16,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 16,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=826897042
+
+__LABEL__=StructuredExecutionResult-upstream
+__ARGV__=["pip3r","blast",StructuredExecutionResult,"--cwd",".","--direction","upstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "StructuredExecutionResult",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+        "name": "StructuredExecutionResult",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 87,
+        "endLine": 93,
+        "content": "class StructuredExecutionResult(BaseModel):     \"\"\"Structured execution output retaining input cardinality and grouping.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     enricher_name: str = Field(min_length=1, max_length=256)     outcomes: tuple[InputOutcome, ...]"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+            "name": "StructuredExecutionResult",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 87,
+            "endLine": 93,
+            "content": "class StructuredExecutionResult(BaseModel):     \"\"\"Structured execution output retaining input cardinality and grouping.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     enricher_name: str = Field(min_length=1, max_length=256)     outcomes: tuple[InputOutcome, ...]"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+                    "name": "StructuredExecutionResult",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 87,
+                    "endLine": 93,
+                    "content": "class StructuredExecutionResult(BaseModel):     \"\"\"Structured execution output retaining input cardinality and grouping.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     enricher_name: str = Field(min_length=1, max_length=256)     outcomes: tuple[InputOutcome, ...]"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "StructuredExecutionResult",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=769607402
+
+__LABEL__=StructuredExecutionResult-downstream
+__ARGV__=["pip3r","blast",StructuredExecutionResult,"--cwd",".","--direction","downstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "StructuredExecutionResult",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+        "name": "StructuredExecutionResult",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 87,
+        "endLine": 93,
+        "content": "class StructuredExecutionResult(BaseModel):     \"\"\"Structured execution output retaining input cardinality and grouping.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     enricher_name: str = Field(min_length=1, max_length=256)     outcomes: tuple[InputOutcome, ...]"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+            "name": "StructuredExecutionResult",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 87,
+            "endLine": 93,
+            "content": "class StructuredExecutionResult(BaseModel):     \"\"\"Structured execution output retaining input cardinality and grouping.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     enricher_name: str = Field(min_length=1, max_length=256)     outcomes: tuple[InputOutcome, ...]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.enricher_name",
+            "name": "enricher_name",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 92,
+            "endLine": 92,
+            "content": "    enricher_name: str = Field(min_length=1, max_length=256)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.outcomes",
+            "name": "outcomes",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 93,
+            "endLine": 93,
+            "content": "    outcomes: tuple[InputOutcome, ...]"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.enricher_name",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.outcomes",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 3,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+                    "name": "StructuredExecutionResult",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 87,
+                    "endLine": 93,
+                    "content": "class StructuredExecutionResult(BaseModel):     \"\"\"Structured execution output retaining input cardinality and grouping.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     enricher_name: str = Field(min_length=1, max_length=256)     outcomes: tuple[InputOutcome, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.enricher_name",
+                    "name": "enricher_name",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 92,
+                    "endLine": 92,
+                    "content": "    enricher_name: str = Field(min_length=1, max_length=256)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.outcomes",
+                    "name": "outcomes",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 93,
+                    "endLine": 93,
+                    "content": "    outcomes: tuple[InputOutcome, ...]"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 2
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.enricher_name",
+                    "name": "enricher_name",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 92,
+                    "endLine": 92,
+                    "content": "    enricher_name: str = Field(min_length=1, max_length=256)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.outcomes",
+                    "name": "outcomes",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 93,
+                    "endLine": 93,
+                    "content": "    outcomes: tuple[InputOutcome, ...]"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "StructuredExecutionResult",
+        "rootSymbols": 1,
+        "totalSymbols": 3,
+        "totalEdges": 2,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 2,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=804732928
+
+__LABEL__=flowsint-core/src/flowsint_execution/acquisition.py:build_bundle-upstream
+__ARGV__=["pip3r","blast",flowsint-core/src/flowsint_execution/acquisition.py:build_bundle,"--cwd",".","--direction","upstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "name": "build_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 535,
+        "endLine": 567,
+        "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "name": "build_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 535,
+            "endLine": 567,
+            "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                    "name": "build_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 535,
+                    "endLine": 567,
+                    "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=811225692
+
+__LABEL__=flowsint-core/src/flowsint_execution/acquisition.py:build_bundle-downstream
+__ARGV__=["pip3r","blast",flowsint-core/src/flowsint_execution/acquisition.py:build_bundle,"--cwd",".","--direction","downstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "name": "build_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 535,
+        "endLine": 567,
+        "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "name": "build_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 535,
+            "endLine": 567,
+            "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 421,
+            "endLine": 424,
+            "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 427,
+            "endLine": 429,
+            "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+            "name": "_error",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 442,
+            "endLine": 459,
+            "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                    "name": "build_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 535,
+                    "endLine": 567,
+                    "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 427,
+                    "endLine": 429,
+                    "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                    "name": "_error",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 442,
+                    "endLine": 459,
+                    "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 427,
+                    "endLine": 429,
+                    "content": "def _digest(payload: _BundlePayload) -> str:     data = payload.model_dump(mode=\"json\", exclude={\"origin_digest\"}, warnings=\"error\")     return hashlib.sha256(_canonical(data).encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                    "name": "_error",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 442,
+                    "endLine": 459,
+                    "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 2,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=861243943
+
+__LABEL__=flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle-upstream
+__ARGV__=["pip3r","blast",flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle,"--cwd",".","--direction","upstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+        "name": "parse_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 510,
+        "endLine": 511,
+        "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "name": "parse_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 510,
+            "endLine": 511,
+            "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "name": "_serialize",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 514,
+            "endLine": 524,
+            "content": "def _serialize(model, parser):     try:         expected = AcquisitionBundle if parser is parse_bundle else AcquisitionRequest         validated = expected.model_validate(             model.model_dump(mode=\"python\", warnings=\"error\")         )         wire = validated.model_dump_json(warnings=\"error\")     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None     validated = parser(wire)     return _canonical(validated.model_dump(mode=\"json\", warnings=\"error\"))"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+            "name": "serialize_request",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 527,
+            "endLine": 528,
+            "content": "def serialize_request(request: AcquisitionRequest) -> str:     return _serialize(request, parse_request)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+            "name": "serialize_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 531,
+            "endLine": 532,
+            "content": "def serialize_bundle(bundle: AcquisitionBundle) -> str:     return _serialize(bundle, parse_bundle)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "type": "CALLS",
+            "confidence": 0.7
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                    "name": "parse_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 510,
+                    "endLine": 511,
+                    "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                    "name": "_serialize",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 514,
+                    "endLine": 524,
+                    "content": "def _serialize(model, parser):     try:         expected = AcquisitionBundle if parser is parse_bundle else AcquisitionRequest         validated = expected.model_validate(             model.model_dump(mode=\"python\", warnings=\"error\")         )         wire = validated.model_dump_json(warnings=\"error\")     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None     validated = parser(wire)     return _canonical(validated.model_dump(mode=\"json\", warnings=\"error\"))"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+                    "name": "serialize_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 527,
+                    "endLine": 528,
+                    "content": "def serialize_request(request: AcquisitionRequest) -> str:     return _serialize(request, parse_request)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+                    "name": "serialize_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 531,
+                    "endLine": 532,
+                    "content": "def serialize_bundle(bundle: AcquisitionBundle) -> str:     return _serialize(bundle, parse_bundle)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                    "name": "_serialize",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 514,
+                    "endLine": 524,
+                    "content": "def _serialize(model, parser):     try:         expected = AcquisitionBundle if parser is parse_bundle else AcquisitionRequest         validated = expected.model_validate(             model.model_dump(mode=\"python\", warnings=\"error\")         )         wire = validated.model_dump_json(warnings=\"error\")     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None     validated = parser(wire)     return _canonical(validated.model_dump(mode=\"json\", warnings=\"error\"))"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+                    "name": "serialize_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 527,
+                    "endLine": 528,
+                    "content": "def serialize_request(request: AcquisitionRequest) -> str:     return _serialize(request, parse_request)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+                    "name": "serialize_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 531,
+                    "endLine": 532,
+                    "content": "def serialize_bundle(bundle: AcquisitionBundle) -> str:     return _serialize(bundle, parse_bundle)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=837281562
+
+__LABEL__=flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle-downstream
+__ARGV__=["pip3r","blast",flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle,"--cwd",".","--direction","downstream","--include-tests","--no-auto-index","--json"]
+__STDOUT__
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+        "name": "parse_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 510,
+        "endLine": 511,
+        "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "name": "parse_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 510,
+            "endLine": 511,
+            "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 421,
+            "endLine": 424,
+            "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+            "name": "_error",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 442,
+            "endLine": 459,
+            "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+            "name": "_load",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 471,
+            "endLine": 488,
+            "content": "def _load(raw: str | bytes):     try:         obj = json.loads(             raw,             object_pairs_hook=_object,             parse_constant=lambda _: (_ for _ in ()).throw(                 ContractError(\"invalid_json\")             ),         )     except (ValueError, TypeError, UnicodeError, RecursionError) as exc:         if isinstance(exc, ContractError):             raise         raise ContractError(\"invalid_json\") from None     if not isinstance(obj, dict):         raise ContractError(\"malformed_contract\", (\"$\",))     if obj.get(\"format_version\") != FORMAT_VERSION:         raise ContractError(\"unsupported_format_version\", (\"format_version\",))     return obj"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "name": "_parse",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 491,
+            "endLine": 503,
+            "content": "def _parse(raw, model):     obj = _load(raw)     if model is AcquisitionBundle and isinstance(obj.get(\"request\"), dict):         if obj[\"request\"].get(\"format_version\") != FORMAT_VERSION:             raise ContractError(                 \"unsupported_format_version\", (\"request.format_version\",)             )     try:         return model.model_validate_json(_canonical(obj))     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                    "name": "parse_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 510,
+                    "endLine": 511,
+                    "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                    "name": "_error",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 442,
+                    "endLine": 459,
+                    "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+                    "name": "_load",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 471,
+                    "endLine": 488,
+                    "content": "def _load(raw: str | bytes):     try:         obj = json.loads(             raw,             object_pairs_hook=_object,             parse_constant=lambda _: (_ for _ in ()).throw(                 ContractError(\"invalid_json\")             ),         )     except (ValueError, TypeError, UnicodeError, RecursionError) as exc:         if isinstance(exc, ContractError):             raise         raise ContractError(\"invalid_json\") from None     if not isinstance(obj, dict):         raise ContractError(\"malformed_contract\", (\"$\",))     if obj.get(\"format_version\") != FORMAT_VERSION:         raise ContractError(\"unsupported_format_version\", (\"format_version\",))     return obj"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                    "name": "_parse",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 491,
+                    "endLine": 503,
+                    "content": "def _parse(raw, model):     obj = _load(raw)     if model is AcquisitionBundle and isinstance(obj.get(\"request\"), dict):         if obj[\"request\"].get(\"format_version\") != FORMAT_VERSION:             raise ContractError(                 \"unsupported_format_version\", (\"request.format_version\",)             )     try:         return model.model_validate_json(_canonical(obj))     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 4
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                    "name": "_parse",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 491,
+                    "endLine": 503,
+                    "content": "def _parse(raw, model):     obj = _load(raw)     if model is AcquisitionBundle and isinstance(obj.get(\"request\"), dict):         if obj[\"request\"].get(\"format_version\") != FORMAT_VERSION:             raise ContractError(                 \"unsupported_format_version\", (\"request.format_version\",)             )     try:         return model.model_validate_json(_canonical(obj))     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                    "name": "_error",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 442,
+                    "endLine": 459,
+                    "content": "def _error(exc: ValidationError) -> ContractError:     # Extra keys and JSON object keys are untrusted. Report only known schema names.     names = {         n         for value in globals().values()         if isinstance(value, type) and issubclass(value, BaseModel)         for n in value.model_fields     }     paths = tuple(         \".\".join(             str(p) if isinstance(p, int) or p in names else \"<field>\" for p in e[\"loc\"]         )         or \"$\"         for e in exc.errors(             include_input=False, include_context=False, include_url=False         )     )     return ContractError(\"malformed_contract\", paths)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+                    "name": "_load",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 471,
+                    "endLine": 488,
+                    "content": "def _load(raw: str | bytes):     try:         obj = json.loads(             raw,             object_pairs_hook=_object,             parse_constant=lambda _: (_ for _ in ()).throw(                 ContractError(\"invalid_json\")             ),         )     except (ValueError, TypeError, UnicodeError, RecursionError) as exc:         if isinstance(exc, ContractError):             raise         raise ContractError(\"invalid_json\") from None     if not isinstance(obj, dict):         raise ContractError(\"malformed_contract\", (\"$\",))     if obj.get(\"format_version\") != FORMAT_VERSION:         raise ContractError(\"unsupported_format_version\", (\"format_version\",))     return obj"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 5,
+        "totalEdges": 4,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
+
+__STDERR__
+
+__RC__=0
+__TIMING_NS__=832085812

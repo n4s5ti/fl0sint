@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "node",
+    "--input-type=module",
+    "-e",
+    "import {GraphosLadybugClient} from '@pip3r/graphos'; import fs from 'node:fs'; const b=JSON.parse(fs.readFileSync('/home/n4s5ti/Documents/dev/def41-evidence/verification/correction-hash-upstream.stdout','utf8'));const ids=b.edges.map(e=>e.from);const c=new GraphosLadybugClient();let rejected=false;try{await c.open({name:'def41-correction',rootPath:'/home/n4s5ti/Documents/dev/fl0sint-def41-s01',lbugPath:'/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug'});try{await c.queryIncomingEdges('def41-correction',ids,['CALLS'],0);}catch(e){console.log(JSON.stringify({module:import.meta.resolve('@pip3r/graphos'),name:e.name,issues:e.issues??null,message:e.message},null,2));rejected=e.issues?.some(x=>x.received==='METHOD_OVERRIDES')===true;}}finally{await c.close();}if(!rejected)process.exit(1);"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/pip3r",
+  "environment_overrides": {},
+  "started_at": 1790479505.237032,
+  "elapsed_seconds": 0.5123727321624756,
+  "returncode": 0
+}

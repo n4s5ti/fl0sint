@@ -62,7 +62,7 @@ export default function ContextMenu({
   const [enrichersSearchQuery, setEnrichersSearchQuery] = useState('')
   const [flowsSearchQuery, setFlowsSearchQuery] = useState('')
   const { launchFlow } = useLaunchFlow(false)
-  const { launchEnricher } = useLaunchEnricher(false)
+  const { launchEnricher, launchTemplate } = useLaunchEnricher(false)
   const toggleNodeSelection = useGraphStore((s) => s.toggleNodeSelection)
 
   const { data: enrichers, isLoading: isLoadingEnrichers } = useQuery({
@@ -99,9 +99,13 @@ export default function ContextMenu({
     setMenu(null)
   }
 
-  const handleEnricherClick = (e: React.MouseEvent, enricherName: string) => {
+  const handleEnricherClick = (e: React.MouseEvent, enricher: Enricher) => {
     e.stopPropagation()
-    launchEnricher([node.id], enricherName, sketchId)
+    if (enricher.source === 'template') {
+      launchTemplate([node.id], enricher.id, enricher.name, sketchId)
+    } else {
+      launchEnricher([node.id], enricher.name, sketchId)
+    }
     setMenu(null)
   }
 
@@ -193,9 +197,9 @@ export default function ContextMenu({
               <div className="p-1">
                 {filteredEnrichers.map((enricher: Enricher) => (
                   <button
-                    key={enricher.id}
+                    key={`${enricher.source}:${enricher.id}`}
                     className="w-full flex items-center gap-2 p-2 rounded-md hover:bg-muted text-left transition-colors"
-                    onClick={(e) => handleEnricherClick(e, enricher.name)}
+                    onClick={(e) => handleEnricherClick(e, enricher)}
                   >
                     <Zap className="h-4 w-4 text-muted-foreground shrink-0" />
                     <div className="flex-1 min-w-0">

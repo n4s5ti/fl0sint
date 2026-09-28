@@ -48,6 +48,15 @@ class EnricherRegistry:
             raise Exception(f"Enricher '{name}' not found")
         return self._enrichers[name](sketch_id=sketch_id, scan_id=scan_id, **kwargs)
 
+    def get_enricher_params(self, name: str) -> Dict[str, Dict[str, Any]]:
+        if name not in self._enrichers:
+            raise Exception(f"Enricher '{name}' not found")
+        return {param["name"]: param for param in self._enrichers[name].get_params_schema()}
+
+    def filter_params(self, name: str, params: Dict[str, Any]) -> Dict[str, Any]:
+        allowed = self.get_enricher_params(name).keys()
+        return {param_name: value for param_name, value in params.items() if param_name in allowed}
+
     def _create_enricher_metadata(self, enricher: Type[Enricher]) -> Dict[str, str]:
         """Helper method to create enricher metadata dictionary."""
         return {

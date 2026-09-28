@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+        "name": "DestinationDefinition",
+        "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+        "nodeType": "Class",
+        "startLine": 117,
+        "endLine": 146,
+        "content": "class DestinationDefinition(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True)     destination_id: StrictStr = Field(pattern=_IDENTIFIER)     base_url: StrictStr = Field(min_length=1, max_length=2048)     endpoints: tuple[ConnectorEndpointDefinition, ...]     enabled: bool = True     @field_validator(\"base_url\")     @classmethod     def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")     @model_validator(mode=\"after\")     def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "name": "DestinationDefinition",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Class",
+            "startLine": 117,
+            "endLine": 146,
+            "content": "class DestinationDefinition(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True)     destination_id: StrictStr = Field(pattern=_IDENTIFIER)     base_url: StrictStr = Field(min_length=1, max_length=2048)     endpoints: tuple[ConnectorEndpointDefinition, ...]     enabled: bool = True     @field_validator(\"base_url\")     @classmethod     def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")     @model_validator(mode=\"after\")     def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+                    "name": "DestinationDefinition",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Class",
+                    "startLine": 117,
+                    "endLine": 146,
+                    "content": "class DestinationDefinition(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True)     destination_id: StrictStr = Field(pattern=_IDENTIFIER)     base_url: StrictStr = Field(min_length=1, max_length=2048)     endpoints: tuple[ConnectorEndpointDefinition, ...]     enabled: bool = True     @field_validator(\"base_url\")     @classmethod     def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")     @model_validator(mode=\"after\")     def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,62 @@
+........................................................................ [  7%]
+........................................................................ [ 15%]
+........................................................................ [ 22%]
+........................................................................ [ 30%]
+........................................................................ [ 37%]
+........................................................................ [ 45%]
+........................................................................ [ 53%]
+........................................................................ [ 60%]
+........................................................................ [ 68%]
+.....................................................................F.. [ 75%]
+........................................................................ [ 83%]
+........................................................................ [ 90%]
+........................................................................ [ 98%]
+..............                                                           [100%]
+=================================== FAILURES ===================================
+__________ TestBatchInsertion.test_batch_worker_flushes_periodically ___________
+
+self = <tests.core.test_logger_singleton.TestBatchInsertion object at 0x7045569ac650>
+mock_get_db = <function mock_get_db.<locals>.mock_generator at 0x70452527f7e0>
+mock_emit_event = <MagicMock name='emit_event_task' id='123442276497312'>
+mock_db_session = <Mock id='123442276491696'>
+
+    def test_batch_worker_flushes_periodically(self, mock_get_db, mock_emit_event, mock_db_session):
+        """Test that batch worker flushes logs periodically."""
+        LoggerSingleton._instance = None
+        logger = LoggerSingleton(
+            batch_size=100,  # High batch size
+            flush_interval=0.3,  # Short interval for testing
+            auto_start=True  # Start worker
+        )
+    
+        sketch_id = str(uuid4())
+    
+        # Add some logs
+        for i in range(3):
+            logger.info(sketch_id, {"message": f"Log {i}"})
+    
+        # Wait for automatic flush (should happen within flush_interval)
+        time.sleep(0.5)
+    
+        # Verify flush happened
+>       assert mock_db_session.add_all.call_count >= 1
+E       AssertionError: assert 0 >= 1
+E        +  where 0 = <Mock name='mock.add_all' id='123442276491744'>.call_count
+E        +    where <Mock name='mock.add_all' id='123442276491744'> = <Mock id='123442276491696'>.add_all
+
+../../fl0sint/flowsint-core/tests/core/test_logger_singleton.py:261: AssertionError
+=============================== warnings summary ===============================
+../../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint-def43-s03/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/core/test_logger_singleton.py::TestBatchInsertion::test_batch_worker_flushes_periodically - AssertionError: assert 0 >= 1
+ +  where 0 = <Mock name='mock.add_all' id='123442276491744'>.call_count
+ +    where <Mock name='mock.add_all' id='123442276491744'> = <Mock id='123442276491696'>.add_all
+1 failed, 949 passed, 2 warnings in 25.06s

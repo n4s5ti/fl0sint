@@ -1,0 +1,77 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___ test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip ____
+
+make_enricher = <function make_enricher.<locals>.make at 0x79bcc91d1a80>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x79bcc9164470>
+
+    @pytest.mark.asyncio
+    async def test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip(
+        make_enricher, monkeypatch
+    ):
+        monkeypatch.setenv("NO_PROXY", "127.0.0.1,localhost")
+        enricher, graph = make_enricher()
+        with _loopback_pages() as base:
+            slow = Website(url=f"{base}/slow")
+            fast = Website(url=f"{base}/fast")
+            results = await enricher.execute([slow, fast])
+    
+        assert [result.text for result in results] == ["slow page", "fast page"]
+>       assert [
+            (str(source.url), output.text, label)
+            for source, output, label in graph.relationships
+        ] == [
+            (str(slow.url), "slow page", "HAS_INNER_TEXT"),
+            (str(fast.url), "fast page", "HAS_INNER_TEXT"),
+        ]
+E       AssertionError: assert [('http://127..._INNER_TEXT')] == [('http://127..._INNER_TEXT')]
+E         
+E         At index 1 diff: ('http://127.0.0.1:42139/slow', 'fast page', 'HAS_INNER_TEXT') != ('http://127.0.0.1:42139/fast', 'fast page', 'HAS_INNER_TEXT')
+E         
+E         Full diff:
+E           [
+E               (
+E                   'http://127.0.0.1:42139/slow',
+E                   'slow page',
+E                   'HAS_INNER_TEXT',
+E               ),
+E               (
+E         -         'http://127.0.0.1:42139/fast',
+E         ?                                 -- ^
+E         +         'http://127.0.0.1:42139/slow',
+E         ?                                  ^^^
+E                   'fast page',
+E                   'HAS_INNER_TEXT',
+E               ),
+E           ]
+
+../fl0sint-def42-s02/flowsint-enrichers/tests/enrichers/test_website_to_text.py:120: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1345
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../fl0sint-def42-s02/flowsint-enrichers/tests/enrichers/test_website_to_text.py::test_legacy_public_execute_uses_loopback_occurrences_not_completion_zip - AssertionError: assert [('http://127..._INNER_TEXT')] == [('http://127..._INNER_TEXT')]
+  
+  At index 1 diff: ('http://127.0.0.1:42139/slow', 'fast page', 'HAS_INNER_TEXT') != ('http://127.0.0.1:42139/fast', 'fast page', 'HAS_INNER_TEXT')
+  
+  Full diff:
+    [
+        (
+            'http://127.0.0.1:42139/slow',
+            'slow page',
+            'HAS_INNER_TEXT',
+        ),
+        (
+  -         'http://127.0.0.1:42139/fast',
+  ?                                 -- ^
+  +         'http://127.0.0.1:42139/slow',
+  ?                                  ^^^
+            'fast page',
+            'HAS_INNER_TEXT',
+        ),
+    ]
+1 failed, 1 warning in 0.95s
+production_source_unchanged 2f23716b57523737f8991e21ae2621559616d8226ceaf731c714257ba0e809bc mutation source-swap pytest_exit 1

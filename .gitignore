@@ -180,3 +180,18 @@ cython_debug/
 !.claude/skills/
 .claude/skills/*
 !.claude/skills/flowsint-enricher-builder/
+flowsint
+flowsint-e2e
+
+# mcporter generated artifacts
+mcporter-recordings/
+*.ndjson
+.worktrees/
+.worktrees/
+
+# local venvs / caches / scratch (dev-base hygiene)
+tmp/
+scripts/fb-ads-scraper/venv/
+scripts/fb-ads-scraper/output/
+flowsint-mcp-server/.venv/
+__pycache__/

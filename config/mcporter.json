@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "flowsint": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "../flowsint-mcp-server",
+        "flowsint-mcp"
+      ]
+    }
+  }
+}

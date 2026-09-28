@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Public contact card</title></head><body>
+<p>Fictional public directory; no login or consent gate.</p>
+<button id="reveal" type="button">Show public work contact</button>
+<p id="contact">Public contact card is collapsed.</p>
+<script>
+document.querySelector("#reveal").addEventListener("click", () => {
+  document.querySelector("#contact").textContent = "Ivo Reed is the project lead at Copper Finch. Public work contact: ivo.reed@copper-finch.example.";
+});
+</script>
+</body></html>

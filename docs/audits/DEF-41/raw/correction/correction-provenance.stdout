@@ -1,0 +1,53 @@
+{
+  "source_sha256": {
+    "docs/developers/acquisition-contract.md": true,
+    "flowsint-api/app/api/schemas/enricher_template.py": true,
+    "flowsint-api/tests/test_template_egress.py": true,
+    "flowsint-core/examples/acquisition_contract.py": true,
+    "flowsint-core/pyproject.toml": true,
+    "flowsint-core/src/flowsint_core/core/enricher_base.py": true,
+    "flowsint-core/src/flowsint_core/core/services/execution_service.py": true,
+    "flowsint-core/src/flowsint_core/core/template_enricher.py": true,
+    "flowsint-core/src/flowsint_core/tasks/enricher.py": true,
+    "flowsint-core/src/flowsint_execution/__init__.py": true,
+    "flowsint-core/src/flowsint_execution/acquisition.py": true,
+    "flowsint-core/src/flowsint_execution/models.py": true,
+    "flowsint-core/tests/acquisition/__init__.py": true,
+    "flowsint-core/tests/acquisition/test_contract.py": true,
+    "flowsint-core/tests/core/test_structured_execution.py": true,
+    "flowsint-core/tests/services/test_execution_service.py": true,
+    "flowsint-core/tests/services/test_graph_projection_service.py": true,
+    "flowsint-core/tests/services/test_template_execution_task.py": true,
+    "flowsint-core/tests/templates/test_template_enricher.py": true
+  },
+  "configuration_sha256": {
+    "flowsint-api/pyproject.toml": true,
+    "flowsint-core/pyproject.toml": true,
+    "flowsint-types/pyproject.toml": true,
+    "pyproject.toml": true,
+    "uv.lock": true
+  },
+  "shared_index": {
+    ".gitnexus/parsedfile-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f-w2-0.json": true,
+    ".gitnexus/parsedfile-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f-w1-0.json": true,
+    ".gitnexus/parsedfile-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f-w1-1.json": true,
+    ".gitnexus/parsedfile-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f-w2-1.json": true,
+    ".gitnexus/parsedfile-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f-w2-2.json": true,
+    ".gitnexus/parsedfile-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f-w1-2.json": true,
+    ".gitnexus/parsedfile-cache/index.json": true,
+    ".gitnexus/.gitignore": true,
+    ".gitnexus/run.cjs": true,
+    ".gitnexus/parse-cache/f95d10027fa12434727838364753148427e52008c9cc3cb985af52386a60001f.json": true,
+    ".gitnexus/parse-cache/index.json": true,
+    ".gitnexus/lbug": true,
+    ".gitnexus/gitnexus.json": true,
+    ".gitnexus/meta.json": true,
+    ".gitnexus/pip3r-workspace-edges.json": true,
+    ".gitnexus/pip3r-content-manifest.json": true,
+    ".gitnexus/pip3r-generation.json": true
+  },
+  "git_head": "1198f29eea08141f06220d29c40cb98fc81a99bc",
+  "working_delta": "",
+  "pip3r_runtime_sha256": "f1ad5f51691c6650f7da44b1e69a68d5c31dc3daa823e5285b0009d5e704afef",
+  "pip3r_version": "1.2.6"
+}

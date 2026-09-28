@@ -1,0 +1,622 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "downstream",
+    "risk": "CRITICAL",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+        "name": "AdmittedFetchOperation",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Class",
+        "startLine": 127,
+        "endLine": 155,
+        "content": "class AdmittedFetchOperation(_Frozen):     operation_id: str     inputs: tuple[AdmittedInput, ...]     allocation: Resources     policy: TrustedFetchPolicy     parameters: FetchParameters     request_digest: Digest     policy_digest: Digest     parameter_digest: Digest     operation_seal: Digest     _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)     def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")     def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "name": "AdmittedFetchOperation",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 127,
+            "endLine": 155,
+            "content": "class AdmittedFetchOperation(_Frozen):     operation_id: str     inputs: tuple[AdmittedInput, ...]     allocation: Resources     policy: TrustedFetchPolicy     parameters: FetchParameters     request_digest: Digest     policy_digest: Digest     parameter_digest: Digest     operation_seal: Digest     _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)     def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")     def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_id",
+            "name": "operation_id",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 128,
+            "endLine": 128,
+            "content": "    operation_id: str"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.inputs",
+            "name": "inputs",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 129,
+            "endLine": 129,
+            "content": "    inputs: tuple[AdmittedInput, ...]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.allocation",
+            "name": "allocation",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 130,
+            "endLine": 130,
+            "content": "    allocation: Resources"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy",
+            "name": "policy",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 131,
+            "endLine": 131,
+            "content": "    policy: TrustedFetchPolicy"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameters",
+            "name": "parameters",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 132,
+            "endLine": 132,
+            "content": "    parameters: FetchParameters"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.request_digest",
+            "name": "request_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 133,
+            "endLine": 133,
+            "content": "    request_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy_digest",
+            "name": "policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 134,
+            "endLine": 134,
+            "content": "    policy_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameter_digest",
+            "name": "parameter_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 135,
+            "endLine": 135,
+            "content": "    parameter_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_seal",
+            "name": "operation_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 136,
+            "endLine": 136,
+            "content": "    operation_seal: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation._execution_claim",
+            "name": "_execution_claim",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 137,
+            "endLine": 137,
+            "content": "    _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 66,
+            "endLine": 67,
+            "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "name": "_operation_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 195,
+            "endLine": 207,
+            "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+            "name": "claim",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 119,
+            "endLine": 124,
+            "content": "    def claim(self) -> bool:         with self._lock:             if self._claimed:                 return False             self._claimed = True             return True"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "name": "validate_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 139,
+            "endLine": 151,
+            "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "name": "claim_execution",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 153,
+            "endLine": 155,
+            "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+            "name": "_Frozen",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 32,
+            "endLine": 33,
+            "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.inputs",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.allocation",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameters",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.request_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameter_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_seal",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation._execution_claim",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "to": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 17,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+                    "name": "AdmittedFetchOperation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 127,
+                    "endLine": 155,
+                    "content": "class AdmittedFetchOperation(_Frozen):     operation_id: str     inputs: tuple[AdmittedInput, ...]     allocation: Resources     policy: TrustedFetchPolicy     parameters: FetchParameters     request_digest: Digest     policy_digest: Digest     parameter_digest: Digest     operation_seal: Digest     _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)     def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")     def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_id",
+                    "name": "operation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 128,
+                    "endLine": 128,
+                    "content": "    operation_id: str"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.inputs",
+                    "name": "inputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 129,
+                    "endLine": 129,
+                    "content": "    inputs: tuple[AdmittedInput, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.allocation",
+                    "name": "allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 130,
+                    "endLine": 130,
+                    "content": "    allocation: Resources"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy",
+                    "name": "policy",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 131,
+                    "endLine": 131,
+                    "content": "    policy: TrustedFetchPolicy"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameters",
+                    "name": "parameters",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 132,
+                    "endLine": 132,
+                    "content": "    parameters: FetchParameters"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.request_digest",
+                    "name": "request_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 133,
+                    "endLine": 133,
+                    "content": "    request_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy_digest",
+                    "name": "policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 134,
+                    "endLine": 134,
+                    "content": "    policy_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameter_digest",
+                    "name": "parameter_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 135,
+                    "endLine": 135,
+                    "content": "    parameter_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_seal",
+                    "name": "operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 136,
+                    "endLine": 136,
+                    "content": "    operation_seal: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation._execution_claim",
+                    "name": "_execution_claim",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 137,
+                    "endLine": 137,
+                    "content": "    _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 66,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+                    "name": "claim",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 119,
+                    "endLine": 124,
+                    "content": "    def claim(self) -> bool:         with self._lock:             if self._claimed:                 return False             self._claimed = True             return True"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+                    "name": "validate_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 139,
+                    "endLine": 151,
+                    "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+                    "name": "claim_execution",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 153,
+                    "endLine": 155,
+                    "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+                    "name": "_Frozen",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 32,
+                    "endLine": 33,
+                    "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 16
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+                    "name": "validate_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 139,
+                    "endLine": 151,
+                    "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+                    "name": "claim_execution",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 153,
+                    "endLine": 155,
+                    "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_id",
+                    "name": "operation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 128,
+                    "endLine": 128,
+                    "content": "    operation_id: str"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.inputs",
+                    "name": "inputs",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 129,
+                    "endLine": 129,
+                    "content": "    inputs: tuple[AdmittedInput, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.allocation",
+                    "name": "allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 130,
+                    "endLine": 130,
+                    "content": "    allocation: Resources"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy",
+                    "name": "policy",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 131,
+                    "endLine": 131,
+                    "content": "    policy: TrustedFetchPolicy"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameters",
+                    "name": "parameters",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 132,
+                    "endLine": 132,
+                    "content": "    parameters: FetchParameters"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.request_digest",
+                    "name": "request_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 133,
+                    "endLine": 133,
+                    "content": "    request_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.policy_digest",
+                    "name": "policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 134,
+                    "endLine": 134,
+                    "content": "    policy_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.parameter_digest",
+                    "name": "parameter_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 135,
+                    "endLine": 135,
+                    "content": "    parameter_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.operation_seal",
+                    "name": "operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 136,
+                    "endLine": 136,
+                    "content": "    operation_seal: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation._execution_claim",
+                    "name": "_execution_claim",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 137,
+                    "endLine": 137,
+                    "content": "    _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+                    "name": "_Frozen",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 32,
+                    "endLine": 33,
+                    "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+                    "name": "claim",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 119,
+                    "endLine": 124,
+                    "content": "    def claim(self) -> bool:         with self._lock:             if self._claimed:                 return False             self._claimed = True             return True"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 66,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+        "rootSymbols": 1,
+        "totalSymbols": 17,
+        "totalEdges": 16,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 13,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

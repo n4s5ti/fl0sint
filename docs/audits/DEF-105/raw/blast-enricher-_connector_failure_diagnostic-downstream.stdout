@@ -1,0 +1,68 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+        "name": "_connector_failure_diagnostic",
+        "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+        "nodeType": "Function",
+        "startLine": 168,
+        "endLine": 193,
+        "content": "def _connector_failure_diagnostic(error):     from flowsint_execution.models import RedactedDiagnostic     if isinstance(error, ProjectionError):         return RedactedDiagnostic(             code=error.code,             safe_message=error.safe_message,             retryable=False,         )     if isinstance(error, (ConnectorPolicyError, ConnectorValidationError)):         return RedactedDiagnostic(             code=\"connector_policy_denied\",             safe_message=\"Connector policy denied the request.\",             retryable=False,         )     if isinstance(error, ConnectorCredentialUnavailable):         return RedactedDiagnostic(             code=\"connector_credential_unavailable\",             safe_message=\"Connector credentials are unavailable.\",             retryable=False,         )     return RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+            "name": "_connector_failure_diagnostic",
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "nodeType": "Function",
+            "startLine": 168,
+            "endLine": 193,
+            "content": "def _connector_failure_diagnostic(error):     from flowsint_execution.models import RedactedDiagnostic     if isinstance(error, ProjectionError):         return RedactedDiagnostic(             code=error.code,             safe_message=error.safe_message,             retryable=False,         )     if isinstance(error, (ConnectorPolicyError, ConnectorValidationError)):         return RedactedDiagnostic(             code=\"connector_policy_denied\",             safe_message=\"Connector policy denied the request.\",             retryable=False,         )     if isinstance(error, ConnectorCredentialUnavailable):         return RedactedDiagnostic(             code=\"connector_credential_unavailable\",             safe_message=\"Connector credentials are unavailable.\",             retryable=False,         )     return RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+                    "name": "_connector_failure_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 168,
+                    "endLine": 193,
+                    "content": "def _connector_failure_diagnostic(error):     from flowsint_execution.models import RedactedDiagnostic     if isinstance(error, ProjectionError):         return RedactedDiagnostic(             code=error.code,             safe_message=error.safe_message,             retryable=False,         )     if isinstance(error, (ConnectorPolicyError, ConnectorValidationError)):         return RedactedDiagnostic(             code=\"connector_policy_denied\",             safe_message=\"Connector policy denied the request.\",             retryable=False,         )     if isinstance(error, ConnectorCredentialUnavailable):         return RedactedDiagnostic(             code=\"connector_credential_unavailable\",             safe_message=\"Connector credentials are unavailable.\",             retryable=False,         )     return RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

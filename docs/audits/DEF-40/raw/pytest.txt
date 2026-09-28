@@ -1,0 +1,45 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3
+rootdir: /home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03/flowsint-enrichers
+configfile: pyproject.toml
+plugins: anyio-4.13.0, asyncio-0.21.2, httpx-0.36.2, Faker-40.13.0
+asyncio: mode=Mode.AUTO
+collecting ... collected 24 items
+
+tests/enrichers/test_acquisition_fixtures.py::test_accepted_labels_are_grounded_in_retained_source_spans PASSED [  4%]
+tests/enrichers/test_acquisition_fixtures.py::test_trap_fixtures_keep_their_negative_verdicts PASSED [  8%]
+tests/enrichers/test_acquisition_fixtures.py::test_duplicate_url_inputs_keep_distinct_occurrences_but_share_content PASSED [ 12%]
+tests/enrichers/test_acquisition_fixtures.py::test_empty_success_and_execution_failures_are_distinct_labels PASSED [ 16%]
+tests/enrichers/test_acquisition_fixtures.py::test_smoke_exercises_real_http_and_matches_every_expected_label PASSED [ 20%]
+tests/enrichers/test_acquisition_fixtures.py::test_server_serves_only_manifest_routes PASSED [ 25%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[HTTP failure label mismatch] PASSED [ 29%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[acceptance evidence outside case occurrences] PASSED [ 33%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[byte span mismatch] PASSED [ 37%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[cross-occurrence evidence attribution] PASSED [ 41%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[dangling reference] PASSED [ 45%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[duplicate id] PASSED [ 50%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[duplicate or invalid input index] PASSED [ 54%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[dynamic observations must be script literals] PASSED [ 58%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[empty/nonempty label mismatch] PASSED [ 62%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[extracted value not in quoted span] PASSED [ 66%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[invalid artifact filename] PASSED [ 70%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[invalid route] PASSED [ 75%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[orphan observation] PASSED [ 79%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[redirect outside corpus] PASSED [ 83%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[retention policy hash mismatch] PASSED [ 87%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[source hash mismatch] PASSED [ 91%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[success/failure label mismatch] PASSED [ 95%]
+tests/enrichers/test_acquisition_fixtures.py::test_loader_rejects_tampered_corpus[timeout label mismatch] PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 24 passed, 2 warnings in 3.81s ========================
+/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/neo4j/_sync/driver.py:547: DeprecationWarning: Relying on Driver's destructor to close the session is deprecated. Please make sure to close the session. Use it as a context (`with` statement) or make sure to call `.close()` explicitly. Future versions of the driver will not close drivers automatically.

@@ -11,6 +11,8 @@ from sqlalchemy.orm import Session
 from ..models import Investigation, InvestigationUserRole, Sketch, Analysis
 from ..types import Role
 from ..graph import create_graph_service
+from ..forensics import legacy_execution_boundary
+
 from ..repositories import (
     InvestigationRepository,
     SketchRepository,
@@ -46,11 +48,13 @@ class InvestigationService(BaseService):
         self._analysis_repo = analysis_repo
         self._profile_repo = profile_repo
 
+    @legacy_execution_boundary("investigation_service_get_accessible_investigations")
     def get_accessible_investigations(
         self, user_id: UUID, allowed_roles: Optional[List[Role]] = None
     ) -> List[Investigation]:
         return self._investigation_repo.get_accessible_by_user(user_id, allowed_roles)
 
+    @legacy_execution_boundary("investigation_service_get_by_id")
     def get_by_id(self, investigation_id: UUID, user_id: UUID) -> Investigation:
         self._check_permission(user_id, investigation_id, actions=["read"])
 
@@ -59,6 +63,7 @@ class InvestigationService(BaseService):
             raise NotFoundError("Investigation not found")
         return investigation
 
+    @legacy_execution_boundary("investigation_service_get_sketches")
     def get_sketches(self, investigation_id: UUID, user_id: UUID) -> List[Sketch]:
         self._check_permission(user_id, investigation_id, actions=["read"])
 
@@ -67,6 +72,7 @@ class InvestigationService(BaseService):
             raise NotFoundError("No sketches found for this investigation")
         return sketches
 
+    @legacy_execution_boundary("investigation_service_create")
     def create(
         self, name: str, description: Optional[str], owner_id: UUID
     ) -> Investigation:
@@ -92,6 +98,7 @@ class InvestigationService(BaseService):
 
         return new_investigation
 
+    @legacy_execution_boundary("investigation_service_update")
     def update(
         self,
         investigation_id: UUID,
@@ -115,6 +122,7 @@ class InvestigationService(BaseService):
         self._refresh(investigation)
         return investigation
 
+    @legacy_execution_boundary("investigation_service_delete")
     def delete(self, investigation_id: UUID, user_id: UUID) -> None:
         self._check_permission(user_id, investigation_id, actions=["delete"])
 
@@ -149,17 +157,20 @@ class InvestigationService(BaseService):
 
     # ── Collaborator management ──────────────────────────────────────────
 
+    @legacy_execution_boundary("investigation_service_get_user_role")
     def get_user_role_for_investigation(
         self, user_id: UUID, investigation_id: UUID
     ) -> Optional[InvestigationUserRole]:
         return self._investigation_repo.get_user_role(user_id, investigation_id)
 
+    @legacy_execution_boundary("investigation_service_get_collaborators")
     def get_collaborators(
         self, investigation_id: UUID, user_id: UUID
     ) -> List[InvestigationUserRole]:
         self._check_permission(user_id, investigation_id, actions=["read"])
         return self._investigation_repo.get_collaborators(investigation_id)
 
+    @legacy_execution_boundary("investigation_service_add_collaborator")
     def add_collaborator(
         self,
         investigation_id: UUID,
@@ -201,6 +212,7 @@ class InvestigationService(BaseService):
         self._db.refresh(role_entry)
         return role_entry
 
+    @legacy_execution_boundary("investigation_service_update_collaborator_role")
     def update_collaborator_role(
         self,
         investigation_id: UUID,
@@ -230,6 +242,7 @@ class InvestigationService(BaseService):
         self._db.refresh(entry)
         return entry
 
+    @legacy_execution_boundary("investigation_service_remove_collaborator")
     def remove_collaborator(
         self,
         investigation_id: UUID,
@@ -251,6 +264,7 @@ class InvestigationService(BaseService):
         self._commit()
 
 
+@legacy_execution_boundary("create_investigation_service")
 def create_investigation_service(db: Session) -> InvestigationService:
     investigation_repo = InvestigationRepository(db)
     return InvestigationService(

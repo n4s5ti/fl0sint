@@ -1,0 +1,32 @@
+{
+    "mode": "refs",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "symbol": "build_params_model",
+        "direction": "upstream",
+        "callers": [
+            {
+                "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.__init__#6",
+                "name": "__init__",
+                "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "nodeType": "Method",
+                "startLine": 123,
+                "endLine": 150,
+                "content": "    def __init__(         self,         sketch_id: Optional[str] = None,         scan_id: Optional[str] = None,         params_schema: Optional[List[Dict[str, Any]]] = None,         vault: Optional[VaultProtocol] = None,         params: Optional[Dict[str, Any]] = None,         graph_service: Optional[GraphService] = None,     ):         self.scan_id = scan_id or \"default\"         self.sketch_id = sketch_id or \"system\"         self.vault = vault         self.params_schema = params_schema or []         self.ParamsModel = build_params_model(self.params_schema)         self.params: Dict[str, Any] = params or {}         # Initialize graph service (uses singleton connection by default)         if graph_service:             self._graph_service = graph_service         else:             self._graph_service = create_graph_service(                 sketch_id=self.sketch_id,                 enable_batching=True,             )         # Params is filled synchronously by the constructor. This params is generally constructed of         # vaultSecret references, not the key directly. The idea is that the real key values are resolved after calling         # async_init(), right before the execution."
+            },
+            {
+                "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+                "name": "async_init",
+                "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                "nodeType": "Method",
+                "startLine": 152,
+                "endLine": 166,
+                "content": "    async def async_init(self):         self.ParamsModel = build_params_model(self.params_schema)         # Always resolve parameters, even if self.params is empty         # This allows vault secrets to be fetched by name from params_schema         resolved_params = self.resolve_params()         # Strict validation after resolution         try:             validated = self.ParamsModel(**resolved_params)             self.params = validated.model_dump()         except ValidationError as e:             raise InvalidEnricherParams(                 f\"Enricher '{self.name()}' received invalid parameters: {e}\"             )"
+            }
+        ],
+        "callees": []
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

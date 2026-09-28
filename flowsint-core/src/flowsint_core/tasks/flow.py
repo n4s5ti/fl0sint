@@ -8,6 +8,8 @@ from flowsint_core.utils import to_json_serializable
 
 from ..core.celery import celery
 from ..core.enums import EventLevel
+from ..core.forensics import LegacyExecutionTask, legacy_execution_boundary
+
 from ..core.logger import Logger
 from ..core.models import Scan
 from ..core.orchestrator import FlowOrchestrator
@@ -18,7 +20,8 @@ from ..core.types import FlowBranch
 db: Session = next(get_db())
 
 
-@celery.task(name="run_flow", bind=True)
+@celery.task(name="run_flow", bind=True, base=LegacyExecutionTask)
+@legacy_execution_boundary("legacy_run_flow_task")
 def run_flow(
     self,
     enricher_branches,

@@ -1,0 +1,15 @@
+{
+  "name": "head-source-proof",
+  "argv": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-c",
+    "import importlib; m=importlib.import_module(\"flowsint_enrichers.website.to_text\"); print(m.__file__); assert m.__file__.startswith('/home/n4s5ti/Documents/dev/fl0sint-def42-s02')"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers",
+  "environment": {
+    "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-mcp-server/src",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "rc": 0,
+  "seconds": 3.740403110999978
+}

@@ -1,0 +1,273 @@
+{
+  "derived_at": "2026-09-27T03:29:25.116Z",
+  "method": "Derived after implementation from preserved pre-edit raw outputs; not a new baseline run",
+  "targets": {
+    "InputOutcome": {
+      "upstream": {
+        "artifact": "../pre/blast-InputOutcome-upstream-stdout.json",
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "summary": {
+          "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "repo": "fl0sint-def41-s01",
+          "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+          "symbol": "InputOutcome",
+          "rootSymbols": 1,
+          "totalSymbols": 1,
+          "totalEdges": 0,
+          "filesMatched": 1,
+          "truncated": false,
+          "direct": 0,
+          "processes": 0,
+          "modules": 0
+        },
+        "edges": []
+      },
+      "downstream": {
+        "artifact": "../pre/blast-InputOutcome-downstream-stdout.json",
+        "risk": "HIGH",
+        "completeness": "complete",
+        "reasons": [],
+        "summary": {
+          "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "repo": "fl0sint-def41-s01",
+          "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+          "symbol": "InputOutcome",
+          "rootSymbols": 1,
+          "totalSymbols": 7,
+          "totalEdges": 6,
+          "filesMatched": 1,
+          "truncated": false,
+          "direct": 6,
+          "processes": 0,
+          "modules": 1
+        },
+        "edges": [
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome.input_ref",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome.status",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome.outputs",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome.diagnostic",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome.evidence",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome",
+            "to": "Method:flowsint-core/src/flowsint_core/core/execution.py:InputOutcome.require_diagnostic_for_non_success#0",
+            "type": "HAS_METHOD"
+          }
+        ]
+      }
+    },
+    "EvidenceEnvelope": {
+      "upstream": {
+        "artifact": "../pre/blast-EvidenceEnvelope-upstream-stdout.json",
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "summary": {
+          "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "repo": "fl0sint-def41-s01",
+          "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+          "symbol": "EvidenceEnvelope",
+          "rootSymbols": 1,
+          "totalSymbols": 1,
+          "totalEdges": 0,
+          "filesMatched": 1,
+          "truncated": false,
+          "direct": 0,
+          "processes": 0,
+          "modules": 0
+        },
+        "edges": []
+      },
+      "downstream": {
+        "artifact": "../pre/blast-EvidenceEnvelope-downstream-stdout.json",
+        "risk": "CRITICAL",
+        "completeness": "complete",
+        "reasons": [],
+        "summary": {
+          "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "repo": "fl0sint-def41-s01",
+          "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+          "symbol": "EvidenceEnvelope",
+          "rootSymbols": 1,
+          "totalSymbols": 17,
+          "totalEdges": 16,
+          "filesMatched": 1,
+          "truncated": false,
+          "direct": 16,
+          "processes": 0,
+          "modules": 1
+        },
+        "edges": [
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.input_ref",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.destination_id",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.endpoint_id",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.capability",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.policy_version",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_sha256",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_reference",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.source_rights",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.schema_version",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.parser_version",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.confidence",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.verification_state",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.event_at",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.retrieved_at",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.ingested_at",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Method:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.normalize_timestamp#1",
+            "type": "HAS_METHOD"
+          }
+        ]
+      }
+    },
+    "StructuredExecutionResult": {
+      "upstream": {
+        "artifact": "../pre/blast-StructuredExecutionResult-upstream-stdout.json",
+        "risk": "UNKNOWN",
+        "completeness": "partial",
+        "reasons": [
+          "no-call-edges"
+        ],
+        "summary": {
+          "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "repo": "fl0sint-def41-s01",
+          "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+          "symbol": "StructuredExecutionResult",
+          "rootSymbols": 1,
+          "totalSymbols": 1,
+          "totalEdges": 0,
+          "filesMatched": 1,
+          "truncated": false,
+          "direct": 0,
+          "processes": 0,
+          "modules": 0
+        },
+        "edges": []
+      },
+      "downstream": {
+        "artifact": "../pre/blast-StructuredExecutionResult-downstream-stdout.json",
+        "risk": "MEDIUM",
+        "completeness": "complete",
+        "reasons": [],
+        "summary": {
+          "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+          "repo": "fl0sint-def41-s01",
+          "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+          "symbol": "StructuredExecutionResult",
+          "rootSymbols": 1,
+          "totalSymbols": 3,
+          "totalEdges": 2,
+          "filesMatched": 1,
+          "truncated": false,
+          "direct": 2,
+          "processes": 0,
+          "modules": 1
+        },
+        "edges": [
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:StructuredExecutionResult",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:StructuredExecutionResult.enricher_name",
+            "type": "HAS_PROPERTY"
+          },
+          {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:StructuredExecutionResult",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:StructuredExecutionResult.outcomes",
+            "type": "HAS_PROPERTY"
+          }
+        ]
+      }
+    }
+  }
+}

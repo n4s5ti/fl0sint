@@ -1,0 +1,15 @@
+{
+  "name": "head-index",
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--index",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+    "--json"
+  ],
+  "cwd": "/tmp/def42-recovery",
+  "environment": {},
+  "rc": 0,
+  "seconds": 44.83350748999965
+}

@@ -1,0 +1,1 @@
+"""Acquisition contract tests."""

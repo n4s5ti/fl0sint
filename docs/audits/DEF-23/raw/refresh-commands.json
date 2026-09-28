@@ -1,0 +1,68 @@
+[
+  {
+    "name": "index-refresh",
+    "argv": [
+      "mpg-batch",
+      "--",
+      "/home/n4s5ti/.local/bin/pip3r",
+      "graphos",
+      "--index",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:27:26.034741+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "e200892ccbd15b00a97d630b39b43d021d497bab2d4935937e1c5b17e254be7b"
+  },
+  {
+    "name": "drift-fresh",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "graphos",
+      "--drift",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--no-auto-index",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:27:27.576576+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "2da5441bf75d9c7043721fdf5f936bfc5c6f5b1eccc6070d80b1c704a874d76b"
+  },
+  {
+    "name": "impact-fresh",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "blast",
+      "scripts/acquisition_fixtures.py:load_manifest",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--no-auto-index",
+      "--include-tests",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:27:28.748674+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "054b67dfa2d34866d4e9dd5be5850f80b8e76e32e2a4644a7014c6bb6af6bd57"
+  },
+  {
+    "name": "doctor-fresh",
+    "argv": [
+      "/home/n4s5ti/.local/bin/pip3r",
+      "doctor",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+      "--verify-refactor",
+      "load_manifest",
+      "--json"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03",
+    "started_at": "2026-09-26T01:27:29.757274+00:00",
+    "exit_code": 0,
+    "stdout_sha256": "202f14ed71e2cf6b76e719bbd9740d8a8640785fa6b8ee5af70dfc37b6302261"
+  }
+]

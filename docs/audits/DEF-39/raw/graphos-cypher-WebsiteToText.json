@@ -1,0 +1,127 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "columns": [
+            "a.id",
+            "r.type",
+            "b.id"
+        ],
+        "rows": [
+            {
+                "a.id": "File:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                "r.type": "DEFINES",
+                "b.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "METHOD_OVERRIDES",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.name#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "METHOD_OVERRIDES",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.category#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "METHOD_OVERRIDES",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.key#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "METHOD_OVERRIDES",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.get_params_schema#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "METHOD_OVERRIDES",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.scan#1"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "METHOD_OVERRIDES",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.postprocess#2"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.name#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.category#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.key#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.get_params_schema#0"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.scan#1"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_text_async#3"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_via_quic#2"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._extract_text#1"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#2"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._gpu_deduplicate#1"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._gpu_batch_transform#1"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_METHOD",
+                "b.id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._fetch_one#1"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "EXTENDS",
+                "b.id": "Class:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "MEMBER_OF",
+                "b.id": "comm_2"
+            },
+            {
+                "a.id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                "r.type": "HAS_PROPERTY",
+                "b.id": "Property:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._http_client"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

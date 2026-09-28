@@ -1,0 +1,221 @@
+{
+ "issue": "DEF-39 [B02]",
+ "recorded_at": "2026-09-25T08:30Z (America/Denver 02:30 MDT)",
+ "host": {
+  "os": "Linux 7.2.5-4-omarchy",
+  "node": "v22.23.2"
+ },
+ "pip3r": {
+  "version": "1.2.6",
+  "binary": "/home/n4s5ti/.local/bin/pip3r",
+  "readlink_f": "/home/n4s5ti/.local/bin/pip3r (bash wrapper, not a symlink)",
+  "wrapper_execs": "/home/n4s5ti/.local/bin/node /home/n4s5ti/Documents/dev/pip3r/packages/runtime/dist/bin/pip3r.js",
+  "runtime_package": {
+   "name": "@pip3r/runtime",
+   "version": "1.2.6",
+   "package_json": "/home/n4s5ti/Documents/dev/pip3r/packages/runtime/package.json"
+  },
+  "routes": {
+   "blast": {
+    "usage": "pip3r blast [--auto-index] [--blast value] [--cwd value] [--json] [--direction value] [--include-tests] [--path value] [--repo value] [--lbug-path value] [--max-depth value] [--risk-only] [--max-matches value] [--min-confidence value] [--relation-types value] [<arg1>]",
+    "flags": [
+     "auto-index",
+     "blast",
+     "cwd",
+     "direction",
+     "include-tests",
+     "json",
+     "lbug-path",
+     "max-depth",
+     "max-matches",
+     "min-confidence",
+     "path",
+     "relation-types",
+     "repo",
+     "risk-only"
+    ],
+    "json_probe": "PIP3R_JSON_PROBE: {\"version\":1,\"bare\":false}",
+    "help_file": "help/help-blast.txt"
+   },
+   "Blast-native": {
+    "aliases": [
+     "blast-native"
+    ],
+    "usage": "pip3r Blast-native [--auto-index] [--blast value] [--cwd value] [--json] [--direction value] [--include-tests] [--path value] [--repo value] [--lbug-path value] [--max-depth value] [--risk-only] [--max-matches value] [--min-confidence value] [--relation-types value] [<arg1>]",
+    "flags": [
+     "auto-index",
+     "blast",
+     "cwd",
+     "direction",
+     "include-tests",
+     "json",
+     "lbug-path",
+     "max-depth",
+     "max-matches",
+     "min-confidence",
+     "path",
+     "relation-types",
+     "repo",
+     "risk-only"
+    ],
+    "help_file": "help/help-Blast-native.txt",
+    "flags_identical_to_blast": true
+   },
+   "doctor": {
+    "usage": "pip3r doctor [--cwd value] [--json] [--deep] [--meta] [--graph] [--repo value] [--lbug-path value] [--has] [--format-check] [--typecheck] [--lint] [--test] [--continue-on-error] [--strict] [--logs value]... [--hunt] [--hunt-baseline value] [--scope value]... [--hunt-seed] [--hunt-seed-apply] [--seed-profile value] [--seed-workspace value] [--hunt-seed-max value] [--investigate] [--verify-refactor value]",
+    "flags": [
+     "continue-on-error",
+     "cwd",
+     "deep",
+     "format-check",
+     "graph",
+     "has",
+     "hunt",
+     "hunt-baseline",
+     "hunt-seed",
+     "hunt-seed-apply",
+     "hunt-seed-max",
+     "investigate",
+     "json",
+     "lbug-path",
+     "lint",
+     "logs",
+     "meta",
+     "repo",
+     "scope",
+     "seed-profile",
+     "seed-workspace",
+     "strict",
+     "test",
+     "typecheck",
+     "verify-refactor"
+    ],
+    "help_file": "help/help-doctor.txt"
+   },
+   "graphos": {
+    "aliases": [
+     "graph"
+    ],
+    "usage": "pip3r graphos [--status] [--repos] [--cypher value] [--search value] [--from value] [--to value] [--drift] [--deps] [--refs value] [--tree] [--symbols value] [--file-path value] [--line value] [--hotspots] [--explain value] [--clean] [--all] [--force] [--export-flag] [--write] [--inspect value] [--cwd value] [--path value] [--repo value] [--lbug-path value] [--json] [--limit value] [--content] [--depth value] [--direction value] [--index] [--index-path value] [--shallow] [--incremental] [--embeddings] [--write-context] [--no-auto-index]",
+    "flags": [
+     "all",
+     "clean",
+     "content",
+     "cwd",
+     "cypher",
+     "deps",
+     "depth",
+     "direction",
+     "drift",
+     "embeddings",
+     "explain",
+     "export-flag",
+     "file-path",
+     "force",
+     "from",
+     "hotspots",
+     "incremental",
+     "index",
+     "index-path",
+     "inspect",
+     "json",
+     "lbug-path",
+     "limit",
+     "line",
+     "no-auto-index",
+     "path",
+     "refs",
+     "repo",
+     "repos",
+     "search",
+     "shallow",
+     "status",
+     "symbols",
+     "to",
+     "tree",
+     "write",
+     "write-context"
+    ],
+    "help_file": "help/help-graphos.txt"
+   }
+  },
+  "output_contract_declared_in_source": "application/vnd.pip3r.blast+json;v=1 (packages/blast/src/plugin.ts outputContracts) \u2014 NOT emitted in any observed blast JSON payload (no contentType/schema/version key)",
+  "blast_direction_values_accepted": [
+   "upstream",
+   "downstream"
+  ],
+  "blast_direction_both": "REJECTED exit 252: 'Failed to parse \"both\" for direction: direction must be upstream or downstream'"
+ },
+ "f0rg3": {
+  "version": "0.4.3",
+  "binary": "/home/n4s5ti/.local/share/pnpm/bin/f0rg3",
+  "readlink_f": "/home/n4s5ti/.local/share/pnpm/bin/f0rg3 (sh shim)",
+  "shim_target": "/home/n4s5ti/.local/share/pnpm/global/v11/2493ad-19fa708d7a5-6473ae6a847edac9/node_modules/@n4s5ti/f0rg3/dist/index.js",
+  "package": {
+   "name": "@n4s5ti/f0rg3",
+   "version": "0.4.3"
+  },
+  "help_files": [
+   "help/help-f0rg3.txt",
+   "help/help-f0rg3-doctor.txt",
+   "help/help-f0rg3-graph.txt"
+  ],
+  "relevant_flags_from_help": {
+   "graph": [
+    "--blast <symbol>",
+    "--index [path]",
+    "--status",
+    "--clean",
+    "--force",
+    "-d/--depth",
+    "--direction",
+    "--risk-only"
+   ],
+   "doctor": [
+    "--hunt [scope]",
+    "--verify-refactor <symbols>",
+    "--blast",
+    "--path <prefix>",
+    "--module <name>",
+    "-r/--repo"
+   ]
+  },
+  "executed_against_fl0sint": false,
+  "note": "Different generation/lineage from pip3r (commander-style CLI, 0.4.3). Only --version/--help were run; f0rg3 graph/doctor were NOT executed against the shared index to avoid a second writer. Its 'graph --clean/--force' flags are destructive and must never be pointed at the shared repo."
+ },
+ "shared_index": {
+  "path": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus",
+  "pre_run": {
+   "indexedAt": "2026-08-09T01:51:58.694Z",
+   "lastCommit": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+   "schemaVersion": 7,
+   "stats": {
+    "files": 891,
+    "nodes": 12427,
+    "edges": 24610,
+    "communities": 447,
+    "processes": 237
+   },
+   "generation": "sha256:4f161ec024ea242c7454b239315a2c64fe19ecfe06b27a4b30de3c4918c850d2",
+   "dirty_marker_present": false
+  },
+  "git_head": "59e2d670f674b8cf7b32f19ef9e7f8d895d4422f",
+  "head_matches_lastCommit_pre": true,
+  "dirty_tree_entries": 87,
+  "python_coverage": "gitnexus.json has no languages field; fileHashes lists 407 .py files (largest extension) and cypher/toml/yaml/ini files; Python symbols (Function/Method/Class) confirmed via graphos queries \u2014 Python IS covered",
+  "post_run": {
+   "indexedAt": "2026-09-25T08:33:06.197Z",
+   "lastCommit": "",
+   "stats": {
+    "files": 922,
+    "nodes": 14378,
+    "edges": 27776,
+    "communities": 517,
+    "processes": 239
+   },
+   "generation": "sha256:f077b7e128c9445f0817e854662c6872708d4e07327eeb8cd1876184d6505041",
+   "recoveryOutcome": "published"
+  },
+  "mutated_by": "first `pip3r blast --cwd <repo> --json build_params_model` run WITHOUT --no-auto-index (auto-index default=true) \u2014 see blockers"
+ }
+}

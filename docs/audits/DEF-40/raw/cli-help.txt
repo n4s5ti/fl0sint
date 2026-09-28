@@ -1,0 +1,11 @@
+usage: acquisition_fixtures.py [-h] [--port PORT] {validate,smoke,serve}
+
+Development fixture integrity/transport checks, not a scraper or fact
+evaluator.
+
+positional arguments:
+  {validate,smoke,serve}
+
+options:
+  -h, --help            show this help message and exit
+  --port PORT           serve: loopback port (default: OS-assigned)

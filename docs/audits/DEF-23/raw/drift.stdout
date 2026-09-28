@@ -1,0 +1,118 @@
+{
+    "mode": "drift",
+    "result": {
+        "repo": "def-40-b03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.worktrees/def-40-b03/.gitnexus/lbug",
+        "changed_symbols": [
+            {
+                "symbol": "blast-after-new-fixture_server.json",
+                "filePath": "docs/audits/DEF-40/blast-after-new-fixture_server.json",
+                "category": "file_modified"
+            },
+            {
+                "symbol": "blast-after-new-load_manifest.json",
+                "filePath": "docs/audits/DEF-40/blast-after-new-load_manifest.json",
+                "category": "file_modified"
+            },
+            {
+                "symbol": "blast-after-new-smoke.json",
+                "filePath": "docs/audits/DEF-40/blast-after-new-smoke.json",
+                "category": "file_modified"
+            },
+            {
+                "symbol": "drift-after.json",
+                "filePath": "docs/audits/DEF-40/drift-after.json",
+                "category": "file_modified"
+            },
+            {
+                "symbol": "hunt-after.json",
+                "filePath": "docs/audits/DEF-40/hunt-after.json",
+                "category": "file_modified"
+            },
+            {
+                "symbol": "acceptance.md",
+                "filePath": "docs/audits/DEF-40/acceptance.md",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "linear-summary.md",
+                "filePath": "docs/audits/DEF-40/linear-summary.md",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "mutation-check.json",
+                "filePath": "docs/audits/DEF-40/mutation-check.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "post-edit.json",
+                "filePath": "docs/audits/DEF-40/post-edit.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "cli-help.txt",
+                "filePath": "docs/audits/DEF-40/raw/cli-help.txt",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "enrichers-suite-base.txt",
+                "filePath": "docs/audits/DEF-40/raw/enrichers-suite-base.txt",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "enrichers-suite-head.txt",
+                "filePath": "docs/audits/DEF-40/raw/enrichers-suite-head.txt",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "index-after.json",
+                "filePath": "docs/audits/DEF-40/raw/index-after.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "index-after.stderr",
+                "filePath": "docs/audits/DEF-40/raw/index-after.stderr",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "pytest.txt",
+                "filePath": "docs/audits/DEF-40/raw/pytest.txt",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "smoke.json",
+                "filePath": "docs/audits/DEF-40/raw/smoke.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "validate.json",
+                "filePath": "docs/audits/DEF-40/raw/validate.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "recovery.md",
+                "filePath": "docs/audits/DEF-40/recovery.md",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "review.json",
+                "filePath": "docs/audits/DEF-40/review.json",
+                "category": "file_unindexed"
+            }
+        ],
+        "summary": {
+            "total": 19,
+            "file_modified": 5,
+            "file_removed": 0,
+            "file_unindexed": 14,
+            "symbol_stale": 0
+        },
+        "drift_warnings": [
+            "Skipped table \"Community\": query failed (likely heterogeneous schema with no source fields)",
+            "Skipped table \"Folder\": query failed (likely heterogeneous schema with no source fields)",
+            "Skipped table \"Process\": query failed (likely heterogeneous schema with no source fields)"
+        ]
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}
