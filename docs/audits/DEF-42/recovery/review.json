@@ -1,0 +1,16 @@
+{
+  "reviewer": "Independent Codex CLI subprocess; task/reviewer delegates unavailable due Anthropic 429 rate limit",
+  "functional": "PASS",
+  "evidence": "BLOCKED: explicit waiver required for missing historical pre-edit receipt",
+  "provenance": "RESOLVED by independent 1349-file archive comparison",
+  "limits": [
+    "Independent sandbox could not create loopback sockets; host real-HTTP smoke separately exercised by coordinator",
+    "Constructor/registry graph completeness is not claimed",
+    "No historical pre-edit impact receipt can be recreated"
+  ],
+  "mutations": {
+    "source-swap": "Killed: one selected behavioral test fails",
+    "drop-failed": "Killed: one selected behavioral test fails",
+    "source_unchanged_sha256": "2f23716b57523737f8991e21ae2621559616d8226ceaf731c714257ba0e809bc"
+  }
+}

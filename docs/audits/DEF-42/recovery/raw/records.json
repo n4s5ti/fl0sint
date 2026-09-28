@@ -1,0 +1,646 @@
+[
+  {
+    "name": "baseline-index",
+    "argv": [
+      "pip3r",
+      "graphos",
+      "--index",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 48.48899531400002
+  },
+  {
+    "name": "baseline-drift",
+    "argv": [
+      "pip3r",
+      "graphos",
+      "--drift",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.9155303300003652
+  },
+  {
+    "name": "baseline-WebsiteToText-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7657000630006223
+  },
+  {
+    "name": "baseline-WebsiteToText-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.776438490000146
+  },
+  {
+    "name": "baseline-scan-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:scan"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7684321629994884
+  },
+  {
+    "name": "baseline-scan-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:scan"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7566662919998635
+  },
+  {
+    "name": "baseline-postprocess-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:postprocess"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7712959359996603
+  },
+  {
+    "name": "baseline-postprocess-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:postprocess"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7513568939994002
+  },
+  {
+    "name": "baseline-execute-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7290959339998153
+  },
+  {
+    "name": "baseline-execute-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7452190410003823
+  },
+  {
+    "name": "baseline-execute_structured-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7286943890003386
+  },
+  {
+    "name": "baseline-execute_structured-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7277179829998204
+  },
+  {
+    "name": "baseline-package-tests",
+    "argv": [
+      "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+      "-m",
+      "pytest",
+      "tests",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-enrichers",
+    "environment": {
+      "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-baseline-audit/flowsint-mcp-server/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "rc": 0,
+    "seconds": 7.701416459000029
+  },
+  {
+    "name": "head-index",
+    "argv": [
+      "pip3r",
+      "graphos",
+      "--index",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 44.83350748999965
+  },
+  {
+    "name": "head-drift",
+    "argv": [
+      "pip3r",
+      "graphos",
+      "--drift",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.9513032380000368
+  },
+  {
+    "name": "head-WebsiteToText-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7669305310000709
+  },
+  {
+    "name": "head-WebsiteToText-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7810013079997589
+  },
+  {
+    "name": "head-scan-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:scan"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7529890379992139
+  },
+  {
+    "name": "head-scan-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:scan"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7518983890004165
+  },
+  {
+    "name": "head-postprocess-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:postprocess"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7663515960002769
+  },
+  {
+    "name": "head-postprocess-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:postprocess"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7651644159996067
+  },
+  {
+    "name": "head-execute-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.76956705900011
+  },
+  {
+    "name": "head-execute-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7807141749999573
+  },
+  {
+    "name": "head-execute_structured-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7830757560004713
+  },
+  {
+    "name": "head-execute_structured-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7746464740002921
+  },
+  {
+    "name": "head-WebsiteTextOccurrence-upstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "upstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7697710029997324
+  },
+  {
+    "name": "head-WebsiteTextOccurrence-downstream",
+    "argv": [
+      "pip3r",
+      "blast",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index",
+      "--include-tests",
+      "--max-depth",
+      "3",
+      "--direction",
+      "downstream",
+      "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteTextOccurrence"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.7574585450001905
+  },
+  {
+    "name": "head-package-tests",
+    "argv": [
+      "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+      "-m",
+      "pytest",
+      "tests",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers",
+    "environment": {
+      "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-mcp-server/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "rc": 0,
+    "seconds": 6.36277003000032
+  },
+  {
+    "name": "head-focused",
+    "argv": [
+      "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+      "-m",
+      "pytest",
+      "tests/enrichers/test_website_to_text.py",
+      "tests/enrichers/test_acquisition_fixtures.py",
+      "-q",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers",
+    "environment": {
+      "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-mcp-server/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "rc": 0,
+    "seconds": 6.273774023999977
+  },
+  {
+    "name": "head-source-proof",
+    "argv": [
+      "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+      "-c",
+      "import importlib; m=importlib.import_module(\"flowsint_enrichers.website.to_text\"); print(m.__file__); assert m.__file__.startswith('/home/n4s5ti/Documents/dev/fl0sint-def42-s02')"
+    ],
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers",
+    "environment": {
+      "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-mcp-server/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "rc": 0,
+    "seconds": 3.740403110999978
+  },
+  {
+    "name": "head-doctor",
+    "argv": [
+      "pip3r",
+      "doctor",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--verify-refactor",
+      "WebsiteToText",
+      "--json"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 2.0535693299998456
+  },
+  {
+    "name": "head-hunt",
+    "argv": [
+      "pip3r",
+      "doctor",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--hunt",
+      "--json"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 1,
+    "seconds": 1.4577729339998768
+  },
+  {
+    "name": "head-final-drift",
+    "argv": [
+      "pip3r",
+      "graphos",
+      "--drift",
+      "--cwd",
+      "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+      "--json",
+      "--no-auto-index"
+    ],
+    "cwd": "/tmp/def42-recovery",
+    "environment": {},
+    "rc": 0,
+    "seconds": 0.9280570829996577
+  }
+]

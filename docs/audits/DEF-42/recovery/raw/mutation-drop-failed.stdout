@@ -1,0 +1,36 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_structured_execution_distinguishes_none_transport_failure_from_empty_success _
+
+make_enricher = <function make_enricher.<locals>.make at 0x7840861b1620>
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x784086107e90>
+
+    @pytest.mark.asyncio
+    async def test_structured_execution_distinguishes_none_transport_failure_from_empty_success(
+        make_enricher, monkeypatch
+    ):
+        enricher, _graph = make_enricher()
+    
+        async def fetch(url, **_kwargs):
+            return None if "failed" in url else ""
+    
+        monkeypatch.setattr(enricher, "_fetch_text_async", fetch)
+        result = await enricher.execute_structured(
+            [Website(url="https://empty.example"), Website(url="https://failed.example")]
+        )
+    
+>       empty, failed = result.outcomes
+        ^^^^^^^^^^^^^
+E       ValueError: not enough values to unpack (expected 2, got 1)
+
+../fl0sint-def42-s02/flowsint-enrichers/tests/enrichers/test_website_to_text.py:191: ValueError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1345
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../fl0sint-def42-s02/flowsint-enrichers/tests/enrichers/test_website_to_text.py::test_structured_execution_distinguishes_none_transport_failure_from_empty_success - ValueError: not enough values to unpack (expected 2, got 1)
+1 failed, 1 warning in 0.43s
+production_source_unchanged 2f23716b57523737f8991e21ae2621559616d8226ceaf731c714257ba0e809bc mutation drop-failed pytest_exit 1

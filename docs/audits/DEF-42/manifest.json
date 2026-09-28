@@ -17,12 +17,8 @@
     "docs/developers/managing-enrichers.mdx": "b101363ddc6412f060f080f48997bd776218df63c9012a224a6359c1fc4faf19"
   },
   "unresolved": [
-    "No immutable pre-edit Blast receipt was preserved. This is a local evidence omission, not solely an external tool defect; it cannot be backdated.",
-    "Post-edit Blast returned stale baseline content and is UNKNOWN, not PASS.",
-    "Scoped Hunt and Doctor acceptance is not established by this packet; tooling defects are coordinated under DEF-105 and DEF-106/107/108.",
-    "Full base/head/package/configuration provenance and valid pre/post impact comparison remain incomplete.",
-    "DEF-41 remains a native prerequisite; conditional parallel implementation did not waive its gate."
+    "No immutable pre-edit Blast receipt was preserved. Retrospective baseline/head recovery is now in recovery/; independent review requires explicit user waiver of the historical receipt before closure."
   ],
   "recovery": "No deployment or merge occurred. Leave this branch isolated to retain the baseline runtime. If subsequently applied, revert only the S02 implementation commit with git revert after preserving any intervening changes; retain this evidence packet and all input lineage. No collection budgets were consumed by the controlled fixtures.",
-  "next_gate": "After tool repair acceptance, collect fresh isolated baseline/head impact and scoped Doctor/Hunt evidence. Label any baseline reconstruction retrospective, never historical; independent review must explicitly adjudicate the missing pre-edit receipt before closure."
+  "next_gate": "Functional verification and current impact recovery completed; recovery/acceptance.md records results and limitations. Await user decision on the missing historical pre-edit receipt; do not infer waiver from acceptance of DEF-105."
 }

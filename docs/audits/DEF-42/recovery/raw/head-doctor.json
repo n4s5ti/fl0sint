@@ -1,0 +1,16 @@
+{
+  "name": "head-doctor",
+  "argv": [
+    "pip3r",
+    "doctor",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def42-s02",
+    "--verify-refactor",
+    "WebsiteToText",
+    "--json"
+  ],
+  "cwd": "/tmp/def42-recovery",
+  "environment": {},
+  "rc": 0,
+  "seconds": 2.0535693299998456
+}

@@ -1,0 +1,6 @@
+DO NOT SHIP
+Functional verdict: PASS for DEF-42 occurrence ownership, failure isolation, duplicate/retry/one-to-many identity, cancellation HOLD outcomes, graph capture, and JSON serialization on the supplied archive. Independent public-path attack passed all five claims. Socket-based existing tests could not run in this restricted environment; 7/9 focused and 22/24 related tests passed, with all four failures caused at loopback socket creation by PermissionError.
+Evidence verdict: BLOCKED. The manifest admits no immutable historical PRE-EDIT Blast receipt. Retrospective baseline/head reconstruction cannot satisfy historical pre-edit evidence and must not be relabeled as such. Explicit user waiver is required if that historical receipt is an acceptance requirement.
+Archive provenance: UNCONFIRMED from the extracted tree because ./repo contains no .git metadata; commit 8de569a7 could not be independently resolved here. Audited implementation SHA-256: 2f23716b57523737f8991e21ae2621559616d8226ceaf731c714257ba0e809bc.
+Report: /home/n4s5ti/.cache/def42-independent/REPORT.md
+Attack: /home/n4s5ti/.cache/def42-independent/attack_def42.py

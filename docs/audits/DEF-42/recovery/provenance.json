@@ -1,0 +1,65 @@
+{
+  "baseline": "cbad468df16b0e6f3046379b4f33931b613e1b60",
+  "head": "8de569a731fca084d05d89a6316daafb5a34caa3",
+  "history": "All baseline impact receipts collected retrospectively after implementation. No historical pre-edit receipt exists.",
+  "source_sha256": {
+    "CHANGELOG.md": "c7fd7de94e14f93f592656b47e771301d50a6d905d49a35c8576f454ed10a592",
+    "docs/audits/DEF-42/independent-final-review.json": "b065dda79bd414f92d85192b4c4716ba182f9dad6a098ef27147d67d18d8449d",
+    "docs/audits/DEF-42/independent-review.json": "4155ad8e87885e0fd660969175c5e450a132064976b0e20edfc9487cd11a363e",
+    "docs/audits/DEF-42/manifest.json": "84c2f94de2c529352259c9bddb3271b39877c080debe796446f70c73c2f87972",
+    "docs/audits/DEF-42/parent-core-verification.json": "11f8c3cf09f192fa9fb37e96ad242776bbaac605cd6fb586e6f208cc1ca02264",
+    "docs/audits/DEF-42/parent-enricher-verification.json": "4a529a89d79077a0dadaca76f96740c48b8d916d26217e7d6330d36a0e847c19",
+    "docs/audits/DEF-42/parent-verification.json": "e482dc578a4139632dc1e8adb480a9d57aa6f1337a6abb46698cb094285272ca",
+    "docs/audits/DEF-42/post-fix-runtime.md": "cc6e3da4c015b649472d3c564d2f61babfcdf6ee5e7b216901ce148457c2d5e2",
+    "docs/audits/DEF-42/pre-fix-regression.md": "daa097b6cefb26cb5895685670da7d6e062273076c8d23d087f7c10ae1340f37",
+    "docs/developers/managing-enrichers.mdx": "b101363ddc6412f060f080f48997bd776218df63c9012a224a6359c1fc4faf19",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": "2f23716b57523737f8991e21ae2621559616d8226ceaf731c714257ba0e809bc",
+    "flowsint-enrichers/tests/enrichers/test_website_to_text.py": "25421d0e63a3cee4bb4cdd9b18ca349c3d887e8ecb2a4834b682eb6019afcece"
+  },
+  "configuration": {
+    "flowsint-api/pyproject.toml": {
+      "base": "739c57d7c385bc368493a2d663374b98a75832436e0f164c6d9cfd125c5c31ba",
+      "head": "739c57d7c385bc368493a2d663374b98a75832436e0f164c6d9cfd125c5c31ba"
+    },
+    "flowsint-app/package.json": {
+      "base": "62072aaba1d09a24053f8a0a8da7d763d715792ef16877c19c9ad1432528c0f9",
+      "head": "62072aaba1d09a24053f8a0a8da7d763d715792ef16877c19c9ad1432528c0f9"
+    },
+    "flowsint-core/pyproject.toml": {
+      "base": "fcf0a918462e8c614406226e072526649d045377aac8684737d417be897df8fd",
+      "head": "fcf0a918462e8c614406226e072526649d045377aac8684737d417be897df8fd"
+    },
+    "flowsint-enrichers/pyproject.toml": {
+      "base": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b",
+      "head": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b"
+    },
+    "flowsint-mcp-server/pyproject.toml": {
+      "base": "cee01c535ce1baab21a1d435c84908ef6e6620da59b46f310230fe4919fefb92",
+      "head": "cee01c535ce1baab21a1d435c84908ef6e6620da59b46f310230fe4919fefb92"
+    },
+    "flowsint-mcp-server/uv.lock": {
+      "base": "0e0a6e53c7aae4ab774a31d41c7db29a669c213e626d7916e74778e5d8bf5137",
+      "head": "0e0a6e53c7aae4ab774a31d41c7db29a669c213e626d7916e74778e5d8bf5137"
+    },
+    "flowsint-types/pyproject.toml": {
+      "base": "31708ecfa57c49e5e3ea4dcc607fb65727c87210991b840934f06443b7a68423",
+      "head": "31708ecfa57c49e5e3ea4dcc607fb65727c87210991b840934f06443b7a68423"
+    },
+    "package.json": {
+      "base": "0080408218536cabbcabb3fdb5c38d80833faac76ea50e51a43d476e99a76615",
+      "head": "0080408218536cabbcabb3fdb5c38d80833faac76ea50e51a43d476e99a76615"
+    },
+    "pyproject.toml": {
+      "base": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+      "head": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3"
+    },
+    "uv.lock": {
+      "base": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f",
+      "head": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f"
+    }
+  },
+  "base_status": "",
+  "head_status_before_packet": "M docs/audits/DEF-42/manifest.json\n?? docs/audits/DEF-42/recovery/impact-summary.json\n?? docs/audits/DEF-42/recovery/provenance.json\n?? docs/audits/DEF-42/recovery/raw/baseline-WebsiteToText-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-WebsiteToText-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-WebsiteToText-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-WebsiteToText-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-WebsiteToText-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-WebsiteToText-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-drift.json\n?? docs/audits/DEF-42/recovery/raw/baseline-drift.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-drift.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-execute-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-execute-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-execute-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-execute-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-execute-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-execute-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-execute_structured-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-execute_structured-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-execute_structured-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-execute_structured-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-execute_structured-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-execute_structured-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-index.json\n?? docs/audits/DEF-42/recovery/raw/baseline-index.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-index.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute_structured-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute_structured-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute_structured-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute_structured-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute_structured-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-inherited-execute_structured-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-package-tests.json\n?? docs/audits/DEF-42/recovery/raw/baseline-package-tests.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-package-tests.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-postprocess-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-postprocess-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-postprocess-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-postprocess-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-postprocess-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-postprocess-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-scan-downstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-scan-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-scan-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/baseline-scan-upstream.json\n?? docs/audits/DEF-42/recovery/raw/baseline-scan-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/baseline-scan-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteTextOccurrence-downstream.json\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteTextOccurrence-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteTextOccurrence-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteTextOccurrence-upstream.json\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteTextOccurrence-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteTextOccurrence-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteToText-downstream.json\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteToText-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteToText-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteToText-upstream.json\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteToText-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-WebsiteToText-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-doctor.json\n?? docs/audits/DEF-42/recovery/raw/head-doctor.stderr\n?? docs/audits/DEF-42/recovery/raw/head-doctor.stdout\n?? docs/audits/DEF-42/recovery/raw/head-drift.json\n?? docs/audits/DEF-42/recovery/raw/head-drift.stderr\n?? docs/audits/DEF-42/recovery/raw/head-drift.stdout\n?? docs/audits/DEF-42/recovery/raw/head-execute-downstream.json\n?? docs/audits/DEF-42/recovery/raw/head-execute-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-execute-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-execute-upstream.json\n?? docs/audits/DEF-42/recovery/raw/head-execute-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-execute-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-execute_structured-downstream.json\n?? docs/audits/DEF-42/recovery/raw/head-execute_structured-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-execute_structured-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-execute_structured-upstream.json\n?? docs/audits/DEF-42/recovery/raw/head-execute_structured-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-execute_structured-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-final-drift.json\n?? docs/audits/DEF-42/recovery/raw/head-final-drift.stderr\n?? docs/audits/DEF-42/recovery/raw/head-final-drift.stdout\n?? docs/audits/DEF-42/recovery/raw/head-focused.json\n?? docs/audits/DEF-42/recovery/raw/head-focused.stderr\n?? docs/audits/DEF-42/recovery/raw/head-focused.stdout\n?? docs/audits/DEF-42/recovery/raw/head-hunt.json\n?? docs/audits/DEF-42/recovery/raw/head-hunt.stderr\n?? docs/audits/DEF-42/recovery/raw/head-hunt.stdout\n?? docs/audits/DEF-42/recovery/raw/head-index.json\n?? docs/audits/DEF-42/recovery/raw/head-index.stderr\n?? docs/audits/DEF-42/recovery/raw/head-index.stdout\n?? docs/audits/DEF-42/recovery/raw/head-package-tests.json\n?? docs/audits/DEF-42/recovery/raw/head-package-tests.stderr\n?? docs/audits/DEF-42/recovery/raw/head-package-tests.stdout\n?? docs/audits/DEF-42/recovery/raw/head-postprocess-downstream.json\n?? docs/audits/DEF-42/recovery/raw/head-postprocess-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-postprocess-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-postprocess-upstream.json\n?? docs/audits/DEF-42/recovery/raw/head-postprocess-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-postprocess-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-scan-downstream.json\n?? docs/audits/DEF-42/recovery/raw/head-scan-downstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-scan-downstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-scan-upstream.json\n?? docs/audits/DEF-42/recovery/raw/head-scan-upstream.stderr\n?? docs/audits/DEF-42/recovery/raw/head-scan-upstream.stdout\n?? docs/audits/DEF-42/recovery/raw/head-source-proof.json\n?? docs/audits/DEF-42/recovery/raw/head-source-proof.stderr\n?? docs/audits/DEF-42/recovery/raw/head-source-proof.stdout\n?? docs/audits/DEF-42/recovery/raw/live-smoke.stderr\n?? docs/audits/DEF-42/recovery/raw/live-smoke.stdout\n?? docs/audits/DEF-42/recovery/raw/mutation-drop-failed.stderr\n?? docs/audits/DEF-42/recovery/raw/mutation-drop-failed.stdout\n?? docs/audits/DEF-42/recovery/raw/mutation-source-swap.stderr\n?? docs/audits/DEF-42/recovery/raw/mutation-source-swap.stdout\n?? docs/audits/DEF-42/recovery/raw/records.json",
+  "pip3r_head": "82745f24b1aaabbd166ab979e687d01711f661cd",
+  "pip3r_runtime_sha256": "0c5fefd2dbf930e3585e664882593c558865680e85004d7c3df2a2d4dcf4962c"
+}

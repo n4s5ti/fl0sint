@@ -1,0 +1,20 @@
+{
+  "name": "head-focused",
+  "argv": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/enrichers/test_website_to_text.py",
+    "tests/enrichers/test_acquisition_fixtures.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers",
+  "environment": {
+    "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-app/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def42-s02/flowsint-mcp-server/src",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "rc": 0,
+  "seconds": 6.273774023999977
+}
