@@ -1,0 +1,352 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+        "name": "TrustedFetchPolicy",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Class",
+        "startLine": 85,
+        "endLine": 103,
+        "content": "class TrustedFetchPolicy(_Frozen):     \"\"\"Trusted local caller and destination authority, never request-controlled.\"\"\"     caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")     scope: str = Field(min_length=1, max_length=1024)     capability_digest: Digest     endpoint_policy_digest: Digest     allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)     @model_validator(mode=\"after\")     def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "name": "TrustedFetchPolicy",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 85,
+            "endLine": 103,
+            "content": "class TrustedFetchPolicy(_Frozen):     \"\"\"Trusted local caller and destination authority, never request-controlled.\"\"\"     caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")     scope: str = Field(min_length=1, max_length=1024)     capability_digest: Digest     endpoint_policy_digest: Digest     allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)     @model_validator(mode=\"after\")     def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.normalized_origins#0",
+            "name": "normalized_origins",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 95,
+            "endLine": 103,
+            "content": "    def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "name": "_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 36,
+            "endLine": 55,
+            "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.caller_id",
+            "name": "caller_id",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 88,
+            "endLine": 88,
+            "content": "    caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.scope",
+            "name": "scope",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 89,
+            "endLine": 89,
+            "content": "    scope: str = Field(min_length=1, max_length=1024)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.capability_digest",
+            "name": "capability_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 90,
+            "endLine": 90,
+            "content": "    capability_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.endpoint_policy_digest",
+            "name": "endpoint_policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 91,
+            "endLine": 91,
+            "content": "    endpoint_policy_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.allowed_origins",
+            "name": "allowed_origins",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 92,
+            "endLine": 92,
+            "content": "    allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+            "name": "_Frozen",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 32,
+            "endLine": 33,
+            "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.caller_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.scope",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.capability_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.endpoint_policy_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.allowed_origins",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.normalized_origins#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "to": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.normalized_origins#0",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 9,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+                    "name": "TrustedFetchPolicy",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 85,
+                    "endLine": 103,
+                    "content": "class TrustedFetchPolicy(_Frozen):     \"\"\"Trusted local caller and destination authority, never request-controlled.\"\"\"     caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")     scope: str = Field(min_length=1, max_length=1024)     capability_digest: Digest     endpoint_policy_digest: Digest     allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)     @model_validator(mode=\"after\")     def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.normalized_origins#0",
+                    "name": "normalized_origins",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 95,
+                    "endLine": 103,
+                    "content": "    def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 36,
+                    "endLine": 55,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.caller_id",
+                    "name": "caller_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 88,
+                    "endLine": 88,
+                    "content": "    caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.scope",
+                    "name": "scope",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 89,
+                    "endLine": 89,
+                    "content": "    scope: str = Field(min_length=1, max_length=1024)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.capability_digest",
+                    "name": "capability_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 90,
+                    "endLine": 90,
+                    "content": "    capability_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.endpoint_policy_digest",
+                    "name": "endpoint_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 91,
+                    "endLine": 91,
+                    "content": "    endpoint_policy_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.allowed_origins",
+                    "name": "allowed_origins",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 92,
+                    "endLine": 92,
+                    "content": "    allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+                    "name": "_Frozen",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 32,
+                    "endLine": 33,
+                    "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 8
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.caller_id",
+                    "name": "caller_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 88,
+                    "endLine": 88,
+                    "content": "    caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.scope",
+                    "name": "scope",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 89,
+                    "endLine": 89,
+                    "content": "    scope: str = Field(min_length=1, max_length=1024)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.capability_digest",
+                    "name": "capability_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 90,
+                    "endLine": 90,
+                    "content": "    capability_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.endpoint_policy_digest",
+                    "name": "endpoint_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 91,
+                    "endLine": 91,
+                    "content": "    endpoint_policy_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.allowed_origins",
+                    "name": "allowed_origins",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 92,
+                    "endLine": 92,
+                    "content": "    allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy.normalized_origins#0",
+                    "name": "normalized_origins",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 95,
+                    "endLine": 103,
+                    "content": "    def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+                    "name": "_Frozen",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 32,
+                    "endLine": 33,
+                    "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 36,
+                    "endLine": 55,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+        "rootSymbols": 1,
+        "totalSymbols": 9,
+        "totalEdges": 8,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 7,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

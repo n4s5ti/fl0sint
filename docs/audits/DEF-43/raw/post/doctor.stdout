@@ -1,0 +1,61 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 1419,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "refactor": {
+        "concept": "flowsint-core/src/flowsint_execution/fetch.py",
+        "symbols": [],
+        "waves": {
+            "safe": 0,
+            "moderate": 0,
+            "careful": 0
+        },
+        "warnings": [],
+        "summary": {
+            "totalSymbols": 0,
+            "totalFlows": 0,
+            "suggestedStart": "No graph-resolved safe change candidates.",
+            "durationMs": 515
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "commit": "b1474b07",
+  "matching_regular_files": 1549,
+  "method": "SHA256 comparison of every regular archive file against git show commit:path",
+  "mismatches": []
+}

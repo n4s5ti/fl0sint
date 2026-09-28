@@ -1,0 +1,31 @@
+{
+  "verdict": "REVIEW",
+  "base": "cb5cc295",
+  "pre_edit_receipt_commit": "7ece2072",
+  "implementation_commits": [
+    "353a8389",
+    "b1474b07"
+  ],
+  "tests": {
+    "core_passed": 961,
+    "enrichers_passed": 177
+  },
+  "independent_findings_resolved": [
+    "F1",
+    "F2"
+  ],
+  "unresolved_introduced_findings": [],
+  "source_sha256": {
+    "flowsint-core/src/flowsint_execution/fetch.py": "043505e3b658b28c06c75cbabf2fe0f68e37cbbbccdcd488f5b82aefe5ffba28",
+    "flowsint-core/tests/acquisition/test_fetch.py": "644aedb672ca2184e2e8726c5ac94c0bb22941b174d4787bbdf6352f2e2d946d",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": "ace3c84ad3b00703a3ca4383aef4acaf4d752683ee179cf56f99c79b324fd21d",
+    "flowsint-enrichers/tests/enrichers/test_website_to_text.py": "304e6ad77ff4c8e300f60c9f02bd6623cbd63891ae176aff498bceba3cd3cc24"
+  },
+  "limits": [
+    "LSP unavailable",
+    "partial/UNKNOWN impact answers preserved",
+    "same-vendor subprocess review",
+    "trusted local policy and cooperative HTTP transport",
+    "Hunt not applicable"
+  ]
+}

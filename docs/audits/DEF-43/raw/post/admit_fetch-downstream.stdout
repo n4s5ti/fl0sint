@@ -1,0 +1,337 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+        "name": "admit_fetch",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Function",
+        "startLine": 220,
+        "endLine": 290,
+        "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "name": "admit_fetch",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 220,
+            "endLine": 290,
+            "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "name": "_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 36,
+            "endLine": 55,
+            "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 58,
+            "endLine": 63,
+            "content": "def _canonical(value: object) -> bytes:     if isinstance(value, BaseModel):         value = value.model_dump(mode=\"json\", exclude_none=False)     return json.dumps(         value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True, allow_nan=False     ).encode(\"utf-8\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 66,
+            "endLine": 67,
+            "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "name": "_operation_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 195,
+            "endLine": 207,
+            "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+            "name": "_positive_allocation",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 210,
+            "endLine": 217,
+            "content": "def _positive_allocation(allocation: Resources) -> None:     required = (\"requests\", \"bytes\", \"elapsed_seconds\", \"concurrency\")     for name in required:         value = getattr(allocation, name)         if value is None or isinstance(value, bool) or value <= 0:             raise ValueError(f\"fetch allocation requires finite positive {name}\")         if isinstance(value, float) and not math.isfinite(value):             raise ValueError(f\"fetch allocation requires finite positive {name}\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "name": "_canonicalize_input",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 96,
+            "endLine": 136,
+            "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "name": "canonical_input_hash",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 139,
+            "endLine": 149,
+            "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 6,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+                    "name": "admit_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 220,
+                    "endLine": 290,
+                    "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 36,
+                    "endLine": 55,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 58,
+                    "endLine": 63,
+                    "content": "def _canonical(value: object) -> bytes:     if isinstance(value, BaseModel):         value = value.model_dump(mode=\"json\", exclude_none=False)     return json.dumps(         value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True, allow_nan=False     ).encode(\"utf-8\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 66,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+                    "name": "_positive_allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 210,
+                    "endLine": 217,
+                    "content": "def _positive_allocation(allocation: Resources) -> None:     required = (\"requests\", \"bytes\", \"elapsed_seconds\", \"concurrency\")     for name in required:         value = getattr(allocation, name)         if value is None or isinstance(value, bool) or value <= 0:             raise ValueError(f\"fetch allocation requires finite positive {name}\")         if isinstance(value, float) and not math.isfinite(value):             raise ValueError(f\"fetch allocation requires finite positive {name}\")"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                    "name": "_canonicalize_input",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 96,
+                    "endLine": 136,
+                    "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 139,
+                    "endLine": 149,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 7
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 36,
+                    "endLine": 55,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 66,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+                    "name": "_positive_allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 210,
+                    "endLine": 217,
+                    "content": "def _positive_allocation(allocation: Resources) -> None:     required = (\"requests\", \"bytes\", \"elapsed_seconds\", \"concurrency\")     for name in required:         value = getattr(allocation, name)         if value is None or isinstance(value, bool) or value <= 0:             raise ValueError(f\"fetch allocation requires finite positive {name}\")         if isinstance(value, float) and not math.isfinite(value):             raise ValueError(f\"fetch allocation requires finite positive {name}\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 139,
+                    "endLine": 149,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 58,
+                    "endLine": 63,
+                    "content": "def _canonical(value: object) -> bytes:     if isinstance(value, BaseModel):         value = value.model_dump(mode=\"json\", exclude_none=False)     return json.dumps(         value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True, allow_nan=False     ).encode(\"utf-8\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                    "name": "_canonicalize_input",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 96,
+                    "endLine": 136,
+                    "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+        "rootSymbols": 1,
+        "totalSymbols": 8,
+        "totalEdges": 9,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 5,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

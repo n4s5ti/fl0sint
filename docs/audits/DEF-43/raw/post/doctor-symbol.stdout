@@ -1,0 +1,84 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 1419,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "refactor": {
+        "concept": "execute_fetch",
+        "symbols": [
+            {
+                "name": "execute_fetch",
+                "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                "safetyScore": 60,
+                "wave": 2,
+                "findings": [
+                    "unwired_export",
+                    "high_fanout"
+                ],
+                "evidence": {
+                    "symbol": "execute_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "structuralCallers": 0,
+                    "visibility": "public",
+                    "limits": [
+                        "public interface: importers, re-exports, aliases, decorators, and dynamic consumers are not indexed as structural callers"
+                    ]
+                },
+                "recommendation": "verify consumers before deleting"
+            }
+        ],
+        "waves": {
+            "safe": 0,
+            "moderate": 1,
+            "careful": 0
+        },
+        "warnings": [
+            "execute_fetch (flowsint-core/src/flowsint_execution/fetch.py): public interface: importers, re-exports, aliases, decorators, and dynamic consumers are not indexed as structural callers"
+        ],
+        "summary": {
+            "totalSymbols": 1,
+            "totalFlows": 18,
+            "suggestedStart": "Start with wave 2 and test coverage.",
+            "durationMs": 438
+        }
+    }
+}

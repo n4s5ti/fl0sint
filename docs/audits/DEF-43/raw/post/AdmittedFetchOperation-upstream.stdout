@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+        "name": "AdmittedFetchOperation",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Class",
+        "startLine": 127,
+        "endLine": 155,
+        "content": "class AdmittedFetchOperation(_Frozen):     operation_id: str     inputs: tuple[AdmittedInput, ...]     allocation: Resources     policy: TrustedFetchPolicy     parameters: FetchParameters     request_digest: Digest     policy_digest: Digest     parameter_digest: Digest     operation_seal: Digest     _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)     def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")     def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+            "name": "AdmittedFetchOperation",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 127,
+            "endLine": 155,
+            "content": "class AdmittedFetchOperation(_Frozen):     operation_id: str     inputs: tuple[AdmittedInput, ...]     allocation: Resources     policy: TrustedFetchPolicy     parameters: FetchParameters     request_digest: Digest     policy_digest: Digest     parameter_digest: Digest     operation_seal: Digest     _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)     def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")     def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+                    "name": "AdmittedFetchOperation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 127,
+                    "endLine": 155,
+                    "content": "class AdmittedFetchOperation(_Frozen):     operation_id: str     inputs: tuple[AdmittedInput, ...]     allocation: Resources     policy: TrustedFetchPolicy     parameters: FetchParameters     request_digest: Digest     policy_digest: Digest     parameter_digest: Digest     operation_seal: Digest     _execution_claim: _ExecutionClaim = PrivateAttr(default_factory=_ExecutionClaim)     def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")     def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

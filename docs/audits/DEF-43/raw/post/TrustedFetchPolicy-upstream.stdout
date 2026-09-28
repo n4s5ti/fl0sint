@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+        "name": "TrustedFetchPolicy",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Class",
+        "startLine": 85,
+        "endLine": 103,
+        "content": "class TrustedFetchPolicy(_Frozen):     \"\"\"Trusted local caller and destination authority, never request-controlled.\"\"\"     caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")     scope: str = Field(min_length=1, max_length=1024)     capability_digest: Digest     endpoint_policy_digest: Digest     allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)     @model_validator(mode=\"after\")     def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+            "name": "TrustedFetchPolicy",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 85,
+            "endLine": 103,
+            "content": "class TrustedFetchPolicy(_Frozen):     \"\"\"Trusted local caller and destination authority, never request-controlled.\"\"\"     caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")     scope: str = Field(min_length=1, max_length=1024)     capability_digest: Digest     endpoint_policy_digest: Digest     allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)     @model_validator(mode=\"after\")     def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+                    "name": "TrustedFetchPolicy",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 85,
+                    "endLine": 103,
+                    "content": "class TrustedFetchPolicy(_Frozen):     \"\"\"Trusted local caller and destination authority, never request-controlled.\"\"\"     caller_id: str = Field(min_length=1, max_length=256, pattern=r\"^\\S+$\")     scope: str = Field(min_length=1, max_length=1024)     capability_digest: Digest     endpoint_policy_digest: Digest     allowed_origins: tuple[str, ...] = Field(min_length=1, max_length=256)     @model_validator(mode=\"after\")     def normalized_origins(self):         normalized = tuple(_origin(value) for value in self.allowed_origins)         if normalized != self.allowed_origins or len(set(normalized)) != len(             normalized         ):             raise ValueError(                 \"allowed origins must be unique canonical origins with effective ports\"             )         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:TrustedFetchPolicy",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

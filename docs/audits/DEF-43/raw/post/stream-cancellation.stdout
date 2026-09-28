@@ -1,0 +1,1 @@
+{"scenario": "real_http_cancel_during_receive", "status": "cancelled", "requests": 1, "bytes": 3, "cancel_seconds": 0.0005285059996822383}
