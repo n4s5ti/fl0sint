@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "--json",
+    "--no-auto-index",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "upstream",
+    "flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+  "environment": {},
+  "rc": 0,
+  "started": 1790558105.120255,
+  "seconds": 0.7296593189239502
+}

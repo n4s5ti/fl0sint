@@ -1,0 +1,20 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "success": true,
+        "warnings": [
+            "No workspace packages with recognised entry files — sidecar will be empty"
+        ],
+        "generation": "sha256:57ed6683f2b61b8ae3e6e69a3bf040a0483a7462bfe04d7a503d77dc97aa2f7a",
+        "planAction": "incremental",
+        "deltaAdded": 132,
+        "deltaModified": 1,
+        "deltaDeleted": 0,
+        "deltaRenamed": 0,
+        "deltaUnreadable": 0,
+        "indexLatencyMs": 30004,
+        "filesParsed": 1353
+    }
+}

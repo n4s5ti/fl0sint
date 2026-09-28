@@ -1,0 +1,280 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+    "repo": "fl0sint-def43-s03",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+        "name": "DestinationDefinition",
+        "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+        "nodeType": "Class",
+        "startLine": 117,
+        "endLine": 146,
+        "content": "class DestinationDefinition(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True)     destination_id: StrictStr = Field(pattern=_IDENTIFIER)     base_url: StrictStr = Field(min_length=1, max_length=2048)     endpoints: tuple[ConnectorEndpointDefinition, ...]     enabled: bool = True     @field_validator(\"base_url\")     @classmethod     def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")     @model_validator(mode=\"after\")     def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "name": "DestinationDefinition",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Class",
+            "startLine": 117,
+            "endLine": 146,
+            "content": "class DestinationDefinition(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True)     destination_id: StrictStr = Field(pattern=_IDENTIFIER)     base_url: StrictStr = Field(min_length=1, max_length=2048)     endpoints: tuple[ConnectorEndpointDefinition, ...]     enabled: bool = True     @field_validator(\"base_url\")     @classmethod     def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")     @model_validator(mode=\"after\")     def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_https_origin#1",
+            "name": "validate_https_origin",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Method",
+            "startLine": 127,
+            "endLine": 139,
+            "content": "    def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_endpoint_ids#0",
+            "name": "validate_endpoint_ids",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Method",
+            "startLine": 142,
+            "endLine": 146,
+            "content": "    def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.destination_id",
+            "name": "destination_id",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Property",
+            "startLine": 120,
+            "endLine": 120,
+            "content": "    destination_id: StrictStr = Field(pattern=_IDENTIFIER)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.base_url",
+            "name": "base_url",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Property",
+            "startLine": 121,
+            "endLine": 121,
+            "content": "    base_url: StrictStr = Field(min_length=1, max_length=2048)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.endpoints",
+            "name": "endpoints",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Property",
+            "startLine": 122,
+            "endLine": 122,
+            "content": "    endpoints: tuple[ConnectorEndpointDefinition, ...]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.enabled",
+            "name": "enabled",
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "nodeType": "Property",
+            "startLine": 123,
+            "endLine": 123,
+            "content": "    enabled: bool = True"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "to": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.destination_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "to": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.base_url",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "to": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.endpoints",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "to": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.enabled",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "to": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_https_origin#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+            "to": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_endpoint_ids#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+            "count": 7,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+                    "name": "DestinationDefinition",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Class",
+                    "startLine": 117,
+                    "endLine": 146,
+                    "content": "class DestinationDefinition(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True)     destination_id: StrictStr = Field(pattern=_IDENTIFIER)     base_url: StrictStr = Field(min_length=1, max_length=2048)     endpoints: tuple[ConnectorEndpointDefinition, ...]     enabled: bool = True     @field_validator(\"base_url\")     @classmethod     def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")     @model_validator(mode=\"after\")     def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_https_origin#1",
+                    "name": "validate_https_origin",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Method",
+                    "startLine": 127,
+                    "endLine": 139,
+                    "content": "    def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_endpoint_ids#0",
+                    "name": "validate_endpoint_ids",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Method",
+                    "startLine": 142,
+                    "endLine": 146,
+                    "content": "    def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.destination_id",
+                    "name": "destination_id",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 120,
+                    "endLine": 120,
+                    "content": "    destination_id: StrictStr = Field(pattern=_IDENTIFIER)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.base_url",
+                    "name": "base_url",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 121,
+                    "endLine": 121,
+                    "content": "    base_url: StrictStr = Field(min_length=1, max_length=2048)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.endpoints",
+                    "name": "endpoints",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 122,
+                    "endLine": 122,
+                    "content": "    endpoints: tuple[ConnectorEndpointDefinition, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.enabled",
+                    "name": "enabled",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 123,
+                    "endLine": 123,
+                    "content": "    enabled: bool = True"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 6
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.destination_id",
+                    "name": "destination_id",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 120,
+                    "endLine": 120,
+                    "content": "    destination_id: StrictStr = Field(pattern=_IDENTIFIER)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.base_url",
+                    "name": "base_url",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 121,
+                    "endLine": 121,
+                    "content": "    base_url: StrictStr = Field(min_length=1, max_length=2048)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.endpoints",
+                    "name": "endpoints",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 122,
+                    "endLine": 122,
+                    "content": "    endpoints: tuple[ConnectorEndpointDefinition, ...]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.enabled",
+                    "name": "enabled",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Property",
+                    "startLine": 123,
+                    "endLine": 123,
+                    "content": "    enabled: bool = True"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_https_origin#1",
+                    "name": "validate_https_origin",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Method",
+                    "startLine": 127,
+                    "endLine": 139,
+                    "content": "    def validate_https_origin(cls, value: str) -> str:         parsed = urlsplit(value)         if (             parsed.scheme != \"https\"             or not parsed.netloc             or parsed.username is not None             or parsed.password is not None             or parsed.path not in (\"\", \"/\")             or parsed.query             or parsed.fragment         ):             raise ValueError(\"destination base_url must be an HTTPS origin\")         return value.rstrip(\"/\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition.validate_endpoint_ids#0",
+                    "name": "validate_endpoint_ids",
+                    "filePath": "flowsint-core/src/flowsint_core/core/connector_egress.py",
+                    "nodeType": "Method",
+                    "startLine": 142,
+                    "endLine": 146,
+                    "content": "    def validate_endpoint_ids(self) -> DestinationDefinition:         endpoint_ids = [endpoint.endpoint_id for endpoint in self.endpoints]         if len(endpoint_ids) != len(set(endpoint_ids)):             raise ValueError(\"duplicate destination endpoint\")         return self"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03",
+        "repo": "fl0sint-def43-s03",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def43-s03/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/core/connector_egress.py:DestinationDefinition",
+        "rootSymbols": 1,
+        "totalSymbols": 7,
+        "totalEdges": 6,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 6,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
