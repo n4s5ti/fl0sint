@@ -157,16 +157,36 @@ worker and its original elapsed allocation. Saved replay uses
 scope, source family, operation, and occurrence must match the persisted proof and the
 current reviewed runtime policy.
 
+`extraction_runtime.execute_live_observed_extraction(url, config_path=...)` is the
+graph-free live entry point. It uses only the admitted execution fetch, deployment-owned
+runtime authority, retained artifact store, and the same pure extractor as replay. The
+standalone `examples/observed_extraction.py --url URL --runtime-config FILE` command calls
+it directly without loading WebsiteToText, a registry, graph, database, planner, model, or
+hosted-authentication configuration. `--proof` replay also requires `--operation` and
+`--occurrence`.
+
 Raw observation spans are byte offsets into the retained body and are resolved against
 its exact length and SHA-256 digest. They are not normalized `SourceProofSpanReference`
-ranges. Links and forms are unreviewed, non-executable metadata. They never create
+ranges. `resolve_observation_span(...)` accepts a complete typed `Observation` plus trusted
+expected occurrence and input references, re-extracts with the declared versioned policy,
+and rejects identity, value, context, or span mismatches. The authorized
+`artifact_runtime.resolve_persisted_observation(...)` additionally checks current
+caller/scope/source, operation, occurrence, retention, proof, and typed metadata before
+returning exact value and context bytes. The old arbitrary-range convention is unsupported.
+Links and forms are unreviewed, non-executable metadata. They never create
 Email, Phone, Individual, or graph-edge outputs. Relative references use the retained
 final page URL. Non-sensitive query parameters are retained so fragment-only references
 inherit the correct query. Empty attribute values are omitted because the contract
 requires a nonempty exact raw span; query strings containing credential-like names
-(`token`, `secret`, `password`, `key`, authorization codes, or signatures) are removed
-as a whole. This conservative policy can discard benign parameters with those names.
+(`token`, `secret`, password aliases, sessions, authorization codes, or signatures,
+including delimiter/case/percent-encoding variants) are removed as a whole by the shared
+conservative disclosure helper. It is not an exhaustive secret detector. Ambiguous
+credential-like query authority fails closed, while `page`, `view`, `edition`, `filter`,
+and `department` retain their meaningful values.
 
 HOLD and REVIEW resolution states produce no observations. A revoked or unavailable
 current policy cannot be bypassed with an older proof. Both the source proof and the
 machine-readable observation result are bounded before a success outcome is returned.
+The strict `observed-extraction/1.0` parser restores the actual Observation, enum, span,
+diagnostic, and result models. Unknown versions and fields are rejected. This metadata
+cannot choose a store path, caller authority, or executable operation.

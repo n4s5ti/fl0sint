@@ -12,7 +12,8 @@ from typing import Callable
 from urllib.parse import unquote, urljoin, urlsplit
 
 from .acquisition import ArtifactBindingError, ArtifactReference
-from .models import RedactedDiagnostic
+from .models import PersistedMetadata, RedactedDiagnostic
+from .url_policy import disclose_url
 
 
 class ObservationKind(str, Enum):
@@ -139,6 +140,17 @@ class GeneratedHypothesis:
     basis: str
     source_observation_ids: tuple[str, ...]
 
+    def __post_init__(self) -> None:
+        for name in ("hypothesis_id", "value", "basis"):
+            value = getattr(self, name)
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{name} must be a nonempty string")
+        if (not isinstance(self.source_observation_ids, tuple)
+                or not self.source_observation_ids
+                or any(not isinstance(item, str) or not item.strip()
+                       for item in self.source_observation_ids)):
+            raise ValueError("source_observation_ids must be a nonempty tuple of IDs")
+
     @classmethod
     def create(cls, *, value: str, basis: str,
                source_observation_ids: tuple[str, ...]) -> "GeneratedHypothesis":
@@ -179,6 +191,115 @@ class ObservedExtractionResult:
         """Compatibility hook; construction already performs complete validation."""
 
 
+_METADATA_VERSION = "observed-extraction/1.0"
+_EXTRACTOR_VERSION = "observed-html/1"
+
+
+def _span_payload(span: RawSpan | None) -> dict[str, int] | None:
+    return None if span is None else {"start_byte": span.start_byte, "end_byte": span.end_byte}
+
+
+def serialize_observed_extraction_metadata(
+    result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None,
+) -> PersistedMetadata:
+    if type(result) is not ObservedExtractionResult:
+        raise TypeError("result must be ObservedExtractionResult")
+    selected = policy or ExtractionPolicy()
+    payload = {
+        "extractor_version": _EXTRACTOR_VERSION,
+        "policy": {name: getattr(selected, name) for name in selected.__dataclass_fields__},
+        "readable_text": result.readable_text,
+        "observations": [{
+            "observation_id": item.observation_id,
+            "occurrence_id": item.occurrence_id,
+            "kind": item.kind.value,
+            "value": item.value,
+            "artifact_id": item.artifact_id,
+            "snapshot_id": item.snapshot_id,
+            "content_digest": item.content_digest,
+            "input_ref": item.input_ref,
+            "source_url": item.source_url,
+            "raw_span": _span_payload(item.raw_span),
+            "context_span": _span_payload(item.context_span),
+            "anchor_text": item.anchor_text,
+            "person_name": item.person_name,
+            "role_name": item.role_name,
+            "company_name": item.company_name,
+            "review_state": item.review_state.value,
+            "execution_state": item.execution_state.value,
+        } for item in result.observations],
+        "diagnostics": [item.model_dump(mode="json") for item in result.diagnostics],
+        "was_truncated": result.was_truncated,
+        "observations_skipped": result.observations_skipped,
+        "total_observations_found": result.total_observations_found,
+    }
+    metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)
+    if len(metadata.model_dump_json(warnings="error").encode("utf-8")) > 8 * 1024 * 1024:
+        raise ValueError("observation_result_too_large")
+    return metadata
+
+
+def _exact(value: dict, expected: set[str], label: str) -> None:
+    if type(value) is not dict or set(value) != expected:
+        raise ValueError(f"invalid {label} fields")
+
+
+def _parse_span(value: object, *, optional: bool) -> RawSpan | None:
+    if value is None and optional:
+        return None
+    if type(value) is not dict:
+        raise ValueError("invalid span")
+    _exact(value, {"start_byte", "end_byte"}, "span")
+    return RawSpan(value["start_byte"], value["end_byte"])
+
+
+def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:
+    if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:
+        raise ValueError("unsupported observation metadata version")
+    policy = metadata.payload.get("policy")
+    if type(policy) is not dict:
+        raise ValueError("invalid extraction policy")
+    _exact(policy, set(ExtractionPolicy.__dataclass_fields__), "extraction policy")
+    return ExtractionPolicy(**policy)
+
+
+def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:
+    if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:
+        raise ValueError("unsupported observation metadata version")
+    payload = metadata.payload
+    expected = {"extractor_version", "policy", "readable_text", "observations", "diagnostics",
+                "was_truncated", "observations_skipped", "total_observations_found"}
+    _exact(payload, expected, "observation metadata")
+    if payload["extractor_version"] != _EXTRACTOR_VERSION:
+        raise ValueError("unsupported extractor version")
+    extraction_policy_from_metadata(metadata)
+    observation_fields = set(Observation.__dataclass_fields__)
+    observations = []
+    if type(payload["observations"]) is not list:
+        raise ValueError("observations must be a list")
+    for raw in payload["observations"]:
+        if type(raw) is not dict:
+            raise ValueError("invalid observation")
+        _exact(raw, observation_fields, "observation")
+        observations.append(Observation(
+            **{**raw, "kind": ObservationKind(raw["kind"]),
+               "raw_span": _parse_span(raw["raw_span"], optional=False),
+               "context_span": _parse_span(raw["context_span"], optional=True),
+               "review_state": ReviewState(raw["review_state"]),
+               "execution_state": ExecutionState(raw["execution_state"])},
+        ))
+    if type(payload["diagnostics"]) is not list:
+        raise ValueError("diagnostics must be a list")
+    diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)
+                        for item in payload["diagnostics"])
+    return ObservedExtractionResult(
+        readable_text=payload["readable_text"], observations=tuple(observations),
+        diagnostics=diagnostics, was_truncated=payload["was_truncated"],
+        observations_skipped=payload["observations_skipped"],
+        total_observations_found=payload["total_observations_found"],
+    )
+
+
 def _verify_artifact(body: bytes, artifact: ArtifactReference) -> None:
     if not isinstance(body, bytes):
         raise TypeError("body must be bytes")
@@ -188,18 +309,45 @@ def _verify_artifact(body: bytes, artifact: ArtifactReference) -> None:
         raise ArtifactBindingError("artifact digest mismatch")
 
 
-def resolve_observation_span(body: bytes, artifact: ArtifactReference, span: RawSpan,
-                             observation_kind: ObservationKind | None = None) -> tuple[bytes, str]:
+@dataclass(frozen=True)
+class ResolvedObservation:
+    raw: bytes
+    text: str
+    context_raw: bytes | None
+    context_text: str | None
+
+
+def resolve_observation_span(body: bytes, artifact: ArtifactReference,
+                             observation: Observation, *,
+                             expected_occurrence_id: str,
+                             expected_input_ref: str,
+                             policy: ExtractionPolicy | None = None) -> ResolvedObservation:
     _verify_artifact(body, artifact)
-    if not isinstance(span, RawSpan):
-        raise TypeError("span must be RawSpan")
-    if observation_kind is not None and type(observation_kind) is not ObservationKind:
-        raise TypeError("observation_kind must be ObservationKind")
-    if span.end_byte > len(body):
-        raise ValueError("observation span is outside retained body")
+    if type(observation) is not Observation:
+        raise TypeError("observation must be Observation")
+    if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:
+        raise ArtifactBindingError("observation ownership mismatch")
+    if (observation.artifact_id != artifact.artifact_id
+            or observation.snapshot_id != artifact.snapshot_id
+            or observation.content_digest != artifact.content_digest
+            or observation.source_url != artifact.final_url):
+        raise ArtifactBindingError("observation artifact binding mismatch")
+    canonical = extract_observations(
+        body, artifact=artifact, occurrence_id=expected_occurrence_id,
+        input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,
+    )
+    matches = tuple(item for item in canonical.observations
+                    if item.observation_id == observation.observation_id)
+    if len(matches) != 1 or matches[0] != observation:
+        raise ArtifactBindingError("observation does not match canonical extraction")
+    span = observation.raw_span
     raw = body[span.start_byte:span.end_byte]
     try:
-        return raw, raw.decode("utf-8")
+        text = raw.decode("utf-8")
+        context_raw = None if observation.context_span is None else body[
+            observation.context_span.start_byte:observation.context_span.end_byte]
+        context_text = None if context_raw is None else context_raw.decode("utf-8")
+        return ResolvedObservation(raw, text, context_raw, context_text)
     except UnicodeDecodeError as exc:
         raise ValueError("observation span is not valid UTF-8") from exc
 
@@ -213,6 +361,8 @@ class _Frame:
     captures_person_name: bool = False
     end_char: int | None = None
     person_name_parts: list[str] = field(default_factory=list)
+    current_person_name: str | None = None
+    current_person_start_char: int | None = None
     anchor_parts: list[str] = field(default_factory=list)
     href: tuple[str, int, int] | None = None
 
@@ -225,6 +375,9 @@ class _Candidate:
     end_char: int
     context: _Frame | None = None
     anchor_text: str | None = None
+    person_name: str | None = None
+    context_start_char: int | None = None
+    context_end_char: int | None = None
 
 
 _EMAIL = re.compile(r"(?<![\w.+-])[A-Za-z0-9][A-Za-z0-9._%+-]*@(?:[A-Za-z0-9-]+\.)+[A-Za-z]{2,}(?![\w-])")
@@ -254,6 +407,18 @@ class _SourceParser(HTMLParser):
 
     def _context(self) -> _Frame | None:
         return self._person() or next((f for f in reversed(self.stack) if f.tag in _BLOCKS), None)
+
+    def _candidate(self, kind: ObservationKind, value: str, start: int, end: int,
+                   context: _Frame | None, anchor: str | None = None) -> _Candidate:
+        person = context if context is not None and context.explicit_person else None
+        person_name = person.current_person_name if person is not None else None
+        if kind is ObservationKind.PERSON_ASSOCIATED and not person_name:
+            kind = ObservationKind.UNKNOWN_CONTACT
+        return _Candidate(
+            kind, value, start, end, context, anchor, person_name,
+            person.current_person_start_char if person_name else None,
+            end if person_name else None,
+        )
 
     @staticmethod
     def _attrs(token: str, token_start: int) -> dict[str, tuple[str, int, int]]:
@@ -295,8 +460,8 @@ class _SourceParser(HTMLParser):
             value, value_start, value_end = raw_attrs["action"]
             safe = _safe_http_url(value, None, allow_relative=True)
             if safe is not None:
-                self.candidates.append(_Candidate(ObservationKind.FORM_CANDIDATE, value,
-                                                  value_start, value_end, self._context()))
+                self.candidates.append(self._candidate(ObservationKind.FORM_CANDIDATE, value,
+                                                       value_start, value_end, self._context()))
 
     def handle_endtag(self, tag: str) -> None:
         self._end(tag.lower(), self._pos() + len(f"</{tag}>") )
@@ -309,6 +474,12 @@ class _SourceParser(HTMLParser):
         del self.stack[index:]
         for frame in closing:
             frame.end_char = end
+            if frame.captures_person_name:
+                person = next((item for item in reversed(self.stack) if item.explicit_person), None)
+                name = " ".join(frame.person_name_parts).strip()
+                if person is not None and name:
+                    person.current_person_name = name
+                    person.current_person_start_char = frame.start_char
             if frame.tag == "a" and frame.href:
                 href, start, stop = frame.href
                 anchor = " ".join("".join(frame.anchor_parts).split()) or None
@@ -321,18 +492,18 @@ class _SourceParser(HTMLParser):
         if lowered.startswith("mailto:"):
             address = unquote(href[7:].split("?", 1)[0]).strip()
             if _EMAIL.fullmatch(address):
-                self.candidates.append(_Candidate(_email_kind(address, context), address,
-                                                  start, stop, context, anchor))
+                self.candidates.append(self._candidate(_email_kind(address, context), address,
+                                                       start, stop, context, anchor))
         elif lowered.startswith("tel:"):
             number = unquote(href[4:].split("?", 1)[0]).strip()
             if number:
-                self.candidates.append(_Candidate(ObservationKind.PHONE_CONTACT, number,
-                                                  start, stop, context, anchor))
+                self.candidates.append(self._candidate(ObservationKind.PHONE_CONTACT, number,
+                                                       start, stop, context, anchor))
         else:
             safe = _safe_http_url(href, None, allow_relative=True)
             if safe is not None:
-                self.candidates.append(_Candidate(ObservationKind.LINK, href, start, stop,
-                                                  context, anchor))
+                self.candidates.append(self._candidate(ObservationKind.LINK, href, start, stop,
+                                                       context, anchor))
 
     def handle_data(self, data: str) -> None:
         if any(frame.tag in _SKIP for frame in self.stack):
@@ -352,17 +523,20 @@ class _SourceParser(HTMLParser):
         name_label_open = any(frame.captures_person_name for frame in self.stack)
         person = self._person()
         if person is not None and name_label_open and visible:
-            person.person_name_parts.append(re.sub(r"^name\s*:\s*", "", visible,
-                                                   flags=re.IGNORECASE))
+            name_frame = next((frame for frame in reversed(self.stack)
+                               if frame.captures_person_name), None)
+            if name_frame is not None:
+                name_frame.person_name_parts.append(re.sub(r"^name\s*:\s*", "", visible,
+                                                           flags=re.IGNORECASE))
         context = self._context()
         for match in _EMAIL.finditer(decoded):
             char_start, char_end = _mapped_range(mapping, match.start(), match.end())
-            self.candidates.append(_Candidate(_email_kind(match.group(), context), match.group(),
-                                              char_start, char_end, context))
+            self.candidates.append(self._candidate(_email_kind(match.group(), context), match.group(),
+                                                   char_start, char_end, context))
         for match in _PHONE.finditer(decoded):
             char_start, char_end = _mapped_range(mapping, match.start(), match.end())
-            self.candidates.append(_Candidate(ObservationKind.PHONE_CONTACT, match.group(),
-                                              char_start, char_end, context))
+            self.candidates.append(self._candidate(ObservationKind.PHONE_CONTACT, match.group(),
+                                                   char_start, char_end, context))
 
     def close_open_frames(self) -> None:
         for frame in self.stack:
@@ -483,26 +657,26 @@ def extract_observations(body: bytes, *, artifact: ArtifactReference, occurrence
             if not selected.allow_external_links and urlsplit(resolved).hostname != urlsplit(final_url).hostname:
                 continue
             value = resolved
+            value = disclose_url(value)
         if len(value.encode("utf-8")) > selected.max_value_bytes:
             continue
         raw_span = RawSpan(byte_offsets[candidate.start_char], byte_offsets[candidate.end_char])
         context_span = None
         person_name = None
         if candidate.context is not None:
-            context_end = candidate.context.end_char or len(source)
-            proposed = RawSpan(byte_offsets[candidate.context.start_char], byte_offsets[context_end])
+            context_start = candidate.context_start_char
+            context_end = candidate.context_end_char
+            if context_start is None or context_end is None:
+                context_start = candidate.context.start_char
+                context_end = candidate.context.end_char or len(source)
+            proposed = RawSpan(byte_offsets[context_start], byte_offsets[context_end])
             cost = proposed.end_byte - proposed.start_byte
             if context_used + cost > selected.max_context_bytes:
                 continue
             context_used += cost
             context_span = proposed
             if candidate.kind is ObservationKind.PERSON_ASSOCIATED:
-                name = " ".join(candidate.context.person_name_parts).strip()
-                if not name:
-                    # An explicit container without its bounded name cannot assert identity.
-                    candidate.kind = ObservationKind.UNKNOWN_CONTACT
-                else:
-                    person_name = name
+                person_name = candidate.person_name
         if len(observations) >= selected.max_observations:
             continue
         observations.append(Observation(
@@ -523,5 +697,7 @@ def extract_observations(body: bytes, *, artifact: ArtifactReference, occurrence
 
 __all__ = ["ArtifactBindingError", "ExecutionState", "ExtractionPolicy",
            "GeneratedHypothesis", "Observation", "ObservationKind",
-           "ObservedExtractionResult", "RawSpan", "ReviewState",
-           "extract_observations", "resolve_observation_span"]
+           "ObservedExtractionResult", "RawSpan", "ResolvedObservation", "ReviewState",
+           "extract_observations", "extraction_policy_from_metadata",
+           "parse_observed_extraction_metadata", "resolve_observation_span",
+           "serialize_observed_extraction_metadata"]

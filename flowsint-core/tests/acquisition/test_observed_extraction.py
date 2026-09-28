@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 from datetime import datetime, timezone
 
@@ -9,8 +10,10 @@ from flowsint_execution.acquisition import ArtifactReference
 from flowsint_execution.observed_extraction import (
     ArtifactBindingError, ExtractionPolicy, GeneratedHypothesis, Observation,
     ObservationKind, ObservedExtractionResult, RawSpan, extract_observations,
-    resolve_observation_span,
+    parse_observed_extraction_metadata, resolve_observation_span,
+    serialize_observed_extraction_metadata,
 )
+from flowsint_execution.url_policy import disclose_url
 
 
 def artifact(body: bytes, final_url: str = "https://example.test/team/index.html") -> ArtifactReference:
@@ -64,7 +67,7 @@ def test_malformed_unclosed_quote_does_not_fabricate_a_span():
     body = b'<a href="/broken><span>visible@example.test</span><p>after@example.test</p>'
     result = extract(body)
     assert not [o for o in result.observations if o.kind is ObservationKind.LINK]
-    assert all(resolve_observation_span(body, artifact(body), o.raw_span)[0] for o in result.observations)
+    assert all(item.person_name is None for item in result.observations)
 
 
 def test_explicit_cards_bind_separate_people_but_generic_inboxes_never_bind():
@@ -128,11 +131,99 @@ def test_digest_length_final_url_and_utf8_are_checked():
     assert [(d.code, d.safe_message) for d in result.diagnostics] == [("decode_error", "Retained source is not valid UTF-8.")]
 
 
-def test_resolve_span_authenticates_artifact_before_returning_bytes():
-    body = "Café".encode()
-    assert resolve_observation_span(body, artifact(body), RawSpan(0, len(body))) == (body, "Café")
+def test_resolver_requires_canonical_observation_ownership():
+    body = b"alpha@example.test beta@example.test"
+    result = extract(body)
+    observation = next(item for item in result.observations if item.value == "beta@example.test")
+    resolved = resolve_observation_span(
+        body, artifact(body), observation,
+        expected_occurrence_id="occurrence-test", expected_input_ref="b" * 64,
+    )
+    assert resolved.raw == b"beta@example.test"
+    assert resolved.text == "beta@example.test"
+    altered = dataclasses.replace(observation, value="alpha@example.test")
+    with pytest.raises(ArtifactBindingError, match="canonical"):
+        resolve_observation_span(body, artifact(body), altered,
+            expected_occurrence_id="occurrence-test", expected_input_ref="b" * 64)
     with pytest.raises(ArtifactBindingError):
-        resolve_observation_span(body + b"!", artifact(body), RawSpan(0, len(body)))
+        resolve_observation_span(body + b"!", artifact(body), observation,
+            expected_occurrence_id="occurrence-test", expected_input_ref="b" * 64)
+
+
+def test_person_attribution_is_temporal_and_segment_bounded():
+    body = (b'<section class="person"><p>first@example.test</p><h2>Ada One</h2>'
+            b'<p>ada@example.test</p><h2>Bo Two</h2><p>bo@example.test</p></section>')
+    found = {item.value: item for item in contacts(extract(body))}
+    assert found["first@example.test"].kind is ObservationKind.UNKNOWN_CONTACT
+    assert found["first@example.test"].person_name is None
+    assert found["ada@example.test"].person_name == "Ada One"
+    assert found["bo@example.test"].person_name == "Bo Two"
+    ada_context = body[found["ada@example.test"].context_span.start_byte:
+                       found["ada@example.test"].context_span.end_byte]
+    assert b"Ada One" in ada_context and b"Bo Two" not in ada_context
+
+
+def test_malformed_person_nesting_and_generic_cards_are_conservative():
+    body = (b'<section class="person"><h2>Ada One</h2><div><h2>Bo Two</section>'
+            b'<p>unknown@example.test</p><div class="inbox"><h2>Inbox Team</h2>'
+            b'<p>named@example.test</p></div>')
+    found = {item.value: item for item in contacts(extract(body))}
+    assert found["unknown@example.test"].person_name is None
+    assert found["named@example.test"].person_name is None
+    assert found["named@example.test"].kind is ObservationKind.UNKNOWN_CONTACT
+
+
+@pytest.mark.parametrize("args", [
+    ("", "value", "basis", ("obs",)), ("id", "", "basis", ("obs",)),
+    ("id", "value", "", ("obs",)), ("id", "value", "basis", ()),
+])
+def test_hypothesis_constructor_enforces_factory_invariants(args):
+    with pytest.raises(ValueError):
+        GeneratedHypothesis(*args)
+
+
+@pytest.mark.parametrize("name", [
+    "client_secret", "CLIENT-SECRET", "auth_token", "passwd", "pwd",
+    "session_id", "x-signature", "oauth.code",
+])
+def test_url_disclosure_removes_credential_like_queries(name):
+    disclosed = disclose_url(f"https://example.test/x?{name}=fixture-secret&view=full")
+    assert "fixture-secret" not in disclosed
+    assert disclosed == "https://example.test/x"
+
+
+def test_url_disclosure_preserves_benign_meaningful_queries():
+    assert disclose_url("https://example.test/x?page=2&view=full&edition=2026&department=research") == (
+        "https://example.test/x?page=2&view=full&edition=2026&department=research"
+    )
+
+
+def test_candidate_urls_disclose_no_secret_but_keep_exact_supporting_span():
+    body = (b'<a href="/next?client_secret=fixture-secret">next</a>'
+            b'<form action="/submit?auth_token=fixture-secret"></form>')
+    result = extract(body)
+    candidates = [item for item in result.observations if item.kind in {
+        ObservationKind.LINK, ObservationKind.FORM_CANDIDATE}]
+    assert [item.value for item in candidates] == [
+        "https://example.test/next", "https://example.test/submit"]
+    assert all("fixture-secret" not in item.value for item in candidates)
+    assert all(b"fixture-secret" in body[item.raw_span.start_byte:item.raw_span.end_byte]
+               for item in candidates)
+
+
+def test_observation_metadata_round_trips_actual_models_and_rejects_mutation():
+    result = extract(b'<section class="person"><h2>Ada One</h2><p>ada@example.test</p></section>')
+    metadata = serialize_observed_extraction_metadata(result)
+    restored = parse_observed_extraction_metadata(metadata)
+    assert restored == result
+    assert type(restored.observations[0]) is Observation
+    unknown = metadata.model_copy(update={"format_version": "observed-extraction/2.0"})
+    with pytest.raises(ValueError, match="version"):
+        parse_observed_extraction_metadata(unknown)
+    payload = dict(metadata.payload)
+    payload["unexpected"] = True
+    with pytest.raises(ValueError):
+        parse_observed_extraction_metadata(metadata.model_copy(update={"payload": payload}))
 
 
 @pytest.mark.parametrize("field,value", [("max_body_bytes", 0), ("max_observations", True),

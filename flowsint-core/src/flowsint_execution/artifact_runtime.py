@@ -13,11 +13,11 @@ import base64
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from .acquisition import ArtifactReference, SourceProofSpanReference
+from .acquisition import ArtifactBindingError, ArtifactReference, SourceProofSpanReference
 from .artifacts import (
     ArtifactContext, ArtifactState, FilesystemArtifactStore, ResolveResult,
     RetentionAuthority, RetentionDecision, SpanResolveResult, resolve_source,
@@ -25,6 +25,9 @@ from .artifacts import (
 )
 
 RUNTIME_CONFIG_ENV = "FLOWSINT_ARTIFACT_RUNTIME_CONFIG"
+
+if TYPE_CHECKING:
+    from .observed_extraction import Observation
 
 
 class _Strict(BaseModel):
@@ -89,6 +92,17 @@ class ArtifactRuntime:
 
     def decision(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:
         return self.authority.issue(operation_id, now=now)
+
+
+@dataclass(frozen=True)
+class ObservationResolveResult:
+    state: ArtifactState
+    reason: str
+    observation: Observation | None = None
+    raw: bytes | None = None
+    text: str | None = None
+    context_raw: bytes | None = None
+    context_text: str | None = None
 
 
 def _policy_digest(policy: dict[str, Any]) -> str:
@@ -247,9 +261,62 @@ def resolve_persisted_span(
     )
 
 
+def resolve_persisted_observation(
+    value: str,
+    metadata: object,
+    observation_id: str,
+    *,
+    caller_id: str,
+    scope: str,
+    source_family: str,
+    operation_id: str,
+    occurrence_id: str,
+    config_path: str | os.PathLike[str] | None = None,
+    now: datetime | None = None,
+) -> ObservationResolveResult:
+    """Resolve one canonical persisted observation under current retention authority."""
+    from .models import PersistedMetadata
+    from .observed_extraction import (
+        extraction_policy_from_metadata, parse_observed_extraction_metadata,
+        resolve_observation_span,
+    )
+
+    source = resolve_persisted_source_proof(
+        value, caller_id=caller_id, scope=scope, source_family=source_family,
+        operation_id=operation_id, occurrence_id=occurrence_id,
+        config_path=config_path, now=now,
+    )
+    if source.state is not ArtifactState.AVAILABLE or source.body is None:
+        return ObservationResolveResult(source.state, source.reason)
+    try:
+        proof = decode_source_proof(value)
+        if type(metadata) is not PersistedMetadata:
+            raise ValueError("metadata type mismatch")
+        result = parse_observed_extraction_metadata(metadata)
+        matches = tuple(item for item in result.observations
+                        if item.observation_id == observation_id)
+        if len(matches) != 1:
+            raise ValueError("observation id mismatch")
+        observation = matches[0]
+        if (observation.occurrence_id != proof.context.occurrence_id
+                or observation.input_ref != proof.input_ref):
+            raise ValueError("observation proof ownership mismatch")
+        resolved = resolve_observation_span(
+            source.body, proof.artifact, observation,
+            expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,
+            policy=extraction_policy_from_metadata(metadata),
+        )
+    except (TypeError, ValueError, ArtifactBindingError):
+        return ObservationResolveResult(ArtifactState.REVIEW, "observation_metadata_invalid")
+    return ObservationResolveResult(
+        ArtifactState.AVAILABLE, "resolved", observation, resolved.raw, resolved.text,
+        resolved.context_raw, resolved.context_text,
+    )
+
+
 __all__ = [
-    "ArtifactRuntime", "ArtifactRuntimeConfig", "PersistedSourceProof",
+    "ArtifactRuntime", "ArtifactRuntimeConfig", "ObservationResolveResult", "PersistedSourceProof",
     "ReviewedRetentionPolicy", "RUNTIME_CONFIG_ENV", "decode_source_proof",
     "encode_source_proof", "load_artifact_runtime", "resolve_persisted_source_proof",
-    "resolve_persisted_span",
+    "resolve_persisted_observation", "resolve_persisted_span",
 ]

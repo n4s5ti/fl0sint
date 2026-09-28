@@ -28,10 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **DEF-45 (S05) Observed Extraction**: Pure deterministic extraction of readable text,
   links, and contact observations from retained HTML with exact byte spans. New immutable
   observation models (ObservationKind, Observation, ObservedExtractionResult, RawSpan) in
-  acquisition.py with separate versioning. Pure extractor function extract_observations()
+  observed_extraction.py with separate versioning. Pure extractor function extract_observations()
   takes retained bytes only (no network/LLM/graph). Authorized bridge resolve_and_extract_observations()
-  in artifact_runtime.py validates policy and invokes pure extractor. WebsiteToText integration
-  attaches observations to occurrences post-capture without graph mutation; observations are
+  in extraction_runtime.py validates policy and invokes pure extractor.
+  WebsiteToText attaches observations to occurrences post-capture without graph mutation; observations are
   metadata-only, never converted to Email/Phone/Website/Individual nodes. Observations carry
   unreviewed status always with explicit context spans for person/role associations. Links and
   external leads marked not_executable. Preserves S02 occurrence identity and S03/S04 bounds.
@@ -41,3 +41,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   deadline-bounded live retained extraction, authorized saved-proof replay, exact raw
   span/digest provenance, and versioned metadata on WebsiteToText scan and structured
   results. Candidate links/forms remain unreviewed and non-executable.
+- Hardened DEF-45 review findings: person attribution is captured at each candidate and
+  bounded before its value; observation resolution proves canonical occurrence/input,
+  snapshot, value, context, span, and extraction-policy ownership; hypothesis constructors
+  enforce their invariants; and one conservative URL disclosure policy removes ambiguous
+  credential queries from fetch and candidate URLs while preserving approved benign keys.
+- Added strict `observed-extraction/1.0` metadata serialization/parsing, authorized persisted
+  observation retrieval, and graph/auth-free `execute_live_observed_extraction()`. Standalone
+  `--url --runtime-config` now uses it directly and reports actual resources and truthful
+  HOLD/REVIEW/failure states without importing WebsiteToText.

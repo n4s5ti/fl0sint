@@ -17,8 +17,8 @@ from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Annotated, Literal
-from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
+from typing import TYPE_CHECKING, Annotated, Literal
+from urllib.parse import urljoin, urlsplit
 
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, StrictInt, model_validator
@@ -35,6 +35,10 @@ from .artifacts import (
     normalize_html,
 )
 from .models import RedactedDiagnostic, canonical_input_hash
+from .url_policy import disclose_url
+
+if TYPE_CHECKING:
+    from .observed_extraction import ObservedExtractionResult
 
 Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 _REDIRECTS = {301, 302, 303, 307, 308}
@@ -217,8 +221,8 @@ class SourceProofOutcome:
     normalized: NormalizedSource | None
     diagnostic: RedactedDiagnostic | None
     actual_resources: Resources
-    spans: tuple[SpanReference, ...] = ()
-    observations: object | None = None
+    spans: tuple[SourceProofSpanReference, ...] = ()
+    observations: ObservedExtractionResult | None = None
 
 
 @dataclass(frozen=True)
@@ -874,17 +878,7 @@ async def execute_fetch_with_source_proof(
 
 
 def _redacted_location(url: str) -> str:
-    parts = urlsplit(url)
-    host = f"[{parts.hostname}]" if parts.hostname and ":" in parts.hostname else parts.hostname
-    port = f":{parts.port}" if parts.port is not None else ""
-    sensitive = {"access_token", "api_key", "apikey", "auth", "authorization",
-                 "code", "credential", "key", "password", "secret", "signature", "token"}
-    try:
-        pairs = parse_qsl(parts.query, keep_blank_values=True)
-        query = "" if any(name.lower() in sensitive for name, _ in pairs) else urlencode(pairs)
-    except ValueError:
-        query = ""
-    return urlunsplit((parts.scheme, f"{host}{port}", parts.path or "/", query, ""))
+    return disclose_url(url)
 
 
 async def _single_chunk(content: bytes):

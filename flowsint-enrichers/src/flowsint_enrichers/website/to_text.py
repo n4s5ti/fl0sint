@@ -6,10 +6,10 @@ import asyncio
 import hashlib
 import json
 import uuid
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
+from os import PathLike
 from typing import Any, Dict, List, Sequence
 from urllib.parse import urlsplit
-from pydantic import TypeAdapter
 
 from flowsint_core.core.enricher_base import Enricher
 from flowsint_core.core.forensics import legacy_execution_boundary
@@ -37,6 +37,9 @@ from flowsint_execution.models import (
     RedactedDiagnostic,
     StructuredExecutionResult,
     canonical_input_hash,
+)
+from flowsint_execution.observed_extraction import (
+    ObservedExtractionResult, serialize_observed_extraction_metadata,
 )
 from flowsint_types.phrase import Phrase
 from flowsint_types.website import Website
@@ -82,7 +85,7 @@ class WebsiteTextOccurrence:
     artifact_reference: object | None = None
     span_references: tuple[object, ...] = ()
     source_proof: str | None = None
-    observation_result: object | None = None
+    observation_result: ObservedExtractionResult | None = None
 
     def to_input_outcome(self) -> InputOutcome:
         evidence = ()
@@ -109,10 +112,9 @@ class WebsiteTextOccurrence:
             outputs=self.outputs,
             diagnostic=self.diagnostic,
             evidence=evidence,
-            metadata=(() if self.observation_result is None else ({
-                "format_version": "observed-extraction/1.0",
-                **asdict(self.observation_result),
-            },)),
+            metadata=(() if self.observation_result is None else (
+                serialize_observed_extraction_metadata(self.observation_result),
+            )),
         )
 
 
@@ -123,10 +125,13 @@ class WebsiteToText(Enricher):
     InputType = Website
     OutputType = Phrase
 
-    def __init__(self, *args, artifact_store: FilesystemArtifactStore | None = None, retention_authority: RetentionAuthority | None = None, **kwargs):
+    def __init__(self, *args, artifact_store: FilesystemArtifactStore | None = None,
+                 retention_authority: RetentionAuthority | None = None,
+                 runtime_config: str | PathLike[str] | None = None, **kwargs):
         super().__init__(*args, **kwargs)
         self._artifact_store = artifact_store
         self._retention_authority = retention_authority
+        self._runtime_config = runtime_config
 
     @classmethod
     def name(cls):
@@ -303,7 +308,8 @@ class WebsiteToText(Enricher):
             runtime = None
             if self._artifact_store is None or self._retention_authority is None:
                 runtime = load_artifact_runtime(
-                    caller_id=_CALLER_ID, scope=_SCOPE, source_family="http"
+                    caller_id=_CALLER_ID, scope=_SCOPE, source_family="http",
+                    config_path=self._runtime_config,
                 )
             store = self._artifact_store or (runtime.store if runtime else None)
             authority = self._retention_authority or (runtime.authority if runtime else None)
@@ -368,10 +374,13 @@ class WebsiteToText(Enricher):
                         event_at=artifact.event_at,
                     )
                     try:
-                        if result.observations is None or len(TypeAdapter(type(result.observations)).dump_json(result.observations)) > _MAX_OBSERVATION_RESULT_BYTES:
+                        if result.observations is None:
+                            raise ValueError("observation_result_too_large")
+                        observation_metadata = serialize_observed_extraction_metadata(result.observations)
+                        if len(observation_metadata.model_dump_json(warnings="error")) > _MAX_OBSERVATION_RESULT_BYTES:
                             raise ValueError("observation_result_too_large")
                         source_proof = encode_source_proof(PersistedSourceProof(
-                            format_version="source-proof/1.0", input_ref=input_ref,
+                            format_version="source-proof/1.0", input_ref=result.input_ref,
                             context=context, decision=decision, artifact=artifact,
                             spans=result.spans,
                         ))

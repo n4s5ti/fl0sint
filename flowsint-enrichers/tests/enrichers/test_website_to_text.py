@@ -22,6 +22,7 @@ from flowsint_execution.artifact_runtime import (
     decode_source_proof, resolve_persisted_source_proof, resolve_persisted_span,
 )
 from flowsint_execution.extraction_runtime import resolve_and_extract_observations
+from flowsint_execution.observed_extraction import parse_observed_extraction_metadata
 from flowsint_enrichers import ENRICHER_REGISTRY
 from flowsint_enrichers.website.to_text import WebsiteFetchError, WebsiteTextOccurrence, WebsiteToText
 from flowsint_execution.fetch import execute_fetch as real_execute_fetch
@@ -189,7 +190,9 @@ async def test_registry_runtime_config_emits_retrievable_structured_proof(tmp_pa
     reference = outcome.evidence[0].artifact_reference
     proof = decode_source_proof(reference)
     assert proof.context.occurrence_id == "input-0"
-    assert proof.input_ref == outcome.input_ref
+    observation_result = parse_observed_extraction_metadata(outcome.metadata[0])
+    assert observation_result.observations == ()
+    assert len(proof.input_ref) == 64
     resolved = resolve_persisted_source_proof(
         reference, caller_id="website-to-text", scope="local-web-fetch",
         source_family="http", operation_id=proof.context.operation_id,
@@ -231,9 +234,10 @@ async def test_live_and_saved_paths_share_observation_result(tmp_path, monkeypat
         operation_id=proof.context.operation_id, occurrence_id=proof.context.occurrence_id, config_path=config,
     )
     assert state is ArtifactState.AVAILABLE and saved is not None
-    assert metadata["format_version"] == "observed-extraction/1.0"
-    assert [item["observation_id"] for item in metadata["observations"]] == [item.observation_id for item in saved.observations]
-    assert all(item["execution_state"] == "not_executable" for item in metadata["observations"])
+    assert metadata.format_version == "observed-extraction/1.0"
+    assert parse_observed_extraction_metadata(metadata) == saved
+    assert [item["observation_id"] for item in metadata.payload["observations"]] == [item.observation_id for item in saved.observations]
+    assert all(item["execution_state"] == "not_executable" for item in metadata.payload["observations"])
 
 
 @pytest.mark.asyncio

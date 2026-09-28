@@ -1,19 +1,11 @@
 """Fetch a controlled URL or replay an authorized saved source proof."""
 from __future__ import annotations
-import argparse, asyncio, json
+import argparse, asyncio, dataclasses, json
 
-class _NoGraph:
-    def create_node_from_flowsint_type(self, **_kwargs): pass
-    def create_relationship(self, **_kwargs): pass
-    def log_graph_message(self, _message): pass
-    def flush(self): pass
-
-async def _live(url: str) -> dict:
-    from flowsint_enrichers.website.to_text import WebsiteToText
-    from flowsint_types.website import Website
-    enricher = WebsiteToText(sketch_id="observed-extraction-example", params_schema=[], params={}, graph_service=_NoGraph())
-    result = await enricher.execute_structured([Website(url=url)])
-    return result.model_dump(mode="json")
+async def _live(url: str, runtime_config: str | None) -> dict:
+    from flowsint_execution.extraction_runtime import execute_live_observed_extraction
+    result = await execute_live_observed_extraction(url, config_path=runtime_config)
+    return dataclasses.asdict(result)
 
 async def _saved(args) -> dict:
     from flowsint_execution.extraction_runtime import resolve_and_extract_observations
@@ -23,8 +15,8 @@ async def _saved(args) -> dict:
     )
     payload = None
     if result is not None:
-        from dataclasses import asdict
-        payload = {"format_version": "observed-extraction/1.0", **asdict(result)}
+        from flowsint_execution.observed_extraction import serialize_observed_extraction_metadata
+        payload = serialize_observed_extraction_metadata(result).model_dump(mode="json")
     return {"state": state.value, "result": payload}
 
 def main() -> None:
@@ -41,8 +33,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.proof and not all((args.runtime_config, args.operation, args.occurrence)):
         parser.error("saved replay requires --runtime-config, --operation, and --occurrence")
-    output = asyncio.run(_live(args.url) if args.url else _saved(args))
-    print(json.dumps(output, indent=2, default=lambda value: value.model_dump(mode="json")))
+    output = asyncio.run(_live(args.url, args.runtime_config) if args.url else _saved(args))
+    print(json.dumps(output, indent=2, default=lambda value: value.model_dump(mode="json") if hasattr(value, "model_dump") else value.value if hasattr(value, "value") else str(value)))
 
 if __name__ == "__main__":
     main()

@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Mapping
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, JsonValue, field_validator, model_validator
 
 
 class OutcomeStatus(str, Enum):
@@ -62,6 +62,15 @@ class EvidenceEnvelope(BaseModel):
         return value.astimezone(timezone.utc)
 
 
+class PersistedMetadata(BaseModel):
+    """Strictly bounded, version-tagged metadata interpreted by an owning parser."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    format_version: str = Field(min_length=1, max_length=64)
+    payload: dict[str, JsonValue]
+
+
 class InputOutcome(BaseModel):
     """The grouped structured result for exactly one original input."""
 
@@ -72,7 +81,7 @@ class InputOutcome(BaseModel):
     outputs: tuple[Any, ...] = ()
     diagnostic: RedactedDiagnostic | None = None
     evidence: tuple[EvidenceEnvelope, ...] = ()
-    metadata: tuple[Any, ...] = ()
+    metadata: tuple[PersistedMetadata, ...] = ()
 
     @model_validator(mode="after")
     def require_diagnostic_for_non_success(self) -> InputOutcome:
