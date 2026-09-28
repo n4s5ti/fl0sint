@@ -1,0 +1,7 @@
+{
+  "def45-lsp-reference-smoke.py": "983e0962bd6f847ff20deb78b65aa73fd3fdf2a5984378e9b79a721ed81e6f25",
+  "def45-lsp-reference-smoke.json": "00cbcd20f1145d88cd301b3b6fe8a329dea7114c2512d0e90901ccfa830b4d92",
+  "def45-tooling-typecheck.json": "21e3f560a66b9a7fcf5dcfe24389dec62c4f661bd5204faa4ad171982a3a4b32",
+  "def45-tooling-app-typecheck.json": "84fe3e83ede8447c4258a46210066373b9ebc81f67ec668d11e88d4189104e9d",
+  "def45-tooling-refactor.json": "27f8fd7b3c05cef06f899b9f8a374ada1759989348d759bebeb1d704c6edc066"
+}

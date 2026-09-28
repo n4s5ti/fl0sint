@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "server": "pyright1.1.414",
+  "references": [
+    {
+      "uri": "file:///home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/observed_extraction.py",
+      "range": {
+        "start": {
+          "line": 334,
+          "character": 16
+        },
+        "end": {
+          "line": 334,
+          "character": 36
+        }
+      }
+    },
+    {
+      "uri": "file:///home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/observed_extraction.py",
+      "range": {
+        "start": {
+          "line": 618,
+          "character": 4
+        },
+        "end": {
+          "line": 618,
+          "character": 24
+        }
+      }
+    },
+    {
+      "uri": "file:///home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/observed_extraction.py",
+      "range": {
+        "start": {
+          "line": 700,
+          "character": 12
+        },
+        "end": {
+          "line": 700,
+          "character": 32
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [
+        "typecheck"
+    ],
+    "results": [
+        {
+            "name": "typecheck",
+            "command": "npm run typecheck",
+            "status": "skipped",
+            "reason": "script missing"
+        }
+    ],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 2586,
+        "indexStatus": "ready",
+        "warnings": []
+    }
+}
