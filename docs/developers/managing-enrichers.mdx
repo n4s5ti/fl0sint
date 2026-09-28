@@ -83,6 +83,8 @@ Understanding the two execution phases is crucial for writing effective enricher
 
 A concurrent enricher must carry an immutable per-occurrence record containing the original input, input index, terminal status, and output tuple from task creation through graph capture. Do not associate a flattened completion-ordered result list to inputs by position. Preserve one record for failures, holds or cancellations, duplicates, and successful empty outputs. WebsiteToText publishes this record as WebsiteTextOccurrence: scan returns those envelopes and postprocess accepts only those envelopes before adapting them to the legacy list[Phrase].
 
+Network enrichers must not create their own fallback scraper. WebsiteToText constructs a trusted local caller policy for the exact origins of its validated inputs, admits one immutable batch operation through `flowsint_execution.fetch`, and shares one request/byte/time ledger across concurrent occurrences, redirects, and retries. This local policy boundary does not implement hosted authentication or operation replay prevention. Redirects remain same-origin, TLS verification is mandatory, bodies are limited per input and across the batch during streaming, actual delivered overflow remains accounted, and failures remain typed occurrence outcomes. Fetch outcomes are associated to source records by occurrence ID, never tuple position. The legacy list output is produced only after those outcomes have passed through source-owned postprocessing.
+
 ## Creating a simple enricher
 
 Let's walk through creating a complete enricher from scratch. We'll build an enricher that converts domains to IP addresses using DNS resolution.
