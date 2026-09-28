@@ -10,7 +10,11 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from flowsint_execution.acquisition import AcquisitionRequest, InputOccurrence, Resources
+from flowsint_execution.acquisition import (
+    AcquisitionRequest, CandidateReference, CompletionWitness, EvidenceReference,
+    InputOccurrence, OccurrenceOutcome, OutcomeStatus, Resources, SpanReference,
+    build_bundle, parse_bundle, serialize_bundle,
+)
 from flowsint_execution.artifacts import ArtifactContext, FilesystemArtifactStore, RetentionAuthority, resolve_source
 from flowsint_execution.fetch import FetchParameters, TrustedFetchPolicy, admit_fetch, execute_fetch_with_source_proof
 from flowsint_execution.models import canonical_input_hash
@@ -49,12 +53,56 @@ async def run(url: str, store_root: Path) -> dict[str, object]:
         requested_url=outcome.capture.artifact.requested_url, final_url=outcome.capture.artifact.final_url,
         retrieved_at=outcome.capture.artifact.retrieved_at,
     )
-    resolved = resolve_source(FilesystemArtifactStore(store_root), context, decision, outcome.capture.artifact)
+    resolved = resolve_source(
+        FilesystemArtifactStore(store_root), context, decision, outcome.capture.artifact,
+        authority=authority,
+    )
+    wire_spans = tuple(
+        SpanReference(
+            span_id=span.span_id, artifact_id=span.artifact_id,
+            byte_start=span.byte_start, byte_end=span.byte_end,
+        )
+        for span in outcome.spans
+    )
+    evidence = tuple(
+        EvidenceReference(
+            evidence_id=f"evidence-{index}", occurrence_id=occurrence_id,
+            span_id=span.span_id, extraction_method="html_text",
+            extraction_version="source-proof/1.0", subject_attribution="input_url",
+        )
+        for index, span in enumerate(wire_spans)
+    )
+    candidates = tuple(
+        CandidateReference(
+            candidate_id=f"candidate-{index}", occurrence_id=occurrence_id,
+            evidence_id=item.evidence_id,
+        )
+        for index, item in enumerate(evidence)
+    )
+    bundle = build_bundle(
+        request=request,
+        outcomes=(OccurrenceOutcome(
+            occurrence_id=occurrence_id,
+            status=OutcomeStatus.SUCCESS_WITH_OUTPUT,
+            candidate_ids=tuple(item.candidate_id for item in candidates),
+            artifact_ids=(outcome.capture.artifact.artifact_id,),
+            completion_witness=CompletionWitness(
+                reference="controlled_fetch_complete",
+                completed_at=outcome.capture.artifact.retrieved_at,
+            ),
+            actual_resources=outcome.actual_resources,
+        ),),
+        bundle_id="source-proof-example-bundle",
+        created_at=outcome.capture.artifact.retrieved_at,
+        actual_resources=result.actual_resources,
+        artifacts=(outcome.capture.artifact,), spans=wire_spans,
+        evidence_list=evidence, candidates=candidates,
+    )
+    serialized = serialize_bundle(bundle)
+    parse_bundle(serialized)  # the same public consumer used by another process
     return {
         "state": resolved.state.value,
-        "digest": outcome.capture.artifact.content_digest,
-        "normalized_text": outcome.normalized.text,
-        "spans": [span.model_dump(mode="json") for span in outcome.spans],
+        "bundle": serialized,
         "resolved_bytes": len(resolved.body or b""),
     }
 

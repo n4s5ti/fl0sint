@@ -25,8 +25,12 @@ from flowsint_execution.fetch import (
     admit_fetch,
     execute_fetch_with_source_proof,
 )
-from flowsint_execution.artifacts import ArtifactState, FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifacts import ArtifactContext, ArtifactState, FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifact_runtime import (
+    PersistedSourceProof, encode_source_proof, load_artifact_runtime,
+)
 from flowsint_execution.models import (
+    EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,
     RedactedDiagnostic,
@@ -75,13 +79,33 @@ class WebsiteTextOccurrence:
     fetch_status: FetchStatus | None = None
     artifact_reference: object | None = None
     span_references: tuple[object, ...] = ()
+    source_proof: str | None = None
 
     def to_input_outcome(self) -> InputOutcome:
+        evidence = ()
+        if self.source_proof is not None and self.artifact_reference is not None:
+            evidence = (EvidenceEnvelope(
+                input_ref=self.input_ref,
+                destination_id="website_to_text",
+                endpoint_id="shared_http_fetch",
+                capability="enrich.read",
+                policy_version="source-proof/1.0",
+                artifact_sha256=self.artifact_reference.content_digest,
+                artifact_reference=self.source_proof,
+                source_rights="reviewed_runtime_policy",
+                schema_version="source-proof/1.0",
+                parser_version="html-normalizer/1",
+                confidence=1.0,
+                verification_state="retained",
+                retrieved_at=self.artifact_reference.retrieved_at,
+                ingested_at=self.artifact_reference.retrieved_at,
+            ),)
         return InputOutcome(
             input_ref=self.input_ref,
             status=self.status,
             outputs=self.outputs,
             diagnostic=self.diagnostic,
+            evidence=evidence,
         )
 
 
@@ -269,14 +293,21 @@ class WebsiteToText(Enricher):
             )
         try:
             operation = self._build_operation(specs)
+            runtime = None
+            if self._artifact_store is None or self._retention_authority is None:
+                runtime = load_artifact_runtime(
+                    caller_id=_CALLER_ID, scope=_SCOPE, source_family="http"
+                )
+            store = self._artifact_store or (runtime.store if runtime else None)
+            authority = self._retention_authority or (runtime.authority if runtime else None)
             decision = (
-                self._retention_authority.issue(operation.operation_id)
-                if self._retention_authority is not None
+                authority.issue(operation.operation_id)
+                if authority is not None
                 else None
             )
             fetched = await execute_fetch_with_source_proof(
                 operation,
-                artifact_store=self._artifact_store,
+                artifact_store=store,
                 retention_decision=decision,
             )
         except asyncio.CancelledError:
@@ -316,6 +347,27 @@ class WebsiteToText(Enricher):
             result = outcome_by_id.get(admitted.occurrence_id)
             if result.fetch_status is FetchStatus.SUCCESS:
                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:
+                    artifact = result.capture.artifact
+                    context = ArtifactContext(
+                        operation_id=operation.operation_id,
+                        occurrence_id=admitted.occurrence_id,
+                        caller_id=_CALLER_ID,
+                        scope=_SCOPE,
+                        source_family="http",
+                        origin=artifact.origin,
+                        requested_url=artifact.requested_url,
+                        final_url=artifact.final_url,
+                        retrieved_at=artifact.retrieved_at,
+                        event_at=artifact.event_at,
+                    )
+                    source_proof = encode_source_proof(PersistedSourceProof(
+                        format_version="source-proof/1.0",
+                        input_ref=input_ref,
+                        context=context,
+                        decision=decision,
+                        artifact=artifact,
+                        spans=result.spans,
+                    ))
                     occurrences.append(
                         WebsiteTextOccurrence(
                             source,
@@ -325,8 +377,9 @@ class WebsiteToText(Enricher):
                             self._outputs_from_text(result.normalized.text),
                             actual_resources=result.actual_resources,
                             fetch_status=result.fetch_status,
-                            artifact_reference=result.capture.artifact,
+                            artifact_reference=artifact,
                             span_references=result.spans,
+                            source_proof=source_proof,
                         )
                     )
                 elif result.capture.state is ArtifactState.HOLD:

@@ -190,11 +190,6 @@ class SpanReference(ContractModel):
         Annotated[str, Field(max_length=2048, pattern=r"^(?:/(?:[^~]|~[01])*)*$")]
         | None
     ) = None
-    normalized_start: Count | None = None
-    normalized_end: Count | None = None
-    raw_offset_unit: Literal["byte"] | None = None
-    normalized_offset_unit: Literal["unicode_code_point"] | None = None
-    source_encoding: Literal["utf-8"] | None = None
 
     @model_validator(mode="after")
     def check_span(self):
@@ -209,20 +204,27 @@ class SpanReference(ContractModel):
             raise ValueError(
                 "span requires a nonempty half-open byte range or JSON pointer"
             )
-        normalized = (self.normalized_start, self.normalized_end)
-        if normalized != (None, None):
-            if (
-                self.field_pointer is not None
-                or self.normalized_start is None
-                or self.normalized_end is None
-                or self.normalized_start >= self.normalized_end
-                or self.raw_offset_unit != "byte"
-                or self.normalized_offset_unit != "unicode_code_point"
-                or self.source_encoding != "utf-8"
-            ):
-                raise ValueError("normalized mapping requires exact offset declarations")
-        elif any((self.raw_offset_unit, self.normalized_offset_unit, self.source_encoding)):
-            raise ValueError("offset declarations require normalized range")
+        return self
+
+
+class SourceProofSpanReference(ContractModel):
+    """Normalized mapping metadata, versioned outside the strict 1.0 bundle wire."""
+
+    proof_format_version: Literal["1.0"] = "1.0"
+    span_id: Identifier
+    artifact_id: Identifier
+    byte_start: Count
+    byte_end: Count
+    normalized_start: Count
+    normalized_end: Count
+    raw_offset_unit: Literal["byte"] = "byte"
+    normalized_offset_unit: Literal["unicode_code_point"] = "unicode_code_point"
+    source_encoding: Literal["utf-8"] = "utf-8"
+
+    @model_validator(mode="after")
+    def check_mapping(self):
+        if self.byte_start >= self.byte_end or self.normalized_start >= self.normalized_end:
+            raise ValueError("source proof ranges must be nonempty")
         return self
 
 

@@ -39,6 +39,9 @@ from flowsint_execution.artifacts import (
     RetentionAuthority,
     capture_source,
 )
+from flowsint_execution.artifact_runtime import (
+    PersistedSourceProof, encode_source_proof, load_artifact_runtime,
+)
 from flowsint_core.core.logger import Logger
 from flowsint_core.templates.types import Template
 
@@ -85,6 +88,7 @@ class TemplateEnricher(Enricher):
         self._last_http_status_class: int | None = None
         self._artifact_store = artifact_store
         self._retention_authority = retention_authority
+        self._last_retrieved_at: datetime | None = None
 
     @staticmethod
     def _detect_type(type_name: str) -> type[FlowsintType]:
@@ -245,7 +249,7 @@ class TemplateEnricher(Enricher):
         return results
 
     async def _process_single_input(
-        self, client: httpx.AsyncClient, input_obj: Any
+        self, client: httpx.AsyncClient, input_obj: Any, input_ref: str | None = None
     ) -> List[Any]:
         self._last_response_artifact_sha256 = None
         self._last_artifact_reference = None
@@ -272,33 +276,53 @@ class TemplateEnricher(Enricher):
         except TimeoutError as error:
             raise httpx.ReadTimeout("connector deadline exceeded") from error
         operation_id = f"connector-{uuid.uuid4().hex}"
-        decision = self._retention_authority.issue(operation_id) if self._retention_authority else None
+        occurrence_id = f"input-{uuid.uuid4().hex}"
+        caller_id = f"connector:{self.endpoint.destination_id}:{self.endpoint.endpoint_id}"
+        runtime = None
+        if self._artifact_store is None or self._retention_authority is None:
+            runtime = load_artifact_runtime(
+                caller_id=caller_id,
+                scope=self.endpoint.capability,
+                source_family="connector",
+            )
+        store = self._artifact_store or (runtime.store if runtime else None)
+        authority = self._retention_authority or (runtime.authority if runtime else None)
+        decision = authority.issue(operation_id) if authority else None
+        retrieved_at = datetime.now(timezone.utc)
         context = ArtifactContext(
             operation_id=operation_id,
-            occurrence_id=f"input-{uuid.uuid4().hex}",
-            caller_id=f"connector:{self.endpoint.destination_id}:{self.endpoint.endpoint_id}",
+            occurrence_id=occurrence_id,
+            caller_id=caller_id,
             scope=self.endpoint.capability,
             source_family="connector",
             origin=self.endpoint.base_url,
-            requested_url=url,
-            final_url=url,
-            retrieved_at=datetime.now(timezone.utc),
+            requested_url=f"{self.endpoint.base_url}{self.endpoint.definition.path}",
+            final_url=f"{self.endpoint.base_url}{self.endpoint.definition.path}",
+            retrieved_at=retrieved_at,
         )
         if decision is None:
             self._last_capture_state = ArtifactState.HOLD
             self._last_capture_reason = "retention_policy_unavailable"
             return []
-        if self._artifact_store is None:
+        if store is None:
             self._last_capture_state = ArtifactState.HOLD
             self._last_capture_reason = "artifact_store_unavailable"
             return []
-        captured = capture_source(self._artifact_store, context, decision, response_bytes)
+        captured = capture_source(store, context, decision, response_bytes)
         self._last_capture_state = captured.state
         self._last_capture_reason = captured.reason
         if captured.state is not ArtifactState.AVAILABLE or captured.artifact is None:
             return []
         self._last_response_artifact_sha256 = captured.artifact.content_digest
-        self._last_artifact_reference = captured.artifact.locator
+        self._last_retrieved_at = captured.artifact.retrieved_at
+        self._last_artifact_reference = encode_source_proof(PersistedSourceProof(
+            format_version="source-proof/1.0",
+            input_ref=input_ref or canonical_input_hash(input_obj),
+            context=context,
+            decision=decision,
+            artifact=captured.artifact,
+            spans=(),
+        ))
         return self._map_response(response_bytes)
 
     @asynccontextmanager
@@ -327,8 +351,8 @@ class TemplateEnricher(Enricher):
                 parser_version=evidence.parser_version,
                 confidence=evidence.confidence,
                 verification_state=evidence.verification_state,
-                retrieved_at=datetime.now(timezone.utc),
-                ingested_at=datetime.now(timezone.utc),
+                retrieved_at=self._last_retrieved_at or datetime.now(timezone.utc),
+                ingested_at=self._last_retrieved_at or datetime.now(timezone.utc),
             ),
         )
 
@@ -407,10 +431,11 @@ class TemplateEnricher(Enricher):
                     self._last_capture_state = None
                     self._last_capture_reason = None
                     self._last_http_status_class = None
+                    self._last_retrieved_at = None
                     try:
                         self._reject_unknown_input_fields(original_input)
                         input_obj = self._validate_single_input(original_input)
-                        processed = await self._process_single_input(client, input_obj)
+                        processed = await self._process_single_input(client, input_obj, input_ref)
                         evidence = self._build_structured_evidence(input_obj, input_ref)
                         status, diagnostic = self._classify_structured_success(
                             tuple(processed), evidence

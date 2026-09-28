@@ -2,6 +2,7 @@
 
 import asyncio
 import hashlib
+import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -23,6 +24,7 @@ from flowsint_core.core.connector_egress import (
 )
 from flowsint_execution.models import OutcomeStatus
 from flowsint_execution.artifacts import FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifact_runtime import resolve_persisted_source_proof
 from flowsint_core.core.template_enricher import TemplateEnricher
 from flowsint_core.templates.loader.yaml_loader import YamlLoader
 from flowsint_core.templates.types import (
@@ -137,6 +139,46 @@ def patch_client(monkeypatch, handler) -> None:
 
 
 class TestRegistryBackedTemplateEnricher:
+    @pytest.mark.asyncio
+    async def test_deployment_runtime_config_retains_resolvable_connector_proof(self, monkeypatch, tmp_path):
+        now = datetime.now(timezone.utc)
+        policy = {
+            "issuer_id": "deployment", "reviewer_id": "operator-reviewer",
+            "policy_id": "connector-runtime-v1",
+            "caller_id": "connector:approved_directory:lookup", "scope": "enrich.read",
+            "source_family": "connector", "issued_at": (now - timedelta(hours=1)).isoformat(),
+            "expires_at": (now + timedelta(hours=1)).isoformat(),
+            "retain_normalized_text": True,
+        }
+        canonical = json.dumps(policy, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+        policy["content_digest"] = hashlib.sha256(canonical.encode()).hexdigest()
+        config = tmp_path / "artifact-runtime.json"
+        config.write_text(json.dumps({
+            "format_version": "1.0", "store_root": str(tmp_path / "artifact-store"),
+            "policies": [policy],
+        }))
+        monkeypatch.setenv("FLOWSINT_ARTIFACT_RUNTIME_CONFIG", str(config))
+        response_body = {"normalized": "Approved address", "city": "Test City", "country": "US", "zip": "00000"}
+        patch_client(monkeypatch, lambda _request: httpx.Response(200, json=response_body))
+        enricher = TemplateEnricher(
+            template=template(), registry=registry(),
+            runtime_authorizer=EgressAuthorizer.enrichment(),
+        )
+        enricher._graph_service = MagicMock()
+        result = await enricher.execute_structured([location()])
+        evidence = result.outcomes[0].evidence[0]
+        assert result.outcomes[0].status is OutcomeStatus.SUCCESS
+        resolved = resolve_persisted_source_proof(
+            evidence.artifact_reference,
+            caller_id="connector:approved_directory:lookup", scope="enrich.read",
+            source_family="connector", config_path=config,
+        )
+        assert resolved.state.value == "available"
+        assert json.loads(resolved.body) == response_body
+        serialized = result.model_dump_json()
+        assert "input%20address" not in serialized
+        assert str(tmp_path / "artifact-store") not in serialized
+
     @pytest.mark.asyncio
     async def test_approved_enrichment_succeeds(self, monkeypatch, tmp_path):
         requests = []

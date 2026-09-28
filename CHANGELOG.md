@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reviewed operation/caller/scope-bound local source retention, exact UTF-8 HTML raw-byte to
   normalized-character spans, deduplicated content with occurrence lineage, authorized
   resolution, explicit HOLD/REVIEW recovery, and shared WebsiteToText/connector capture.
+- Deployment-owned artifact runtime configuration now supplies the current reviewed policy
+  and trusted store to registry tasks, connector tasks, and template tests. Structured
+  evidence retains a versioned resolvable proof envelope without bodies, secrets, or paths.
 
 ### Fixed
 - WebsiteToText now uses the shared admitted async HTTP fetch path with immutable caller/origin policy binding, finite shared request/byte/time/concurrency budgets, same-origin redirect checks, bounded retries, streaming body limits, verified TLS, and typed accounting-aware failures. The unsafe QUIC and synchronous requests fallback paths were removed.
@@ -19,3 +22,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bounded fetch now converts streaming read failures to typed outcomes, retains per-occurrence accounting through deadlines and cancellation, records delivered overflow bytes, enforces WebsiteToText's response cap per input, and reconstructs source outcomes by occurrence ID.
 - Bounded fetch now uses an independent deadline watcher and budgeted cleanup so cancellation-resistant transports cannot turn an expired operation into success or delay caller return indefinitely. Each admitted runtime object is atomically single-use, including its in-process model copies, so sequential or concurrent reuse cannot reset its allocation.
 - WebsiteToText now rejects fetch responses unless the operation ID, exact unique occurrence IDs, cardinality, and input references match the admitted operation before any evidence is associated.
+- Acquisition format 1.0 spans retain their original strict wire shape; normalized mappings
+  use a separately versioned source-proof metadata contract.

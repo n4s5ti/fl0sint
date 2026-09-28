@@ -22,7 +22,7 @@ from urllib.parse import urljoin, urlsplit
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, StrictInt, model_validator
 
-from .acquisition import AcquisitionRequest, Resources, SpanReference
+from .acquisition import AcquisitionRequest, Resources, SourceProofSpanReference
 from .artifacts import (
     ArtifactContext,
     ArtifactState,
@@ -720,6 +720,42 @@ async def execute_fetch_with_source_proof(
         else await execute_fetch(operation, transport=transport)
     )
     admitted = {item.occurrence_id: item for item in operation.inputs}
+    returned_ids = [item.occurrence_id for item in fetched.outcomes]
+    result_is_bound = (
+        fetched.operation_id == operation.operation_id
+        and len(fetched.outcomes) == len(operation.inputs)
+        and len(returned_ids) == len(set(returned_ids))
+        and set(returned_ids) == set(admitted)
+        and all(
+            item.input_ref == admitted[item.occurrence_id].input_ref
+            for item in fetched.outcomes
+            if item.occurrence_id in admitted
+        )
+    )
+    if not result_is_bound:
+        existing = {item.occurrence_id: item for item in fetched.outcomes}
+        return SourceProofResult(
+            operation.operation_id,
+            tuple(
+                SourceProofOutcome(
+                    item.occurrence_id,
+                    item.input_ref,
+                    FetchStatus.TOOL_ERROR,
+                    CaptureResult(ArtifactState.REVIEW, "unbound_fetch_result"),
+                    None,
+                    RedactedDiagnostic(
+                        code="invalid_fetch_result",
+                        safe_message="The fetch result did not match the admitted operation.",
+                        retryable=False,
+                    ),
+                    existing[item.occurrence_id].actual_resources
+                    if item.occurrence_id in existing
+                    else Resources(requests=0, bytes=0, elapsed_seconds=0.0),
+                )
+                for item in operation.inputs
+            ),
+            fetched.actual_resources,
+        )
     outcomes = []
     for item in fetched.outcomes:
         if item.status is not FetchStatus.SUCCESS:
@@ -763,7 +799,7 @@ async def execute_fetch_with_source_proof(
         spans = ()
         if capture.artifact is not None and normalized is not None:
             spans = tuple(
-                SpanReference(
+                SourceProofSpanReference(
                     span_id=f"span-{capture.artifact.snapshot_id}-{index}",
                     artifact_id=capture.artifact.artifact_id,
                     byte_start=span.raw_start,

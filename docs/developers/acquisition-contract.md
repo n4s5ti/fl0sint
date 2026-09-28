@@ -19,19 +19,26 @@ revalidation and a new immutable fetch snapshot; a digest alone is never suffici
 
 `execute_fetch_with_source_proof` wraps the existing one-shot `execute_fetch`; it is not a
 second fetcher. WebsiteToText scan, structured, and legacy paths use it. TemplateEnricher
-captures its already bounded response through the same store. Pass a store and authority
-directly to either constructor. WebsiteToText uses caller `website-to-text`, scope
+captures its already bounded response through the same store. Production tasks and the
+template-test API load `FLOWSINT_ARTIFACT_RUNTIME_CONFIG`; constructor injection remains a
+test/local-call seam. WebsiteToText uses caller `website-to-text`, scope
 `local-web-fetch`, source family `http`. A connector uses caller
 `connector:<destination_id>:<endpoint_id>`, scope `enrich.read`, source family `connector`.
-Store roots, decisions, headers, secrets, and bodies never enter bundles or reports.
+Store roots, headers, secrets, and bodies never enter bundles or reports. The config is an
+operator-owned JSON document with `format_version: "1.0"`, an absolute `store_root`, and
+reviewed `policies`. Each policy declares issuer, reviewer, policy ID, caller, scope,
+source family, issuance/expiry, retention flags, and `content_digest`. The digest is the
+SHA-256 of that policy object without `content_digest`, serialized with sorted keys and
+compact separators. Missing, invalid, expired, ambiguous, or nonmatching policy fails
+closed after fetch. Replacing the current policy prevents older proof resolution.
 
 Raw offsets are zero-based half-open bytes into the exact retained UTF-8 response.
 Normalized offsets are zero-based half-open Unicode code points. Tags and script/style
 content are omitted, entities decoded, node whitespace collapsed and stripped, and one
 space inserted between nonempty text nodes. Ordered segments map every emitted character,
-including cross-node separators. Format 1.0 keeps existing fields and adds optional exact
-mapping fields to `SpanReference`; strict older consumers must upgrade before accepting a
-producer that emits those fields.
+including cross-node separators. Acquisition bundle `SpanReference` remains strict format
+1.0. Normalized mappings use the separate strict `SourceProofSpanReference` and the
+`source-proof/1.0` persisted proof envelope. Unknown proof versions are rejected.
 
 ```sh
 cd flowsint-core
@@ -40,7 +47,9 @@ PYTHONPATH=src ../.venv/bin/python examples/source_proof.py \
 ```
 
 The example fetches a controlled fixture through the shared implementation, opens a fresh
-store instance, resolves the exact bytes, and prints body-free metadata and spans.
+store instance, resolves with explicit current authority, and prints a serialized
+`AcquisitionBundle` plus a body-free resolution summary. A second consumer can pass the
+returned `bundle` string directly to `parse_bundle`.
 
 The value-only `flowsint_execution.acquisition` and `flowsint_execution.models` modules are the service-free Python boundary shipped in the `flowsint-core` wheel. They import only Python's standard library and Pydantic. The sibling `flowsint_execution.fetch` runtime uses the core package's existing `httpx` dependency but requires no database, graph, model, credential, or hosted-authentication service.
 

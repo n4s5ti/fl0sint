@@ -42,7 +42,7 @@ class EvidenceEnvelope(BaseModel):
     capability: str = Field(pattern=r"^enrich\.read$")
     policy_version: str = Field(min_length=1, max_length=64)
     artifact_sha256: str | None = None
-    artifact_reference: str | None = Field(default=None, max_length=256)
+    artifact_reference: str | None = Field(default=None, max_length=8 * 1024 * 1024)
     source_rights: str = Field(default="unspecified", min_length=1, max_length=128)
     schema_version: str = Field(min_length=1, max_length=64)
     parser_version: str = Field(min_length=1, max_length=64)

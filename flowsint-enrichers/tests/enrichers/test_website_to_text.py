@@ -7,6 +7,7 @@ import sys
 import threading
 import time
 import hashlib
+import json
 from datetime import datetime, timedelta, timezone
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -16,7 +17,11 @@ import httpx
 
 import flowsint_enrichers.website.to_text as website_module
 import flowsint_execution.fetch as fetch_module
-from flowsint_execution.artifacts import FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifacts import ArtifactState, FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifact_runtime import (
+    decode_source_proof, resolve_persisted_source_proof, resolve_persisted_span,
+)
+from flowsint_enrichers import ENRICHER_REGISTRY
 from flowsint_enrichers.website.to_text import WebsiteFetchError, WebsiteTextOccurrence, WebsiteToText
 from flowsint_execution.fetch import execute_fetch as real_execute_fetch
 from flowsint_execution.fetch import FetchResult
@@ -148,6 +153,60 @@ def make_enricher(monkeypatch, tmp_path):
         return enricher, graph
 
     return make
+
+
+def _runtime_config(tmp_path, caller="website-to-text", scope="local-web-fetch"):
+    now = datetime.now(timezone.utc)
+    policy = {
+        "issuer_id": "deployment-owner", "reviewer_id": "operator-reviewer",
+        "policy_id": "website-runtime-v1", "caller_id": caller, "scope": scope,
+        "source_family": "http", "issued_at": (now - timedelta(hours=1)).isoformat(),
+        "expires_at": (now + timedelta(hours=1)).isoformat(),
+        "retain_normalized_text": True,
+    }
+    canonical = json.dumps(policy, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+    policy["content_digest"] = hashlib.sha256(canonical.encode()).hexdigest()
+    path = tmp_path / "runtime.json"
+    path.write_text(json.dumps({"format_version": "1.0", "store_root": str(tmp_path / "runtime-store"), "policies": [policy]}))
+    return path
+
+
+@pytest.mark.asyncio
+async def test_registry_runtime_config_emits_retrievable_structured_proof(tmp_path, monkeypatch):
+    config = _runtime_config(tmp_path)
+    monkeypatch.setenv("FLOWSINT_ARTIFACT_RUNTIME_CONFIG", str(config))
+    monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
+    monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
+    _patch_transport(monkeypatch, lambda _request: httpx.Response(200, text="retained registry text"))
+    enricher = ENRICHER_REGISTRY.get_enricher(
+        "website_to_text", "runtime-sketch", "runtime-scan",
+        params={}, graph_service=_RecordingGraph(),
+    )
+    result = await enricher.execute_structured([Website(url="https://runtime.example/path?secret=hidden")])
+    outcome = result.outcomes[0]
+    assert outcome.status is OutcomeStatus.SUCCESS
+    reference = outcome.evidence[0].artifact_reference
+    proof = decode_source_proof(reference)
+    assert proof.context.occurrence_id == "input-0"
+    assert proof.input_ref == outcome.input_ref
+    resolved = resolve_persisted_source_proof(
+        reference, caller_id="website-to-text", scope="local-web-fetch",
+        source_family="http", config_path=config,
+    )
+    assert resolved.state is ArtifactState.AVAILABLE
+    assert resolved.body == b"retained registry text"
+    span = resolve_persisted_span(
+        reference, proof.spans[0].span_id,
+        caller_id="website-to-text", scope="local-web-fetch",
+        source_family="http", config_path=config,
+    )
+    assert span.state is ArtifactState.AVAILABLE
+    assert span.text == outcome.outputs[0].text[
+        proof.spans[0].normalized_start:proof.spans[0].normalized_end
+    ]
+    serialized = result.model_dump_json()
+    assert "hidden" not in serialized
+    assert str(tmp_path / "runtime-store") not in serialized
 
 
 @pytest.mark.asyncio
