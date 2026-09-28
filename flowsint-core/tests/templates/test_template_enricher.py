@@ -1,6 +1,8 @@
 """Focused tests for registry-backed connector egress."""
 
 import asyncio
+import hashlib
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from contextlib import asynccontextmanager
@@ -20,6 +22,7 @@ from flowsint_core.core.connector_egress import (
     EgressAuthorizer,
 )
 from flowsint_execution.models import OutcomeStatus
+from flowsint_execution.artifacts import FilesystemArtifactStore, RetentionAuthority
 from flowsint_core.core.template_enricher import TemplateEnricher
 from flowsint_core.templates.loader.yaml_loader import YamlLoader
 from flowsint_core.templates.types import (
@@ -135,7 +138,7 @@ def patch_client(monkeypatch, handler) -> None:
 
 class TestRegistryBackedTemplateEnricher:
     @pytest.mark.asyncio
-    async def test_approved_enrichment_succeeds(self, monkeypatch):
+    async def test_approved_enrichment_succeeds(self, monkeypatch, tmp_path):
         requests = []
 
         def handler(request):
@@ -156,6 +159,13 @@ class TestRegistryBackedTemplateEnricher:
             registry=registry(),
             runtime_authorizer=EgressAuthorizer.enrichment(),
             sketch_id="safe-sketch",
+            artifact_store=FilesystemArtifactStore(tmp_path / "artifacts"),
+            retention_authority=RetentionAuthority(
+                issuer_id="deployment", reviewer_id="reviewer", policy_id="connector-policy",
+                policy_digest=hashlib.sha256(b"reviewed connector policy").hexdigest(),
+                caller_id="connector:approved_directory:lookup", scope="enrich.read",
+                source_family="connector", expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+            ),
         )
         enricher._graph_service = MagicMock()
 
@@ -165,6 +175,16 @@ class TestRegistryBackedTemplateEnricher:
         assert result.outcomes[0].outputs[0].address == "Approved address"
         assert requests[0].url.host == "approved.example"
         assert str(requests[0].url).endswith("/lookup/input%20address")
+
+    @pytest.mark.asyncio
+    async def test_template_source_rights_cannot_authorize_retention(self, monkeypatch):
+        patch_client(monkeypatch, lambda _request: httpx.Response(200, json={"normalized": "held", "city": "x", "country": "US", "zip": "0"}))
+        enricher = TemplateEnricher(template=template(), registry=registry(), runtime_authorizer=EgressAuthorizer.enrichment())
+        enricher._graph_service = MagicMock()
+        result = await enricher.execute_structured([location()])
+        assert result.outcomes[0].status is OutcomeStatus.HOLD
+        assert result.outcomes[0].outputs == ()
+        assert result.outcomes[0].evidence[0].artifact_reference is None
 
 
     @pytest.mark.asyncio

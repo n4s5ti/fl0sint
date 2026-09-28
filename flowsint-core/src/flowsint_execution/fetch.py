@@ -14,13 +14,25 @@ import re
 import threading
 import time
 from enum import Enum
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from typing import Annotated, Literal
 from urllib.parse import urljoin, urlsplit
 
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, StrictInt, model_validator
 
-from .acquisition import AcquisitionRequest, Resources
+from .acquisition import AcquisitionRequest, Resources, SpanReference
+from .artifacts import (
+    ArtifactContext,
+    ArtifactState,
+    CaptureResult,
+    FilesystemArtifactStore,
+    NormalizedSource,
+    RetentionDecision,
+    capture_source,
+    normalize_html,
+)
 from .models import RedactedDiagnostic, canonical_input_hash
 
 Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
@@ -171,6 +183,8 @@ class FetchOutcome(_Frozen):
     status: FetchStatus
     requested_origin: str
     final_origin: str | None = None
+    requested_url: str | None = None
+    final_url: str | None = None
     text: str | None = None
     body: bytes | None = None
     diagnostic: RedactedDiagnostic | None = None
@@ -189,6 +203,25 @@ class FetchOutcome(_Frozen):
 class FetchResult(_Frozen):
     operation_id: str
     outcomes: tuple[FetchOutcome, ...]
+    actual_resources: Resources
+
+
+@dataclass(frozen=True)
+class SourceProofOutcome:
+    occurrence_id: str
+    input_ref: str
+    fetch_status: FetchStatus
+    capture: CaptureResult
+    normalized: NormalizedSource | None
+    diagnostic: RedactedDiagnostic | None
+    actual_resources: Resources
+    spans: tuple[SpanReference, ...] = ()
+
+
+@dataclass(frozen=True)
+class SourceProofResult:
+    operation_id: str
+    outcomes: tuple[SourceProofOutcome, ...]
     actual_resources: Resources
 
 
@@ -545,6 +578,8 @@ async def execute_fetch(
                         status=FetchStatus.SUCCESS,
                         requested_origin=requested_origin,
                         final_origin=_origin(url),
+                        requested_url=_redacted_location(item.url),
+                        final_url=_redacted_location(url),
                         text=text,
                         body=bytes(body),
                         actual_resources=ledger.occurrence_resources(
@@ -671,6 +706,87 @@ async def execute_fetch(
     )
 
 
+async def execute_fetch_with_source_proof(
+    operation: AdmittedFetchOperation,
+    *,
+    artifact_store: FilesystemArtifactStore | None,
+    retention_decision: RetentionDecision | None,
+    transport: httpx.AsyncBaseTransport | None = None,
+) -> SourceProofResult:
+    """Run the sole fetch implementation and capture before raw bodies leave it."""
+    fetched = (
+        await execute_fetch(operation)
+        if transport is None
+        else await execute_fetch(operation, transport=transport)
+    )
+    admitted = {item.occurrence_id: item for item in operation.inputs}
+    outcomes = []
+    for item in fetched.outcomes:
+        if item.status is not FetchStatus.SUCCESS:
+            outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, "fetch_failed"), None, item.diagnostic, item.actual_resources))
+            continue
+        source = admitted.get(item.occurrence_id)
+        if source is None:
+            outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, "unbound_fetch_outcome"), None, item.diagnostic, item.actual_resources))
+            continue
+        context = ArtifactContext(
+            operation_id=operation.operation_id,
+            occurrence_id=item.occurrence_id,
+            caller_id=operation.policy.caller_id,
+            scope=operation.policy.scope,
+            source_family="http",
+            origin=item.final_origin or item.requested_origin,
+            requested_url=item.requested_url or _redacted_location(source.url),
+            final_url=item.final_url or _redacted_location(source.url),
+            retrieved_at=datetime.now(timezone.utc),
+        )
+        try:
+            normalized = normalize_html(item.body or b"")
+        except ValueError:
+            capture = CaptureResult(ArtifactState.REVIEW, "unsupported_source_encoding")
+            normalized = None
+        else:
+            if retention_decision is None:
+                capture = CaptureResult(ArtifactState.HOLD, "retention_policy_unavailable")
+            elif artifact_store is None:
+                capture = CaptureResult(ArtifactState.HOLD, "artifact_store_unavailable")
+            else:
+                capture = capture_source(
+                    artifact_store,
+                    context,
+                    retention_decision,
+                    item.body,
+                    normalized=normalized,
+                )
+            if capture.state is not ArtifactState.AVAILABLE:
+                normalized = None
+        spans = ()
+        if capture.artifact is not None and normalized is not None:
+            spans = tuple(
+                SpanReference(
+                    span_id=f"span-{capture.artifact.snapshot_id}-{index}",
+                    artifact_id=capture.artifact.artifact_id,
+                    byte_start=span.raw_start,
+                    byte_end=span.raw_end,
+                    normalized_start=span.normalized_start,
+                    normalized_end=span.normalized_end,
+                    raw_offset_unit="byte",
+                    normalized_offset_unit="unicode_code_point",
+                    source_encoding="utf-8",
+                )
+                for index, span in enumerate(normalized.spans)
+            )
+        outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, capture, normalized, item.diagnostic, item.actual_resources, spans))
+    return SourceProofResult(fetched.operation_id, tuple(outcomes), fetched.actual_resources)
+
+
+def _redacted_location(url: str) -> str:
+    parts = urlsplit(url)
+    host = f"[{parts.hostname}]" if parts.hostname and ":" in parts.hostname else parts.hostname
+    port = f":{parts.port}" if parts.port is not None else ""
+    return f"{parts.scheme}://{host}{port}{parts.path or '/'}"
+
+
 async def _single_chunk(content: bytes):
     """Adapt already-buffered injected transports without changing live streaming."""
     if content:
@@ -686,4 +802,7 @@ __all__ = [
     "TrustedFetchPolicy",
     "admit_fetch",
     "execute_fetch",
+    "execute_fetch_with_source_proof",
+    "SourceProofOutcome",
+    "SourceProofResult",
 ]

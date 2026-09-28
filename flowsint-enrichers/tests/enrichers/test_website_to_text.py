@@ -6,6 +6,8 @@ import subprocess
 import sys
 import threading
 import time
+import hashlib
+from datetime import datetime, timedelta, timezone
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -13,7 +15,9 @@ import pytest
 import httpx
 
 import flowsint_enrichers.website.to_text as website_module
-from flowsint_enrichers.website.to_text import WebsiteTextOccurrence, WebsiteToText
+import flowsint_execution.fetch as fetch_module
+from flowsint_execution.artifacts import FilesystemArtifactStore, RetentionAuthority
+from flowsint_enrichers.website.to_text import WebsiteFetchError, WebsiteTextOccurrence, WebsiteToText
 from flowsint_execution.fetch import execute_fetch as real_execute_fetch
 from flowsint_execution.fetch import FetchResult
 from flowsint_execution.models import OutcomeStatus
@@ -61,7 +65,7 @@ def _patch_transport(monkeypatch, handler):
             operation, transport=httpx.MockTransport(handler)
         )
 
-    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    monkeypatch.setattr(fetch_module, "execute_fetch", execute)
 
 
 @pytest.mark.asyncio
@@ -118,7 +122,7 @@ def _loopback_pages():
 
 
 @pytest.fixture
-def make_enricher(monkeypatch):
+def make_enricher(monkeypatch, tmp_path):
     monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
     monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
 
@@ -129,10 +133,34 @@ def make_enricher(monkeypatch):
             params_schema=[],
             params=params,
             graph_service=graph,
+            artifact_store=FilesystemArtifactStore(tmp_path / f"store-{len(list(tmp_path.iterdir()))}"),
+            retention_authority=RetentionAuthority(
+                issuer_id="test-deployment",
+                reviewer_id="test-reviewer",
+                policy_id="website-test-policy",
+                policy_digest=hashlib.sha256(b"reviewed website test policy").hexdigest(),
+                caller_id="website-to-text",
+                scope="local-web-fetch",
+                source_family="http",
+                expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+            ),
         )
         return enricher, graph
 
     return make
+
+
+@pytest.mark.asyncio
+async def test_missing_reviewed_retention_holds_structured_and_legacy_raises(monkeypatch):
+    monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
+    monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
+    _patch_transport(monkeypatch, lambda _request: httpx.Response(200, text="consumed body"))
+    enricher = WebsiteToText(sketch_id="hold-test", params_schema=[], params={}, graph_service=_RecordingGraph())
+    structured = await enricher.execute_structured([Website(url="https://held.example")])
+    assert structured.outcomes[0].status is OutcomeStatus.HOLD
+    assert structured.outcomes[0].outputs == ()
+    with pytest.raises(WebsiteFetchError, match="retention_policy_unavailable"):
+        await enricher.execute([Website(url="https://held-again.example")])
 
 
 @pytest.mark.asyncio
@@ -279,7 +307,7 @@ async def test_occurrence_reconstruction_rejects_missing_result(
             actual_resources=fetched.actual_resources,
         )
 
-    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    monkeypatch.setattr(fetch_module, "execute_fetch", execute)
     first = Website(url="https://first.example")
     second = Website(url="https://second.example")
     occurrences = await enricher._scan_occurrences([first, second])
@@ -333,7 +361,7 @@ async def test_occurrence_reconstruction_rejects_unbound_results(
             actual_resources=fetched.actual_resources,
         )
 
-    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    monkeypatch.setattr(fetch_module, "execute_fetch", execute)
     occurrences = await enricher._scan_occurrences(
         [Website(url="https://first.example"), Website(url="https://second.example")]
     )

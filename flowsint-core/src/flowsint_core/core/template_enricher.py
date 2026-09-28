@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 import asyncio
-import hashlib
 import json
+import uuid
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import Any, AsyncIterator, List, Optional
@@ -32,6 +32,13 @@ from flowsint_execution.models import (
     StructuredExecutionResult,
     canonical_input_hash,
 )
+from flowsint_execution.artifacts import (
+    ArtifactContext,
+    ArtifactState,
+    FilesystemArtifactStore,
+    RetentionAuthority,
+    capture_source,
+)
 from flowsint_core.core.logger import Logger
 from flowsint_core.templates.types import Template
 
@@ -54,6 +61,8 @@ class TemplateEnricher(Enricher):
         sketch_id: Optional[str] = None,
         scan_id: Optional[str] = None,
         vault=None,
+        artifact_store: FilesystemArtifactStore | None = None,
+        retention_authority: RetentionAuthority | None = None,
     ):
         self.template = template
         self.InputType = self._detect_type(template.input.type)
@@ -70,7 +79,12 @@ class TemplateEnricher(Enricher):
             params={},
         )
         self._last_response_artifact_sha256: str | None = None
+        self._last_artifact_reference: str | None = None
+        self._last_capture_state: ArtifactState | None = None
+        self._last_capture_reason: str | None = None
         self._last_http_status_class: int | None = None
+        self._artifact_store = artifact_store
+        self._retention_authority = retention_authority
 
     @staticmethod
     def _detect_type(type_name: str) -> type[FlowsintType]:
@@ -234,6 +248,9 @@ class TemplateEnricher(Enricher):
         self, client: httpx.AsyncClient, input_obj: Any
     ) -> List[Any]:
         self._last_response_artifact_sha256 = None
+        self._last_artifact_reference = None
+        self._last_capture_state = None
+        self._last_capture_reason = None
         self._last_http_status_class = None
         url, fixed_headers, query, json_body = self._request_parts(input_obj)
         headers = self._resolved_headers(fixed_headers)
@@ -254,7 +271,34 @@ class TemplateEnricher(Enricher):
                     response_bytes = await self._read_response(response)
         except TimeoutError as error:
             raise httpx.ReadTimeout("connector deadline exceeded") from error
-        self._last_response_artifact_sha256 = hashlib.sha256(response_bytes).hexdigest()
+        operation_id = f"connector-{uuid.uuid4().hex}"
+        decision = self._retention_authority.issue(operation_id) if self._retention_authority else None
+        context = ArtifactContext(
+            operation_id=operation_id,
+            occurrence_id=f"input-{uuid.uuid4().hex}",
+            caller_id=f"connector:{self.endpoint.destination_id}:{self.endpoint.endpoint_id}",
+            scope=self.endpoint.capability,
+            source_family="connector",
+            origin=self.endpoint.base_url,
+            requested_url=url,
+            final_url=url,
+            retrieved_at=datetime.now(timezone.utc),
+        )
+        if decision is None:
+            self._last_capture_state = ArtifactState.HOLD
+            self._last_capture_reason = "retention_policy_unavailable"
+            return []
+        if self._artifact_store is None:
+            self._last_capture_state = ArtifactState.HOLD
+            self._last_capture_reason = "artifact_store_unavailable"
+            return []
+        captured = capture_source(self._artifact_store, context, decision, response_bytes)
+        self._last_capture_state = captured.state
+        self._last_capture_reason = captured.reason
+        if captured.state is not ArtifactState.AVAILABLE or captured.artifact is None:
+            return []
+        self._last_response_artifact_sha256 = captured.artifact.content_digest
+        self._last_artifact_reference = captured.artifact.locator
         return self._map_response(response_bytes)
 
     @asynccontextmanager
@@ -276,9 +320,7 @@ class TemplateEnricher(Enricher):
                 policy_version=self.endpoint.policy_version,
                 artifact_sha256=artifact_sha256,
                 artifact_reference=(
-                    f"body:sha256:{artifact_sha256}"
-                    if artifact_sha256 is not None
-                    else None
+                    self._last_artifact_reference
                 ),
                 source_rights=evidence.source_rights,
                 schema_version=evidence.schema_version,
@@ -342,12 +384,12 @@ class TemplateEnricher(Enricher):
         outputs: tuple[Any, ...],
         evidence: tuple[EvidenceEnvelope, ...],
     ) -> tuple[OutcomeStatus, RedactedDiagnostic | None]:
-        if outputs and self.template.evidence.source_rights == "unspecified":
+        if self._last_capture_state is not ArtifactState.AVAILABLE:
             return (
                 OutcomeStatus.HOLD,
                 RedactedDiagnostic(
-                    code="source_rights_unspecified",
-                    safe_message="Source rights must be specified before outputs can be retained.",
+                    code=self._last_capture_reason or "retention_policy_unavailable",
+                    safe_message="Reviewed source retention is unavailable.",
                     retryable=False,
                 ),
             )
@@ -361,6 +403,9 @@ class TemplateEnricher(Enricher):
                 for original_input in values:
                     input_ref = canonical_input_hash(original_input)
                     self._last_response_artifact_sha256 = None
+                    self._last_artifact_reference = None
+                    self._last_capture_state = None
+                    self._last_capture_reason = None
                     self._last_http_status_class = None
                     try:
                         self._reject_unknown_input_fields(original_input)
