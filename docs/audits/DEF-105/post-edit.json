@@ -28,7 +28,7 @@
   },
   "deliverable_sha256": {
     "docs/audits/DEF-105/acceptance.md": "337ab42b7aaac952a36be6c2f3e7fe7df52d270ef3c2c88d085d3aa61ba07299",
-    "docs/audits/DEF-105/baseline.json": "274ab7d1dd2198dc421f53647d09a0523c9aa20e21aa7249a33160a1d563f05d",
+    "docs/audits/DEF-105/baseline.json": "af3672212740e60758124d47e0c85bf3931315a9fe4c35900d1b8dd8386b74fc",
     "docs/audits/DEF-105/linear-summary.md": "bbf409e7594c1e20ee3deeef060a4fe8bc8672aeacbe0e01fdaacee13dc2edfa",
     "docs/audits/DEF-105/matrix.json": "7fd72f47c038f24333b4d07e35cdb744070c9fe553dd230a4b0f6885f51ad03f",
     "docs/audits/DEF-105/raw/blast-acquisition-AcquisitionBundle-downstream.json": "7e906322ccdfb69e62bc97678a0df8413eb67f7a79d7ed9ae74234107d779993",
@@ -252,7 +252,7 @@
     "docs/audits/DEF-105/raw/wheel-install.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "docs/audits/DEF-105/raw/wheel-sha256.txt": "0148222b4825e5ae23cd2db3437fc5fb9e07bfc818ef5e47f2bbb578dc6ea4c6",
     "docs/audits/DEF-105/recovery.md": "e29f80bc9f92aec6bd57e9eb865c46fb6590c1b500d8940198a3aa2454faaf4f",
-    "docs/audits/DEF-105/review.json": "1b5d3e7cb2085e3ce97967958aa5b396dac96487ff8ea828f7e66a2945ae99dc",
+    "docs/audits/DEF-105/review.json": "82a03884d5e63c2f0527eb1b0047575926de32c2ad589c13eca847c75318b916",
     "docs/audits/DEF-105/scope-plan.md": "f47551a6316c684d4a0faca8a991ca0e41d16ba78ff4bf58695a4581241c36d9"
   }
 }

@@ -74,7 +74,8 @@
       "doctor/dist/plugin.js": "9c9200ae19fd018c0c505d1b4991462160dc1ba0ff6264413376cf0d106e80f1"
     },
     "gitnexus_version": "1.6.10-rc.45",
-    "previous_defective_runtime_sha256": "f1ad5f51691c6650f7da44b1e69a68d5c31dc3daa823e5285b0009d5e704afef"
+    "previous_defective_runtime_sha256": "f1ad5f51691c6650f7da44b1e69a68d5c31dc3daa823e5285b0009d5e704afef",
+    "post_packet_note": "After this packet was produced, the branch (incl. 82745f2) was merged to pip3r dev as d8d461c in a separate worktree (~/.cache/pip3r-wt-dev). The installed runtime at /home/n4s5ti/Documents/dev/pip3r remained on 82745f2; all six dist SHA-256s re-checked identical."
   },
   "index": {
     "mode": "fresh rebuild: prior .gitnexus moved to /tmp/def105/gitnexus-prev before --index",
