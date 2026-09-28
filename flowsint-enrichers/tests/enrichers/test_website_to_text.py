@@ -191,14 +191,16 @@ async def test_registry_runtime_config_emits_retrievable_structured_proof(tmp_pa
     assert proof.input_ref == outcome.input_ref
     resolved = resolve_persisted_source_proof(
         reference, caller_id="website-to-text", scope="local-web-fetch",
-        source_family="http", config_path=config,
+        source_family="http", operation_id=proof.context.operation_id,
+        occurrence_id=proof.context.occurrence_id, config_path=config,
     )
     assert resolved.state is ArtifactState.AVAILABLE
     assert resolved.body == b"retained registry text"
     span = resolve_persisted_span(
         reference, proof.spans[0].span_id,
         caller_id="website-to-text", scope="local-web-fetch",
-        source_family="http", config_path=config,
+        source_family="http", operation_id=proof.context.operation_id,
+        occurrence_id=proof.context.occurrence_id, config_path=config,
     )
     assert span.state is ArtifactState.AVAILABLE
     assert span.text == outcome.outputs[0].text[

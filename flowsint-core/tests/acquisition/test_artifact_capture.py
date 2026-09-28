@@ -1,19 +1,24 @@
 from __future__ import annotations
 
+import asyncio
 import hashlib
+import importlib.util
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import httpx
 import pytest
 
 from flowsint_execution.acquisition import AcquisitionRequest, InputOccurrence, Resources, SourceProofSpanReference
+from flowsint_execution.acquisition import OutcomeStatus, parse_bundle
 from flowsint_execution.artifacts import (
     ArtifactContext, ArtifactState, FilesystemArtifactStore, RetentionAuthority,
     capture_source, normalize_html, resolve_source, resolve_span,
 )
-from flowsint_execution.fetch import FetchParameters, TrustedFetchPolicy, admit_fetch, execute_fetch_with_source_proof
+from flowsint_execution.fetch import FetchParameters, FetchStatus, TrustedFetchPolicy, admit_fetch, execute_fetch_with_source_proof
 from flowsint_execution.models import canonical_input_hash
 
 NOW = datetime(2026, 1, 1, tzinfo=timezone.utc)
@@ -172,6 +177,13 @@ def test_symlink_ancestor_and_store_failure_are_typed(tmp_path):
 def test_unsupported_encoding():
     with pytest.raises(ValueError, match="unsupported_source_encoding"): normalize_html(b"\xff")
 
+def test_dense_plain_text_uses_compact_exact_mapping():
+    body = b"x " * 40_000
+    normalized = normalize_html(body)
+    assert normalized.text == body.decode().rstrip()
+    assert len(normalized.spans) == 1
+    assert normalized.reproduce(body) == normalized.text
+
 @pytest.mark.asyncio
 async def test_shared_fetch_capture_roundtrip(tmp_path):
     url = "https://fixture.example/page"; capability = hashlib.sha256(b"capability").hexdigest(); endpoint = hashlib.sha256(b"endpoint").hexdigest()
@@ -180,13 +192,70 @@ async def test_shared_fetch_capture_roundtrip(tmp_path):
     request = AcquisitionRequest(operation_id="operation-1", caller_id="caller-1", scope="scope-1",
         capability_digest=capability, endpoint_policy_digest=endpoint,
         inputs=(InputOccurrence(occurrence_id="occurrence-1", input_ref=canonical_input_hash(url), type_tag="http_url", value=url),),
-        allocation=Resources(requests=1, bytes=1024, elapsed_seconds=1, concurrency=1))
+        allocation=Resources(requests=1, bytes=1024, elapsed_seconds=5, concurrency=1))
     live = authority(expires_at=datetime.now(timezone.utc) + timedelta(hours=1)); decision = live.issue("operation-1")
     result = await execute_fetch_with_source_proof(admit_fetch(request, policy, FetchParameters(max_bytes_per_input=1024)),
         artifact_store=FilesystemArtifactStore(tmp_path), retention_decision=decision,
         transport=httpx.MockTransport(lambda _: httpx.Response(200, content=b"<p>x&amp; x</p>")))
     outcome = result.outcomes[0]
+    assert outcome.capture.artifact is not None, outcome
     resolved_context = context(origin="https://fixture.example:443", requested_url=url, final_url=url,
                                retrieved_at=outcome.capture.artifact.retrieved_at)
     assert resolve_source(FilesystemArtifactStore(tmp_path), resolved_context, decision, outcome.capture.artifact,
                           authority=live).body == b"<p>x&amp; x</p>"
+
+@pytest.mark.asyncio
+async def test_capture_processing_obeys_original_elapsed_allocation(tmp_path):
+    url = "https://fixture.example/page"; capability = hashlib.sha256(b"capability").hexdigest(); endpoint = hashlib.sha256(b"endpoint").hexdigest()
+    policy = TrustedFetchPolicy(caller_id="caller-1", scope="scope-1", capability_digest=capability,
+        endpoint_policy_digest=endpoint, allowed_origins=("https://fixture.example:443",))
+    request = AcquisitionRequest(operation_id="operation-1", caller_id="caller-1", scope="scope-1",
+        capability_digest=capability, endpoint_policy_digest=endpoint,
+        inputs=(InputOccurrence(occurrence_id="occurrence-1", input_ref=canonical_input_hash(url), type_tag="http_url", value=url),),
+        allocation=Resources(requests=1, bytes=1024, elapsed_seconds=0.05, concurrency=1))
+    live = authority(expires_at=datetime.now(timezone.utc) + timedelta(hours=1))
+    class SlowStore:
+        def __init__(self): self.delegate = FilesystemArtifactStore(tmp_path); self.writes = 0
+        def write(self, body, metadata):
+            self.writes += 1; time.sleep(0.2); self.delegate.write(body, metadata)
+    store = SlowStore(); started = time.monotonic()
+    result = await execute_fetch_with_source_proof(admit_fetch(request, policy, FetchParameters(max_bytes_per_input=1024)),
+        artifact_store=store, retention_decision=live.issue("operation-1"),
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, content=b"<p>consumed</p>")))
+    wall = time.monotonic() - started
+    assert wall < 0.15
+    assert result.outcomes[0].fetch_status is FetchStatus.TIMEOUT
+    assert result.outcomes[0].capture.artifact is None
+    assert result.actual_resources.bytes == len(b"<p>consumed</p>")
+    assert result.actual_resources.elapsed_seconds >= 0.045
+    assert store.writes == 1
+
+    cancelled_request = request.model_copy(update={"operation_id": "operation-2", "allocation": request.allocation.model_copy(update={"elapsed_seconds": 1.0})})
+    cancelled_store = SlowStore()
+    task = asyncio.create_task(execute_fetch_with_source_proof(
+        admit_fetch(cancelled_request, policy, FetchParameters(max_bytes_per_input=1024)),
+        artifact_store=cancelled_store, retention_decision=live.issue("operation-2"),
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, content=b"<p>consumed</p>"))))
+    await asyncio.sleep(0.02)
+    task.cancel()
+    cancelled = await task
+    assert cancelled.outcomes[0].fetch_status is FetchStatus.CANCELLED
+    assert cancelled.outcomes[0].capture.artifact is None
+    assert cancelled.actual_resources.bytes == len(b"<p>consumed</p>")
+    assert cancelled_store.writes == 1
+
+@pytest.mark.asyncio
+async def test_source_proof_example_emits_parseable_valid_empty_bundle(tmp_path, monkeypatch):
+    path = Path(__file__).parents[2] / "examples" / "source_proof.py"
+    spec = importlib.util.spec_from_file_location("source_proof_example_test", path)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    real = execute_fetch_with_source_proof
+    async def empty_fetch(operation, *, artifact_store, retention_decision):
+        return await real(operation, artifact_store=artifact_store, retention_decision=retention_decision,
+            transport=httpx.MockTransport(lambda _: httpx.Response(200, content=b"<html></html>")))
+    monkeypatch.setattr(module, "execute_fetch_with_source_proof", empty_fetch)
+    result = await module.run("https://fixture.example/empty", tmp_path / "store")
+    bundle = parse_bundle(result["bundle"])
+    assert result["state"] == ArtifactState.AVAILABLE.value
+    assert bundle.outcomes[0].status is OutcomeStatus.VALID_NO_RESULT
+    assert bundle.outcomes[0].completion_witness is not None

@@ -67,6 +67,19 @@ Python cannot forcibly terminate a coroutine that suppresses cancellation. Fetch
 
 Typed results distinguish success (including decoded empty content), rate limiting, timeout, policy denial, HTTP failure, transport/decode/size failure, and cancellation. Results retain occurrence identity and measured requests, bytes, and elapsed time. Diagnostics are fixed, bounded messages and never include raw URL queries, response bodies, or provider exceptions. Bare `execute_fetch` remains transient; the reviewed `execute_fetch_with_source_proof` wrapper performs authorized capture and does not claim factual acceptance.
 
+Source-proof resolution requires trusted `caller_id`, `scope`, `source_family`, and
+`operation_id`; exact-span resolution also requires the trusted `occurrence_id`.
+These values are supplied server-side from the authorized caller or investigation
+context. Proof metadata and request-controlled scope values never select authority.
+Local Website identities are an explicit trusted-local boundary, not hosted-user
+authentication.
+
+The fetch deadline covers receive, normalization, and capture. Blocking normalization
+and store work runs on a bounded shared worker pool with cooperative checks before
+storage and after normalization. A timeout or caller cancellation returns without
+evidence even if an already-started atomic store commit later finishes; consumed
+resources remain charged and the operation is never retried with a fresh allocation.
+
 WebsiteToText creates its trusted local policy from the origins of explicitly supplied inputs. This is an in-process trust boundary, not hosted authentication. Its allocation defaults are finite, `max_response_bytes` is enforced independently for every input as well as through the pooled allocation, its redirects are same-origin, and its public `scan`, `execute_structured`, and legacy `execute` paths all invoke this same admitted fetch. Before associating any evidence, WebsiteToText requires the returned operation ID, exact occurrence count and ID set, unique occurrence IDs, and every occurrence's admitted `input_ref` to match. Missing, duplicate, unknown, wrong-operation, and wrong-input results fail the whole integration response as `invalid_fetch_result`; there is no positional fallback. A requested legacy QUIC path fails explicitly as `unsafe_transport_disabled`.
 
 An admitted operation object is a trusted in-process execution capability, not remote authorization, a wire capability, or a durable reservation. Its immutable public fields carry private runtime claim state that is excluded from serialization and the operation seal. `execute_fetch` atomically claims that state before allocating a fresh ledger, so the same admitted runtime object, including an in-process `model_copy`, cannot reset its allocation through sequential or concurrent reuse. Serializing public fields and reconstructing a new model creates a new local object and is outside this object-scoped guarantee; serialized admitted models must not be treated as executable capability transfer. This enforcement has no global registry and is not a cross-process replay ledger. Callers needing wire transfer, distributed reservation, or idempotency must provide that outside this transport boundary.

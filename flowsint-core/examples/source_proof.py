@@ -83,7 +83,7 @@ async def run(url: str, store_root: Path) -> dict[str, object]:
         request=request,
         outcomes=(OccurrenceOutcome(
             occurrence_id=occurrence_id,
-            status=OutcomeStatus.SUCCESS_WITH_OUTPUT,
+            status=(OutcomeStatus.SUCCESS_WITH_OUTPUT if candidates else OutcomeStatus.VALID_NO_RESULT),
             candidate_ids=tuple(item.candidate_id for item in candidates),
             artifact_ids=(outcome.capture.artifact.artifact_id,),
             completion_witness=CompletionWitness(

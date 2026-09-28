@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   evidence retains a versioned resolvable proof envelope without bodies, secrets, or paths.
 
 ### Fixed
+- Hardened DEF-44 source proof boundaries: trusted operation/occurrence resolution,
+  whole-operation capture deadlines, compact exact HTML mappings, coordinated proof
+  size limits, and valid empty example bundles.
 - WebsiteToText now uses the shared admitted async HTTP fetch path with immutable caller/origin policy binding, finite shared request/byte/time/concurrency budgets, same-origin redirect checks, bounded retries, streaming body limits, verified TLS, and typed accounting-aware failures. The unsafe QUIC and synchronous requests fallback paths were removed.
 - WebsiteToText now retains source-owned occurrence outcomes through asynchronous fetches, preserving duplicate, failed, cancelled, and one-to-many histories while creating HAS_INNER_TEXT edges from the correct Website.
 - Structured execution distinguishes terminal transport failures from successful empty extraction and serializes the retained outcome groups. WebsiteToText scan now returns public WebsiteTextOccurrence envelopes; postprocess captures their graph ownership before adapting them to the legacy list[Phrase].

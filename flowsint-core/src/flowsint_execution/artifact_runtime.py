@@ -153,7 +153,10 @@ def load_artifact_runtime(
 
 def encode_source_proof(proof: PersistedSourceProof) -> str:
     raw = proof.model_dump_json(warnings="error").encode("utf-8")
-    return "sp1." + base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
+    encoded = "sp1." + base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
+    if len(encoded) > 8 * 1024 * 1024:
+        raise ValueError("source_proof_too_large")
+    return encoded
 
 
 def decode_source_proof(value: str) -> PersistedSourceProof:
@@ -173,6 +176,8 @@ def resolve_persisted_source_proof(
     caller_id: str,
     scope: str,
     source_family: str,
+    operation_id: str,
+    occurrence_id: str | None = None,
     config_path: str | os.PathLike[str] | None = None,
     now: datetime | None = None,
 ) -> ResolveResult:
@@ -185,6 +190,9 @@ def resolve_persisted_source_proof(
         proof.context.caller_id != caller_id
         or proof.context.scope != scope
         or proof.context.source_family != source_family
+        or proof.context.operation_id != operation_id
+        or proof.decision.operation_id != operation_id
+        or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)
     ):
         return ResolveResult(ArtifactState.REVIEW, "authorization_mismatch")
     runtime = load_artifact_runtime(
@@ -206,6 +214,8 @@ def resolve_persisted_span(
     caller_id: str,
     scope: str,
     source_family: str,
+    operation_id: str,
+    occurrence_id: str,
     config_path: str | os.PathLike[str] | None = None,
     now: datetime | None = None,
 ) -> SpanResolveResult:
@@ -217,6 +227,9 @@ def resolve_persisted_span(
         proof.context.caller_id != caller_id
         or proof.context.scope != scope
         or proof.context.source_family != source_family
+        or proof.context.operation_id != operation_id
+        or proof.decision.operation_id != operation_id
+        or proof.context.occurrence_id != occurrence_id
     ):
         return SpanResolveResult(ArtifactState.REVIEW, "authorization_mismatch")
     matches = tuple(span for span in proof.spans if span.span_id == span_id)

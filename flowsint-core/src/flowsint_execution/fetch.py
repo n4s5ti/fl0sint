@@ -13,6 +13,7 @@ import math
 import re
 import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -39,6 +40,7 @@ Digest = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 _REDIRECTS = {301, 302, 303, 307, 308}
 _RETRYABLE = {502, 503, 504}
 _CHARSET = re.compile(r"(?:^|;)\s*charset=([^;\s]+)", re.IGNORECASE)
+_SOURCE_PROOF_WORKERS = ThreadPoolExecutor(max_workers=4, thread_name_prefix="source-proof")
 
 
 class _Frozen(BaseModel):
@@ -714,6 +716,7 @@ async def execute_fetch_with_source_proof(
     transport: httpx.AsyncBaseTransport | None = None,
 ) -> SourceProofResult:
     """Run the sole fetch implementation and capture before raw bodies leave it."""
+    started = time.monotonic()
     fetched = (
         await execute_fetch(operation)
         if transport is None
@@ -756,64 +759,104 @@ async def execute_fetch_with_source_proof(
             ),
             fetched.actual_resources,
         )
-    outcomes = []
-    for item in fetched.outcomes:
-        if item.status is not FetchStatus.SUCCESS:
-            outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, "fetch_failed"), None, item.diagnostic, item.actual_resources))
-            continue
-        source = admitted.get(item.occurrence_id)
-        if source is None:
-            outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, "unbound_fetch_outcome"), None, item.diagnostic, item.actual_resources))
-            continue
-        context = ArtifactContext(
-            operation_id=operation.operation_id,
-            occurrence_id=item.occurrence_id,
-            caller_id=operation.policy.caller_id,
-            scope=operation.policy.scope,
-            source_family="http",
-            origin=item.final_origin or item.requested_origin,
-            requested_url=item.requested_url or _redacted_location(source.url),
-            final_url=item.final_url or _redacted_location(source.url),
-            retrieved_at=datetime.now(timezone.utc),
-        )
-        try:
-            normalized = normalize_html(item.body or b"")
-        except ValueError:
-            capture = CaptureResult(ArtifactState.REVIEW, "unsupported_source_encoding")
-            normalized = None
-        else:
-            if retention_decision is None:
-                capture = CaptureResult(ArtifactState.HOLD, "retention_policy_unavailable")
-            elif artifact_store is None:
-                capture = CaptureResult(ArtifactState.HOLD, "artifact_store_unavailable")
-            else:
-                capture = capture_source(
-                    artifact_store,
-                    context,
-                    retention_decision,
-                    item.body,
-                    normalized=normalized,
-                )
-            if capture.state is not ArtifactState.AVAILABLE:
-                normalized = None
-        spans = ()
-        if capture.artifact is not None and normalized is not None:
-            spans = tuple(
-                SourceProofSpanReference(
-                    span_id=f"span-{capture.artifact.snapshot_id}-{index}",
-                    artifact_id=capture.artifact.artifact_id,
-                    byte_start=span.raw_start,
-                    byte_end=span.raw_end,
-                    normalized_start=span.normalized_start,
-                    normalized_end=span.normalized_end,
-                    raw_offset_unit="byte",
-                    normalized_offset_unit="unicode_code_point",
-                    source_encoding="utf-8",
-                )
-                for index, span in enumerate(normalized.spans)
+    deadline = started + (operation.allocation.elapsed_seconds or 0.0)
+    stop = threading.Event()
+
+    def expired() -> bool:
+        return stop.is_set() or time.monotonic() >= deadline
+
+    def process() -> tuple[SourceProofOutcome, ...]:
+        outcomes = []
+        for item in fetched.outcomes:
+            if item.status is not FetchStatus.SUCCESS:
+                outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, "fetch_failed"), None, item.diagnostic, item.actual_resources))
+                continue
+            source = admitted[item.occurrence_id]
+            if expired():
+                raise TimeoutError
+            context = ArtifactContext(
+                operation_id=operation.operation_id, occurrence_id=item.occurrence_id,
+                caller_id=operation.policy.caller_id, scope=operation.policy.scope,
+                source_family="http", origin=item.final_origin or item.requested_origin,
+                requested_url=item.requested_url or _redacted_location(source.url),
+                final_url=item.final_url or _redacted_location(source.url),
+                retrieved_at=datetime.now(timezone.utc),
             )
-        outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, capture, normalized, item.diagnostic, item.actual_resources, spans))
-    return SourceProofResult(fetched.operation_id, tuple(outcomes), fetched.actual_resources)
+            try:
+                normalized = normalize_html(item.body or b"")
+            except ValueError:
+                capture = CaptureResult(ArtifactState.REVIEW, "unsupported_source_encoding")
+                normalized = None
+            else:
+                if expired():
+                    raise TimeoutError
+                if retention_decision is None:
+                    capture = CaptureResult(ArtifactState.HOLD, "retention_policy_unavailable")
+                elif artifact_store is None:
+                    capture = CaptureResult(ArtifactState.HOLD, "artifact_store_unavailable")
+                else:
+                    capture = capture_source(artifact_store, context, retention_decision,
+                                             item.body, normalized=normalized, cancelled=expired)
+                if expired():
+                    raise TimeoutError
+                if capture.state is not ArtifactState.AVAILABLE:
+                    normalized = None
+            spans = ()
+            if capture.artifact is not None and normalized is not None:
+                spans = tuple(SourceProofSpanReference(
+                    span_id=f"span-{capture.artifact.snapshot_id}-{index}", artifact_id=capture.artifact.artifact_id,
+                    byte_start=span.raw_start, byte_end=span.raw_end,
+                    normalized_start=span.normalized_start, normalized_end=span.normalized_end,
+                    raw_offset_unit="byte", normalized_offset_unit="unicode_code_point", source_encoding="utf-8",
+                ) for index, span in enumerate(normalized.spans))
+            outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status,
+                                               capture, normalized, item.diagnostic, item.actual_resources, spans))
+        return tuple(outcomes)
+
+    def resources(elapsed: float, original: Resources) -> Resources:
+        return Resources(requests=original.requests, bytes=original.bytes,
+                         elapsed_seconds=elapsed, concurrency=original.concurrency)
+
+    async def bounded_process() -> tuple[SourceProofOutcome, ...]:
+        remaining = max(0.0, deadline - time.monotonic())
+        if remaining <= 0:
+            raise TimeoutError
+        worker = _SOURCE_PROOF_WORKERS.submit(process)
+        while not worker.done():
+            if time.monotonic() >= deadline:
+                worker.cancel()
+                raise TimeoutError
+            await asyncio.sleep(min(0.005, max(0.0, deadline - time.monotonic())))
+        return worker.result()
+
+    terminal_status = None
+    try:
+        outcomes = await bounded_process()
+    except (TimeoutError, asyncio.TimeoutError):
+        stop.set()
+        terminal_status = FetchStatus.TIMEOUT
+    except asyncio.CancelledError:
+        stop.set()
+        current = asyncio.current_task()
+        if current is not None: current.uncancel()
+        terminal_status = FetchStatus.CANCELLED
+
+    elapsed = time.monotonic() - started
+    total = resources(elapsed, fetched.actual_resources)
+    if terminal_status is not None:
+        code = "timeout" if terminal_status is FetchStatus.TIMEOUT else "cancelled"
+        outcomes = tuple(SourceProofOutcome(
+            item.occurrence_id, item.input_ref, terminal_status,
+            CaptureResult(ArtifactState.HOLD, f"capture_{code}"), None,
+            _diagnostic(code, "The source-proof operation did not complete within its allocation."),
+            resources(elapsed, item.actual_resources), (),
+        ) for item in fetched.outcomes)
+    else:
+        outcomes = tuple(SourceProofOutcome(
+            item.occurrence_id, item.input_ref, item.fetch_status, item.capture,
+            item.normalized, item.diagnostic, resources(elapsed, item.actual_resources), item.spans,
+        ) for item in outcomes)
+    return SourceProofResult(fetched.operation_id, outcomes, total)
 
 
 def _redacted_location(url: str) -> str:

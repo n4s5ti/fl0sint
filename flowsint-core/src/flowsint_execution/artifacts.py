@@ -7,12 +7,16 @@ from datetime import datetime, timezone
 from enum import Enum
 from html.parser import HTMLParser
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, model_validator
 from .acquisition import ArtifactReference, SourceProofSpanReference
 
 _DIGEST = r"^[a-f0-9]{64}$"
-_MAX_METADATA_BYTES = 8 * 1024 * 1024
+# The persisted proof repeats normalized mapping metadata and is base64 encoded into
+# an 8 MiB EvidenceEnvelope field.  Keeping store metadata below 4 MiB leaves a
+# deterministic margin for the bounded context, decision, artifact and wire fields.
+_MAX_METADATA_BYTES = 4 * 1024 * 1024
+_MAX_EVIDENCE_PROOF_BYTES = 8 * 1024 * 1024
 _MAX_ARTIFACT_BYTES = 1024 * 1024 * 1024
 
 class ArtifactState(str, Enum):
@@ -268,8 +272,10 @@ class FilesystemArtifactStore:
 
 def capture_source(store: FilesystemArtifactStore, context: ArtifactContext,
                    decision: RetentionDecision | None, body: bytes | None, *, complete: bool = True,
-                   normalized: NormalizedSource | None = None, now: datetime | None = None) -> CaptureResult:
+                   normalized: NormalizedSource | None = None, now: datetime | None = None,
+                   cancelled: Callable[[], bool] | None = None) -> CaptureResult:
     current = now or datetime.now(timezone.utc)
+    if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, "capture_cancelled")
     if body is None: return CaptureResult(ArtifactState.REVIEW, "body_missing")
     if not complete: return CaptureResult(ArtifactState.REVIEW, "truncated_body")
     if decision is None: return CaptureResult(ArtifactState.HOLD, "retention_policy_unavailable")
@@ -280,6 +286,7 @@ def capture_source(store: FilesystemArtifactStore, context: ArtifactContext,
     if normalized is not None:
         try: normalized.reproduce(body)
         except (ValueError, UnicodeDecodeError): return CaptureResult(ArtifactState.REVIEW, "normalized_source_mismatch")
+    if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, "capture_cancelled")
     digest, snapshot_id = hashlib.sha256(body).hexdigest(), secrets.token_hex(16)
     artifact = ArtifactReference(artifact_id=f"artifact-{snapshot_id}", snapshot_id=snapshot_id,
         content_digest=digest, byte_length=len(body), locator=f"sha256:{digest}", source_family=context.source_family,
@@ -296,9 +303,26 @@ def capture_source(store: FilesystemArtifactStore, context: ArtifactContext,
         "retain_body": decision.retain_body, "retain_normalized_text": decision.retain_normalized_text,
         "normalized": ({"text": normalized.text, "spans": [asdict(s) for s in normalized.spans],
                         "source_digest": normalized.source_digest} if normalized else None)}
+    if normalized is not None:
+        wire_spans = [SourceProofSpanReference(
+            span_id=f"span-{snapshot_id}-{index}", artifact_id=artifact.artifact_id,
+            byte_start=span.raw_start, byte_end=span.raw_end,
+            normalized_start=span.normalized_start, normalized_end=span.normalized_end,
+            raw_offset_unit="byte", normalized_offset_unit="unicode_code_point",
+            source_encoding="utf-8",
+        ).model_dump(mode="json") for index, span in enumerate(normalized.spans)]
+        proof_payload = {"format_version": "source-proof/1.0", "input_ref": "0" * 64,
+            "context": context.model_dump(mode="json"), "decision": decision.model_dump(mode="json"),
+            "artifact": artifact.model_dump(mode="json"), "spans": wire_spans}
+        proof_raw = _canonical(proof_payload)
+        encoded_size = 4 + ((len(proof_raw) * 4 + 2) // 3)
+        if encoded_size > _MAX_EVIDENCE_PROOF_BYTES:
+            return CaptureResult(ArtifactState.REVIEW, "source_proof_too_large")
+    if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, "capture_cancelled")
     try: store.write(body, metadata)
     except (FileNotFoundError, PermissionError): return CaptureResult(ArtifactState.HOLD, "artifact_store_unavailable")
     except (OSError, ValueError, TypeError): return CaptureResult(ArtifactState.REVIEW, "artifact_store_invalid")
+    if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, "capture_cancelled")
     return CaptureResult(ArtifactState.AVAILABLE, "retained", artifact)
 
 def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,
@@ -408,17 +432,21 @@ def normalize_html(body: bytes) -> NormalizedSource:
         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))
     for atom in parser.atoms:
         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)
-        transformed = len(atom.text.encode("utf-8")) != atom.raw_end - atom.raw_start
-        for match in re.finditer(r"\s+|\S+", atom.text, flags=re.UNICODE):
-            value = match.group(0)
-            raw_start = atom.raw_start + len(atom.text[:match.start()].encode("utf-8"))
-            raw_end = atom.raw_start + len(atom.text[:match.end()].encode("utf-8"))
-            if transformed: raw_start, raw_end = atom.raw_start, atom.raw_end
-            if value.isspace():
-                if normalized: pending = (raw_start, raw_end)
-            else:
-                if pending and normalized: emit(" ", *pending)
-                pending = None; emit(value, raw_start, raw_end)
+        # One deterministic mapping per text node is enough even when whitespace is
+        # normalized.  Entity callbacks remain separate atoms because their raw byte
+        # ranges differ.  This avoids token/character-scale metadata growth.
+        value = re.sub(r"\s+", " ", atom.text, flags=re.UNICODE)
+        leading = value.startswith(" ")
+        trailing = value.endswith(" ")
+        content = value.strip(" ")
+        if leading and normalized:
+            pending = (atom.raw_start, atom.raw_end)
+        if content:
+            if pending and normalized: emit(" ", *pending)
+            pending = None
+            emit(content, atom.raw_start, atom.raw_end)
+        if trailing and normalized:
+            pending = (atom.raw_start, atom.raw_end)
         previous_end = atom.raw_end
     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())
     if "".join(span.emitted_text for span in spans) != normalized: raise ValueError("normalized_mapping_invariant")

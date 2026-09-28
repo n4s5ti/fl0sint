@@ -62,11 +62,17 @@ def test_runtime_policy_and_persisted_proof_roundtrip(tmp_path):
     assert decode_source_proof(encoded) == proof
     resolved = resolve_persisted_source_proof(
         encoded, caller_id="runtime-caller", scope="runtime-scope",
-        source_family="http", config_path=config,
+        source_family="http", operation_id="operation-1", config_path=config,
     )
     assert resolved.state is ArtifactState.AVAILABLE
     assert resolved.body == b"complete source"
     assert str(tmp_path / "store") not in encoded
+
+    denied = resolve_persisted_source_proof(
+        encoded, caller_id="runtime-caller", scope="runtime-scope",
+        source_family="http", operation_id="operation-2", config_path=config,
+    )
+    assert (denied.state, denied.reason) == (ArtifactState.REVIEW, "authorization_mismatch")
 
 
 @pytest.mark.parametrize("case", ["missing", "expired", "scope", "revoked"])

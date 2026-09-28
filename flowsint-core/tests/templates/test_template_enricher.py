@@ -24,7 +24,7 @@ from flowsint_core.core.connector_egress import (
 )
 from flowsint_execution.models import OutcomeStatus
 from flowsint_execution.artifacts import FilesystemArtifactStore, RetentionAuthority
-from flowsint_execution.artifact_runtime import resolve_persisted_source_proof
+from flowsint_execution.artifact_runtime import decode_source_proof, resolve_persisted_source_proof
 from flowsint_core.core.template_enricher import TemplateEnricher
 from flowsint_core.templates.loader.yaml_loader import YamlLoader
 from flowsint_core.templates.types import (
@@ -167,11 +167,13 @@ class TestRegistryBackedTemplateEnricher:
         enricher._graph_service = MagicMock()
         result = await enricher.execute_structured([location()])
         evidence = result.outcomes[0].evidence[0]
+        proof = decode_source_proof(evidence.artifact_reference)
         assert result.outcomes[0].status is OutcomeStatus.SUCCESS
         resolved = resolve_persisted_source_proof(
             evidence.artifact_reference,
             caller_id="connector:approved_directory:lookup", scope="enrich.read",
-            source_family="connector", config_path=config,
+            source_family="connector", operation_id=proof.context.operation_id,
+            occurrence_id=proof.context.occurrence_id, config_path=config,
         )
         assert resolved.state.value == "available"
         assert json.loads(resolved.body) == response_body

@@ -360,14 +360,19 @@ class WebsiteToText(Enricher):
                         retrieved_at=artifact.retrieved_at,
                         event_at=artifact.event_at,
                     )
-                    source_proof = encode_source_proof(PersistedSourceProof(
-                        format_version="source-proof/1.0",
-                        input_ref=input_ref,
-                        context=context,
-                        decision=decision,
-                        artifact=artifact,
-                        spans=result.spans,
-                    ))
+                    try:
+                        source_proof = encode_source_proof(PersistedSourceProof(
+                            format_version="source-proof/1.0", input_ref=input_ref,
+                            context=context, decision=decision, artifact=artifact,
+                            spans=result.spans,
+                        ))
+                    except ValueError:
+                        occurrences.append(self._failed_occurrence(
+                            index, source, input_ref,
+                            self._diagnostic("source_proof_too_large", "Source proof exceeds the evidence boundary."),
+                            result.actual_resources, FetchStatus.TOOL_ERROR,
+                        ))
+                        continue
                     occurrences.append(
                         WebsiteTextOccurrence(
                             source,
