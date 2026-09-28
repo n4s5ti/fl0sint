@@ -1,0 +1,265 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+        "name": "serialize_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 531,
+        "endLine": 532,
+        "content": "def serialize_bundle(bundle: AcquisitionBundle) -> str:     return _serialize(bundle, parse_bundle)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+            "name": "serialize_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 531,
+            "endLine": 532,
+            "content": "def serialize_bundle(bundle: AcquisitionBundle) -> str:     return _serialize(bundle, parse_bundle)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 421,
+            "endLine": 424,
+            "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "name": "_parse",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 491,
+            "endLine": 503,
+            "content": "def _parse(raw, model):     obj = _load(raw)     if model is AcquisitionBundle and isinstance(obj.get(\"request\"), dict):         if obj[\"request\"].get(\"format_version\") != FORMAT_VERSION:             raise ContractError(                 \"unsupported_format_version\", (\"request.format_version\",)             )     try:         return model.model_validate_json(_canonical(obj))     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+            "name": "parse_request",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 506,
+            "endLine": 507,
+            "content": "def parse_request(raw: str | bytes) -> AcquisitionRequest:     return _parse(raw, AcquisitionRequest)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "name": "parse_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 510,
+            "endLine": 511,
+            "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "name": "_serialize",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 514,
+            "endLine": 524,
+            "content": "def _serialize(model, parser):     try:         expected = AcquisitionBundle if parser is parse_bundle else AcquisitionRequest         validated = expected.model_validate(             model.model_dump(mode=\"python\", warnings=\"error\")         )         wire = validated.model_dump_json(warnings=\"error\")     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None     validated = parser(wire)     return _canonical(validated.model_dump(mode=\"json\", warnings=\"error\"))"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+            "type": "CALLS",
+            "confidence": 0.7
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "type": "CALLS",
+            "confidence": 0.7
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+            "to": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 6,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+                    "name": "serialize_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 531,
+                    "endLine": 532,
+                    "content": "def serialize_bundle(bundle: AcquisitionBundle) -> str:     return _serialize(bundle, parse_bundle)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                    "name": "_parse",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 491,
+                    "endLine": 503,
+                    "content": "def _parse(raw, model):     obj = _load(raw)     if model is AcquisitionBundle and isinstance(obj.get(\"request\"), dict):         if obj[\"request\"].get(\"format_version\") != FORMAT_VERSION:             raise ContractError(                 \"unsupported_format_version\", (\"request.format_version\",)             )     try:         return model.model_validate_json(_canonical(obj))     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+                    "name": "parse_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 506,
+                    "endLine": 507,
+                    "content": "def parse_request(raw: str | bytes) -> AcquisitionRequest:     return _parse(raw, AcquisitionRequest)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                    "name": "parse_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 510,
+                    "endLine": 511,
+                    "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                    "name": "_serialize",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 514,
+                    "endLine": 524,
+                    "content": "def _serialize(model, parser):     try:         expected = AcquisitionBundle if parser is parse_bundle else AcquisitionRequest         validated = expected.model_validate(             model.model_dump(mode=\"python\", warnings=\"error\")         )         wire = validated.model_dump_json(warnings=\"error\")     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None     validated = parser(wire)     return _canonical(validated.model_dump(mode=\"json\", warnings=\"error\"))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 5
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                    "name": "_serialize",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 514,
+                    "endLine": 524,
+                    "content": "def _serialize(model, parser):     try:         expected = AcquisitionBundle if parser is parse_bundle else AcquisitionRequest         validated = expected.model_validate(             model.model_dump(mode=\"python\", warnings=\"error\")         )         wire = validated.model_dump_json(warnings=\"error\")     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None     validated = parser(wire)     return _canonical(validated.model_dump(mode=\"json\", warnings=\"error\"))"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 421,
+                    "endLine": 424,
+                    "content": "def _canonical(data) -> str:     return json.dumps(         data, ensure_ascii=True, allow_nan=False, sort_keys=True, separators=(\",\", \":\")     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+                    "name": "parse_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 506,
+                    "endLine": 507,
+                    "content": "def parse_request(raw: str | bytes) -> AcquisitionRequest:     return _parse(raw, AcquisitionRequest)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                    "name": "parse_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 510,
+                    "endLine": 511,
+                    "content": "def parse_bundle(raw: str | bytes) -> AcquisitionBundle:     return _parse(raw, AcquisitionBundle)"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                    "name": "_parse",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 491,
+                    "endLine": 503,
+                    "content": "def _parse(raw, model):     obj = _load(raw)     if model is AcquisitionBundle and isinstance(obj.get(\"request\"), dict):         if obj[\"request\"].get(\"format_version\") != FORMAT_VERSION:             raise ContractError(                 \"unsupported_format_version\", (\"request.format_version\",)             )     try:         return model.model_validate_json(_canonical(obj))     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 6,
+        "totalEdges": 6,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

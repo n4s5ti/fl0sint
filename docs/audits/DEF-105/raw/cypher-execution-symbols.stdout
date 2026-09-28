@@ -1,0 +1,1442 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "columns": [
+            "n.id",
+            "labels",
+            "n.filePath"
+        ],
+        "rows": [
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:FORMAT_VERSION",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Identifier",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Count",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Amount",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:Timestamp",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:FiniteJSON",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:model_config",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:requests",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:pages",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:bytes",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:elapsed_seconds",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:model_calls",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:input_tokens",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:output_tokens",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:browser_actions",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:concurrency",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:fanout",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:money_usd",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:run_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:step_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:attempt",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:input_index",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:seed_entity_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:occurrence_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:input_ref",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:type_tag",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:value",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:lineage",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:format_version",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:operation_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:caller_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:scope",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:capability_digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:inputs",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:allocation",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:parent_operation_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:need_ref",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:endpoint_policy_digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:projection_profile_digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:retention_policy_digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:URL",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:artifact_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:snapshot_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:content_digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:byte_length",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:locator",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:source_family",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:origin",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:retrieved_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:event_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:requested_url",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:final_url",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:span_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:byte_start",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:byte_end",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:field_pointer",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:evidence_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:extraction_method",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:extraction_version",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:subject_attribution",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:candidate_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:disposition",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:SUCCESS_WITH_OUTPUT",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:VALID_NO_RESULT",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:PARTIAL",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:RATE_LIMITED",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:TIMEOUT",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:TOOL_ERROR",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:INVALID_INPUT",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:POLICY_DENIED",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:UNKNOWN_OUTCOME",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:RETENTION_HOLD",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:_SUCCESS",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:_FAILURE",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:reference",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:completed_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:status",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:underlying_status",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:candidate_ids",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:artifact_ids",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:diagnostic",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:completion_witness",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:actual_resources",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:child_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:suboutcomes",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:bundle_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:request",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:created_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:outcomes",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:artifacts",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:spans",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:evidence_list",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:candidates",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/acquisition.py:origin_digest",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:SUCCESS",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:FAILURE",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:HOLD",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:model_config",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:code",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:safe_message",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:retryable",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:input_ref",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:destination_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:endpoint_id",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:capability",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:policy_version",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:artifact_sha256",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:artifact_reference",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:source_rights",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:schema_version",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:parser_version",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:confidence",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:verification_state",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:event_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:retrieved_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:ingested_at",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:status",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:outputs",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:diagnostic",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:evidence",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:enricher_name",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Variable:flowsint-core/src/flowsint_execution/models.py:outcomes",
+                "labels": "Variable",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ContractError.__init__#2",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.check_occurrences#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.check_url_pair#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.check_span#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_Result.check_diagnostic_scalar#1",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_Result.check_status#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome.reject_nested_partial#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome.check_partial#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.check_reference_graph#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle.check_origin_digest#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.normalize_timestamp#1",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Method:flowsint-core/src/flowsint_execution/models.py:InputOutcome.require_diagnostic_for_non_success#0",
+                "labels": "Method",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "File:flowsint-core/src/flowsint_execution/__init__.py",
+                "labels": "File",
+                "n.filePath": "flowsint-core/src/flowsint_execution/__init__.py"
+            },
+            {
+                "n.id": "File:flowsint-core/src/flowsint_execution/acquisition.py",
+                "labels": "File",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "File:flowsint-core/src/flowsint_execution/models.py",
+                "labels": "File",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.requests",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.pages",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.bytes",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.elapsed_seconds",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.model_calls",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.input_tokens",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.output_tokens",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.browser_actions",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.concurrency",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.fanout",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Resources.money_usd",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage.run_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage.step_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage.attempt",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage.input_index",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage.seed_entity_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.occurrence_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.input_ref",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.type_tag",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.value",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.lineage",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.format_version",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.operation_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.caller_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.scope",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.capability_digest",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.inputs",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.allocation",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.parent_operation_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.need_ref",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.endpoint_policy_digest",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.projection_profile_digest",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest.retention_policy_digest",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.artifact_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.snapshot_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.content_digest",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.byte_length",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.locator",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.source_family",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.origin",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.retrieved_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.event_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.requested_url",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.final_url",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.span_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.artifact_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_start",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_end",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.field_pointer",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference.evidence_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference.occurrence_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference.span_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference.extraction_method",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference.extraction_version",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference.subject_attribution",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.candidate_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.occurrence_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.evidence_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference.disposition",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.reference",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness.completed_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.status",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.underlying_status",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.candidate_ids",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.artifact_ids",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.diagnostic",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.completion_witness",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_Result.actual_resources",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome.child_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome.occurrence_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome.suboutcomes",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.format_version",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.bundle_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.request",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.created_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.outcomes",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.actual_resources",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.artifacts",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.spans",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.evidence_list",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload.candidates",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle.origin_digest",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.code",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.safe_message",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.retryable",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.input_ref",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.destination_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.endpoint_id",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.capability",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.policy_version",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_sha256",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.artifact_reference",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.source_rights",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.schema_version",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.parser_version",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.confidence",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.verification_state",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.event_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.retrieved_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope.ingested_at",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.input_ref",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.status",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.outputs",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.diagnostic",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:InputOutcome.evidence",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.enricher_name",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Property:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult.outcomes",
+                "labels": "Property",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_json_value",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_unique",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_http_url",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_canonical",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_digest",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_error",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_object",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_load",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_parse",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_request",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:parse_bundle",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:_serialize",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_request",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:serialize_bundle",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                "labels": "Function",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractError",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Resources",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ImportedLineage",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionRequest",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:EvidenceReference",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CandidateReference",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:CompletionWitness",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_Result",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:Suboutcome",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OccurrenceOutcome",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:_BundlePayload",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:AcquisitionBundle",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/acquisition.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/models.py:OutcomeStatus",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/models.py:EvidenceEnvelope",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            },
+            {
+                "n.id": "Class:flowsint-core/src/flowsint_execution/models.py:StructuredExecutionResult",
+                "labels": "Class",
+                "n.filePath": "flowsint-core/src/flowsint_execution/models.py"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

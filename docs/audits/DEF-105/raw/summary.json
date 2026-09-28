@@ -1,0 +1,948 @@
+[
+  {
+    "name": "drift",
+    "rc": 0,
+    "wallSeconds": 0.893,
+    "total": {
+      "total": 0,
+      "file_modified": 0,
+      "file_removed": 0,
+      "file_unindexed": 0,
+      "symbol_stale": 0
+    }
+  },
+  {
+    "name": "graphos-status",
+    "rc": 0,
+    "wallSeconds": 0.689
+  },
+  {
+    "name": "blast-models-canonical_input_hash-upstream",
+    "rc": 0,
+    "wallSeconds": 0.836,
+    "risk": "HIGH",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 105,
+    "edges": 116,
+    "files": 90,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "EXTENDS",
+      "HAS_METHOD",
+      "METHOD_OVERRIDES"
+    ]
+  },
+  {
+    "name": "blast-models-canonical_input_hash-downstream",
+    "rc": 0,
+    "wallSeconds": 0.758,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 2,
+    "edges": 2,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-models-EvidenceEnvelope-upstream",
+    "rc": 0,
+    "wallSeconds": 0.782,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-models-EvidenceEnvelope-downstream",
+    "rc": 0,
+    "wallSeconds": 0.776,
+    "risk": "CRITICAL",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 17,
+    "edges": 16,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "HAS_METHOD",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-models-InputOutcome-upstream",
+    "rc": 0,
+    "wallSeconds": 0.784,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-models-InputOutcome-downstream",
+    "rc": 0,
+    "wallSeconds": 0.768,
+    "risk": "HIGH",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 7,
+    "edges": 6,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "HAS_METHOD",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-models-StructuredExecutionResult-upstream",
+    "rc": 0,
+    "wallSeconds": 0.799,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-models-StructuredExecutionResult-downstream",
+    "rc": 0,
+    "wallSeconds": 0.758,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 3,
+    "edges": 2,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-models-OutcomeStatus-upstream",
+    "rc": 0,
+    "wallSeconds": 0.9,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-models-OutcomeStatus-downstream",
+    "rc": 0,
+    "wallSeconds": 1.19,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-models-RedactedDiagnostic-upstream",
+    "rc": 0,
+    "wallSeconds": 0.863,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-models-RedactedDiagnostic-downstream",
+    "rc": 0,
+    "wallSeconds": 0.79,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-acquisition-build_bundle-upstream",
+    "rc": 0,
+    "wallSeconds": 0.765,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-build_bundle-downstream",
+    "rc": 0,
+    "wallSeconds": 0.776,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-parse_bundle-upstream",
+    "rc": 0,
+    "wallSeconds": 0.773,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-parse_bundle-downstream",
+    "rc": 0,
+    "wallSeconds": 0.821,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 5,
+    "edges": 4,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-parse_request-upstream",
+    "rc": 0,
+    "wallSeconds": 0.799,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-parse_request-downstream",
+    "rc": 0,
+    "wallSeconds": 0.797,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 5,
+    "edges": 4,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-serialize_bundle-upstream",
+    "rc": 0,
+    "wallSeconds": 0.774,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-serialize_bundle-downstream",
+    "rc": 0,
+    "wallSeconds": 0.81,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 6,
+    "edges": 6,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-serialize_request-upstream",
+    "rc": 0,
+    "wallSeconds": 0.764,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-serialize_request-downstream",
+    "rc": 0,
+    "wallSeconds": 0.784,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 6,
+    "edges": 6,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-AcquisitionBundle-upstream",
+    "rc": 0,
+    "wallSeconds": 0.797,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-AcquisitionBundle-downstream",
+    "rc": 0,
+    "wallSeconds": 0.785,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 17,
+    "edges": 16,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "EXTENDS",
+      "HAS_METHOD",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-acquisition-AcquisitionRequest-upstream",
+    "rc": 0,
+    "wallSeconds": 0.762,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-AcquisitionRequest-downstream",
+    "rc": 0,
+    "wallSeconds": 0.82,
+    "risk": "CRITICAL",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 16,
+    "edges": 15,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "EXTENDS",
+      "HAS_METHOD",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-acquisition-InputOccurrence-upstream",
+    "rc": 0,
+    "wallSeconds": 0.803,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-InputOccurrence-downstream",
+    "rc": 0,
+    "wallSeconds": 0.768,
+    "risk": "HIGH",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 9,
+    "edges": 8,
+    "files": 2,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "EXTENDS",
+      "HAS_METHOD",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-acquisition-OccurrenceOutcome-upstream",
+    "rc": 0,
+    "wallSeconds": 0.794,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-OccurrenceOutcome-downstream",
+    "rc": 0,
+    "wallSeconds": 0.781,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 16,
+    "edges": 15,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "EXTENDS",
+      "HAS_METHOD",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-acquisition-CompletionWitness-upstream",
+    "rc": 0,
+    "wallSeconds": 0.767,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-CompletionWitness-downstream",
+    "rc": 0,
+    "wallSeconds": 0.791,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "EXTENDS",
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-acquisition-_digest-upstream",
+    "rc": 0,
+    "wallSeconds": 0.77,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "HAS_METHOD"
+    ]
+  },
+  {
+    "name": "blast-acquisition-_digest-downstream",
+    "rc": 0,
+    "wallSeconds": 0.77,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 2,
+    "edges": 1,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-acquisition-OutcomeStatus-upstream",
+    "rc": 0,
+    "wallSeconds": 0.756,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-acquisition-OutcomeStatus-downstream",
+    "rc": 0,
+    "wallSeconds": 0.757,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-execution_service-persist_structured_result-upstream",
+    "rc": 0,
+    "wallSeconds": 0.784,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 3,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "HAS_METHOD"
+    ]
+  },
+  {
+    "name": "blast-execution_service-persist_structured_result-downstream",
+    "rc": 0,
+    "wallSeconds": 0.802,
+    "risk": "HIGH",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 8,
+    "edges": 10,
+    "files": 2,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-execution_service-reconstruct_structured_result-upstream",
+    "rc": 0,
+    "wallSeconds": 0.785,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 4,
+    "edges": 3,
+    "files": 2,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "HAS_METHOD"
+    ]
+  },
+  {
+    "name": "blast-execution_service-reconstruct_structured_result-downstream",
+    "rc": 0,
+    "wallSeconds": 0.786,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 3,
+    "edges": 2,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-execution_service-aggregate_status-upstream",
+    "rc": 0,
+    "wallSeconds": 0.796,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 5,
+    "edges": 5,
+    "files": 3,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS",
+      "HAS_METHOD"
+    ]
+  },
+  {
+    "name": "blast-execution_service-aggregate_status-downstream",
+    "rc": 0,
+    "wallSeconds": 0.769,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-enricher-run_connector_template-upstream",
+    "rc": 0,
+    "wallSeconds": 0.763,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-enricher-run_connector_template-downstream",
+    "rc": 0,
+    "wallSeconds": 0.799,
+    "risk": "CRITICAL",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 37,
+    "edges": 51,
+    "files": 9,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-enricher-_connector_failure_diagnostic-upstream",
+    "rc": 0,
+    "wallSeconds": 0.776,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 2,
+    "edges": 1,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "blast-enricher-_connector_failure_diagnostic-downstream",
+    "rc": 0,
+    "wallSeconds": 0.831,
+    "risk": "LOW",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-enricher_template-ConnectorTestOutcome-upstream",
+    "rc": 0,
+    "wallSeconds": 0.771,
+    "risk": "UNKNOWN",
+    "completeness": "partial",
+    "reasons": [
+      "no-call-edges"
+    ],
+    "warnings": [],
+    "symbols": 1,
+    "edges": 0,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": []
+  },
+  {
+    "name": "blast-enricher_template-ConnectorTestOutcome-downstream",
+    "rc": 0,
+    "wallSeconds": 0.769,
+    "risk": "MEDIUM",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 5,
+    "edges": 4,
+    "files": 1,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "HAS_PROPERTY"
+    ]
+  },
+  {
+    "name": "blast-models-canonical_input_hash-upstream-callsonly",
+    "rc": 0,
+    "wallSeconds": 0.811,
+    "risk": "HIGH",
+    "completeness": "complete",
+    "reasons": null,
+    "warnings": [],
+    "symbols": 17,
+    "edges": 18,
+    "files": 8,
+    "indexStatus": "ready",
+    "edgeTypes": [
+      "CALLS"
+    ]
+  },
+  {
+    "name": "cypher-imports-execution",
+    "rc": 0,
+    "wallSeconds": 0.737,
+    "rows": 224
+  },
+  {
+    "name": "cypher-relation-types",
+    "rc": 0,
+    "wallSeconds": 0.728,
+    "rows": 15
+  },
+  {
+    "name": "cypher-execution-symbols",
+    "rc": 0,
+    "wallSeconds": 0.708,
+    "rows": 285
+  },
+  {
+    "name": "cypher-sink-calls",
+    "rc": 0,
+    "wallSeconds": 0.731,
+    "rows": 46
+  },
+  {
+    "name": "doctor-verify-build_bundle",
+    "rc": 0,
+    "wallSeconds": 1.776,
+    "keys": [
+      "cwd",
+      "graph",
+      "packageManager",
+      "packageName",
+      "refactor",
+      "requestedChecks",
+      "results"
+    ]
+  },
+  {
+    "name": "doctor-verify-canonical_input_hash",
+    "rc": 0,
+    "wallSeconds": 1.716,
+    "keys": [
+      "cwd",
+      "graph",
+      "packageManager",
+      "packageName",
+      "refactor",
+      "requestedChecks",
+      "results"
+    ]
+  },
+  {
+    "name": "doctor-verify-serialize_bundle",
+    "rc": 0,
+    "wallSeconds": 1.714,
+    "keys": [
+      "cwd",
+      "graph",
+      "packageManager",
+      "packageName",
+      "refactor",
+      "requestedChecks",
+      "results"
+    ]
+  },
+  {
+    "name": "doctor-verify-persist_structured_result",
+    "rc": 0,
+    "wallSeconds": 1.713,
+    "keys": [
+      "cwd",
+      "graph",
+      "packageManager",
+      "packageName",
+      "refactor",
+      "requestedChecks",
+      "results"
+    ]
+  },
+  {
+    "name": "doctor-graph",
+    "rc": 0,
+    "wallSeconds": 1.494
+  },
+  {
+    "name": "doctor-check-test",
+    "rc": 252,
+    "wallSeconds": 0.514,
+    "parse": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "stderr_head": [
+      "No flag registered for --check, did you mean --typecheck?"
+    ]
+  },
+  {
+    "name": "hunt-default-target",
+    "rc": 1,
+    "wallSeconds": 1.509,
+    "parse": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "stderr_head": [
+      "Command failed, Error: --hunt has no CLI probe target: /home/n4s5ti/Documents/dev/fl0sint-def41-s01/bin/pip3r.mjs does not exist. --hunt probes a CLI executable, not the sources in --cwd; pass --hunt-target <cli entry> (e.g. the installed pip3r bin/pip3r.mjs) or run from a Pip3r checkout.",
+      "    at resolveProbeTarget (file:///home/n4s5ti/Documents/dev/pip3r/packages/doctor/dist/chunk-XG4FBP63.js:2247:11)"
+    ]
+  },
+  {
+    "name": "hunt-source-scope",
+    "rc": 1,
+    "wallSeconds": 1.497,
+    "parse": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+    "stderr_head": [
+      "Command failed, Error: --hunt --scope selects CLI command paths (e.g. runtime, or a quoted nested path like \"runtime graph\"), not filesystem paths: flowsint-core/src/flowsint_execution",
+      "    at probeCli (file:///home/n4s5ti/Documents/dev/pip3r/packages/doctor/dist/chunk-XG4FBP63.js:2267:15)"
+    ]
+  },
+  {
+    "name": "hunt-selfprobe-blast",
+    "rc": 0,
+    "wallSeconds": 3.457
+  },
+  {
+    "name": "drift-after",
+    "rc": 0,
+    "wallSeconds": 0.957,
+    "total": {
+      "total": 0,
+      "file_modified": 0,
+      "file_removed": 0,
+      "file_unindexed": 0,
+      "symbol_stale": 0
+    }
+  }
+]

@@ -1,0 +1,181 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+        "name": "RedactedDiagnostic",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 24,
+        "endLine": 31,
+        "content": "class RedactedDiagnostic(BaseModel):     \"\"\"A stable diagnostic that is safe to retain outside process memory.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")     safe_message: str = Field(min_length=1, max_length=512)     retryable: bool"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+            "name": "RedactedDiagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 24,
+            "endLine": 31,
+            "content": "class RedactedDiagnostic(BaseModel):     \"\"\"A stable diagnostic that is safe to retain outside process memory.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")     safe_message: str = Field(min_length=1, max_length=512)     retryable: bool"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.code",
+            "name": "code",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 29,
+            "endLine": 29,
+            "content": "    code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.safe_message",
+            "name": "safe_message",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 30,
+            "endLine": 30,
+            "content": "    safe_message: str = Field(min_length=1, max_length=512)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.retryable",
+            "name": "retryable",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Property",
+            "startLine": 31,
+            "endLine": 31,
+            "content": "    retryable: bool"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.code",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.safe_message",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+            "to": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.retryable",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+                    "name": "RedactedDiagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 24,
+                    "endLine": 31,
+                    "content": "class RedactedDiagnostic(BaseModel):     \"\"\"A stable diagnostic that is safe to retain outside process memory.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")     safe_message: str = Field(min_length=1, max_length=512)     retryable: bool"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.code",
+                    "name": "code",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 29,
+                    "endLine": 29,
+                    "content": "    code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.safe_message",
+                    "name": "safe_message",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 30,
+                    "endLine": 30,
+                    "content": "    safe_message: str = Field(min_length=1, max_length=512)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.retryable",
+                    "name": "retryable",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 31,
+                    "endLine": 31,
+                    "content": "    retryable: bool"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.code",
+                    "name": "code",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 29,
+                    "endLine": 29,
+                    "content": "    code: str = Field(min_length=1, max_length=128, pattern=r\"^[a-z0-9_]+$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.safe_message",
+                    "name": "safe_message",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 30,
+                    "endLine": 30,
+                    "content": "    safe_message: str = Field(min_length=1, max_length=512)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic.retryable",
+                    "name": "retryable",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Property",
+                    "startLine": 31,
+                    "endLine": 31,
+                    "content": "    retryable: bool"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:RedactedDiagnostic",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 3,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

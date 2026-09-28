@@ -1,0 +1,90 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 1156,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "hunt": {
+        "findings": [],
+        "counts": {
+            "total": 0,
+            "critical": 0,
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "info": 0
+        },
+        "durationMs": 1949,
+        "coverage": {
+            "commandsDiscovered": 1,
+            "commandsProbed": 1,
+            "jsonContractsExercised": 0,
+            "delegatedSurfacesCaptured": 0,
+            "spawns": 2,
+            "discoveryCap": null,
+            "commands": [
+                {
+                    "symbol": "blast",
+                    "wrapperHelp": {
+                        "examined": true
+                    },
+                    "delegatedHelp": {
+                        "examined": false,
+                        "reason": "no_passthrough_advertised"
+                    },
+                    "jsonProbe": {
+                        "examined": false,
+                        "reason": "json_probe_not_documented"
+                    }
+                }
+            ],
+            "scope": [
+                "blast"
+            ],
+            "target": {
+                "command": "/home/n4s5ti/.nvm/versions/node/v24.16.0/bin/node",
+                "argv": [
+                    "/home/n4s5ti/Documents/dev/pip3r/bin/pip3r.mjs"
+                ]
+            }
+        }
+    }
+}

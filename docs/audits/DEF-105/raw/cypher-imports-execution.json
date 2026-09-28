@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--cypher",
+    "MATCH (a)-[r]->(b) WHERE b.filePath CONTAINS 'flowsint-core/src/flowsint_execution/' AND r.type IN ['IMPORTS','CALLS','EXTENDS','METHOD_OVERRIDES','HAS_METHOD','DEFINES'] RETURN a.id,a.filePath,r.type,b.id,b.filePath",
+    "--limit",
+    "1000",
+    "--json",
+    "--no-auto-index"
+  ],
+  "rc": 0,
+  "wallSeconds": 0.737,
+  "stdout_sha256": "31fbe806601f5e91b3224fd61d17c86d81d04b784fd9bce3c3b3b19f61a5fb55",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

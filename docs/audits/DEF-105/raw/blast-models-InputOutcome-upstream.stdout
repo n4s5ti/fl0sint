@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+        "name": "InputOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Class",
+        "startLine": 65,
+        "endLine": 84,
+        "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+            "name": "InputOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Class",
+            "startLine": 65,
+            "endLine": 84,
+            "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+                    "name": "InputOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Class",
+                    "startLine": 65,
+                    "endLine": 84,
+                    "content": "class InputOutcome(BaseModel):     \"\"\"The grouped structured result for exactly one original input.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     status: OutcomeStatus     outputs: tuple[Any, ...] = ()     diagnostic: RedactedDiagnostic | None = None     evidence: tuple[EvidenceEnvelope, ...] = ()     @model_validator(mode=\"after\")     def require_diagnostic_for_non_success(self) -> InputOutcome:         if self.status is not OutcomeStatus.SUCCESS and self.diagnostic is None:             raise ValueError(\"non-success outcomes require a diagnostic\")         if self.status is not OutcomeStatus.SUCCESS and self.outputs:             raise ValueError(\"non-success outcomes cannot include outputs\")         if self.status is OutcomeStatus.SUCCESS and self.diagnostic is not None:             raise ValueError(\"success outcomes cannot include a diagnostic\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:InputOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

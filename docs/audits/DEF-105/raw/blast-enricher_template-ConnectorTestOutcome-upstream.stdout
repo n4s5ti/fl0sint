@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+        "name": "ConnectorTestOutcome",
+        "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+        "nodeType": "Class",
+        "startLine": 73,
+        "endLine": 77,
+        "content": "class ConnectorTestOutcome(BaseModel):     status: Literal[\"success\", \"failure\", \"hold\"]     visible_outputs: int = Field(ge=0)     diagnostic: RedactedDiagnostic | None = None     evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+            "name": "ConnectorTestOutcome",
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "nodeType": "Class",
+            "startLine": 73,
+            "endLine": 77,
+            "content": "class ConnectorTestOutcome(BaseModel):     status: Literal[\"success\", \"failure\", \"hold\"]     visible_outputs: int = Field(ge=0)     diagnostic: RedactedDiagnostic | None = None     evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+                    "name": "ConnectorTestOutcome",
+                    "filePath": "flowsint-api/app/api/schemas/enricher_template.py",
+                    "nodeType": "Class",
+                    "startLine": 73,
+                    "endLine": 77,
+                    "content": "class ConnectorTestOutcome(BaseModel):     status: Literal[\"success\", \"failure\", \"hold\"]     visible_outputs: int = Field(ge=0)     diagnostic: RedactedDiagnostic | None = None     evidence: list[ConnectorTestEvidenceMetadata] = Field(default_factory=list)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

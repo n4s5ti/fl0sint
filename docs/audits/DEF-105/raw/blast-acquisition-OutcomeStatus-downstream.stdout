@@ -1,0 +1,68 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+        "name": "OutcomeStatus",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 226,
+        "endLine": 236,
+        "content": "class OutcomeStatus(str, Enum):     SUCCESS_WITH_OUTPUT = \"success_with_output\"     VALID_NO_RESULT = \"valid_no_result\"     PARTIAL = \"partial\"     RATE_LIMITED = \"rate_limited\"     TIMEOUT = \"timeout\"     TOOL_ERROR = \"tool_error\"     INVALID_INPUT = \"invalid_input\"     POLICY_DENIED = \"policy_denied\"     UNKNOWN_OUTCOME = \"unknown_outcome\"     RETENTION_HOLD = \"retention_hold\""
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+            "name": "OutcomeStatus",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 226,
+            "endLine": 236,
+            "content": "class OutcomeStatus(str, Enum):     SUCCESS_WITH_OUTPUT = \"success_with_output\"     VALID_NO_RESULT = \"valid_no_result\"     PARTIAL = \"partial\"     RATE_LIMITED = \"rate_limited\"     TIMEOUT = \"timeout\"     TOOL_ERROR = \"tool_error\"     INVALID_INPUT = \"invalid_input\"     POLICY_DENIED = \"policy_denied\"     UNKNOWN_OUTCOME = \"unknown_outcome\"     RETENTION_HOLD = \"retention_hold\""
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+                    "name": "OutcomeStatus",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 226,
+                    "endLine": 236,
+                    "content": "class OutcomeStatus(str, Enum):     SUCCESS_WITH_OUTPUT = \"success_with_output\"     VALID_NO_RESULT = \"valid_no_result\"     PARTIAL = \"partial\"     RATE_LIMITED = \"rate_limited\"     TIMEOUT = \"timeout\"     TOOL_ERROR = \"tool_error\"     INVALID_INPUT = \"invalid_input\"     POLICY_DENIED = \"policy_denied\"     UNKNOWN_OUTCOME = \"unknown_outcome\"     RETENTION_HOLD = \"retention_hold\""
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:OutcomeStatus",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

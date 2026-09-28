@@ -1,0 +1,115 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+        "name": "_connector_failure_diagnostic",
+        "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+        "nodeType": "Function",
+        "startLine": 168,
+        "endLine": 193,
+        "content": "def _connector_failure_diagnostic(error):     from flowsint_execution.models import RedactedDiagnostic     if isinstance(error, ProjectionError):         return RedactedDiagnostic(             code=error.code,             safe_message=error.safe_message,             retryable=False,         )     if isinstance(error, (ConnectorPolicyError, ConnectorValidationError)):         return RedactedDiagnostic(             code=\"connector_policy_denied\",             safe_message=\"Connector policy denied the request.\",             retryable=False,         )     if isinstance(error, ConnectorCredentialUnavailable):         return RedactedDiagnostic(             code=\"connector_credential_unavailable\",             safe_message=\"Connector credentials are unavailable.\",             retryable=False,         )     return RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+            "name": "_connector_failure_diagnostic",
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "nodeType": "Function",
+            "startLine": 168,
+            "endLine": 193,
+            "content": "def _connector_failure_diagnostic(error):     from flowsint_execution.models import RedactedDiagnostic     if isinstance(error, ProjectionError):         return RedactedDiagnostic(             code=error.code,             safe_message=error.safe_message,             retryable=False,         )     if isinstance(error, (ConnectorPolicyError, ConnectorValidationError)):         return RedactedDiagnostic(             code=\"connector_policy_denied\",             safe_message=\"Connector policy denied the request.\",             retryable=False,         )     if isinstance(error, ConnectorCredentialUnavailable):         return RedactedDiagnostic(             code=\"connector_credential_unavailable\",             safe_message=\"Connector credentials are unavailable.\",             retryable=False,         )     return RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+            "name": "run_connector_template",
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "nodeType": "Function",
+            "startLine": 197,
+            "endLine": 380,
+            "content": "def run_connector_template(     self,     template_id: str,     template_digest: str,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: str,     idempotency_key: Optional[str] = None, ):     \"\"\"Run a registry-backed template with Stage 3 replay and lease fencing intact.\"\"\"     from flowsint_execution.models import RedactedDiagnostic, canonical_input_hash     from ..core.services.execution_service import (         FINAL_RUN_STATUSES,         RunLeaseLost,         create_execution_service,     )     session = SessionLocal()     scan = None     flow_run = None     lease = None     execution_service = None     safe_diagnostic = RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )     try:         scan_id = uuid.UUID(self.request.id)         owner_uuid = uuid.UUID(owner_id)         template_uuid = uuid.UUID(template_id)         idempotency_key = idempotency_key or str(scan_id)         sketch_uuid = uuid.UUID(sketch_id) if sketch_id else None         input_digest = canonical_input_hash(serialized_objects)         operation_digest = hashlib.sha256(             f\"{template_uuid}:{template_digest}:{sketch_uuid or ''}\".encode(\"utf-8\")         ).hexdigest()         step_key = f\"connector-template:{template_uuid}:{template_digest}\"         execution_service = create_execution_service(session)         def canonical_scan(current_run):             return _get_or_create_scan(session, current_run.id, sketch_uuid)         def replay_or_attach():             session.expire_all()             current_run, _ = execution_service.create_or_reuse_run(                 owner_id=owner_uuid,                 idempotency_key=idempotency_key,                 input_digest=input_digest,                 input_count=len(serialized_objects),                 operation_digest=operation_digest,                 sketch_id=sketch_uuid,                 run_id=scan_id,             )             replayed_step = execution_service.get_step(current_run, step_key)             if current_run.status in FINAL_RUN_STATUSES:                 current_scan = canonical_scan(current_run)                 if (                     replayed_step is not None                     and replayed_step.status in FINAL_RUN_STATUSES                 ):                     current_scan.status = EventLevel.COMPLETED                     current_scan.error = None                     current_scan.details = _safe_connector_scan_details(                         execution_service.reconstruct_structured_result(replayed_step)                     )                 else:                     diagnostic = current_run.safe_error_diagnostic or {}                     current_scan.status = EventLevel.FAILED                     current_scan.error = diagnostic.get(                         \"safe_message\", safe_diagnostic.safe_message                     )                     current_scan.details = {                         \"status\": \"failed\",                         \"flow_run_id\": str(current_run.id),                         \"flow_run_reference\": f\"flow_run:{current_run.id}\",                         \"error_code\": diagnostic.get(\"code\", safe_diagnostic.code),                     }                 session.commit()                 return {\"result\": current_scan.details}             return {                 \"result\": {                     \"status\": \"in_progress\",                     \"flow_run_id\": str(current_run.id),                     \"flow_run_reference\": f\"flow_run:{current_run.id}\",                 }             }         flow_run, _ = execution_service.create_or_reuse_run(             owner_id=owner_uuid,             idempotency_key=idempotency_key,             input_digest=input_digest,             input_count=len(serialized_objects),             operation_digest=operation_digest,             sketch_id=sketch_uuid,             run_id=scan_id,         )         lease = execution_service.claim_run(flow_run, str(scan_id))         if lease is None:             return replay_or_attach()         scan = canonical_scan(flow_run)         template_service = create_enricher_template_service(session)         db_template = template_service.get_template(template_uuid, owner_uuid)         template = Template.model_validate(db_template.content)         projection_binding = projection_registry.resolve(template.projection)         if connector_template_digest(template) != template_digest:             raise ConnectorPolicyError(\"connector template digest denied\")         enricher = TemplateEnricher(             template=template,             registry=destination_registry,             runtime_authorizer=EgressAuthorizer.enrichment(),             sketch_id=sketch_id,             scan_id=str(flow_run.id),         )         step_run = execution_service.begin_or_resume_step(             flow_run, lease, step_key, len(serialized_objects)         )         execution_service.update_st ... [truncated]"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+            "to": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+                    "name": "_connector_failure_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 168,
+                    "endLine": 193,
+                    "content": "def _connector_failure_diagnostic(error):     from flowsint_execution.models import RedactedDiagnostic     if isinstance(error, ProjectionError):         return RedactedDiagnostic(             code=error.code,             safe_message=error.safe_message,             retryable=False,         )     if isinstance(error, (ConnectorPolicyError, ConnectorValidationError)):         return RedactedDiagnostic(             code=\"connector_policy_denied\",             safe_message=\"Connector policy denied the request.\",             retryable=False,         )     if isinstance(error, ConnectorCredentialUnavailable):         return RedactedDiagnostic(             code=\"connector_credential_unavailable\",             safe_message=\"Connector credentials are unavailable.\",             retryable=False,         )     return RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                    "name": "run_connector_template",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 197,
+                    "endLine": 380,
+                    "content": "def run_connector_template(     self,     template_id: str,     template_digest: str,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: str,     idempotency_key: Optional[str] = None, ):     \"\"\"Run a registry-backed template with Stage 3 replay and lease fencing intact.\"\"\"     from flowsint_execution.models import RedactedDiagnostic, canonical_input_hash     from ..core.services.execution_service import (         FINAL_RUN_STATUSES,         RunLeaseLost,         create_execution_service,     )     session = SessionLocal()     scan = None     flow_run = None     lease = None     execution_service = None     safe_diagnostic = RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )     try:         scan_id = uuid.UUID(self.request.id)         owner_uuid = uuid.UUID(owner_id)         template_uuid = uuid.UUID(template_id)         idempotency_key = idempotency_key or str(scan_id)         sketch_uuid = uuid.UUID(sketch_id) if sketch_id else None         input_digest = canonical_input_hash(serialized_objects)         operation_digest = hashlib.sha256(             f\"{template_uuid}:{template_digest}:{sketch_uuid or ''}\".encode(\"utf-8\")         ).hexdigest()         step_key = f\"connector-template:{template_uuid}:{template_digest}\"         execution_service = create_execution_service(session)         def canonical_scan(current_run):             return _get_or_create_scan(session, current_run.id, sketch_uuid)         def replay_or_attach():             session.expire_all()             current_run, _ = execution_service.create_or_reuse_run(                 owner_id=owner_uuid,                 idempotency_key=idempotency_key,                 input_digest=input_digest,                 input_count=len(serialized_objects),                 operation_digest=operation_digest,                 sketch_id=sketch_uuid,                 run_id=scan_id,             )             replayed_step = execution_service.get_step(current_run, step_key)             if current_run.status in FINAL_RUN_STATUSES:                 current_scan = canonical_scan(current_run)                 if (                     replayed_step is not None                     and replayed_step.status in FINAL_RUN_STATUSES                 ):                     current_scan.status = EventLevel.COMPLETED                     current_scan.error = None                     current_scan.details = _safe_connector_scan_details(                         execution_service.reconstruct_structured_result(replayed_step)                     )                 else:                     diagnostic = current_run.safe_error_diagnostic or {}                     current_scan.status = EventLevel.FAILED                     current_scan.error = diagnostic.get(                         \"safe_message\", safe_diagnostic.safe_message                     )                     current_scan.details = {                         \"status\": \"failed\",                         \"flow_run_id\": str(current_run.id),                         \"flow_run_reference\": f\"flow_run:{current_run.id}\",                         \"error_code\": diagnostic.get(\"code\", safe_diagnostic.code),                     }                 session.commit()                 return {\"result\": current_scan.details}             return {                 \"result\": {                     \"status\": \"in_progress\",                     \"flow_run_id\": str(current_run.id),                     \"flow_run_reference\": f\"flow_run:{current_run.id}\",                 }             }         flow_run, _ = execution_service.create_or_reuse_run(             owner_id=owner_uuid,             idempotency_key=idempotency_key,             input_digest=input_digest,             input_count=len(serialized_objects),             operation_digest=operation_digest,             sketch_id=sketch_uuid,             run_id=scan_id,         )         lease = execution_service.claim_run(flow_run, str(scan_id))         if lease is None:             return replay_or_attach()         scan = canonical_scan(flow_run)         template_service = create_enricher_template_service(session)         db_template = template_service.get_template(template_uuid, owner_uuid)         template = Template.model_validate(db_template.content)         projection_binding = projection_registry.resolve(template.projection)         if connector_template_digest(template) != template_digest:             raise ConnectorPolicyError(\"connector template digest denied\")         enricher = TemplateEnricher(             template=template,             registry=destination_registry,             runtime_authorizer=EgressAuthorizer.enrichment(),             sketch_id=sketch_id,             scan_id=str(flow_run.id),         )         step_run = execution_service.begin_or_resume_step(             flow_run, lease, step_key, len(serialized_objects)         )         execution_service.update_st ... [truncated]"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                    "name": "run_connector_template",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 197,
+                    "endLine": 380,
+                    "content": "def run_connector_template(     self,     template_id: str,     template_digest: str,     serialized_objects: List[dict],     sketch_id: str | None,     owner_id: str,     idempotency_key: Optional[str] = None, ):     \"\"\"Run a registry-backed template with Stage 3 replay and lease fencing intact.\"\"\"     from flowsint_execution.models import RedactedDiagnostic, canonical_input_hash     from ..core.services.execution_service import (         FINAL_RUN_STATUSES,         RunLeaseLost,         create_execution_service,     )     session = SessionLocal()     scan = None     flow_run = None     lease = None     execution_service = None     safe_diagnostic = RedactedDiagnostic(         code=\"connector_execution_failed\",         safe_message=\"Connector execution could not be completed.\",         retryable=False,     )     try:         scan_id = uuid.UUID(self.request.id)         owner_uuid = uuid.UUID(owner_id)         template_uuid = uuid.UUID(template_id)         idempotency_key = idempotency_key or str(scan_id)         sketch_uuid = uuid.UUID(sketch_id) if sketch_id else None         input_digest = canonical_input_hash(serialized_objects)         operation_digest = hashlib.sha256(             f\"{template_uuid}:{template_digest}:{sketch_uuid or ''}\".encode(\"utf-8\")         ).hexdigest()         step_key = f\"connector-template:{template_uuid}:{template_digest}\"         execution_service = create_execution_service(session)         def canonical_scan(current_run):             return _get_or_create_scan(session, current_run.id, sketch_uuid)         def replay_or_attach():             session.expire_all()             current_run, _ = execution_service.create_or_reuse_run(                 owner_id=owner_uuid,                 idempotency_key=idempotency_key,                 input_digest=input_digest,                 input_count=len(serialized_objects),                 operation_digest=operation_digest,                 sketch_id=sketch_uuid,                 run_id=scan_id,             )             replayed_step = execution_service.get_step(current_run, step_key)             if current_run.status in FINAL_RUN_STATUSES:                 current_scan = canonical_scan(current_run)                 if (                     replayed_step is not None                     and replayed_step.status in FINAL_RUN_STATUSES                 ):                     current_scan.status = EventLevel.COMPLETED                     current_scan.error = None                     current_scan.details = _safe_connector_scan_details(                         execution_service.reconstruct_structured_result(replayed_step)                     )                 else:                     diagnostic = current_run.safe_error_diagnostic or {}                     current_scan.status = EventLevel.FAILED                     current_scan.error = diagnostic.get(                         \"safe_message\", safe_diagnostic.safe_message                     )                     current_scan.details = {                         \"status\": \"failed\",                         \"flow_run_id\": str(current_run.id),                         \"flow_run_reference\": f\"flow_run:{current_run.id}\",                         \"error_code\": diagnostic.get(\"code\", safe_diagnostic.code),                     }                 session.commit()                 return {\"result\": current_scan.details}             return {                 \"result\": {                     \"status\": \"in_progress\",                     \"flow_run_id\": str(current_run.id),                     \"flow_run_reference\": f\"flow_run:{current_run.id}\",                 }             }         flow_run, _ = execution_service.create_or_reuse_run(             owner_id=owner_uuid,             idempotency_key=idempotency_key,             input_digest=input_digest,             input_count=len(serialized_objects),             operation_digest=operation_digest,             sketch_id=sketch_uuid,             run_id=scan_id,         )         lease = execution_service.claim_run(flow_run, str(scan_id))         if lease is None:             return replay_or_attach()         scan = canonical_scan(flow_run)         template_service = create_enricher_template_service(session)         db_template = template_service.get_template(template_uuid, owner_uuid)         template = Template.model_validate(db_template.content)         projection_binding = projection_registry.resolve(template.projection)         if connector_template_digest(template) != template_digest:             raise ConnectorPolicyError(\"connector template digest denied\")         enricher = TemplateEnricher(             template=template,             registry=destination_registry,             runtime_authorizer=EgressAuthorizer.enrichment(),             sketch_id=sketch_id,             scan_id=str(flow_run.id),         )         step_run = execution_service.begin_or_resume_step(             flow_run, lease, step_key, len(serialized_objects)         )         execution_service.update_st ... [truncated]"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/tasks/enricher.py:_connector_failure_diagnostic",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

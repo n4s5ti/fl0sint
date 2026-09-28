@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--no-auto-index",
+    "--include-tests",
+    "--direction",
+    "upstream",
+    "--max-depth",
+    "2",
+    "--json",
+    "flowsint-api/app/api/schemas/enricher_template.py:ConnectorTestOutcome"
+  ],
+  "rc": 0,
+  "wallSeconds": 0.771,
+  "stdout_sha256": "a249c76e6ac78ae101a38267cdcc041a280c101215eba38012b462d6d7cc1c5a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

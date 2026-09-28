@@ -1,0 +1,17 @@
+## DEF-105 gate recovery — DEF-41 impact matrix rerun on the repaired Pip3r runtime
+
+Packet: `docs/audits/DEF-105/` on `work/def-105-gate-recovery` (not merged to dev). Runtime: pip3r `82745f2` (DEF-106/107/108 repairs; graphos/blast/doctor/graphos-schemas clean vs HEAD, dist SHA-256s in `baseline.json`), gitnexus 1.6.10-rc.45. Analysis worktree `fl0sint-def41-s01` at `1198f29e` (implementation `b7828cc9`), clean before and after. Fresh isolated index (prior `.gitnexus` moved aside; 1156 files, 35 s, generation `sha256:51feb301…`), drift 0 before and after. Shared checkout index untouched.
+
+**Traversal (DEF-106):** `canonical_input_hash` upstream depth 5 — formerly 5 edges then `query-interrupted` — is now `complete`, risk HIGH, 105 symbols / 116 edges / 90 files (CALLS, HAS_METHOD, METHOD_OVERRIDES, EXTENDS); CALLS-only control complete 17/18. 49 Blast runs, zero `query-interrupted`, zero `unsupported-relation-types`, all `indexStatus: ready`.
+
+**Matrix (24 roots: constructors, status readers, serializers/parsers, ID/digest creation, persistence sink, lazy task imports, API schema):** downstream complete for 24/24; upstream complete for 8 (`canonical_input_hash`, `_digest`, `parse_request`, `parse_bundle`, `persist_structured_result`, `reconstruct_structured_result`, `aggregate_status`, `_connector_failure_diagnostic`); upstream **UNKNOWN for 16** (`partial`, `no-call-edges`): the model constructors, both `OutcomeStatus` enums, `build_bundle`, `serialize_*`, `run_connector_template`, `ConnectorTestOutcome`. Verified cause: the index has no CALLS edge for class instantiation, module-alias attribute calls (`a.build_bundle`), or registry-invoked tasks. Kept UNKNOWN; each paired in `matrix.json` with its exact source consumer inventory.
+
+**Imports/aliases:** graph IMPORTS into `_execution` cover 7 of 15 external importer files (missing: API schema, API test, example, five core test modules — DEF39-F3 class gap, still open). Inventory is exact (`raw/import-inventory.txt`); aliases (`OutcomeStatus as CanonicalStatus`, `acquisition as a`) and lazy imports (`tasks/enricher.py:169,207`) enumerated.
+
+**Doctor (DEF-107):** `--verify-refactor build_bundle` → `unwired_export`, score 60, wave 2, "verify consumers before deleting" with the public-interface warning; no `dead_code` / 100 / "safe to delete" for any of the four controls.
+
+**Hunt (DEF-108):** default target → exit 1 with the honest "no CLI probe target" error; source-dir `--scope` rejected; Pip3r self-probe recorded and classified **N/A** (audits no Python). `doctor --test` → `script missing`, N/A. Python route actually exercised: 93 focused core tests + 2 API egress tests passed in the worktree, example caller exit 0, wheel rebuilt byte-identical to the DEF-41 final wheel (`bd3e8fbc…`) and the DEF-41 second caller PASSed against it in a `env -i` Pydantic-only venv. Disclosure: pytest imports resolved through the shared venv's editable install (bytes proven identical to the worktree).
+
+**Independent review:** read-only reviewer subagent re-ran Blast/Cypher/Doctor and recomputed inventories — PASS_WITH_FINDINGS; two minor disclosure findings fixed (`review.json`). Limitation: reviewer and author are both Claude models.
+
+**Still UNKNOWN, not PASS:** constructor/alias/registry callers (no CALLS edges), 8 importers absent from the graph, no Python route in Hunt/Doctor checks. Nothing in this packet closes DEF-41; that remains the DEF-41 review decision. No product change, no Pip3r change, no deployment, no shared reindex, no push.

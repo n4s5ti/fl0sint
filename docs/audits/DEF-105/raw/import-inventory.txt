@@ -1,0 +1,15 @@
+docs/audits/DEF-41/raw/review/adversarial_review.py
+docs/audits/DEF-41/raw/verify_installed.py
+flowsint-api/app/api/schemas/enricher_template.py
+flowsint-api/tests/test_template_egress.py
+flowsint-core/examples/acquisition_contract.py
+flowsint-core/src/flowsint_core/core/enricher_base.py
+flowsint-core/src/flowsint_core/core/services/execution_service.py
+flowsint-core/src/flowsint_core/core/template_enricher.py
+flowsint-core/src/flowsint_core/tasks/enricher.py
+flowsint-core/tests/acquisition/test_contract.py
+flowsint-core/tests/core/test_structured_execution.py
+flowsint-core/tests/services/test_execution_service.py
+flowsint-core/tests/services/test_graph_projection_service.py
+flowsint-core/tests/services/test_template_execution_task.py
+flowsint-core/tests/templates/test_template_enricher.py
