@@ -1,0 +1,10 @@
+{
+  "command": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+  "rc": 0,
+  "seconds": 0.0028450489044189453
+}

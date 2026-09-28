@@ -1,0 +1,38 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:SourceSpan",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": null,
+    "symbols": [],
+    "edges": [],
+    "files": [],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:SourceSpan",
+        "rootSymbols": 0,
+        "totalSymbols": 0,
+        "totalEdges": 0,
+        "filesMatched": 0,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "reason": "target symbol not indexed",
+    "hint": "No indexed definition was found for \"SourceSpan\". The index may omit this language construct; rebuild or use a supported declaration form before relying on impact results.",
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "target-symbol-unresolved"
+    ],
+    "indexStatus": "ready"
+}

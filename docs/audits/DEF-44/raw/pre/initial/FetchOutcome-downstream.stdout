@@ -1,0 +1,445 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "CRITICAL",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+        "name": "FetchOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Class",
+        "startLine": 168,
+        "endLine": 186,
+        "content": "class FetchOutcome(_Frozen):     occurrence_id: str     input_ref: Digest     status: FetchStatus     requested_origin: str     final_origin: str | None = None     text: str | None = None     body: bytes | None = None     diagnostic: RedactedDiagnostic | None = None     actual_resources: Resources     @model_validator(mode=\"after\")     def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "name": "FetchOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 168,
+            "endLine": 186,
+            "content": "class FetchOutcome(_Frozen):     occurrence_id: str     input_ref: Digest     status: FetchStatus     requested_origin: str     final_origin: str | None = None     text: str | None = None     body: bytes | None = None     diagnostic: RedactedDiagnostic | None = None     actual_resources: Resources     @model_validator(mode=\"after\")     def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.coherent#0",
+            "name": "coherent",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 180,
+            "endLine": 186,
+            "content": "    def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.occurrence_id",
+            "name": "occurrence_id",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 169,
+            "endLine": 169,
+            "content": "    occurrence_id: str"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 170,
+            "endLine": 170,
+            "content": "    input_ref: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.status",
+            "name": "status",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 171,
+            "endLine": 171,
+            "content": "    status: FetchStatus"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.requested_origin",
+            "name": "requested_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 172,
+            "endLine": 172,
+            "content": "    requested_origin: str"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.final_origin",
+            "name": "final_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 173,
+            "endLine": 173,
+            "content": "    final_origin: str | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.text",
+            "name": "text",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 174,
+            "endLine": 174,
+            "content": "    text: str | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.body",
+            "name": "body",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 175,
+            "endLine": 175,
+            "content": "    body: bytes | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.diagnostic",
+            "name": "diagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 176,
+            "endLine": 176,
+            "content": "    diagnostic: RedactedDiagnostic | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.actual_resources",
+            "name": "actual_resources",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Property",
+            "startLine": 177,
+            "endLine": 177,
+            "content": "    actual_resources: Resources"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+            "name": "_Frozen",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 32,
+            "endLine": 33,
+            "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.occurrence_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.status",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.requested_origin",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.final_origin",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.text",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.body",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.diagnostic",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.actual_resources",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.coherent#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "to": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 12,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+                    "name": "FetchOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 168,
+                    "endLine": 186,
+                    "content": "class FetchOutcome(_Frozen):     occurrence_id: str     input_ref: Digest     status: FetchStatus     requested_origin: str     final_origin: str | None = None     text: str | None = None     body: bytes | None = None     diagnostic: RedactedDiagnostic | None = None     actual_resources: Resources     @model_validator(mode=\"after\")     def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.coherent#0",
+                    "name": "coherent",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 180,
+                    "endLine": 186,
+                    "content": "    def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.occurrence_id",
+                    "name": "occurrence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 169,
+                    "endLine": 169,
+                    "content": "    occurrence_id: str"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 170,
+                    "endLine": 170,
+                    "content": "    input_ref: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 171,
+                    "endLine": 171,
+                    "content": "    status: FetchStatus"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.requested_origin",
+                    "name": "requested_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 172,
+                    "endLine": 172,
+                    "content": "    requested_origin: str"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.final_origin",
+                    "name": "final_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 173,
+                    "endLine": 173,
+                    "content": "    final_origin: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.text",
+                    "name": "text",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 174,
+                    "endLine": 174,
+                    "content": "    text: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.body",
+                    "name": "body",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 175,
+                    "endLine": 175,
+                    "content": "    body: bytes | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 176,
+                    "endLine": 176,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.actual_resources",
+                    "name": "actual_resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 177,
+                    "endLine": 177,
+                    "content": "    actual_resources: Resources"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+                    "name": "_Frozen",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 32,
+                    "endLine": 33,
+                    "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 11
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.occurrence_id",
+                    "name": "occurrence_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 169,
+                    "endLine": 169,
+                    "content": "    occurrence_id: str"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 170,
+                    "endLine": 170,
+                    "content": "    input_ref: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.status",
+                    "name": "status",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 171,
+                    "endLine": 171,
+                    "content": "    status: FetchStatus"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.requested_origin",
+                    "name": "requested_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 172,
+                    "endLine": 172,
+                    "content": "    requested_origin: str"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.final_origin",
+                    "name": "final_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 173,
+                    "endLine": 173,
+                    "content": "    final_origin: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.text",
+                    "name": "text",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 174,
+                    "endLine": 174,
+                    "content": "    text: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.body",
+                    "name": "body",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 175,
+                    "endLine": 175,
+                    "content": "    body: bytes | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.diagnostic",
+                    "name": "diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 176,
+                    "endLine": 176,
+                    "content": "    diagnostic: RedactedDiagnostic | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.actual_resources",
+                    "name": "actual_resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Property",
+                    "startLine": 177,
+                    "endLine": 177,
+                    "content": "    actual_resources: Resources"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome.coherent#0",
+                    "name": "coherent",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 180,
+                    "endLine": 186,
+                    "content": "    def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:_Frozen",
+                    "name": "_Frozen",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 32,
+                    "endLine": 33,
+                    "content": "class _Frozen(BaseModel):     model_config = ConfigDict(extra=\"forbid\", frozen=True, strict=True)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 12,
+        "totalEdges": 11,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 11,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
