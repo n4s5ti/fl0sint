@@ -3,7 +3,7 @@
   "baseline": "cbad468df16b0e6f3046379b4f33931b613e1b60",
   "branch": "work/def-42-occurrences",
   "functional_verdict": "PASS",
-  "acceptance_verdict": "BLOCKED",
+  "acceptance_verdict": "REVIEW: historical receipt substitute accepted; recovery/waiver.md",
   "verification": {
     "parent_focused": "9 passed; parent-enricher-verification.json",
     "parent_contract_boundaries": "17 passed; parent-core-verification.json",
@@ -16,9 +16,7 @@
     "CHANGELOG.md": "c7fd7de94e14f93f592656b47e771301d50a6d905d49a35c8576f454ed10a592",
     "docs/developers/managing-enrichers.mdx": "b101363ddc6412f060f080f48997bd776218df63c9012a224a6359c1fc4faf19"
   },
-  "unresolved": [
-    "No immutable pre-edit Blast receipt was preserved. Retrospective baseline/head recovery is now in recovery/; independent review requires explicit user waiver of the historical receipt before closure."
-  ],
+  "unresolved": [],
   "recovery": "No deployment or merge occurred. Leave this branch isolated to retain the baseline runtime. If subsequently applied, revert only the S02 implementation commit with git revert after preserving any intervening changes; retain this evidence packet and all input lineage. No collection budgets were consumed by the controlled fixtures.",
-  "next_gate": "Functional verification and current impact recovery completed; recovery/acceptance.md records results and limitations. Await user decision on the missing historical pre-edit receipt; do not infer waiver from acceptance of DEF-105."
+  "next_gate": "User accepted the retrospective substitute in recovery/waiver.md. Functional review and current recovery evidence complete; advance to review without erasing historical limitations."
 }

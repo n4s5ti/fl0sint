@@ -3,6 +3,7 @@
   "provenance.json": "a5b66a12f59014e1fcb3968109e2ea91e2ae03887fe74ef59a417d2b5a63a4af",
   "acceptance.md": "dd8de70bffd012d79621a6b62a672705d7f39d734eb909b2a276e42a2c747e14",
   "review.json": "062a40fe40bc790d956e585cb569eff0603aa835c888b573f65b6b94f96b6454",
+  "waiver.md": "a19906d8311261412755936ff0b0855ccf80fc93db90427777c2967255f78248",
   "raw/baseline-inherited-execute_structured-downstream.json": "930f19ab0badd6f7458daaab90941d7fc86ca435b9397a464700ec0f020e4645",
   "raw/baseline-inherited-execute_structured-downstream.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
   "raw/baseline-inherited-execute_structured-downstream.stdout": "933ff0ac4835cb48013618cd19d9b7c1cda1160a0bd1821721414b2b214a836a",
