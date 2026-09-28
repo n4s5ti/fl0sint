@@ -1,0 +1,68 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/tasks/enricher.py:_safe_connector_scan_details",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_safe_connector_scan_details",
+        "name": "_safe_connector_scan_details",
+        "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+        "nodeType": "Function",
+        "startLine": 140,
+        "endLine": 165,
+        "content": "def _safe_connector_scan_details(result) -> dict[str, Any]:     \"\"\"Expose connector outcomes to Scan without output values or transport material.\"\"\"     return {         \"outcomes\": [             {                 \"status\": outcome.status.value,                 \"diagnostic\": (                     outcome.diagnostic.model_dump(mode=\"json\")                     if outcome.diagnostic is not None                     else None                 ),                 \"evidence\": [                     {                         \"destination_id\": evidence.destination_id,                         \"endpoint_id\": evidence.endpoint_id,                         \"capability\": evidence.capability,                         \"policy_version\": evidence.policy_version,                         \"artifact_sha256\": evidence.artifact_sha256,                         \"artifact_reference\": evidence.artifact_reference,                     }                     for evidence in outcome.evidence                 ],             }             for outcome in result.outcomes         ]     }"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_safe_connector_scan_details",
+            "name": "_safe_connector_scan_details",
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "nodeType": "Function",
+            "startLine": 140,
+            "endLine": 165,
+            "content": "def _safe_connector_scan_details(result) -> dict[str, Any]:     \"\"\"Expose connector outcomes to Scan without output values or transport material.\"\"\"     return {         \"outcomes\": [             {                 \"status\": outcome.status.value,                 \"diagnostic\": (                     outcome.diagnostic.model_dump(mode=\"json\")                     if outcome.diagnostic is not None                     else None                 ),                 \"evidence\": [                     {                         \"destination_id\": evidence.destination_id,                         \"endpoint_id\": evidence.endpoint_id,                         \"capability\": evidence.capability,                         \"policy_version\": evidence.policy_version,                         \"artifact_sha256\": evidence.artifact_sha256,                         \"artifact_reference\": evidence.artifact_reference,                     }                     for evidence in outcome.evidence                 ],             }             for outcome in result.outcomes         ]     }"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:_safe_connector_scan_details",
+                    "name": "_safe_connector_scan_details",
+                    "filePath": "flowsint-core/src/flowsint_core/tasks/enricher.py",
+                    "nodeType": "Function",
+                    "startLine": 140,
+                    "endLine": 165,
+                    "content": "def _safe_connector_scan_details(result) -> dict[str, Any]:     \"\"\"Expose connector outcomes to Scan without output values or transport material.\"\"\"     return {         \"outcomes\": [             {                 \"status\": outcome.status.value,                 \"diagnostic\": (                     outcome.diagnostic.model_dump(mode=\"json\")                     if outcome.diagnostic is not None                     else None                 ),                 \"evidence\": [                     {                         \"destination_id\": evidence.destination_id,                         \"endpoint_id\": evidence.endpoint_id,                         \"capability\": evidence.capability,                         \"policy_version\": evidence.policy_version,                         \"artifact_sha256\": evidence.artifact_sha256,                         \"artifact_reference\": evidence.artifact_reference,                     }                     for evidence in outcome.evidence                 ],             }             for outcome in result.outcomes         ]     }"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/tasks/enricher.py:_safe_connector_scan_details",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "--drift",
+    "--no-auto-index",
+    "--json"
+  ],
+  "rc": 0,
+  "seconds": 1.4925792217254639
+}

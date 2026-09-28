@@ -1,0 +1,32 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_missing_policy_holds_after_consumed_fetch_without_retaining_bytes ____
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/pytest-of-n4s5ti/pytest-46/test_missing_policy_holds_afte0')
+
+    def test_missing_policy_holds_after_consumed_fetch_without_retaining_bytes(tmp_path):
+        store = FilesystemArtifactStore(tmp_path)
+>       result = capture_source(store, context(), None, b"consumed secret", now=NOW)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_artifact_capture.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+flowsint_execution/artifacts.py:241: in capture_source
+    mismatch = _bound(context, decision, current)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+context = ArtifactContext(operation_id='operation-1', occurrence_id='occurrence-1', caller_id='caller-1', scope='scope-1', sourc...https://example.test/b', retrieved_at=datetime.datetime(2026, 1, 1, 0, 0, tzinfo=datetime.timezone.utc), event_at=None)
+decision = None
+now = datetime.datetime(2026, 1, 1, 0, 0, tzinfo=datetime.timezone.utc)
+
+    def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:
+>       if now >= decision.expires_at:
+                  ^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'expires_at'
+
+flowsint_execution/artifacts.py:158: AttributeError
+=========================== short test summary info ============================
+FAILED test_artifact_capture.py::test_missing_policy_holds_after_consumed_fetch_without_retaining_bytes - AttributeError: 'NoneType' object has no attribute 'expires_at'
+1 failed in 0.20s
+exit=1

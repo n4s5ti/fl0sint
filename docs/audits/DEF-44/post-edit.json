@@ -1,0 +1,66 @@
+{
+  "base": "b0c82d8db2b2480bc2b2aa91a02ba0fdb74111fd",
+  "implementation_head": "8fdfedb5",
+  "production_test_doc_files": [
+    "CHANGELOG.md",
+    "docs/developers/acquisition-contract.md",
+    "docs/developers/managing-enrichers.mdx",
+    "flowsint-core/examples/source_proof.py",
+    "flowsint-core/src/flowsint_core/core/template_enricher.py",
+    "flowsint-core/src/flowsint_execution/acquisition.py",
+    "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+    "flowsint-core/src/flowsint_execution/artifacts.py",
+    "flowsint-core/src/flowsint_execution/fetch.py",
+    "flowsint-core/src/flowsint_execution/models.py",
+    "flowsint-core/tests/acquisition/test_artifact_capture.py",
+    "flowsint-core/tests/acquisition/test_artifact_runtime.py",
+    "flowsint-core/tests/templates/test_template_enricher.py",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+    "flowsint-enrichers/tests/enrichers/test_website_to_text.py"
+  ],
+  "sha256": {
+    "CHANGELOG.md": "c7def95ddfe1a1728676ed1ae9f55e1f37f69657d419e20bb0981b43ffd57b6a",
+    "docs/developers/acquisition-contract.md": "1f10f49c629994dfd928c0551c789777b48a34847ce0d8d52978062540fb08fe",
+    "docs/developers/managing-enrichers.mdx": "6e542922f7221122af51062ba8f20fcb392aa205f15ba98c94e6d70eeafc5230",
+    "flowsint-core/examples/source_proof.py": "683376fc6f7841a858e239f09b42e2d361c16d29857b0d635cd5390afb5862ef",
+    "flowsint-core/src/flowsint_core/core/template_enricher.py": "0315218d02dacdc1e9bcccd0c8fd6b0f2403e1e40fc6ad7583e588c007fcca86",
+    "flowsint-core/src/flowsint_execution/acquisition.py": "89e6694a665c2c7607f439202a34905dccd227b5bfbd8700562bab63daf48c8d",
+    "flowsint-core/src/flowsint_execution/artifact_runtime.py": "37e9257b56fc0f6eac06faae51d131aa2b9508bccab243a41c489ac3ec758fa1",
+    "flowsint-core/src/flowsint_execution/artifacts.py": "83018d0629555b5d4622615dd646b64494a953743040aad2737d40849649fa66",
+    "flowsint-core/src/flowsint_execution/fetch.py": "8d946a74f8c62c197d847b8f0b8938a8434ae906df66f9471dd0f5cd7c213096",
+    "flowsint-core/src/flowsint_execution/models.py": "42607b53e7681bad1fa9abcff2a74526b12184249c00ab0b8a81d0140974a965",
+    "flowsint-core/tests/acquisition/test_artifact_capture.py": "351e32a0dca4acd7fb3f79e0e2ab9581abdd9e8c390880e5c6852bc9cd0e49fd",
+    "flowsint-core/tests/acquisition/test_artifact_runtime.py": "eaa5a770e5f05e0fea4fce695ee52cbf3b8a7d85d275cb70bee6571a4979b8e0",
+    "flowsint-core/tests/templates/test_template_enricher.py": "ac05aa77a4114014e673ad7780ebfe124867d1e55fdcf153b383ecdc88b4cbdd",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py": "c12e81eceaa3198ac6dc4c9a297dd0022dc5e3477b618d6fb8b798590b37d011",
+    "flowsint-enrichers/tests/enrichers/test_website_to_text.py": "72937f380b622b694b88da6387990e39d5fdf9a25b0774984dc41e9c6251b4db"
+  },
+  "configuration_unchanged": true,
+  "configuration_sha256": {
+    "pyproject.toml": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+    "flowsint-api/pyproject.toml": "739c57d7c385bc368493a2d663374b98a75832436e0f164c6d9cfd125c5c31ba",
+    "flowsint-core/pyproject.toml": "fcf0a918462e8c614406226e072526649d045377aac8684737d417be897df8fd",
+    "flowsint-enrichers/pyproject.toml": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b",
+    "flowsint-mcp-server/pyproject.toml": "cee01c535ce1baab21a1d435c84908ef6e6620da59b46f310230fe4919fefb92",
+    "flowsint-types/pyproject.toml": "31708ecfa57c49e5e3ea4dcc607fb65727c87210991b840934f06443b7a68423"
+  },
+  "unexpected_changes": [],
+  "scope_explanations": {
+    "artifact_runtime.py": "Required F3/F4 trusted deployment composition and persisted resolution seam, within planned runtime/caller boundary",
+    "test_artifact_runtime.py": "Behavioral tests of actual runtime config and metadata consumption",
+    "unchanged task/API/service files": "Production constructors load shared trusted runtime themselves; existing Text artifact_reference persistence remains sufficient, host API and core service suites exercised",
+    "audit packet": "Expected evidence-only additions after source index; source drift captured before packet generation"
+  },
+  "graph_drift_total": 0,
+  "doctor": {
+    "symbol": "capture_source",
+    "symbols": 1,
+    "flows": 11
+  },
+  "hunt": {
+    "status": "unsupported",
+    "exit_code": 1,
+    "reason": "Python API/library has no CLI probe target"
+  },
+  "lsp": "unavailable missing configured pyright executable"
+}

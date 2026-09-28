@@ -1,0 +1,122 @@
+FF..........F....                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_current_authority_required_and_exact_bindings ______________
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/pytest-of-n4s5ti/pytest-81/test_current_authority_require0')
+
+    def test_current_authority_required_and_exact_bindings(tmp_path):
+        current = authority(); decision = current.issue("operation-1", now=NOW); store = FilesystemArtifactStore(tmp_path)
+        captured = capture_source(store, context(), decision, b"source bytes", now=NOW)
+        assert captured.state is ArtifactState.AVAILABLE
+        absent = resolve_source(store, context(), decision, captured.artifact, now=NOW)
+>       assert (absent.state, absent.reason, absent.body) == (ArtifactState.HOLD, "current_policy_unavailable", None)
+E       AssertionError: assert (<ArtifactSta...source bytes') == (<ArtifactSta...ilable', None)
+E         
+E         At index 0 diff: <ArtifactState.AVAILABLE: 'available'> != <ArtifactState.HOLD: 'hold'>
+E         
+E         Full diff:
+E           (
+E         -     <ArtifactState.HOLD: 'hold'>,
+E         -     'current_policy_unavailable',
+E         -     None,
+E         +     <ArtifactState.AVAILABLE: 'available'>,
+E         +     'resolved',
+E         +     b'source bytes',
+E           )
+
+flowsint-core/tests/acquisition/test_artifact_capture.py:40: AssertionError
+___________ test_missing_tampered_truncated_and_expired_are_distinct ___________
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/pytest-of-n4s5ti/pytest-81/test_missing_tampered_truncate0')
+
+    def test_missing_tampered_truncated_and_expired_are_distinct(tmp_path):
+        current = authority(); decision = current.issue("operation-1", now=NOW); store = FilesystemArtifactStore(tmp_path)
+        captured = capture_source(store, context(), decision, b"complete", now=NOW)
+        next(tmp_path.rglob("*.body")).unlink()
+        assert resolve_source(store, context(), decision, captured.artifact, authority=current, now=NOW).reason == "artifact_missing"
+        captured = capture_source(store, context(occurrence_id="two"), decision, b"complete", now=NOW)
+        next(tmp_path.rglob("*.body")).write_bytes(b"tampered")
+        tampered = resolve_source(store, context(occurrence_id="two"), decision, captured.artifact, authority=current, now=NOW)
+        assert (tampered.state, tampered.reason, tampered.body) == (ArtifactState.REVIEW, "digest_mismatch", None)
+        truncated = capture_source(store, context(occurrence_id="three"), decision, b"partial", complete=False, now=NOW)
+        assert (truncated.state, truncated.reason) == (ArtifactState.REVIEW, "truncated_body")
+        expired = resolve_source(store, context(occurrence_id="two"), decision, captured.artifact,
+                                 authority=current, now=NOW + timedelta(hours=2))
+>       assert expired.reason == "current_policy_expired"
+E       AssertionError: assert 'policy_expired' == 'current_policy_expired'
+E         
+E         - current_policy_expired
+E         ? --------
+E         + policy_expired
+
+flowsint-core/tests/acquisition/test_artifact_capture.py:60: AssertionError
+______________ test_policy_future_replacement_and_normalized_flag ______________
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/pytest-of-n4s5ti/pytest-81/test_policy_future_replacement0')
+
+    def test_policy_future_replacement_and_normalized_flag(tmp_path):
+        current = authority()
+        future = current.issue("operation-1", now=NOW + timedelta(minutes=1))
+        assert capture_source(FilesystemArtifactStore(tmp_path / "future"), context(), future, b"secret", now=NOW).reason == "policy_not_yet_valid"
+        decision = current.issue("operation-1", now=NOW); store = FilesystemArtifactStore(tmp_path / "current")
+        captured = capture_source(store, context(), decision, b"secret", now=NOW)
+        replaced = resolve_source(store, context(), decision, captured.artifact, authority=authority(policy_id="replacement"), now=NOW)
+>       assert (replaced.state, replaced.reason, replaced.body) == (ArtifactState.REVIEW, "current_policy_mismatch", None)
+E       AssertionError: assert (<ArtifactSta...d', b'secret') == (<ArtifactSta...smatch', None)
+E         
+E         At index 0 diff: <ArtifactState.AVAILABLE: 'available'> != <ArtifactState.REVIEW: 'review'>
+E         
+E         Full diff:
+E           (
+E         -     <ArtifactState.REVIEW: 'review'>,
+E         -     'current_policy_mismatch',
+E         -     None,
+E         +     <ArtifactState.AVAILABLE: 'available'>,
+E         +     'resolved',
+E         +     b'secret',
+E           )
+
+flowsint-core/tests/acquisition/test_artifact_capture.py:124: AssertionError
+=============================== warnings summary ===============================
+../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../../../tmp/def44-core-fix-evidence/final-mutation-authorization/src/flowsint_core/core/graph/types.py:16
+  /tmp/def44-core-fix-evidence/final-mutation-authorization/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED flowsint-core/tests/acquisition/test_artifact_capture.py::test_current_authority_required_and_exact_bindings - AssertionError: assert (<ArtifactSta...source bytes') == (<ArtifactSta...ilable', None)
+  
+  At index 0 diff: <ArtifactState.AVAILABLE: 'available'> != <ArtifactState.HOLD: 'hold'>
+  
+  Full diff:
+    (
+  -     <ArtifactState.HOLD: 'hold'>,
+  -     'current_policy_unavailable',
+  -     None,
+  +     <ArtifactState.AVAILABLE: 'available'>,
+  +     'resolved',
+  +     b'source bytes',
+    )
+FAILED flowsint-core/tests/acquisition/test_artifact_capture.py::test_missing_tampered_truncated_and_expired_are_distinct - AssertionError: assert 'policy_expired' == 'current_policy_expired'
+  
+  - current_policy_expired
+  ? --------
+  + policy_expired
+FAILED flowsint-core/tests/acquisition/test_artifact_capture.py::test_policy_future_replacement_and_normalized_flag - AssertionError: assert (<ArtifactSta...d', b'secret') == (<ArtifactSta...smatch', None)
+  
+  At index 0 diff: <ArtifactState.AVAILABLE: 'available'> != <ArtifactState.REVIEW: 'review'>
+  
+  Full diff:
+    (
+  -     <ArtifactState.REVIEW: 'review'>,
+  -     'current_policy_mismatch',
+  -     None,
+  +     <ArtifactState.AVAILABLE: 'available'>,
+  +     'resolved',
+  +     b'secret',
+    )
+3 failed, 14 passed, 2 warnings in 28.27s

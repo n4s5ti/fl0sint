@@ -1,0 +1,1 @@
+{"real_http_requests": 3, "duplicate_occurrences": 2, "shared_content_objects": 1, "resolved_spans": 22, "exact_text": "Caf\u00e9 & tea Repeat Repeat < 3", "cross_operation_denied": true, "cross_scope_denied": true, "revocation_hold": true, "hold_consumed_requests": 1, "hold_consumed_bytes": 89}

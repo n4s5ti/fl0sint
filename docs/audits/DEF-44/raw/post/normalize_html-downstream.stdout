@@ -1,0 +1,115 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+        "name": "normalize_html",
+        "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+        "nodeType": "Function",
+        "startLine": 419,
+        "endLine": 453,
+        "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "name": "normalize_html",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 419,
+            "endLine": 453,
+            "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+            "name": "emit",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 428,
+            "endLine": 432,
+            "content": "    def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+                    "name": "normalize_html",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 453,
+                    "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+                    "name": "emit",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 428,
+                    "endLine": 432,
+                    "content": "    def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+                    "name": "emit",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 428,
+                    "endLine": 432,
+                    "content": "    def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

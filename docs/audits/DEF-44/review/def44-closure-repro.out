@@ -1,0 +1,58 @@
+{
+  "empty": {
+    "candidates": 0,
+    "completion": "controlled_fetch_complete",
+    "state": "available",
+    "status": "valid_no_result"
+  },
+  "persisted_and_bounds": {
+    "fragmented": {
+      "body": 250000,
+      "result": [
+        "review",
+        "source_proof_too_large"
+      ],
+      "spans": 50000,
+      "writes": 0
+    },
+    "repeated": {
+      "body": 80000,
+      "proof": 2179,
+      "spans": 1
+    },
+    "resolver": {
+      "bad_occurrence": [
+        "review",
+        "authorization_mismatch"
+      ],
+      "bad_operation": [
+        "review",
+        "authorization_mismatch"
+      ],
+      "good": "available",
+      "span_bad": [
+        "review",
+        "authorization_mismatch"
+      ],
+      "span_good": "available"
+    }
+  },
+  "timing": {
+    "cancel": {
+      "bytes": 15,
+      "elapsed": 0.021983801998430863,
+      "evidence": false,
+      "finished_write": 1,
+      "status": "cancelled",
+      "wall": 0.0225930429987784
+    },
+    "timeout": {
+      "bytes": 15,
+      "elapsed": 0.050967412997124484,
+      "evidence": false,
+      "finished_write": 1,
+      "status": "timeout",
+      "wall": 0.05170069099767716
+    }
+  }
+}

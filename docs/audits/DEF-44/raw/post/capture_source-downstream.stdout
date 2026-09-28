@@ -1,0 +1,463 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+        "name": "capture_source",
+        "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+        "nodeType": "Function",
+        "startLine": 273,
+        "endLine": 326,
+        "content": "def capture_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, body: bytes | None, *, complete: bool = True,                    normalized: NormalizedSource | None = None, now: datetime | None = None,                    cancelled: Callable[[], bool] | None = None) -> CaptureResult:     current = now or datetime.now(timezone.utc)     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     if body is None: return CaptureResult(ArtifactState.REVIEW, \"body_missing\")     if not complete: return CaptureResult(ArtifactState.REVIEW, \"truncated_body\")     if decision is None: return CaptureResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     mismatch = _bound(context, decision, current)     if mismatch: return CaptureResult(ArtifactState.REVIEW, mismatch)     if normalized is not None and not decision.retain_normalized_text:         return CaptureResult(ArtifactState.HOLD, \"normalized_retention_prohibited\")     if normalized is not None:         try: normalized.reproduce(body)         except (ValueError, UnicodeDecodeError): return CaptureResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     digest, snapshot_id = hashlib.sha256(body).hexdigest(), secrets.token_hex(16)     artifact = ArtifactReference(artifact_id=f\"artifact-{snapshot_id}\", snapshot_id=snapshot_id,         content_digest=digest, byte_length=len(body), locator=f\"sha256:{digest}\", source_family=context.source_family,         origin=context.origin, retrieved_at=context.retrieved_at, event_at=context.event_at,         requested_url=context.requested_url, final_url=context.final_url)     metadata = {\"snapshot_id\": snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id,         \"caller_id\": context.caller_id, \"scope\": context.scope, \"source_family\": context.source_family,         \"origin\": context.origin, \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": context.retrieved_at.isoformat(), \"event_at\": context.event_at.isoformat() if context.event_at else None,         \"content_digest\": digest, \"byte_length\": len(body), \"policy_digest\": decision.policy_digest,         \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id, \"reviewer_id\": decision.reviewer_id,         \"issued_at\": decision.issued_at.isoformat(), \"expires_at\": decision.expires_at.isoformat(),         \"retain_body\": decision.retain_body, \"retain_normalized_text\": decision.retain_normalized_text,         \"normalized\": ({\"text\": normalized.text, \"spans\": [asdict(s) for s in normalized.spans],                         \"source_digest\": normalized.source_digest} if normalized else None)}     if normalized is not None:         wire_spans = [SourceProofSpanReference(             span_id=f\"span-{snapshot_id}-{index}\", artifact_id=artifact.artifact_id,             byte_start=span.raw_start, byte_end=span.raw_end,             normalized_start=span.normalized_start, normalized_end=span.normalized_end,             raw_offset_unit=\"byte\", normalized_offset_unit=\"unicode_code_point\",             source_encoding=\"utf-8\",         ).model_dump(mode=\"json\") for index, span in enumerate(normalized.spans)]         proof_payload = {\"format_version\": \"source-proof/1.0\", \"input_ref\": \"0\" * 64,             \"context\": context.model_dump(mode=\"json\"), \"decision\": decision.model_dump(mode=\"json\"),             \"artifact\": artifact.model_dump(mode=\"json\"), \"spans\": wire_spans}         proof_raw = _canonical(proof_payload)         encoded_size = 4 + ((len(proof_raw) * 4 + 2) // 3)         if encoded_size > _MAX_EVIDENCE_PROOF_BYTES:             return CaptureResult(ArtifactState.REVIEW, \"source_proof_too_large\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     try: store.write(body, metadata)     except (FileNotFoundError, PermissionError): return CaptureResult(ArtifactState.HOLD, \"artifact_store_unavailable\")     except (OSError, ValueError, TypeError): return CaptureResult(ArtifactState.REVIEW, \"artifact_store_invalid\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     return CaptureResult(ArtifactState.AVAILABLE, \"retained\", artifact)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+            "name": "capture_source",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 273,
+            "endLine": 326,
+            "content": "def capture_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, body: bytes | None, *, complete: bool = True,                    normalized: NormalizedSource | None = None, now: datetime | None = None,                    cancelled: Callable[[], bool] | None = None) -> CaptureResult:     current = now or datetime.now(timezone.utc)     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     if body is None: return CaptureResult(ArtifactState.REVIEW, \"body_missing\")     if not complete: return CaptureResult(ArtifactState.REVIEW, \"truncated_body\")     if decision is None: return CaptureResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     mismatch = _bound(context, decision, current)     if mismatch: return CaptureResult(ArtifactState.REVIEW, mismatch)     if normalized is not None and not decision.retain_normalized_text:         return CaptureResult(ArtifactState.HOLD, \"normalized_retention_prohibited\")     if normalized is not None:         try: normalized.reproduce(body)         except (ValueError, UnicodeDecodeError): return CaptureResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     digest, snapshot_id = hashlib.sha256(body).hexdigest(), secrets.token_hex(16)     artifact = ArtifactReference(artifact_id=f\"artifact-{snapshot_id}\", snapshot_id=snapshot_id,         content_digest=digest, byte_length=len(body), locator=f\"sha256:{digest}\", source_family=context.source_family,         origin=context.origin, retrieved_at=context.retrieved_at, event_at=context.event_at,         requested_url=context.requested_url, final_url=context.final_url)     metadata = {\"snapshot_id\": snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id,         \"caller_id\": context.caller_id, \"scope\": context.scope, \"source_family\": context.source_family,         \"origin\": context.origin, \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": context.retrieved_at.isoformat(), \"event_at\": context.event_at.isoformat() if context.event_at else None,         \"content_digest\": digest, \"byte_length\": len(body), \"policy_digest\": decision.policy_digest,         \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id, \"reviewer_id\": decision.reviewer_id,         \"issued_at\": decision.issued_at.isoformat(), \"expires_at\": decision.expires_at.isoformat(),         \"retain_body\": decision.retain_body, \"retain_normalized_text\": decision.retain_normalized_text,         \"normalized\": ({\"text\": normalized.text, \"spans\": [asdict(s) for s in normalized.spans],                         \"source_digest\": normalized.source_digest} if normalized else None)}     if normalized is not None:         wire_spans = [SourceProofSpanReference(             span_id=f\"span-{snapshot_id}-{index}\", artifact_id=artifact.artifact_id,             byte_start=span.raw_start, byte_end=span.raw_end,             normalized_start=span.normalized_start, normalized_end=span.normalized_end,             raw_offset_unit=\"byte\", normalized_offset_unit=\"unicode_code_point\",             source_encoding=\"utf-8\",         ).model_dump(mode=\"json\") for index, span in enumerate(normalized.spans)]         proof_payload = {\"format_version\": \"source-proof/1.0\", \"input_ref\": \"0\" * 64,             \"context\": context.model_dump(mode=\"json\"), \"decision\": decision.model_dump(mode=\"json\"),             \"artifact\": artifact.model_dump(mode=\"json\"), \"spans\": wire_spans}         proof_raw = _canonical(proof_payload)         encoded_size = 4 + ((len(proof_raw) * 4 + 2) // 3)         if encoded_size > _MAX_EVIDENCE_PROOF_BYTES:             return CaptureResult(ArtifactState.REVIEW, \"source_proof_too_large\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     try: store.write(body, metadata)     except (FileNotFoundError, PermissionError): return CaptureResult(ArtifactState.HOLD, \"artifact_store_unavailable\")     except (OSError, ValueError, TypeError): return CaptureResult(ArtifactState.REVIEW, \"artifact_store_invalid\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     return CaptureResult(ArtifactState.AVAILABLE, \"retained\", artifact)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 132,
+            "endLine": 133,
+            "content": "def _canonical(value: Any) -> bytes:     return json.dumps(value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True).encode()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+            "name": "_aware",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 135,
+            "endLine": 136,
+            "content": "def _aware(value: datetime) -> bool:     return value.tzinfo is not None and value.utcoffset() is not None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+            "name": "_bound",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 138,
+            "endLine": 148,
+            "content": "def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:     if not _aware(now) or not _aware(decision.issued_at) or not _aware(decision.expires_at):         return \"malformed_policy_time\"     if now < decision.issued_at:         return \"policy_not_yet_valid\"     if now >= decision.expires_at:         return \"policy_expired\"     if (context.operation_id != decision.operation_id or context.caller_id != decision.caller_id             or context.scope != decision.scope or context.source_family != decision.source_family):         return \"authorization_mismatch\"     return None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "name": "normalize_html",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 419,
+            "endLine": 453,
+            "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+            "name": "emit",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 428,
+            "endLine": 432,
+            "content": "    def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:NormalizedSource.reproduce#1",
+            "name": "reproduce",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 105,
+            "endLine": 109,
+            "content": "    def reproduce(self, body: bytes) -> str:         recomputed = normalize_html(body)         if self != recomputed:             raise ValueError(\"normalized_source_mismatch\")         return recomputed.text"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._root_fd#0",
+            "name": "_root_fd",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 178,
+            "endLine": 179,
+            "content": "    def _root_fd(self) -> int:         return os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._dir#2",
+            "name": "_dir",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 181,
+            "endLine": 182,
+            "content": "    def _dir(fd: int, name: str) -> int:         return os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._read_bounded#2",
+            "name": "_read_bounded",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 184,
+            "endLine": 194,
+            "content": "    def _read_bounded(fd: int, limit: int) -> bytes:         info = os.fstat(fd)         if not stat.S_ISREG(info.st_mode) or info.st_size > limit:             raise OSError(\"unsafe or oversized artifact file\")         chunks, remaining = [], info.st_size         while remaining:             chunk = os.read(fd, min(remaining, 1024 * 1024))             if not chunk: raise OSError(\"short artifact read\")             chunks.append(chunk); remaining -= len(chunk)         if os.read(fd, 1): raise OSError(\"artifact grew during read\")         return b\"\".join(chunks)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._write_all#2",
+            "name": "_write_all",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 196,
+            "endLine": 201,
+            "content": "    def _write_all(fd: int, data: bytes) -> None:         view = memoryview(data)         while view:             count = os.write(fd, view)             if count <= 0: raise OSError(\"short write\")             view = view[count:]"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "name": "write",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 202,
+            "endLine": 249,
+            "content": "    def write(self, body: bytes, metadata: dict[str, Any]) -> None:         digest, snapshot_id = hashlib.sha256(body).hexdigest(), metadata.get(\"snapshot_id\")         if len(body) > _MAX_ARTIFACT_BYTES or not isinstance(snapshot_id, str) or not re.fullmatch(r\"[a-f0-9]{32}\", snapshot_id):             raise ValueError(\"invalid artifact\")         record_bytes = _canonical(metadata)         if len(record_bytes) > _MAX_METADATA_BYTES: raise ValueError(\"oversized metadata\")         root_fd = self._root_fd()         try:             objects_fd = self._dir(root_fd, \"objects\")             try:                 try: os.mkdir(digest[:2], 0o700, dir_fd=objects_fd)                 except FileExistsError: pass                 prefix_fd = self._dir(objects_fd, digest[:2])                 try:                     name = f\"{digest}.body\"                     temporary = f\".{digest}.{secrets.token_hex(8)}.tmp\"                     object_fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=prefix_fd)                     try:                         try:                             self._write_all(object_fd, body); os.fsync(object_fd)                         finally: os.close(object_fd)                         try: os.link(temporary, name, src_dir_fd=prefix_fd, dst_dir_fd=prefix_fd, follow_symlinks=False)                         except FileExistsError:                             object_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=prefix_fd)                             try:                                 if self._read_bounded(object_fd, len(body)) != body: raise OSError(\"artifact collision\")                             finally: os.close(object_fd)                     finally:                         os.unlink(temporary, dir_fd=prefix_fd)                 finally: os.close(prefix_fd)             finally: os.close(objects_fd)             records_fd = self._dir(root_fd, \"records\")             try:                 temporary = f\".{snapshot_id}.{secrets.token_hex(8)}.tmp\"                 fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=records_fd)                 try:                     try: self._write_all(fd, record_bytes); os.fsync(fd)                     finally: os.close(fd)                     os.link(temporary, f\"{snapshot_id}.json\", src_dir_fd=records_fd, dst_dir_fd=records_fd, follow_symlinks=False)                 finally:                     os.unlink(temporary, dir_fd=records_fd)             finally: os.close(records_fd)             fd = os.open(\"lineage.jsonl\", os.O_WRONLY | os.O_CREAT | os.O_APPEND | os.O_NOFOLLOW, 0o600, dir_fd=root_fd)             try:                 fcntl.flock(fd, fcntl.LOCK_EX)                 self._write_all(fd, record_bytes + b\"\\n\")             finally: os.close(fd)         finally: os.close(root_fd)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:NormalizedSource.reproduce#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._root_fd#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._dir#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._read_bounded#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._write_all#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifacts.py:NormalizedSource.reproduce#1",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "count": 12,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+                    "name": "capture_source",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 273,
+                    "endLine": 326,
+                    "content": "def capture_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, body: bytes | None, *, complete: bool = True,                    normalized: NormalizedSource | None = None, now: datetime | None = None,                    cancelled: Callable[[], bool] | None = None) -> CaptureResult:     current = now or datetime.now(timezone.utc)     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     if body is None: return CaptureResult(ArtifactState.REVIEW, \"body_missing\")     if not complete: return CaptureResult(ArtifactState.REVIEW, \"truncated_body\")     if decision is None: return CaptureResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     mismatch = _bound(context, decision, current)     if mismatch: return CaptureResult(ArtifactState.REVIEW, mismatch)     if normalized is not None and not decision.retain_normalized_text:         return CaptureResult(ArtifactState.HOLD, \"normalized_retention_prohibited\")     if normalized is not None:         try: normalized.reproduce(body)         except (ValueError, UnicodeDecodeError): return CaptureResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     digest, snapshot_id = hashlib.sha256(body).hexdigest(), secrets.token_hex(16)     artifact = ArtifactReference(artifact_id=f\"artifact-{snapshot_id}\", snapshot_id=snapshot_id,         content_digest=digest, byte_length=len(body), locator=f\"sha256:{digest}\", source_family=context.source_family,         origin=context.origin, retrieved_at=context.retrieved_at, event_at=context.event_at,         requested_url=context.requested_url, final_url=context.final_url)     metadata = {\"snapshot_id\": snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id,         \"caller_id\": context.caller_id, \"scope\": context.scope, \"source_family\": context.source_family,         \"origin\": context.origin, \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": context.retrieved_at.isoformat(), \"event_at\": context.event_at.isoformat() if context.event_at else None,         \"content_digest\": digest, \"byte_length\": len(body), \"policy_digest\": decision.policy_digest,         \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id, \"reviewer_id\": decision.reviewer_id,         \"issued_at\": decision.issued_at.isoformat(), \"expires_at\": decision.expires_at.isoformat(),         \"retain_body\": decision.retain_body, \"retain_normalized_text\": decision.retain_normalized_text,         \"normalized\": ({\"text\": normalized.text, \"spans\": [asdict(s) for s in normalized.spans],                         \"source_digest\": normalized.source_digest} if normalized else None)}     if normalized is not None:         wire_spans = [SourceProofSpanReference(             span_id=f\"span-{snapshot_id}-{index}\", artifact_id=artifact.artifact_id,             byte_start=span.raw_start, byte_end=span.raw_end,             normalized_start=span.normalized_start, normalized_end=span.normalized_end,             raw_offset_unit=\"byte\", normalized_offset_unit=\"unicode_code_point\",             source_encoding=\"utf-8\",         ).model_dump(mode=\"json\") for index, span in enumerate(normalized.spans)]         proof_payload = {\"format_version\": \"source-proof/1.0\", \"input_ref\": \"0\" * 64,             \"context\": context.model_dump(mode=\"json\"), \"decision\": decision.model_dump(mode=\"json\"),             \"artifact\": artifact.model_dump(mode=\"json\"), \"spans\": wire_spans}         proof_raw = _canonical(proof_payload)         encoded_size = 4 + ((len(proof_raw) * 4 + 2) // 3)         if encoded_size > _MAX_EVIDENCE_PROOF_BYTES:             return CaptureResult(ArtifactState.REVIEW, \"source_proof_too_large\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     try: store.write(body, metadata)     except (FileNotFoundError, PermissionError): return CaptureResult(ArtifactState.HOLD, \"artifact_store_unavailable\")     except (OSError, ValueError, TypeError): return CaptureResult(ArtifactState.REVIEW, \"artifact_store_invalid\")     if cancelled is not None and cancelled(): return CaptureResult(ArtifactState.HOLD, \"capture_cancelled\")     return CaptureResult(ArtifactState.AVAILABLE, \"retained\", artifact)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 132,
+                    "endLine": 133,
+                    "content": "def _canonical(value: Any) -> bytes:     return json.dumps(value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True).encode()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+                    "name": "_aware",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 135,
+                    "endLine": 136,
+                    "content": "def _aware(value: datetime) -> bool:     return value.tzinfo is not None and value.utcoffset() is not None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+                    "name": "_bound",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 138,
+                    "endLine": 148,
+                    "content": "def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:     if not _aware(now) or not _aware(decision.issued_at) or not _aware(decision.expires_at):         return \"malformed_policy_time\"     if now < decision.issued_at:         return \"policy_not_yet_valid\"     if now >= decision.expires_at:         return \"policy_expired\"     if (context.operation_id != decision.operation_id or context.caller_id != decision.caller_id             or context.scope != decision.scope or context.source_family != decision.source_family):         return \"authorization_mismatch\"     return None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+                    "name": "normalize_html",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 453,
+                    "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+                    "name": "emit",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 428,
+                    "endLine": 432,
+                    "content": "    def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:NormalizedSource.reproduce#1",
+                    "name": "reproduce",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 105,
+                    "endLine": 109,
+                    "content": "    def reproduce(self, body: bytes) -> str:         recomputed = normalize_html(body)         if self != recomputed:             raise ValueError(\"normalized_source_mismatch\")         return recomputed.text"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._root_fd#0",
+                    "name": "_root_fd",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 178,
+                    "endLine": 179,
+                    "content": "    def _root_fd(self) -> int:         return os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._dir#2",
+                    "name": "_dir",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 181,
+                    "endLine": 182,
+                    "content": "    def _dir(fd: int, name: str) -> int:         return os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._read_bounded#2",
+                    "name": "_read_bounded",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 184,
+                    "endLine": 194,
+                    "content": "    def _read_bounded(fd: int, limit: int) -> bytes:         info = os.fstat(fd)         if not stat.S_ISREG(info.st_mode) or info.st_size > limit:             raise OSError(\"unsafe or oversized artifact file\")         chunks, remaining = [], info.st_size         while remaining:             chunk = os.read(fd, min(remaining, 1024 * 1024))             if not chunk: raise OSError(\"short artifact read\")             chunks.append(chunk); remaining -= len(chunk)         if os.read(fd, 1): raise OSError(\"artifact grew during read\")         return b\"\".join(chunks)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._write_all#2",
+                    "name": "_write_all",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 196,
+                    "endLine": 201,
+                    "content": "    def _write_all(fd: int, data: bytes) -> None:         view = memoryview(data)         while view:             count = os.write(fd, view)             if count <= 0: raise OSError(\"short write\")             view = view[count:]"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+                    "name": "write",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 202,
+                    "endLine": 249,
+                    "content": "    def write(self, body: bytes, metadata: dict[str, Any]) -> None:         digest, snapshot_id = hashlib.sha256(body).hexdigest(), metadata.get(\"snapshot_id\")         if len(body) > _MAX_ARTIFACT_BYTES or not isinstance(snapshot_id, str) or not re.fullmatch(r\"[a-f0-9]{32}\", snapshot_id):             raise ValueError(\"invalid artifact\")         record_bytes = _canonical(metadata)         if len(record_bytes) > _MAX_METADATA_BYTES: raise ValueError(\"oversized metadata\")         root_fd = self._root_fd()         try:             objects_fd = self._dir(root_fd, \"objects\")             try:                 try: os.mkdir(digest[:2], 0o700, dir_fd=objects_fd)                 except FileExistsError: pass                 prefix_fd = self._dir(objects_fd, digest[:2])                 try:                     name = f\"{digest}.body\"                     temporary = f\".{digest}.{secrets.token_hex(8)}.tmp\"                     object_fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=prefix_fd)                     try:                         try:                             self._write_all(object_fd, body); os.fsync(object_fd)                         finally: os.close(object_fd)                         try: os.link(temporary, name, src_dir_fd=prefix_fd, dst_dir_fd=prefix_fd, follow_symlinks=False)                         except FileExistsError:                             object_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=prefix_fd)                             try:                                 if self._read_bounded(object_fd, len(body)) != body: raise OSError(\"artifact collision\")                             finally: os.close(object_fd)                     finally:                         os.unlink(temporary, dir_fd=prefix_fd)                 finally: os.close(prefix_fd)             finally: os.close(objects_fd)             records_fd = self._dir(root_fd, \"records\")             try:                 temporary = f\".{snapshot_id}.{secrets.token_hex(8)}.tmp\"                 fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=records_fd)                 try:                     try: self._write_all(fd, record_bytes); os.fsync(fd)                     finally: os.close(fd)                     os.link(temporary, f\"{snapshot_id}.json\", src_dir_fd=records_fd, dst_dir_fd=records_fd, follow_symlinks=False)                 finally:                     os.unlink(temporary, dir_fd=records_fd)             finally: os.close(records_fd)             fd = os.open(\"lineage.jsonl\", os.O_WRONLY | os.O_CREAT | os.O_APPEND | os.O_NOFOLLOW, 0o600, dir_fd=root_fd)             try:                 fcntl.flock(fd, fcntl.LOCK_EX)                 self._write_all(fd, record_bytes + b\"\\n\")             finally: os.close(fd)         finally: os.close(root_fd)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 11
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:NormalizedSource.reproduce#1",
+                    "name": "reproduce",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 105,
+                    "endLine": 109,
+                    "content": "    def reproduce(self, body: bytes) -> str:         recomputed = normalize_html(body)         if self != recomputed:             raise ValueError(\"normalized_source_mismatch\")         return recomputed.text"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.write#2",
+                    "name": "write",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 202,
+                    "endLine": 249,
+                    "content": "    def write(self, body: bytes, metadata: dict[str, Any]) -> None:         digest, snapshot_id = hashlib.sha256(body).hexdigest(), metadata.get(\"snapshot_id\")         if len(body) > _MAX_ARTIFACT_BYTES or not isinstance(snapshot_id, str) or not re.fullmatch(r\"[a-f0-9]{32}\", snapshot_id):             raise ValueError(\"invalid artifact\")         record_bytes = _canonical(metadata)         if len(record_bytes) > _MAX_METADATA_BYTES: raise ValueError(\"oversized metadata\")         root_fd = self._root_fd()         try:             objects_fd = self._dir(root_fd, \"objects\")             try:                 try: os.mkdir(digest[:2], 0o700, dir_fd=objects_fd)                 except FileExistsError: pass                 prefix_fd = self._dir(objects_fd, digest[:2])                 try:                     name = f\"{digest}.body\"                     temporary = f\".{digest}.{secrets.token_hex(8)}.tmp\"                     object_fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=prefix_fd)                     try:                         try:                             self._write_all(object_fd, body); os.fsync(object_fd)                         finally: os.close(object_fd)                         try: os.link(temporary, name, src_dir_fd=prefix_fd, dst_dir_fd=prefix_fd, follow_symlinks=False)                         except FileExistsError:                             object_fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=prefix_fd)                             try:                                 if self._read_bounded(object_fd, len(body)) != body: raise OSError(\"artifact collision\")                             finally: os.close(object_fd)                     finally:                         os.unlink(temporary, dir_fd=prefix_fd)                 finally: os.close(prefix_fd)             finally: os.close(objects_fd)             records_fd = self._dir(root_fd, \"records\")             try:                 temporary = f\".{snapshot_id}.{secrets.token_hex(8)}.tmp\"                 fd = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=records_fd)                 try:                     try: self._write_all(fd, record_bytes); os.fsync(fd)                     finally: os.close(fd)                     os.link(temporary, f\"{snapshot_id}.json\", src_dir_fd=records_fd, dst_dir_fd=records_fd, follow_symlinks=False)                 finally:                     os.unlink(temporary, dir_fd=records_fd)             finally: os.close(records_fd)             fd = os.open(\"lineage.jsonl\", os.O_WRONLY | os.O_CREAT | os.O_APPEND | os.O_NOFOLLOW, 0o600, dir_fd=root_fd)             try:                 fcntl.flock(fd, fcntl.LOCK_EX)                 self._write_all(fd, record_bytes + b\"\\n\")             finally: os.close(fd)         finally: os.close(root_fd)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 132,
+                    "endLine": 133,
+                    "content": "def _canonical(value: Any) -> bytes:     return json.dumps(value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True).encode()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+                    "name": "_bound",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 138,
+                    "endLine": 148,
+                    "content": "def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:     if not _aware(now) or not _aware(decision.issued_at) or not _aware(decision.expires_at):         return \"malformed_policy_time\"     if now < decision.issued_at:         return \"policy_not_yet_valid\"     if now >= decision.expires_at:         return \"policy_expired\"     if (context.operation_id != decision.operation_id or context.caller_id != decision.caller_id             or context.scope != decision.scope or context.source_family != decision.source_family):         return \"authorization_mismatch\"     return None"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._root_fd#0",
+                    "name": "_root_fd",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 178,
+                    "endLine": 179,
+                    "content": "    def _root_fd(self) -> int:         return os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._dir#2",
+                    "name": "_dir",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 181,
+                    "endLine": 182,
+                    "content": "    def _dir(fd: int, name: str) -> int:         return os.open(name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._read_bounded#2",
+                    "name": "_read_bounded",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 184,
+                    "endLine": 194,
+                    "content": "    def _read_bounded(fd: int, limit: int) -> bytes:         info = os.fstat(fd)         if not stat.S_ISREG(info.st_mode) or info.st_size > limit:             raise OSError(\"unsafe or oversized artifact file\")         chunks, remaining = [], info.st_size         while remaining:             chunk = os.read(fd, min(remaining, 1024 * 1024))             if not chunk: raise OSError(\"short artifact read\")             chunks.append(chunk); remaining -= len(chunk)         if os.read(fd, 1): raise OSError(\"artifact grew during read\")         return b\"\".join(chunks)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore._write_all#2",
+                    "name": "_write_all",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 196,
+                    "endLine": 201,
+                    "content": "    def _write_all(fd: int, data: bytes) -> None:         view = memoryview(data)         while view:             count = os.write(fd, view)             if count <= 0: raise OSError(\"short write\")             view = view[count:]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+                    "name": "_aware",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 135,
+                    "endLine": 136,
+                    "content": "def _aware(value: datetime) -> bool:     return value.tzinfo is not None and value.utcoffset() is not None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+                    "name": "normalize_html",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 453,
+                    "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:emit",
+                    "name": "emit",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 428,
+                    "endLine": 432,
+                    "content": "    def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:capture_source",
+        "rootSymbols": 1,
+        "totalSymbols": 12,
+        "totalEdges": 12,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 4,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

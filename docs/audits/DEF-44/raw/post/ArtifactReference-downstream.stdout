@@ -1,0 +1,511 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "CRITICAL",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+        "name": "ArtifactReference",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 164,
+        "endLine": 181,
+        "content": "class ArtifactReference(ContractModel):     artifact_id: Identifier     snapshot_id: Identifier     content_digest: Digest     byte_length: Count     locator: Annotated[str, Field(min_length=1, max_length=8192)]     source_family: Identifier     origin: Annotated[str, Field(min_length=1, max_length=8192)]     retrieved_at: Timestamp     event_at: Timestamp | None = None     requested_url: URL | None = None     final_url: URL | None = None     @model_validator(mode=\"after\")     def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "name": "ArtifactReference",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 164,
+            "endLine": 181,
+            "content": "class ArtifactReference(ContractModel):     artifact_id: Identifier     snapshot_id: Identifier     content_digest: Digest     byte_length: Count     locator: Annotated[str, Field(min_length=1, max_length=8192)]     source_family: Identifier     origin: Annotated[str, Field(min_length=1, max_length=8192)]     retrieved_at: Timestamp     event_at: Timestamp | None = None     requested_url: URL | None = None     final_url: URL | None = None     @model_validator(mode=\"after\")     def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.check_url_pair#0",
+            "name": "check_url_pair",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Method",
+            "startLine": 178,
+            "endLine": 181,
+            "content": "    def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.artifact_id",
+            "name": "artifact_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 165,
+            "endLine": 165,
+            "content": "    artifact_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.snapshot_id",
+            "name": "snapshot_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 166,
+            "endLine": 166,
+            "content": "    snapshot_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.content_digest",
+            "name": "content_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 167,
+            "endLine": 167,
+            "content": "    content_digest: Digest"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.byte_length",
+            "name": "byte_length",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 168,
+            "endLine": 168,
+            "content": "    byte_length: Count"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.locator",
+            "name": "locator",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 169,
+            "endLine": 169,
+            "content": "    locator: Annotated[str, Field(min_length=1, max_length=8192)]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.source_family",
+            "name": "source_family",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 170,
+            "endLine": 170,
+            "content": "    source_family: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.origin",
+            "name": "origin",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 171,
+            "endLine": 171,
+            "content": "    origin: Annotated[str, Field(min_length=1, max_length=8192)]"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.retrieved_at",
+            "name": "retrieved_at",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 172,
+            "endLine": 172,
+            "content": "    retrieved_at: Timestamp"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.event_at",
+            "name": "event_at",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 173,
+            "endLine": 173,
+            "content": "    event_at: Timestamp | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.requested_url",
+            "name": "requested_url",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 174,
+            "endLine": 174,
+            "content": "    requested_url: URL | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.final_url",
+            "name": "final_url",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 175,
+            "endLine": 175,
+            "content": "    final_url: URL | None = None"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "name": "ContractModel",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 63,
+            "endLine": 70,
+            "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.artifact_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.snapshot_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.content_digest",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.byte_length",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.locator",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.source_family",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.origin",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.retrieved_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.event_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.requested_url",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.final_url",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.check_url_pair#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "to": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 14,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+                    "name": "ArtifactReference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 164,
+                    "endLine": 181,
+                    "content": "class ArtifactReference(ContractModel):     artifact_id: Identifier     snapshot_id: Identifier     content_digest: Digest     byte_length: Count     locator: Annotated[str, Field(min_length=1, max_length=8192)]     source_family: Identifier     origin: Annotated[str, Field(min_length=1, max_length=8192)]     retrieved_at: Timestamp     event_at: Timestamp | None = None     requested_url: URL | None = None     final_url: URL | None = None     @model_validator(mode=\"after\")     def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.check_url_pair#0",
+                    "name": "check_url_pair",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 178,
+                    "endLine": 181,
+                    "content": "    def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.artifact_id",
+                    "name": "artifact_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 165,
+                    "endLine": 165,
+                    "content": "    artifact_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.snapshot_id",
+                    "name": "snapshot_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 166,
+                    "endLine": 166,
+                    "content": "    snapshot_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.content_digest",
+                    "name": "content_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 167,
+                    "endLine": 167,
+                    "content": "    content_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.byte_length",
+                    "name": "byte_length",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 168,
+                    "endLine": 168,
+                    "content": "    byte_length: Count"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.locator",
+                    "name": "locator",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 169,
+                    "endLine": 169,
+                    "content": "    locator: Annotated[str, Field(min_length=1, max_length=8192)]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.source_family",
+                    "name": "source_family",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 170,
+                    "endLine": 170,
+                    "content": "    source_family: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.origin",
+                    "name": "origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 171,
+                    "endLine": 171,
+                    "content": "    origin: Annotated[str, Field(min_length=1, max_length=8192)]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.retrieved_at",
+                    "name": "retrieved_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 172,
+                    "endLine": 172,
+                    "content": "    retrieved_at: Timestamp"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.event_at",
+                    "name": "event_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 173,
+                    "endLine": 173,
+                    "content": "    event_at: Timestamp | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.requested_url",
+                    "name": "requested_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 174,
+                    "endLine": 174,
+                    "content": "    requested_url: URL | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.final_url",
+                    "name": "final_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 175,
+                    "endLine": 175,
+                    "content": "    final_url: URL | None = None"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 13
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.artifact_id",
+                    "name": "artifact_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 165,
+                    "endLine": 165,
+                    "content": "    artifact_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.snapshot_id",
+                    "name": "snapshot_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 166,
+                    "endLine": 166,
+                    "content": "    snapshot_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.content_digest",
+                    "name": "content_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 167,
+                    "endLine": 167,
+                    "content": "    content_digest: Digest"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.byte_length",
+                    "name": "byte_length",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 168,
+                    "endLine": 168,
+                    "content": "    byte_length: Count"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.locator",
+                    "name": "locator",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 169,
+                    "endLine": 169,
+                    "content": "    locator: Annotated[str, Field(min_length=1, max_length=8192)]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.source_family",
+                    "name": "source_family",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 170,
+                    "endLine": 170,
+                    "content": "    source_family: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.origin",
+                    "name": "origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 171,
+                    "endLine": 171,
+                    "content": "    origin: Annotated[str, Field(min_length=1, max_length=8192)]"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.retrieved_at",
+                    "name": "retrieved_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 172,
+                    "endLine": 172,
+                    "content": "    retrieved_at: Timestamp"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.event_at",
+                    "name": "event_at",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 173,
+                    "endLine": 173,
+                    "content": "    event_at: Timestamp | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.requested_url",
+                    "name": "requested_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 174,
+                    "endLine": 174,
+                    "content": "    requested_url: URL | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.final_url",
+                    "name": "final_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 175,
+                    "endLine": 175,
+                    "content": "    final_url: URL | None = None"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference.check_url_pair#0",
+                    "name": "check_url_pair",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 178,
+                    "endLine": 181,
+                    "content": "    def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+        "rootSymbols": 1,
+        "totalSymbols": 14,
+        "totalEdges": 13,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 13,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,15 @@
+VERIFIED for the requested F10-F13 runtime boundaries.
+
+F10: Trusted operation and occurrence are mandatory resolver inputs. The captured operation-a/occurrence-a proof resolved as available only with exact trusted values. operation-b and occurrence-b were both denied as review/authorization_mismatch with no body.
+
+F11: A 50 ms allocation around a 200 ms injected store returned in 50.98 ms as timeout. Explicit task cancellation returned in 21.69 ms as cancelled. Both retained consumed-byte accounting (15 bytes), reported whole-operation elapsed time, and returned no artifact, normalized material, or spans. The synchronous store worker had started one write in each case; "no evidence" here is the observable SourceProofResult boundary, consistent with the implemented test contract.
+
+F12: An exact 80,000-byte fragmented-looking plain-text input normalized to one reproducible span. Capture succeeded and its encoded persisted proof was 2,310 bytes, below the 8,388,608-byte proof envelope limit.
+
+F13: The real example construction path, with only the network transport injected as an empty HTML response, returned an available bundle. Public parse_bundle accepted it with valid_no_result, zero candidates, and a controlled_fetch_complete witness.
+
+No worktree files were edited. No loopback sockets were used.
+
+SHA-256:
+2e38f26211c88078fe9faf1181ec962ae5d29569c06bf6b2be851d0b17623ba0  independent-verifier.py
+39bf80c91cbf3628e25382ec8bc41fac0400a6136bb4b1811dc8e351c0bc720f  independent-verifier.out

@@ -1,0 +1,72 @@
+{
+  "compatibility_and_bounds": {
+    "evidence_reference_max": 8388608,
+    "fragmented_span_count": 79999,
+    "legacy_v1_fields": [
+      "artifact_id",
+      "byte_end",
+      "byte_start",
+      "field_pointer",
+      "span_id"
+    ],
+    "oversized_metadata": "artifact_store_invalid",
+    "proof_bytes": 34700616,
+    "proof_rejected_after_retention": true
+  },
+  "example": {
+    "valid_empty_result": "ValidationError:1 validation error for OccurrenceOutcome\n  Value error, success status disagrees with candidate cardinality [type=value_error, input_value={'occurrence_id': 'fixtur...t=None, money_usd=None)}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.12/v/value_error"
+  },
+  "normalization": {
+    "comment": {
+      "spans": 3,
+      "text": "a b",
+      "unrelated_denied": true
+    },
+    "literal_lt": {
+      "spans": 5,
+      "text": "a < b",
+      "unrelated_denied": true
+    },
+    "quoted_gt": {
+      "spans": 1,
+      "text": "ok",
+      "unrelated_denied": true
+    },
+    "repeated": {
+      "spans": 3,
+      "text": "x x",
+      "unrelated_denied": true
+    },
+    "script_style": {
+      "spans": 1,
+      "text": "ok",
+      "unrelated_denied": true
+    },
+    "unicode_entities": {
+      "spans": 9,
+      "text": "\ud83d\ude00 caf\u00e9 < & A",
+      "unrelated_denied": true
+    }
+  },
+  "persisted_policy_and_operation": {
+    "proof_bytes": 1811,
+    "replacement": "current_policy_mismatch",
+    "resolver_signature": "(value: 'str', *, caller_id: 'str', scope: 'str', source_family: 'str', config_path: 'str | os.PathLike[str] | None' = None, now: 'datetime | None' = None) -> 'ResolveResult'",
+    "revocation": "current_policy_unavailable",
+    "same_caller_scope_cross_operation": "available"
+  },
+  "policy_and_elapsed": {
+    "allocation_seconds": 0.05,
+    "elapsed_overrun": true,
+    "normalized_policy_deny": "normalized_retention_prohibited",
+    "post_fetch_wall_seconds": 0.16998842600150965,
+    "reported_elapsed_seconds": 0.0008692949995747767,
+    "write_error_accounted_bytes": 8
+  },
+  "policy_identity_and_symlinks": {
+    "expired": "current_policy_expired",
+    "future": "policy_not_yet_valid",
+    "replacement": "current_policy_mismatch",
+    "symlink_ancestor": "artifact_store_invalid"
+  }
+}
