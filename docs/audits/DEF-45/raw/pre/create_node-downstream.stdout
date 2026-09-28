@@ -1,0 +1,68 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/core/enricher_base.py:create_node",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+        "name": "create_node",
+        "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+        "nodeType": "Method",
+        "startLine": 657,
+        "endLine": 676,
+        "content": "    def create_node(self, node_obj) -> None:         \"\"\"         Create a single Neo4j node.         The following properties are automatically added to every node:         - type: Lowercase version of node_type         - sketch_id: Current sketch ID from enricher context         - label: Automatically computed by FlowsintType, or defaults to key_value if not provided         - created_at: ISO 8601 UTC timestamp (only on creation, not updates)         Use Pydantic object directly:             ```python             self.create_node(ip)             ```         Args:             node_obj: Either a Pydantic object or node label string             **properties: Additional node properties or overrides         \"\"\"         self._graph_service.create_node_from_flowsint_type(node_obj=node_obj)"
+    },
+    "symbols": [
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+            "name": "create_node",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 657,
+            "endLine": 676,
+            "content": "    def create_node(self, node_obj) -> None:         \"\"\"         Create a single Neo4j node.         The following properties are automatically added to every node:         - type: Lowercase version of node_type         - sketch_id: Current sketch ID from enricher context         - label: Automatically computed by FlowsintType, or defaults to key_value if not provided         - created_at: ISO 8601 UTC timestamp (only on creation, not updates)         Use Pydantic object directly:             ```python             self.create_node(ip)             ```         Args:             node_obj: Either a Pydantic object or node label string             **properties: Additional node properties or overrides         \"\"\"         self._graph_service.create_node_from_flowsint_type(node_obj=node_obj)"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+                    "name": "create_node",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 657,
+                    "endLine": 676,
+                    "content": "    def create_node(self, node_obj) -> None:         \"\"\"         Create a single Neo4j node.         The following properties are automatically added to every node:         - type: Lowercase version of node_type         - sketch_id: Current sketch ID from enricher context         - label: Automatically computed by FlowsintType, or defaults to key_value if not provided         - created_at: ISO 8601 UTC timestamp (only on creation, not updates)         Use Pydantic object directly:             ```python             self.create_node(ip)             ```         Args:             node_obj: Either a Pydantic object or node label string             **properties: Additional node properties or overrides         \"\"\"         self._graph_service.create_node_from_flowsint_type(node_obj=node_obj)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/core/enricher_base.py:create_node",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

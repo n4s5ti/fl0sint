@@ -1,0 +1,888 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+        "name": "execute_structured",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Method",
+        "startLine": 507,
+        "endLine": 598,
+        "content": "    async def execute_structured(self, values: List[Any]):         outcomes: list[InputOutcome | None] = [None] * len(values)         if self.name() != \"enricher_orchestrator\":             Logger.info(self.sketch_id, {\"message\": f\"Enricher {self.name()} started.\"})         try:             await self.async_init()         except asyncio.CancelledError:             outcomes = [                 InputOutcome(                     input_ref=canonical_input_hash(v),                     status=OutcomeStatus.HOLD,                     diagnostic=self._diagnostic(                         \"cancelled\", \"The operation was cancelled before completion.\"                     ),                 )                 for v in values             ]         except Exception as error:             diagnostic = self._classify_structured_exception(error)             outcomes = [                 InputOutcome(                     input_ref=canonical_input_hash(v),                     status=OutcomeStatus.FAILURE,                     diagnostic=diagnostic,                 )                 for v in values             ]         else:             adapter, field = self._input_validation_context()             specs = []             for index, value in enumerate(values):                 try:                     source = self._validate_single_input(                         value, adapter=adapter, primary_field=field                     )                 except Exception as error:                     outcomes[index] = InputOutcome(                         input_ref=canonical_input_hash(value),                         status=OutcomeStatus.FAILURE,                         diagnostic=self._classify_structured_exception(error),                     )                 else:                     specs.append((index, source, canonical_input_hash(value)))             try:                 occurrences = await self._scan_occurrence_specs(specs)                 self.postprocess(occurrences)             except asyncio.CancelledError:                 for index, value in enumerate(values):                     if outcomes[index] is None:                         outcomes[index] = InputOutcome(                             input_ref=canonical_input_hash(value),                             status=OutcomeStatus.HOLD,                             diagnostic=self._diagnostic(                                 \"cancelled\",                                 \"The operation was cancelled before completion.\",                             ),                         )             except Exception as error:                 diagnostic = self._classify_structured_exception(error)                 for index, value in enumerate(values):                     if outcomes[index] is None:                         outcomes[index] = InputOutcome(                             input_ref=canonical_input_hash(value),                             status=OutcomeStatus.FAILURE,                             diagnostic=diagnostic,                         )             else:                 for occurrence in occurrences:                     outcomes[occurrence.index] = occurrence.to_input_outcome()         try:             self._graph_service.flush()         except Exception:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Enricher {self.name()} graph flush failed.\"},             )         final = tuple(             outcome             or InputOutcome(                 input_ref=canonical_input_hash(values[index]),                 status=OutcomeStatus.FAILURE,                 diagnostic=self._diagnostic(                     \"unexpected_error\", \"Processing ended without a terminal outcome.\"                 ),             )             for index, outcome in enumerate(outcomes)         )         if self.name() != \"enricher_orchestrator\":             Logger.completed(                 self.sketch_id, {\"message\": f\"Enricher {self.name()} finished.\"}             )         return StructuredExecutionResult(enricher_name=self.name(), outcomes=final)"
+    },
+    "symbols": [
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "name": "execute_structured",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 507,
+            "endLine": 598,
+            "content": "    async def execute_structured(self, values: List[Any]):         outcomes: list[InputOutcome | None] = [None] * len(values)         if self.name() != \"enricher_orchestrator\":             Logger.info(self.sketch_id, {\"message\": f\"Enricher {self.name()} started.\"})         try:             await self.async_init()         except asyncio.CancelledError:             outcomes = [                 InputOutcome(                     input_ref=canonical_input_hash(v),                     status=OutcomeStatus.HOLD,                     diagnostic=self._diagnostic(                         \"cancelled\", \"The operation was cancelled before completion.\"                     ),                 )                 for v in values             ]         except Exception as error:             diagnostic = self._classify_structured_exception(error)             outcomes = [                 InputOutcome(                     input_ref=canonical_input_hash(v),                     status=OutcomeStatus.FAILURE,                     diagnostic=diagnostic,                 )                 for v in values             ]         else:             adapter, field = self._input_validation_context()             specs = []             for index, value in enumerate(values):                 try:                     source = self._validate_single_input(                         value, adapter=adapter, primary_field=field                     )                 except Exception as error:                     outcomes[index] = InputOutcome(                         input_ref=canonical_input_hash(value),                         status=OutcomeStatus.FAILURE,                         diagnostic=self._classify_structured_exception(error),                     )                 else:                     specs.append((index, source, canonical_input_hash(value)))             try:                 occurrences = await self._scan_occurrence_specs(specs)                 self.postprocess(occurrences)             except asyncio.CancelledError:                 for index, value in enumerate(values):                     if outcomes[index] is None:                         outcomes[index] = InputOutcome(                             input_ref=canonical_input_hash(value),                             status=OutcomeStatus.HOLD,                             diagnostic=self._diagnostic(                                 \"cancelled\",                                 \"The operation was cancelled before completion.\",                             ),                         )             except Exception as error:                 diagnostic = self._classify_structured_exception(error)                 for index, value in enumerate(values):                     if outcomes[index] is None:                         outcomes[index] = InputOutcome(                             input_ref=canonical_input_hash(value),                             status=OutcomeStatus.FAILURE,                             diagnostic=diagnostic,                         )             else:                 for occurrence in occurrences:                     outcomes[occurrence.index] = occurrence.to_input_outcome()         try:             self._graph_service.flush()         except Exception:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Enricher {self.name()} graph flush failed.\"},             )         final = tuple(             outcome             or InputOutcome(                 input_ref=canonical_input_hash(values[index]),                 status=OutcomeStatus.FAILURE,                 diagnostic=self._diagnostic(                     \"unexpected_error\", \"Processing ended without a terminal outcome.\"                 ),             )             for index, outcome in enumerate(outcomes)         )         if self.name() != \"enricher_orchestrator\":             Logger.completed(                 self.sketch_id, {\"message\": f\"Enricher {self.name()} finished.\"}             )         return StructuredExecutionResult(enricher_name=self.name(), outcomes=final)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+            "name": "build_params_model",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Function",
+            "startLine": 29,
+            "endLine": 59,
+            "content": "def build_params_model(params_schema: list) -> BaseModel:     \"\"\"     Build a strict Pydantic model from a params_schema.     Unknown fields will raise a validation error.     Note: Vault secrets are always optional in the Pydantic model to allow     for deferred configuration. Required validation happens after vault resolution.     \"\"\"     fields: Dict[str, Any] = {}     for param in params_schema:         name = param[\"name\"]         param_type = param.get(\"type\", \"string\")         field_type = bool if param_type == \"bool\" else str         required = param.get(\"required\", False)         # Vault secrets are always optional in Pydantic validation         # Required validation happens after vault resolution         if param_type == \"vaultSecret\":             default = param.get(\"default\", None)         else:             default = ... if required else param.get(\"default\")         fields[name] = (             Optional[field_type],             Field(default=default, description=param.get(\"description\", \"\")),         )     model = create_model(\"ParamsModel\", __config__=ConfigDict(extra=\"forbid\"), **fields)     return model"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_origin",
+            "name": "_origin",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Function",
+            "startLine": 53,
+            "endLine": 61,
+            "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     parsed_port = parts.port     port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)     if port == 0:         raise ValueError(\"invalid URL port\")     host = parts.hostname or \"\"     host = f\"[{host.lower()}]\" if \":\" in host else host.lower()     return f\"{parts.scheme}://{host}:{port}\""
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Function",
+            "startLine": 64,
+            "endLine": 67,
+            "content": "def _digest(value: object) -> str:     return hashlib.sha256(         json.dumps(value, sort_keys=True, separators=(\",\", \":\")).encode()     ).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.positive_int#2",
+            "name": "positive_int",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Function",
+            "startLine": 224,
+            "endLine": 228,
+            "content": "        def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+            "name": "async_init",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 152,
+            "endLine": 166,
+            "content": "    async def async_init(self):         self.ParamsModel = build_params_model(self.params_schema)         # Always resolve parameters, even if self.params is empty         # This allows vault secrets to be fetched by name from params_schema         resolved_params = self.resolve_params()         # Strict validation after resolution         try:             validated = self.ParamsModel(**resolved_params)             self.params = validated.model_dump()         except ValidationError as e:             raise InvalidEnricherParams(                 f\"Enricher '{self.name()}' received invalid parameters: {e}\"             )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.resolve_params#0",
+            "name": "resolve_params",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 168,
+            "endLine": 203,
+            "content": "    def resolve_params(self) -> Dict[str, Any]:         resolved = {}         for param in self.params_schema:             param_name = param[\"name\"]             param_type = param.get(\"type\", \"string\")             if param_type == \"vaultSecret\":                 # For vault secrets, try to get from vault by name or ID                 secret = None                 if self.vault is not None:                     # First, check if user provided a specific vault ID in params                     if param_name in self.params and self.params[param_name]:                         secret = self.vault.get_secret(self.params[param_name])                     # Otherwise, try to get the secret by the param name itself                     if secret is None:                         secret = self.vault.get_secret(param_name)                     if secret is not None:                         resolved[param_name] = secret                     elif param.get(\"required\", False):                         raise Exception(                             f\"Required vault secret '{param_name}' is missing. Please go to the Vault settings and create a '{param_name}' key.\"                         )                 # If no vault or no secret found, use default if available                 if param_name not in resolved and param.get(\"default\") is not None:                     resolved[param_name] = param[\"default\"]             else:                 # For non-vault params, use the provided value or default                 if param_name in self.params and self.params[param_name] is not None:                     resolved[param_name] = self.params[param_name]                 elif param.get(\"default\") is not None:                     resolved[param_name] = param[\"default\"]         return resolved"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.name#0",
+            "name": "name",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 211,
+            "endLine": 212,
+            "content": "    def name(cls) -> str:         pass"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._input_validation_context#0",
+            "name": "_input_validation_context",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 373,
+            "endLine": 392,
+            "content": "    def _input_validation_context(self) -> tuple[TypeAdapter | None, str | None]:         if self.InputType is NotImplemented:             return None, None         base_type = self.InputType         adapter = TypeAdapter(base_type)         primary_field = None         if issubclass(base_type, BaseModel):             for name, field in base_type.model_fields.items():                 if field.json_schema_extra and field.json_schema_extra.get(\"primary\"):                     primary_field = name                     break             if primary_field is None:                 for name, field in base_type.model_fields.items():                     if field.is_required():                         primary_field = name                         break                 if primary_field is None:                     primary_field = next(iter(base_type.model_fields.keys()))         return adapter, primary_field"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._validate_single_input#3",
+            "name": "_validate_single_input",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 394,
+            "endLine": 408,
+            "content": "    def _validate_single_input(         self,         item: Any,         *,         adapter: TypeAdapter | None = None,         primary_field: str | None = None,     ) -> Any:         \"\"\"Validate one input using the same conversion rules as ``preprocess``.\"\"\"         if self.InputType is NotImplemented:             return item         if adapter is None:             adapter, primary_field = self._input_validation_context()         if isinstance(item, str) and primary_field:             item = {primary_field: item}         return adapter.validate_python(item)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._classify_structured_exception#1",
+            "name": "_classify_structured_exception",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 463,
+            "endLine": 506,
+            "content": "    def _classify_structured_exception(self, error: Exception) -> RedactedDiagnostic:         \"\"\"Classify failures without retaining exception text or request data.\"\"\"         if isinstance(error, (InvalidEnricherParams, ValidationError)):             return RedactedDiagnostic(                 code=\"validation_error\",                 safe_message=\"Input validation failed.\",                 retryable=False,             )         if isinstance(error, httpx.TimeoutException):             return RedactedDiagnostic(                 code=\"timeout\",                 safe_message=\"The operation timed out.\",                 retryable=True,             )         if isinstance(error, httpx.HTTPStatusError):             status_code = error.response.status_code             if status_code == 429:                 return RedactedDiagnostic(                     code=\"http_rate_limited\",                     safe_message=\"The remote service rate limited the request.\",                     retryable=True,                 )             if 500 <= status_code < 600:                 return RedactedDiagnostic(                     code=\"http_server_error\",                     safe_message=\"The remote service failed.\",                     retryable=True,                 )             if 400 <= status_code < 500:                 return RedactedDiagnostic(                     code=\"http_client_error\",                     safe_message=\"The remote service rejected the request.\",                     retryable=False,                 )             return RedactedDiagnostic(                 code=\"http_error\",                 safe_message=\"The remote service returned an HTTP error.\",                 retryable=False,             )         return RedactedDiagnostic(             code=\"unexpected_error\",             safe_message=\"Unexpected processing failure.\",             retryable=False,         )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+            "name": "create_node",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 657,
+            "endLine": 676,
+            "content": "    def create_node(self, node_obj) -> None:         \"\"\"         Create a single Neo4j node.         The following properties are automatically added to every node:         - type: Lowercase version of node_type         - sketch_id: Current sketch ID from enricher context         - label: Automatically computed by FlowsintType, or defaults to key_value if not provided         - created_at: ISO 8601 UTC timestamp (only on creation, not updates)         Use Pydantic object directly:             ```python             self.create_node(ip)             ```         Args:             node_obj: Either a Pydantic object or node label string             **properties: Additional node properties or overrides         \"\"\"         self._graph_service.create_node_from_flowsint_type(node_obj=node_obj)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_relationship#3",
+            "name": "create_relationship",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 678,
+            "endLine": 700,
+            "content": "    def create_relationship(         self,         from_obj,         to_obj,         rel_label=\"IS_RELATED_TO\",     ) -> None:         \"\"\"         Create a relationship between two nodes.         Best Practice - Use Pydantic objects directly:             ```python             self.create_relationship(individual, domain, \"HAS_DOMAIN\")             self.create_relationship(email, breach, \"FOUND_IN_BREACH\")             ```         Args:             from_obj: Either a Pydantic object (source) or source node label             to_obj: Either a Pydantic object (target) or source node key property             rel_label: Either relationship type (Pydantic) or source node key value         \"\"\"         self._graph_service.create_relationship(             from_obj=from_obj, to_obj=to_obj, rel_label=rel_label         )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.log_graph_message#1",
+            "name": "log_graph_message",
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "nodeType": "Method",
+            "startLine": 702,
+            "endLine": 709,
+            "content": "    def log_graph_message(self, message: str) -> None:         \"\"\"         Log a graph operation message.         Args:             message: Message to log         \"\"\"         self._graph_service.log_graph_message(message)"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.name#0",
+            "name": "name",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 125,
+            "endLine": 126,
+            "content": "    def name(cls):         return \"website_to_text\""
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._outputs_from_text#1",
+            "name": "_outputs_from_text",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 183,
+            "endLine": 184,
+            "content": "    def _outputs_from_text(self, text):         return (Phrase(text=text),) if text else ()"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+            "name": "_diagnostic",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 187,
+            "endLine": 188,
+            "content": "    def _diagnostic(code, message, retryable=False):         return RedactedDiagnostic(code=code, safe_message=message, retryable=retryable)"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._cancelled_occurrence#4",
+            "name": "_cancelled_occurrence",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 190,
+            "endLine": 201,
+            "content": "    def _cancelled_occurrence(self, index, source, input_ref, resources=None):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.HOLD,             diagnostic=self._diagnostic(                 \"cancelled\", \"The operation was cancelled before completion.\"             ),             actual_resources=resources,             fetch_status=FetchStatus.CANCELLED,         )"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._failed_occurrence#6",
+            "name": "_failed_occurrence",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 203,
+            "endLine": 221,
+            "content": "    def _failed_occurrence(         self,         index,         source,         input_ref,         diagnostic=None,         resources=None,         fetch_status=None,     ):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.FAILURE,             diagnostic=diagnostic             or self._diagnostic(\"unexpected_error\", \"Unexpected processing failure.\"),             actual_resources=resources,             fetch_status=fetch_status,         )"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+            "name": "_build_operation",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 223,
+            "endLine": 274,
+            "content": "    def _build_operation(self, specs):         def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value         max_response_bytes = positive_int(\"max_response_bytes\", 1048576)         max_concurrency = positive_int(\"max_concurrency\", 10)         request_timeout = positive_int(\"request_timeout\", 10)         urls = tuple(str(source.url) for _index, source, _ref in specs)         origins = tuple(sorted(set(_origin(url) for url in urls)))         endpoint_digest = _digest(             {\"allowed_origins\": origins, \"redirects\": \"same-origin-only\"}         )         policy = TrustedFetchPolicy(             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             allowed_origins=origins,         )         parameters = FetchParameters(             max_redirects=self.params.get(\"max_redirects\", 3),             max_retries=self.params.get(\"max_retries\", 0),             max_bytes_per_input=max_response_bytes,         )         count = len(specs)         attempts = 1 + parameters.max_redirects + parameters.max_retries         request = AcquisitionRequest(             operation_id=f\"website-to-text-{uuid.uuid4().hex}\",             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             inputs=tuple(                 InputOccurrence(                     occurrence_id=f\"input-{specs[position][0]}\",                     input_ref=canonical_input_hash(url),                     type_tag=\"http_url\",                     value=url,                 )                 for position, url in enumerate(urls)             ),             allocation=Resources(                 requests=count * attempts,                 bytes=count * max_response_bytes,                 elapsed_seconds=request_timeout,                 concurrency=min(max_concurrency, count),             ),         )         return admit_fetch(request, policy, parameters)"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "name": "_scan_occurrence_specs",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 276,
+            "endLine": 418,
+            "content": "    async def _scan_occurrence_specs(self, specs: Sequence[tuple[int, Website, str]]):         specs = tuple(specs)         if not specs:             return ()         if self.params.get(\"enable_quic\", False):             diagnostic = self._diagnostic(                 \"unsafe_transport_disabled\",                 \"Legacy QUIC transport is disabled because it cannot satisfy the fetch policy.\",             )             return tuple(                 self._failed_occurrence(                     *spec,                     diagnostic,                     Resources(requests=0, bytes=0, elapsed_seconds=0.0),                     FetchStatus.POLICY_DENIED,                 )                 for spec in specs             )         try:             operation = self._build_operation(specs)             runtime = None             if self._artifact_store is None or self._retention_authority is None:                 runtime = load_artifact_runtime(                     caller_id=_CALLER_ID, scope=_SCOPE, source_family=\"http\"                 )             store = self._artifact_store or (runtime.store if runtime else None)             authority = self._retention_authority or (runtime.authority if runtime else None)             decision = (                 authority.issue(operation.operation_id)                 if authority is not None                 else None             )             fetched = await execute_fetch_with_source_proof(                 operation,                 artifact_store=store,                 retention_decision=decision,             )         except asyncio.CancelledError:             return tuple(self._cancelled_occurrence(*spec) for spec in specs)         except Exception:             return tuple(self._failed_occurrence(*spec) for spec in specs)         expected = {             item.occurrence_id: item.input_ref for item in operation.inputs         }         returned_ids = [result.occurrence_id for result in fetched.outcomes]         result_is_bound = (             fetched.operation_id == operation.operation_id             and len(fetched.outcomes) == len(operation.inputs)             and len(set(returned_ids)) == len(returned_ids)             and set(returned_ids) == set(expected)             and all(                 result.input_ref == expected.get(result.occurrence_id)                 for result in fetched.outcomes             )         )         if not result_is_bound:             return tuple(                 self._failed_occurrence(                     *spec,                     self._diagnostic(                         \"invalid_fetch_result\",                         \"The fetch result did not match the admitted operation.\",                     ),                 )                 for spec in specs             )         outcome_by_id = {             result.occurrence_id: result for result in fetched.outcomes         }         occurrences = []         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):             result = outcome_by_id.get(admitted.occurrence_id)             if result.fetch_status is FetchStatus.SUCCESS:                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:                     artifact = result.capture.artifact                     context = ArtifactContext(                         operation_id=operation.operation_id,                         occurrence_id=admitted.occurrence_id,                         caller_id=_CALLER_ID,                         scope=_SCOPE,                         source_family=\"http\",                         origin=artifact.origin,                         requested_url=artifact.requested_url,                         final_url=artifact.final_url,                         retrieved_at=artifact.retrieved_at,                         event_at=artifact.event_at,                     )                     try:                         source_proof = encode_source_proof(PersistedSourceProof(                             format_version=\"source-proof/1.0\", input_ref=input_ref,                             context=context, decision=decision, artifact=artifact,                             spans=result.spans,                         ))                     except ValueError:                         occurrences.append(self._failed_occurrence(                             index, source, input_ref,                             self._diagnostic(\"source_proof_too_large\", \"Source proof exceeds the evidence boundary.\"),                             result.actual_resources, FetchStatus.TOOL_ERROR,                         ))                         continue                     occurrences.append(                         WebsiteTextOccurrence(                             source,                             index,                             input_ref,                             OutcomeStatus.SUCCESS,                             self._outputs_from_text(result.normalized.text),                             actual_resources=re ... [truncated]"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._legacy_outputs#1",
+            "name": "_legacy_outputs",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 429,
+            "endLine": 435,
+            "content": "    def _legacy_outputs(occurrences):         return [             output             for occurrence in occurrences             if occurrence.status is OutcomeStatus.SUCCESS             for output in occurrence.outputs         ]"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#1",
+            "name": "postprocess",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 440,
+            "endLine": 447,
+            "content": "    def postprocess(self, occurrences):         retained = tuple(occurrences)         if any(not isinstance(item, WebsiteTextOccurrence) for item in retained):             raise TypeError(                 \"WebsiteToText.postprocess requires occurrence envelopes from scan().\"             )         self._postprocess_occurrences(retained)         return self._legacy_outputs(retained)"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+            "name": "_postprocess_occurrences",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Method",
+            "startLine": 449,
+            "endLine": 464,
+            "content": "    def _postprocess_occurrences(self, occurrences):         if not self._graph_service:             return         for occurrence in occurrences:             if occurrence.status is not OutcomeStatus.SUCCESS:                 continue             self.create_node(occurrence.source)             for output in occurrence.outputs:                 if output.text:                     self.create_node(output)                     self.create_relationship(                         occurrence.source, output, \"HAS_INNER_TEXT\"                     )                     self.log_graph_message(                         f\"Extracted text from {occurrence.source.url} ({len(output.text)} chars).\"                     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._input_validation_context#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._validate_single_input#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._classify_structured_exception#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.name#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.resolve_params#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.name#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._validate_single_input#3",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._input_validation_context#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._outputs_from_text#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._cancelled_occurrence#4",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._failed_occurrence#6",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._legacy_outputs#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#1",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+            "to": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_relationship#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+            "to": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.log_graph_message#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._failed_occurrence#6",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._cancelled_occurrence#4",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.positive_int#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "count": 14,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.execute_structured#1",
+                    "name": "execute_structured",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 507,
+                    "endLine": 598,
+                    "content": "    async def execute_structured(self, values: List[Any]):         outcomes: list[InputOutcome | None] = [None] * len(values)         if self.name() != \"enricher_orchestrator\":             Logger.info(self.sketch_id, {\"message\": f\"Enricher {self.name()} started.\"})         try:             await self.async_init()         except asyncio.CancelledError:             outcomes = [                 InputOutcome(                     input_ref=canonical_input_hash(v),                     status=OutcomeStatus.HOLD,                     diagnostic=self._diagnostic(                         \"cancelled\", \"The operation was cancelled before completion.\"                     ),                 )                 for v in values             ]         except Exception as error:             diagnostic = self._classify_structured_exception(error)             outcomes = [                 InputOutcome(                     input_ref=canonical_input_hash(v),                     status=OutcomeStatus.FAILURE,                     diagnostic=diagnostic,                 )                 for v in values             ]         else:             adapter, field = self._input_validation_context()             specs = []             for index, value in enumerate(values):                 try:                     source = self._validate_single_input(                         value, adapter=adapter, primary_field=field                     )                 except Exception as error:                     outcomes[index] = InputOutcome(                         input_ref=canonical_input_hash(value),                         status=OutcomeStatus.FAILURE,                         diagnostic=self._classify_structured_exception(error),                     )                 else:                     specs.append((index, source, canonical_input_hash(value)))             try:                 occurrences = await self._scan_occurrence_specs(specs)                 self.postprocess(occurrences)             except asyncio.CancelledError:                 for index, value in enumerate(values):                     if outcomes[index] is None:                         outcomes[index] = InputOutcome(                             input_ref=canonical_input_hash(value),                             status=OutcomeStatus.HOLD,                             diagnostic=self._diagnostic(                                 \"cancelled\",                                 \"The operation was cancelled before completion.\",                             ),                         )             except Exception as error:                 diagnostic = self._classify_structured_exception(error)                 for index, value in enumerate(values):                     if outcomes[index] is None:                         outcomes[index] = InputOutcome(                             input_ref=canonical_input_hash(value),                             status=OutcomeStatus.FAILURE,                             diagnostic=diagnostic,                         )             else:                 for occurrence in occurrences:                     outcomes[occurrence.index] = occurrence.to_input_outcome()         try:             self._graph_service.flush()         except Exception:             Logger.error(                 self.sketch_id,                 {\"message\": f\"Enricher {self.name()} graph flush failed.\"},             )         final = tuple(             outcome             or InputOutcome(                 input_ref=canonical_input_hash(values[index]),                 status=OutcomeStatus.FAILURE,                 diagnostic=self._diagnostic(                     \"unexpected_error\", \"Processing ended without a terminal outcome.\"                 ),             )             for index, outcome in enumerate(outcomes)         )         if self.name() != \"enricher_orchestrator\":             Logger.completed(                 self.sketch_id, {\"message\": f\"Enricher {self.name()} finished.\"}             )         return StructuredExecutionResult(enricher_name=self.name(), outcomes=final)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Function",
+                    "startLine": 53,
+                    "endLine": 61,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     parsed_port = parts.port     port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)     if port == 0:         raise ValueError(\"invalid URL port\")     host = parts.hostname or \"\"     host = f\"[{host.lower()}]\" if \":\" in host else host.lower()     return f\"{parts.scheme}://{host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Function",
+                    "startLine": 64,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(         json.dumps(value, sort_keys=True, separators=(\",\", \":\")).encode()     ).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.positive_int#2",
+                    "name": "positive_int",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Function",
+                    "startLine": 224,
+                    "endLine": 228,
+                    "content": "        def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.name#0",
+                    "name": "name",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 125,
+                    "endLine": 126,
+                    "content": "    def name(cls):         return \"website_to_text\""
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._outputs_from_text#1",
+                    "name": "_outputs_from_text",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 183,
+                    "endLine": 184,
+                    "content": "    def _outputs_from_text(self, text):         return (Phrase(text=text),) if text else ()"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 187,
+                    "endLine": 188,
+                    "content": "    def _diagnostic(code, message, retryable=False):         return RedactedDiagnostic(code=code, safe_message=message, retryable=retryable)"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._cancelled_occurrence#4",
+                    "name": "_cancelled_occurrence",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 190,
+                    "endLine": 201,
+                    "content": "    def _cancelled_occurrence(self, index, source, input_ref, resources=None):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.HOLD,             diagnostic=self._diagnostic(                 \"cancelled\", \"The operation was cancelled before completion.\"             ),             actual_resources=resources,             fetch_status=FetchStatus.CANCELLED,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._failed_occurrence#6",
+                    "name": "_failed_occurrence",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 203,
+                    "endLine": 221,
+                    "content": "    def _failed_occurrence(         self,         index,         source,         input_ref,         diagnostic=None,         resources=None,         fetch_status=None,     ):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.FAILURE,             diagnostic=diagnostic             or self._diagnostic(\"unexpected_error\", \"Unexpected processing failure.\"),             actual_resources=resources,             fetch_status=fetch_status,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+                    "name": "_build_operation",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 223,
+                    "endLine": 274,
+                    "content": "    def _build_operation(self, specs):         def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value         max_response_bytes = positive_int(\"max_response_bytes\", 1048576)         max_concurrency = positive_int(\"max_concurrency\", 10)         request_timeout = positive_int(\"request_timeout\", 10)         urls = tuple(str(source.url) for _index, source, _ref in specs)         origins = tuple(sorted(set(_origin(url) for url in urls)))         endpoint_digest = _digest(             {\"allowed_origins\": origins, \"redirects\": \"same-origin-only\"}         )         policy = TrustedFetchPolicy(             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             allowed_origins=origins,         )         parameters = FetchParameters(             max_redirects=self.params.get(\"max_redirects\", 3),             max_retries=self.params.get(\"max_retries\", 0),             max_bytes_per_input=max_response_bytes,         )         count = len(specs)         attempts = 1 + parameters.max_redirects + parameters.max_retries         request = AcquisitionRequest(             operation_id=f\"website-to-text-{uuid.uuid4().hex}\",             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             inputs=tuple(                 InputOccurrence(                     occurrence_id=f\"input-{specs[position][0]}\",                     input_ref=canonical_input_hash(url),                     type_tag=\"http_url\",                     value=url,                 )                 for position, url in enumerate(urls)             ),             allocation=Resources(                 requests=count * attempts,                 bytes=count * max_response_bytes,                 elapsed_seconds=request_timeout,                 concurrency=min(max_concurrency, count),             ),         )         return admit_fetch(request, policy, parameters)"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+                    "name": "_scan_occurrence_specs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 276,
+                    "endLine": 418,
+                    "content": "    async def _scan_occurrence_specs(self, specs: Sequence[tuple[int, Website, str]]):         specs = tuple(specs)         if not specs:             return ()         if self.params.get(\"enable_quic\", False):             diagnostic = self._diagnostic(                 \"unsafe_transport_disabled\",                 \"Legacy QUIC transport is disabled because it cannot satisfy the fetch policy.\",             )             return tuple(                 self._failed_occurrence(                     *spec,                     diagnostic,                     Resources(requests=0, bytes=0, elapsed_seconds=0.0),                     FetchStatus.POLICY_DENIED,                 )                 for spec in specs             )         try:             operation = self._build_operation(specs)             runtime = None             if self._artifact_store is None or self._retention_authority is None:                 runtime = load_artifact_runtime(                     caller_id=_CALLER_ID, scope=_SCOPE, source_family=\"http\"                 )             store = self._artifact_store or (runtime.store if runtime else None)             authority = self._retention_authority or (runtime.authority if runtime else None)             decision = (                 authority.issue(operation.operation_id)                 if authority is not None                 else None             )             fetched = await execute_fetch_with_source_proof(                 operation,                 artifact_store=store,                 retention_decision=decision,             )         except asyncio.CancelledError:             return tuple(self._cancelled_occurrence(*spec) for spec in specs)         except Exception:             return tuple(self._failed_occurrence(*spec) for spec in specs)         expected = {             item.occurrence_id: item.input_ref for item in operation.inputs         }         returned_ids = [result.occurrence_id for result in fetched.outcomes]         result_is_bound = (             fetched.operation_id == operation.operation_id             and len(fetched.outcomes) == len(operation.inputs)             and len(set(returned_ids)) == len(returned_ids)             and set(returned_ids) == set(expected)             and all(                 result.input_ref == expected.get(result.occurrence_id)                 for result in fetched.outcomes             )         )         if not result_is_bound:             return tuple(                 self._failed_occurrence(                     *spec,                     self._diagnostic(                         \"invalid_fetch_result\",                         \"The fetch result did not match the admitted operation.\",                     ),                 )                 for spec in specs             )         outcome_by_id = {             result.occurrence_id: result for result in fetched.outcomes         }         occurrences = []         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):             result = outcome_by_id.get(admitted.occurrence_id)             if result.fetch_status is FetchStatus.SUCCESS:                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:                     artifact = result.capture.artifact                     context = ArtifactContext(                         operation_id=operation.operation_id,                         occurrence_id=admitted.occurrence_id,                         caller_id=_CALLER_ID,                         scope=_SCOPE,                         source_family=\"http\",                         origin=artifact.origin,                         requested_url=artifact.requested_url,                         final_url=artifact.final_url,                         retrieved_at=artifact.retrieved_at,                         event_at=artifact.event_at,                     )                     try:                         source_proof = encode_source_proof(PersistedSourceProof(                             format_version=\"source-proof/1.0\", input_ref=input_ref,                             context=context, decision=decision, artifact=artifact,                             spans=result.spans,                         ))                     except ValueError:                         occurrences.append(self._failed_occurrence(                             index, source, input_ref,                             self._diagnostic(\"source_proof_too_large\", \"Source proof exceeds the evidence boundary.\"),                             result.actual_resources, FetchStatus.TOOL_ERROR,                         ))                         continue                     occurrences.append(                         WebsiteTextOccurrence(                             source,                             index,                             input_ref,                             OutcomeStatus.SUCCESS,                             self._outputs_from_text(result.normalized.text),                             actual_resources=re ... [truncated]"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._legacy_outputs#1",
+                    "name": "_legacy_outputs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 429,
+                    "endLine": 435,
+                    "content": "    def _legacy_outputs(occurrences):         return [             output             for occurrence in occurrences             if occurrence.status is OutcomeStatus.SUCCESS             for output in occurrence.outputs         ]"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#1",
+                    "name": "postprocess",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 440,
+                    "endLine": 447,
+                    "content": "    def postprocess(self, occurrences):         retained = tuple(occurrences)         if any(not isinstance(item, WebsiteTextOccurrence) for item in retained):             raise TypeError(                 \"WebsiteToText.postprocess requires occurrence envelopes from scan().\"             )         self._postprocess_occurrences(retained)         return self._legacy_outputs(retained)"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+                    "name": "_postprocess_occurrences",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 449,
+                    "endLine": 464,
+                    "content": "    def _postprocess_occurrences(self, occurrences):         if not self._graph_service:             return         for occurrence in occurrences:             if occurrence.status is not OutcomeStatus.SUCCESS:                 continue             self.create_node(occurrence.source)             for output in occurrence.outputs:                 if output.text:                     self.create_node(output)                     self.create_relationship(                         occurrence.source, output, \"HAS_INNER_TEXT\"                     )                     self.log_graph_message(                         f\"Extracted text from {occurrence.source.url} ({len(output.text)} chars).\"                     )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+            "count": 10,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+                    "name": "build_params_model",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Function",
+                    "startLine": 29,
+                    "endLine": 59,
+                    "content": "def build_params_model(params_schema: list) -> BaseModel:     \"\"\"     Build a strict Pydantic model from a params_schema.     Unknown fields will raise a validation error.     Note: Vault secrets are always optional in the Pydantic model to allow     for deferred configuration. Required validation happens after vault resolution.     \"\"\"     fields: Dict[str, Any] = {}     for param in params_schema:         name = param[\"name\"]         param_type = param.get(\"type\", \"string\")         field_type = bool if param_type == \"bool\" else str         required = param.get(\"required\", False)         # Vault secrets are always optional in Pydantic validation         # Required validation happens after vault resolution         if param_type == \"vaultSecret\":             default = param.get(\"default\", None)         else:             default = ... if required else param.get(\"default\")         fields[name] = (             Optional[field_type],             Field(default=default, description=param.get(\"description\", \"\")),         )     model = create_model(\"ParamsModel\", __config__=ConfigDict(extra=\"forbid\"), **fields)     return model"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+                    "name": "async_init",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 152,
+                    "endLine": 166,
+                    "content": "    async def async_init(self):         self.ParamsModel = build_params_model(self.params_schema)         # Always resolve parameters, even if self.params is empty         # This allows vault secrets to be fetched by name from params_schema         resolved_params = self.resolve_params()         # Strict validation after resolution         try:             validated = self.ParamsModel(**resolved_params)             self.params = validated.model_dump()         except ValidationError as e:             raise InvalidEnricherParams(                 f\"Enricher '{self.name()}' received invalid parameters: {e}\"             )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.resolve_params#0",
+                    "name": "resolve_params",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 168,
+                    "endLine": 203,
+                    "content": "    def resolve_params(self) -> Dict[str, Any]:         resolved = {}         for param in self.params_schema:             param_name = param[\"name\"]             param_type = param.get(\"type\", \"string\")             if param_type == \"vaultSecret\":                 # For vault secrets, try to get from vault by name or ID                 secret = None                 if self.vault is not None:                     # First, check if user provided a specific vault ID in params                     if param_name in self.params and self.params[param_name]:                         secret = self.vault.get_secret(self.params[param_name])                     # Otherwise, try to get the secret by the param name itself                     if secret is None:                         secret = self.vault.get_secret(param_name)                     if secret is not None:                         resolved[param_name] = secret                     elif param.get(\"required\", False):                         raise Exception(                             f\"Required vault secret '{param_name}' is missing. Please go to the Vault settings and create a '{param_name}' key.\"                         )                 # If no vault or no secret found, use default if available                 if param_name not in resolved and param.get(\"default\") is not None:                     resolved[param_name] = param[\"default\"]             else:                 # For non-vault params, use the provided value or default                 if param_name in self.params and self.params[param_name] is not None:                     resolved[param_name] = self.params[param_name]                 elif param.get(\"default\") is not None:                     resolved[param_name] = param[\"default\"]         return resolved"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.name#0",
+                    "name": "name",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 211,
+                    "endLine": 212,
+                    "content": "    def name(cls) -> str:         pass"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._input_validation_context#0",
+                    "name": "_input_validation_context",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 373,
+                    "endLine": 392,
+                    "content": "    def _input_validation_context(self) -> tuple[TypeAdapter | None, str | None]:         if self.InputType is NotImplemented:             return None, None         base_type = self.InputType         adapter = TypeAdapter(base_type)         primary_field = None         if issubclass(base_type, BaseModel):             for name, field in base_type.model_fields.items():                 if field.json_schema_extra and field.json_schema_extra.get(\"primary\"):                     primary_field = name                     break             if primary_field is None:                 for name, field in base_type.model_fields.items():                     if field.is_required():                         primary_field = name                         break                 if primary_field is None:                     primary_field = next(iter(base_type.model_fields.keys()))         return adapter, primary_field"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._validate_single_input#3",
+                    "name": "_validate_single_input",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 394,
+                    "endLine": 408,
+                    "content": "    def _validate_single_input(         self,         item: Any,         *,         adapter: TypeAdapter | None = None,         primary_field: str | None = None,     ) -> Any:         \"\"\"Validate one input using the same conversion rules as ``preprocess``.\"\"\"         if self.InputType is NotImplemented:             return item         if adapter is None:             adapter, primary_field = self._input_validation_context()         if isinstance(item, str) and primary_field:             item = {primary_field: item}         return adapter.validate_python(item)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._classify_structured_exception#1",
+                    "name": "_classify_structured_exception",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 463,
+                    "endLine": 506,
+                    "content": "    def _classify_structured_exception(self, error: Exception) -> RedactedDiagnostic:         \"\"\"Classify failures without retaining exception text or request data.\"\"\"         if isinstance(error, (InvalidEnricherParams, ValidationError)):             return RedactedDiagnostic(                 code=\"validation_error\",                 safe_message=\"Input validation failed.\",                 retryable=False,             )         if isinstance(error, httpx.TimeoutException):             return RedactedDiagnostic(                 code=\"timeout\",                 safe_message=\"The operation timed out.\",                 retryable=True,             )         if isinstance(error, httpx.HTTPStatusError):             status_code = error.response.status_code             if status_code == 429:                 return RedactedDiagnostic(                     code=\"http_rate_limited\",                     safe_message=\"The remote service rate limited the request.\",                     retryable=True,                 )             if 500 <= status_code < 600:                 return RedactedDiagnostic(                     code=\"http_server_error\",                     safe_message=\"The remote service failed.\",                     retryable=True,                 )             if 400 <= status_code < 500:                 return RedactedDiagnostic(                     code=\"http_client_error\",                     safe_message=\"The remote service rejected the request.\",                     retryable=False,                 )             return RedactedDiagnostic(                 code=\"http_error\",                 safe_message=\"The remote service returned an HTTP error.\",                 retryable=False,             )         return RedactedDiagnostic(             code=\"unexpected_error\",             safe_message=\"Unexpected processing failure.\",             retryable=False,         )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+                    "name": "create_node",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 657,
+                    "endLine": 676,
+                    "content": "    def create_node(self, node_obj) -> None:         \"\"\"         Create a single Neo4j node.         The following properties are automatically added to every node:         - type: Lowercase version of node_type         - sketch_id: Current sketch ID from enricher context         - label: Automatically computed by FlowsintType, or defaults to key_value if not provided         - created_at: ISO 8601 UTC timestamp (only on creation, not updates)         Use Pydantic object directly:             ```python             self.create_node(ip)             ```         Args:             node_obj: Either a Pydantic object or node label string             **properties: Additional node properties or overrides         \"\"\"         self._graph_service.create_node_from_flowsint_type(node_obj=node_obj)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_relationship#3",
+                    "name": "create_relationship",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 678,
+                    "endLine": 700,
+                    "content": "    def create_relationship(         self,         from_obj,         to_obj,         rel_label=\"IS_RELATED_TO\",     ) -> None:         \"\"\"         Create a relationship between two nodes.         Best Practice - Use Pydantic objects directly:             ```python             self.create_relationship(individual, domain, \"HAS_DOMAIN\")             self.create_relationship(email, breach, \"FOUND_IN_BREACH\")             ```         Args:             from_obj: Either a Pydantic object (source) or source node label             to_obj: Either a Pydantic object (target) or source node key property             rel_label: Either relationship type (Pydantic) or source node key value         \"\"\"         self._graph_service.create_relationship(             from_obj=from_obj, to_obj=to_obj, rel_label=rel_label         )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.log_graph_message#1",
+                    "name": "log_graph_message",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 702,
+                    "endLine": 709,
+                    "content": "    def log_graph_message(self, message: str) -> None:         \"\"\"         Log a graph operation message.         Args:             message: Message to log         \"\"\"         self._graph_service.log_graph_message(message)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 10
+        },
+        {
+            "name": "flowsint-enrichers",
+            "direct": true,
+            "symbolCount": 13
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.async_init#0",
+                    "name": "async_init",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 152,
+                    "endLine": 166,
+                    "content": "    async def async_init(self):         self.ParamsModel = build_params_model(self.params_schema)         # Always resolve parameters, even if self.params is empty         # This allows vault secrets to be fetched by name from params_schema         resolved_params = self.resolve_params()         # Strict validation after resolution         try:             validated = self.ParamsModel(**resolved_params)             self.params = validated.model_dump()         except ValidationError as e:             raise InvalidEnricherParams(                 f\"Enricher '{self.name()}' received invalid parameters: {e}\"             )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._input_validation_context#0",
+                    "name": "_input_validation_context",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 373,
+                    "endLine": 392,
+                    "content": "    def _input_validation_context(self) -> tuple[TypeAdapter | None, str | None]:         if self.InputType is NotImplemented:             return None, None         base_type = self.InputType         adapter = TypeAdapter(base_type)         primary_field = None         if issubclass(base_type, BaseModel):             for name, field in base_type.model_fields.items():                 if field.json_schema_extra and field.json_schema_extra.get(\"primary\"):                     primary_field = name                     break             if primary_field is None:                 for name, field in base_type.model_fields.items():                     if field.is_required():                         primary_field = name                         break                 if primary_field is None:                     primary_field = next(iter(base_type.model_fields.keys()))         return adapter, primary_field"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._validate_single_input#3",
+                    "name": "_validate_single_input",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 394,
+                    "endLine": 408,
+                    "content": "    def _validate_single_input(         self,         item: Any,         *,         adapter: TypeAdapter | None = None,         primary_field: str | None = None,     ) -> Any:         \"\"\"Validate one input using the same conversion rules as ``preprocess``.\"\"\"         if self.InputType is NotImplemented:             return item         if adapter is None:             adapter, primary_field = self._input_validation_context()         if isinstance(item, str) and primary_field:             item = {primary_field: item}         return adapter.validate_python(item)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._classify_structured_exception#1",
+                    "name": "_classify_structured_exception",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 463,
+                    "endLine": 506,
+                    "content": "    def _classify_structured_exception(self, error: Exception) -> RedactedDiagnostic:         \"\"\"Classify failures without retaining exception text or request data.\"\"\"         if isinstance(error, (InvalidEnricherParams, ValidationError)):             return RedactedDiagnostic(                 code=\"validation_error\",                 safe_message=\"Input validation failed.\",                 retryable=False,             )         if isinstance(error, httpx.TimeoutException):             return RedactedDiagnostic(                 code=\"timeout\",                 safe_message=\"The operation timed out.\",                 retryable=True,             )         if isinstance(error, httpx.HTTPStatusError):             status_code = error.response.status_code             if status_code == 429:                 return RedactedDiagnostic(                     code=\"http_rate_limited\",                     safe_message=\"The remote service rate limited the request.\",                     retryable=True,                 )             if 500 <= status_code < 600:                 return RedactedDiagnostic(                     code=\"http_server_error\",                     safe_message=\"The remote service failed.\",                     retryable=True,                 )             if 400 <= status_code < 500:                 return RedactedDiagnostic(                     code=\"http_client_error\",                     safe_message=\"The remote service rejected the request.\",                     retryable=False,                 )             return RedactedDiagnostic(                 code=\"http_error\",                 safe_message=\"The remote service returned an HTTP error.\",                 retryable=False,             )         return RedactedDiagnostic(             code=\"unexpected_error\",             safe_message=\"Unexpected processing failure.\",             retryable=False,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.name#0",
+                    "name": "name",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 125,
+                    "endLine": 126,
+                    "content": "    def name(cls):         return \"website_to_text\""
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._diagnostic#3",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 187,
+                    "endLine": 188,
+                    "content": "    def _diagnostic(code, message, retryable=False):         return RedactedDiagnostic(code=code, safe_message=message, retryable=retryable)"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._scan_occurrence_specs#1",
+                    "name": "_scan_occurrence_specs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 276,
+                    "endLine": 418,
+                    "content": "    async def _scan_occurrence_specs(self, specs: Sequence[tuple[int, Website, str]]):         specs = tuple(specs)         if not specs:             return ()         if self.params.get(\"enable_quic\", False):             diagnostic = self._diagnostic(                 \"unsafe_transport_disabled\",                 \"Legacy QUIC transport is disabled because it cannot satisfy the fetch policy.\",             )             return tuple(                 self._failed_occurrence(                     *spec,                     diagnostic,                     Resources(requests=0, bytes=0, elapsed_seconds=0.0),                     FetchStatus.POLICY_DENIED,                 )                 for spec in specs             )         try:             operation = self._build_operation(specs)             runtime = None             if self._artifact_store is None or self._retention_authority is None:                 runtime = load_artifact_runtime(                     caller_id=_CALLER_ID, scope=_SCOPE, source_family=\"http\"                 )             store = self._artifact_store or (runtime.store if runtime else None)             authority = self._retention_authority or (runtime.authority if runtime else None)             decision = (                 authority.issue(operation.operation_id)                 if authority is not None                 else None             )             fetched = await execute_fetch_with_source_proof(                 operation,                 artifact_store=store,                 retention_decision=decision,             )         except asyncio.CancelledError:             return tuple(self._cancelled_occurrence(*spec) for spec in specs)         except Exception:             return tuple(self._failed_occurrence(*spec) for spec in specs)         expected = {             item.occurrence_id: item.input_ref for item in operation.inputs         }         returned_ids = [result.occurrence_id for result in fetched.outcomes]         result_is_bound = (             fetched.operation_id == operation.operation_id             and len(fetched.outcomes) == len(operation.inputs)             and len(set(returned_ids)) == len(returned_ids)             and set(returned_ids) == set(expected)             and all(                 result.input_ref == expected.get(result.occurrence_id)                 for result in fetched.outcomes             )         )         if not result_is_bound:             return tuple(                 self._failed_occurrence(                     *spec,                     self._diagnostic(                         \"invalid_fetch_result\",                         \"The fetch result did not match the admitted operation.\",                     ),                 )                 for spec in specs             )         outcome_by_id = {             result.occurrence_id: result for result in fetched.outcomes         }         occurrences = []         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):             result = outcome_by_id.get(admitted.occurrence_id)             if result.fetch_status is FetchStatus.SUCCESS:                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:                     artifact = result.capture.artifact                     context = ArtifactContext(                         operation_id=operation.operation_id,                         occurrence_id=admitted.occurrence_id,                         caller_id=_CALLER_ID,                         scope=_SCOPE,                         source_family=\"http\",                         origin=artifact.origin,                         requested_url=artifact.requested_url,                         final_url=artifact.final_url,                         retrieved_at=artifact.retrieved_at,                         event_at=artifact.event_at,                     )                     try:                         source_proof = encode_source_proof(PersistedSourceProof(                             format_version=\"source-proof/1.0\", input_ref=input_ref,                             context=context, decision=decision, artifact=artifact,                             spans=result.spans,                         ))                     except ValueError:                         occurrences.append(self._failed_occurrence(                             index, source, input_ref,                             self._diagnostic(\"source_proof_too_large\", \"Source proof exceeds the evidence boundary.\"),                             result.actual_resources, FetchStatus.TOOL_ERROR,                         ))                         continue                     occurrences.append(                         WebsiteTextOccurrence(                             source,                             index,                             input_ref,                             OutcomeStatus.SUCCESS,                             self._outputs_from_text(result.normalized.text),                             actual_resources=re ... [truncated]"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.postprocess#1",
+                    "name": "postprocess",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 440,
+                    "endLine": 447,
+                    "content": "    def postprocess(self, occurrences):         retained = tuple(occurrences)         if any(not isinstance(item, WebsiteTextOccurrence) for item in retained):             raise TypeError(                 \"WebsiteToText.postprocess requires occurrence envelopes from scan().\"             )         self._postprocess_occurrences(retained)         return self._legacy_outputs(retained)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.resolve_params#0",
+                    "name": "resolve_params",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 168,
+                    "endLine": 203,
+                    "content": "    def resolve_params(self) -> Dict[str, Any]:         resolved = {}         for param in self.params_schema:             param_name = param[\"name\"]             param_type = param.get(\"type\", \"string\")             if param_type == \"vaultSecret\":                 # For vault secrets, try to get from vault by name or ID                 secret = None                 if self.vault is not None:                     # First, check if user provided a specific vault ID in params                     if param_name in self.params and self.params[param_name]:                         secret = self.vault.get_secret(self.params[param_name])                     # Otherwise, try to get the secret by the param name itself                     if secret is None:                         secret = self.vault.get_secret(param_name)                     if secret is not None:                         resolved[param_name] = secret                     elif param.get(\"required\", False):                         raise Exception(                             f\"Required vault secret '{param_name}' is missing. Please go to the Vault settings and create a '{param_name}' key.\"                         )                 # If no vault or no secret found, use default if available                 if param_name not in resolved and param.get(\"default\") is not None:                     resolved[param_name] = param[\"default\"]             else:                 # For non-vault params, use the provided value or default                 if param_name in self.params and self.params[param_name] is not None:                     resolved[param_name] = self.params[param_name]                 elif param.get(\"default\") is not None:                     resolved[param_name] = param[\"default\"]         return resolved"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.name#0",
+                    "name": "name",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 211,
+                    "endLine": 212,
+                    "content": "    def name(cls) -> str:         pass"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._outputs_from_text#1",
+                    "name": "_outputs_from_text",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 183,
+                    "endLine": 184,
+                    "content": "    def _outputs_from_text(self, text):         return (Phrase(text=text),) if text else ()"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._cancelled_occurrence#4",
+                    "name": "_cancelled_occurrence",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 190,
+                    "endLine": 201,
+                    "content": "    def _cancelled_occurrence(self, index, source, input_ref, resources=None):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.HOLD,             diagnostic=self._diagnostic(                 \"cancelled\", \"The operation was cancelled before completion.\"             ),             actual_resources=resources,             fetch_status=FetchStatus.CANCELLED,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._failed_occurrence#6",
+                    "name": "_failed_occurrence",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 203,
+                    "endLine": 221,
+                    "content": "    def _failed_occurrence(         self,         index,         source,         input_ref,         diagnostic=None,         resources=None,         fetch_status=None,     ):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.FAILURE,             diagnostic=diagnostic             or self._diagnostic(\"unexpected_error\", \"Unexpected processing failure.\"),             actual_resources=resources,             fetch_status=fetch_status,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._build_operation#1",
+                    "name": "_build_operation",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 223,
+                    "endLine": 274,
+                    "content": "    def _build_operation(self, specs):         def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value         max_response_bytes = positive_int(\"max_response_bytes\", 1048576)         max_concurrency = positive_int(\"max_concurrency\", 10)         request_timeout = positive_int(\"request_timeout\", 10)         urls = tuple(str(source.url) for _index, source, _ref in specs)         origins = tuple(sorted(set(_origin(url) for url in urls)))         endpoint_digest = _digest(             {\"allowed_origins\": origins, \"redirects\": \"same-origin-only\"}         )         policy = TrustedFetchPolicy(             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             allowed_origins=origins,         )         parameters = FetchParameters(             max_redirects=self.params.get(\"max_redirects\", 3),             max_retries=self.params.get(\"max_retries\", 0),             max_bytes_per_input=max_response_bytes,         )         count = len(specs)         attempts = 1 + parameters.max_redirects + parameters.max_retries         request = AcquisitionRequest(             operation_id=f\"website-to-text-{uuid.uuid4().hex}\",             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             inputs=tuple(                 InputOccurrence(                     occurrence_id=f\"input-{specs[position][0]}\",                     input_ref=canonical_input_hash(url),                     type_tag=\"http_url\",                     value=url,                 )                 for position, url in enumerate(urls)             ),             allocation=Resources(                 requests=count * attempts,                 bytes=count * max_response_bytes,                 elapsed_seconds=request_timeout,                 concurrency=min(max_concurrency, count),             ),         )         return admit_fetch(request, policy, parameters)"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._legacy_outputs#1",
+                    "name": "_legacy_outputs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 429,
+                    "endLine": 435,
+                    "content": "    def _legacy_outputs(occurrences):         return [             output             for occurrence in occurrences             if occurrence.status is OutcomeStatus.SUCCESS             for output in occurrence.outputs         ]"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText._postprocess_occurrences#1",
+                    "name": "_postprocess_occurrences",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Method",
+                    "startLine": 449,
+                    "endLine": 464,
+                    "content": "    def _postprocess_occurrences(self, occurrences):         if not self._graph_service:             return         for occurrence in occurrences:             if occurrence.status is not OutcomeStatus.SUCCESS:                 continue             self.create_node(occurrence.source)             for output in occurrence.outputs:                 if output.text:                     self.create_node(output)                     self.create_relationship(                         occurrence.source, output, \"HAS_INNER_TEXT\"                     )                     self.log_graph_message(                         f\"Extracted text from {occurrence.source.url} ({len(output.text)} chars).\"                     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/enricher_base.py:build_params_model",
+                    "name": "build_params_model",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Function",
+                    "startLine": 29,
+                    "endLine": 59,
+                    "content": "def build_params_model(params_schema: list) -> BaseModel:     \"\"\"     Build a strict Pydantic model from a params_schema.     Unknown fields will raise a validation error.     Note: Vault secrets are always optional in the Pydantic model to allow     for deferred configuration. Required validation happens after vault resolution.     \"\"\"     fields: Dict[str, Any] = {}     for param in params_schema:         name = param[\"name\"]         param_type = param.get(\"type\", \"string\")         field_type = bool if param_type == \"bool\" else str         required = param.get(\"required\", False)         # Vault secrets are always optional in Pydantic validation         # Required validation happens after vault resolution         if param_type == \"vaultSecret\":             default = param.get(\"default\", None)         else:             default = ... if required else param.get(\"default\")         fields[name] = (             Optional[field_type],             Field(default=default, description=param.get(\"description\", \"\")),         )     model = create_model(\"ParamsModel\", __config__=ConfigDict(extra=\"forbid\"), **fields)     return model"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_node#1",
+                    "name": "create_node",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 657,
+                    "endLine": 676,
+                    "content": "    def create_node(self, node_obj) -> None:         \"\"\"         Create a single Neo4j node.         The following properties are automatically added to every node:         - type: Lowercase version of node_type         - sketch_id: Current sketch ID from enricher context         - label: Automatically computed by FlowsintType, or defaults to key_value if not provided         - created_at: ISO 8601 UTC timestamp (only on creation, not updates)         Use Pydantic object directly:             ```python             self.create_node(ip)             ```         Args:             node_obj: Either a Pydantic object or node label string             **properties: Additional node properties or overrides         \"\"\"         self._graph_service.create_node_from_flowsint_type(node_obj=node_obj)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.create_relationship#3",
+                    "name": "create_relationship",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 678,
+                    "endLine": 700,
+                    "content": "    def create_relationship(         self,         from_obj,         to_obj,         rel_label=\"IS_RELATED_TO\",     ) -> None:         \"\"\"         Create a relationship between two nodes.         Best Practice - Use Pydantic objects directly:             ```python             self.create_relationship(individual, domain, \"HAS_DOMAIN\")             self.create_relationship(email, breach, \"FOUND_IN_BREACH\")             ```         Args:             from_obj: Either a Pydantic object (source) or source node label             to_obj: Either a Pydantic object (target) or source node key property             rel_label: Either relationship type (Pydantic) or source node key value         \"\"\"         self._graph_service.create_relationship(             from_obj=from_obj, to_obj=to_obj, rel_label=rel_label         )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.log_graph_message#1",
+                    "name": "log_graph_message",
+                    "filePath": "flowsint-core/src/flowsint_core/core/enricher_base.py",
+                    "nodeType": "Method",
+                    "startLine": 702,
+                    "endLine": 709,
+                    "content": "    def log_graph_message(self, message: str) -> None:         \"\"\"         Log a graph operation message.         Args:             message: Message to log         \"\"\"         self._graph_service.log_graph_message(message)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Function",
+                    "startLine": 53,
+                    "endLine": 61,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     parsed_port = parts.port     port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)     if port == 0:         raise ValueError(\"invalid URL port\")     host = parts.hostname or \"\"     host = f\"[{host.lower()}]\" if \":\" in host else host.lower()     return f\"{parts.scheme}://{host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Function",
+                    "startLine": 64,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(         json.dumps(value, sort_keys=True, separators=(\",\", \":\")).encode()     ).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText.positive_int#2",
+                    "name": "positive_int",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Function",
+                    "startLine": 224,
+                    "endLine": 228,
+                    "content": "        def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured",
+        "rootSymbols": 1,
+        "totalSymbols": 24,
+        "totalEdges": 27,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 8,
+        "processes": 0,
+        "modules": 2
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

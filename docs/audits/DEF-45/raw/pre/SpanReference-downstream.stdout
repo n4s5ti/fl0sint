@@ -1,0 +1,313 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+        "name": "SpanReference",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 184,
+        "endLine": 207,
+        "content": "class SpanReference(ContractModel):     span_id: Identifier     artifact_id: Identifier     byte_start: Count | None = None     byte_end: Count | None = None     field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None     @model_validator(mode=\"after\")     def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "name": "SpanReference",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 184,
+            "endLine": 207,
+            "content": "class SpanReference(ContractModel):     span_id: Identifier     artifact_id: Identifier     byte_start: Count | None = None     byte_end: Count | None = None     field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None     @model_validator(mode=\"after\")     def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.check_span#0",
+            "name": "check_span",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Method",
+            "startLine": 195,
+            "endLine": 207,
+            "content": "    def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.span_id",
+            "name": "span_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 185,
+            "endLine": 185,
+            "content": "    span_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.artifact_id",
+            "name": "artifact_id",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 186,
+            "endLine": 186,
+            "content": "    artifact_id: Identifier"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_start",
+            "name": "byte_start",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 187,
+            "endLine": 187,
+            "content": "    byte_start: Count | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_end",
+            "name": "byte_end",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 188,
+            "endLine": 188,
+            "content": "    byte_end: Count | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.field_pointer",
+            "name": "field_pointer",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Property",
+            "startLine": 189,
+            "endLine": 192,
+            "content": "    field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None"
+        },
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "name": "ContractModel",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 63,
+            "endLine": 70,
+            "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Method:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.check_span#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.span_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.artifact_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_start",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_end",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.field_pointer",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "to": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 8,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+                    "name": "SpanReference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 184,
+                    "endLine": 207,
+                    "content": "class SpanReference(ContractModel):     span_id: Identifier     artifact_id: Identifier     byte_start: Count | None = None     byte_end: Count | None = None     field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None     @model_validator(mode=\"after\")     def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.check_span#0",
+                    "name": "check_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "    def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.span_id",
+                    "name": "span_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 185,
+                    "endLine": 185,
+                    "content": "    span_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.artifact_id",
+                    "name": "artifact_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 186,
+                    "endLine": 186,
+                    "content": "    artifact_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_start",
+                    "name": "byte_start",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 187,
+                    "endLine": 187,
+                    "content": "    byte_start: Count | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_end",
+                    "name": "byte_end",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 188,
+                    "endLine": 188,
+                    "content": "    byte_end: Count | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.field_pointer",
+                    "name": "field_pointer",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 189,
+                    "endLine": 192,
+                    "content": "    field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 7
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.check_span#0",
+                    "name": "check_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Method",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "    def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.span_id",
+                    "name": "span_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 185,
+                    "endLine": 185,
+                    "content": "    span_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.artifact_id",
+                    "name": "artifact_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 186,
+                    "endLine": 186,
+                    "content": "    artifact_id: Identifier"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_start",
+                    "name": "byte_start",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 187,
+                    "endLine": 187,
+                    "content": "    byte_start: Count | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.byte_end",
+                    "name": "byte_end",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 188,
+                    "endLine": 188,
+                    "content": "    byte_end: Count | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference.field_pointer",
+                    "name": "field_pointer",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Property",
+                    "startLine": 189,
+                    "endLine": 192,
+                    "content": "    field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None"
+                },
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ContractModel",
+                    "name": "ContractModel",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 63,
+                    "endLine": 70,
+                    "content": "class ContractModel(BaseModel):     model_config = ConfigDict(         extra=\"forbid\",         frozen=True,         strict=True,         allow_inf_nan=False,         revalidate_instances=\"always\",     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+        "rootSymbols": 1,
+        "totalSymbols": 8,
+        "totalEdges": 7,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 7,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

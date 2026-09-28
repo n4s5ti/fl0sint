@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-types/src/flowsint_types/email.py:Email",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+        "name": "Email",
+        "filePath": "flowsint-types/src/flowsint_types/email.py",
+        "nodeType": "Class",
+        "startLine": 9,
+        "endLine": 33,
+        "content": "class Email(FlowsintType):     \"\"\"Represents an email address.\"\"\"     email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.email         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "name": "Email",
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "nodeType": "Class",
+            "startLine": 9,
+            "endLine": 33,
+            "content": "class Email(FlowsintType):     \"\"\"Represents an email address.\"\"\"     email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.email         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+                    "name": "Email",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Class",
+                    "startLine": 9,
+                    "endLine": 33,
+                    "content": "class Email(FlowsintType):     \"\"\"Represents an email address.\"\"\"     email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.email         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-types/src/flowsint_types/email.py:Email",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

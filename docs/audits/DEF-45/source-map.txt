@@ -1,0 +1,222 @@
+1|{
+2|  "files": [
+3|    {
+4|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/docs/developers/acquisition-contract.md",
+5|      "lines": "3-58, 60-70",
+6|      "relevance": "Authoritative boundary: retention is runtime-owned; raw spans are zero-based half-open UTF-8 bytes; normalized spans are Unicode code points; WebsiteToText is the shared fetch/capture user; the value-only acquisition/models layer must not fetch or mutate graph."
+7|    },
+8|    {
+9|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/artifacts.py",
+10|      "lines": "30-108, 273-310, 359-385, 391-457",
+11|      "relevance": "S04 trusted retention, immutable content/snapshot metadata, exact normalization, capture, resolve, and span-resolution implementation. `normalize_html` deliberately omits script/style content."
+12|    },
+13|    {
+14|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/artifact_runtime.py",
+15|      "lines": "34-89, 100-154, 162-254",
+16|      "relevance": "Deployment-configured reviewed policy; body-free persisted proof; authorized current-policy resolution of proof/spans."
+17|    },
+18|    {
+19|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/acquisition.py",
+20|      "lines": "89-144, 164-245, 277-284, 374-425, 453-583",
+21|      "relevance": "S02 occurrence identity and S03 Resources; existing strict artifact/span/evidence/candidate reference graph. CandidateReference is unreviewed but carries no semantic kind."
+22|    },
+23|    {
+24|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/fetch.py",
+25|      "lines": "84-123, 182-216, 343-376, 380-588, 711-813, 862-866",
+26|      "relevance": "Single bounded live fetch and capture path. It validates result-to-occurrence binding, captures before body exits, and creates source-proof text spans. Persisted requested/final URLs intentionally omit queries."
+27|    },
+28|    {
+29|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+30|      "lines": "70-110, 119-183, 223-425, 440-598",
+31|      "relevance": "Only existing Website path with reviewed retention. WebsiteTextOccurrence preserves owning Website/index/input hash/artifact/spans; postprocess is the current graph mutation sink for readable Phrase output."
+32|    },
+33|    {
+34|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+35|      "lines": "12-39, 39-205",
+36|      "relevance": "Legacy network crawler. Directly writes Website/Domain nodes and LINKS_TO/BELONGS_TO_DOMAIN edges from callbacks, including external URLs; no source proof, spans, admission, or execution gating."
+37|    },
+38|    {
+39|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/website/to_crawler.py",
+40|      "lines": "13-20, 39-178",
+41|      "relevance": "Legacy crawler converts ReconCrawl values to Email/Phone and immediately writes HAS_EMAIL/HAS_PHONE. It logs `item.source_url` at 81-84 but drops it from outputs."
+42|    },
+43|    {
+44|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/tools/network/reconcrawl.py",
+45|      "lines": "6-39",
+46|      "relevance": "The direct recon crawler adapter: crawls recursively and returns third-party results; it has no retention, source-span, or admission seam."
+47|    },
+48|    {
+49|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_emails.py",
+50|      "lines": "12-73",
+51|      "relevance": "Regex-only Phrase→Email converter; links every discovered email to every input Phrase with MENTIONS_EMAIL, losing source/subject specificity."
+52|    },
+53|    {
+54|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_phones.py",
+55|      "lines": "12-74",
+56|      "relevance": "Regex+Phone validator; writes MENTIONS_PHONE without byte/source context."
+57|    },
+58|    {
+59|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/phrase/to_contact_individuals.py",
+60|      "lines": "14-113",
+61|      "relevance": "Heuristically makes Individual nodes from email/phone/social values and immediately emits MENTIONS_CONTACT_PERSON/HAS_EMAIL/HAS_PHONE."
+62|    },
+63|    {
+64|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_emails.py",
+65|      "lines": "11-111",
+66|      "relevance": "Generates aliases from organization domain (B2C/B2B) then creates Email nodes and relationships; no observed source exists."
+67|    },
+68|    {
+69|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_individuals.py",
+70|      "lines": "12-149",
+71|      "relevance": "Generates role/person/email hypotheses, uses `source=fire_enrich_b2c|b2b`, and graph-mutates."
+72|    },
+73|    {
+74|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/organization/to_fire_enrich_contact_people.py",
+75|      "lines": "10-91",
+76|      "relevance": "Generates role/person hypotheses even without concrete contact evidence, then graph-mutates."
+77|    },
+78|    {
+79|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-types/src/flowsint_types/website.py",
+80|      "lines": "9-62",
+81|      "relevance": "Website is HttpUrl-backed and uses complete URL as node label; there is no source/provenance/execution field."
+82|    },
+83|    {
+84|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-types/src/flowsint_types/email.py",
+85|      "lines": "9-37",
+86|      "relevance": "Email holds only address/node label; it cannot carry evidence or an observation kind."
+87|    },
+88|    {
+89|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-types/src/flowsint_types/phone.py",
+90|      "lines": "10-92",
+91|      "relevance": "Phone validates/normalizes the value but has no source/evidence/provenance fields."
+92|    },
+93|    {
+94|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/enricher_base.py",
+95|      "lines": "657-710",
+96|      "relevance": "Every legacy enricher wrapper delegates node/edge writes to GraphService."
+97|    },
+98|    {
+99|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/graph/service.py",
+100|      "lines": "104-220, 347-350",
+101|      "relevance": "Actual graph sink: typed object serialization and repository write/batch. S05 must not call it."
+102|    },
+103|    {
+104|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/enrichers/test_website_to_text.py",
+105|      "lines": "77-598",
+106|      "relevance": "Live retention/occurrence/structured-execution/graph-ownership regression suite. It already proves persisted proof resolution, exact normalized span resolution, duplicate occurrence preservation, bounds, and one-to-many Phrase graph ownership."
+107|    },
+108|    {
+109|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/fixtures/acquisition/manifest.json",
+110|      "lines": "1-18, 203-375, 423-462, 797-897",
+111|      "relevance": "Synthetic retained raw-byte corpus, exact observation spans, link/contact fixtures, stale-role trap, script-literal render-only trap, and explicit acceptance separation."
+112|    },
+113|    {
+114|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/enrichers/test_acquisition_fixtures.py",
+115|      "lines": "30-176, 203-267",
+116|      "relevance": "Fixture integrity tests reject span tampering, cross-occurrence evidence, dynamic/script misclassification, and orphan observations."
+117|    },
+118|    {
+119|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/registry.py",
+120|      "lines": "17-180, 181-240",
+121|      "relevance": "Dynamic decorator/os.walk registration means a new enricher file would be discovered without registry edits; dynamic dispatch is not statically discoverable."
+122|    },
+123|    {
+124|      "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/enrichers/test_registry.py",
+125|      "lines": "29-58",
+126|      "relevance": "Static regression list for the current contact generators/converters; only update if a new registered enricher is actually introduced."
+127|    }
+128|  ],
+129|  "relationships": [
+130|    "Current safe live root is `WebsiteToText._scan_occurrence_specs` → `_build_operation` → `admit_fetch` → `execute_fetch_with_source_proof` → retained artifact/source proof. `WebsiteTextOccurrence` preserves input index, original Website, canonical input hash, artifact reference, and source-proof spans; `postprocess` then mutates only Phrase/HAS_INNER_TEXT graph edges.",
+131|    "S02 identity is already strong at the fetch boundary: `InputOccurrence.occurrence_id` is unique (acquisition.py:113-144), fetch outcomes retain it (fetch.py:182-216), `execute_fetch_with_source_proof` rejects wrong/missing/duplicate returned IDs (725-758), and persisted proof context repeats it. The new extractor must keep this ID on every observation and never dedupe different occurrences by URL/digest.",
+132|    "S03 bounds persist in `Resources` (acquisition.py:89-103) and FetchParameters/ledger (fetch.py:84-96, 343-376). Source proof itself has 4 MiB metadata and 8 MiB evidence caps (artifacts.py:14-18; artifact_runtime.py:154-160). The pure extractor therefore needs explicit output-count/context-size limits rather than treating retained page size as sufficient.",
+133|    "S04 currently maps only normalized visible text nodes. `normalize_html` omits script/style and produces nonempty text-node spans (artifacts.py:397-452); `SourceProofSpanReference` requires both nonempty byte and normalized ranges (acquisition.py:210-229). Anchor attributes are not currently mapped, so a link observation cannot honestly cite an existing SourceProofSpanReference for its `href` attribute. It needs an additional exact raw-element/attribute span representation linked to the same retained artifact/occurrence, not a fabricated normalized span.",
+134|    "WebsiteToLinks and WebsiteToCrawler are separate unsafe legacy roots, not downstream call sites to migrate into S05. Links runs ReconSpread with `same_domain_only=False` and callback-time graph writes; crawler invokes ReconCrawl directly, logs `source_url`, then erases that context when it stores Email/Phone. Neither is admissible as the live implementation for retained-snapshot extraction.",
+135|    "Phrase contact converters are downstream consumers of WebsiteToText's Phrase outputs but are not provenance-safe: they regex/heuristically convert values and graph-mutate. They must not be called by the S05 extractor or live bridge. Existing users may continue to invoke them independently; S05 should neither reinterpret their outputs as observed evidence nor clean them up in this task.",
+136|    "FireEnrich organization contact producers are hypotheses, not source observations: aliases are synthesized from domain in contact_emails.py:59-91; role/person/email records are synthesized in contact_individuals.py:102-131; role/person records are synthesized in contact_people.py:50-73. Their `source` strings are informal and do not prevent graph mutation. The S05 observed kinds must be disjoint from these generated-hypothesis kinds.",
+137|    "All legacy sinks converge at Enricher.create_node/create_relationship (enricher_base.py:657-710) and GraphService (service.py:104-220). A standalone/live observed extractor must return immutable value records only—no Email/Phone/Website construction for graph use and no call to these sinks.",
+138|    "URL handling is a security boundary: retained proof context strips all query strings (`_redacted_location`, fetch.py:862-866). `WebsiteToLinks` currently keeps crawler-provided URLs unchanged but can create external nodes. S05 should preserve raw relative href text, including its own query, in an observation; it must not make it an executable URL, auto-resolve it into an action, or repopulate proof-context query data."
+139|  ],
+140|  "answer": {
+141|    "upstream_roots": [
+142|      "Retained live root: `WebsiteToText._scan_occurrence_specs` at to_text.py:276, fed by `WebsiteTextOccurrence` at 70-110 and `execute_fetch_with_source_proof` at fetch.py:711.",
+143|      "Standalone retained-snapshot root: authorized persisted proof/span resolution (`resolve_persisted_source_proof` at artifact_runtime.py:173 and `resolve_persisted_span` at 210) plus `resolve_source`/`resolve_span` in artifacts.py:335-389.",
+144|      "Legacy non-admissible roots: `WebsiteToLinks.scan` at to_links.py:39 and `WebsiteToCrawler.scan` at to_crawler.py:48."
+145|    ],
+146|    "downstream_consumers": [
+147|      "Safe current graph consumer: `WebsiteToText._postprocess_occurrences` (to_text.py:449-465) creates Phrase/HAS_INNER_TEXT only.",
+148|      "Unsafe legacy graph consumers: WebsiteToLinks callback; WebsiteToCrawler postprocess; PhraseToContactEmails/Phones/Individuals; all three Organization FireEnrich producers.",
+149|      "Standalone acquisition types can represent unreviewed candidate/evidence linkage but cannot distinguish observed vs generated semantics without a new typed field/model."
+150|    ],
+151|    "scope_decisions": [
+152|      "Implement S05 as a deterministic, standard-library-only pure extraction module over already-authorized retained snapshot bytes. It must not fetch, crawl, render, use an LLM, load third-party extractor dependencies, invoke an enricher registry, or mutate a graph.",
+153|      "The live integration must invoke that same pure function only after capture is AVAILABLE and via current-policy authorized retained resolution—not from a second fetch and not by passing transient fetch bodies as the claimed source. This is the only way to satisfy both 'retained snapshots' and 'same live path'.",
+154|      "Return unreviewed observation records, never Email/Phone/Website/Individual graph entities. Classification must distinguish `observed_general_contact`, `observed_role_contact`, `observed_person_associated_contact`, and `generated_hypothesis` (the latter reserved for non-observed producers); do not infer a named person from a general inbox.",
+155|      "A link is observation-only with `execution_state=not_executable` (or equivalent fixed enum). Preserve exact relative href string and meaningful query from retained raw source; do not create Website nodes, crawl it, enqueue it, or resolve/dispatch external links.",
+156|      "Do not include script-literal content in readable HTTP extraction: artifacts.py:414-417 excludes it, and fixture `dynamic-contact` explicitly requires render proof. The stale fixture allows dated historical role/contact observation but prohibits current-role/current-contact inference.",
+157|      "No future crawling/LLM cleanup belongs in this change; no caller migration is required for WebsiteToLinks, WebsiteToCrawler, Phrase converters, or FireEnrich. The only live caller migration is the narrowly scoped WebsiteToText post-capture bridge."
+158|    ],
+159|    "minimal_changed_file_plan": [
+160|      {
+161|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/observed_extraction.py",
+162|        "change": "New pure, dependency-free retained-HTML observation extractor plus immutable output/limit records. It parses raw bytes deterministically, supplies exact byte spans/anchor context, classifies observed candidates, and never accesses filesystem/network/graph."
+163|      },
+164|      {
+165|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/acquisition.py",
+166|        "change": "Add a versioned observation/raw-span contract (or an explicit successor to SourceProofSpanReference) that permits anchor-attribute/element byte spans without pretending those attributes are normalized visible text. Keep occurrence-id/evidence/candidate cross-reference validation."
+167|      },
+168|      {
+169|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_execution/artifact_runtime.py",
+170|        "change": "Expose one authorized retained-snapshot resolution/bridge that validates current authority and invokes the pure extractor against verified retained bytes; persist/resolve the added observation spans. Do not weaken proof version rejection."
+171|      },
+172|      {
+173|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+174|        "change": "After successful capture only, invoke the authorized retained-snapshot bridge for the same `WebsiteTextOccurrence`; attach unreviewed observations to structured evidence/output surface without graph mutation. Preserve existing Phrase output, occurrence ordering, retention HOLD/REVIEW behavior, and legacy graph behavior."
+175|      },
+176|      {
+177|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/tests/execution/test_observed_extraction.py",
+178|        "change": "New pure-unit contracts: deterministic order/IDs; raw byte spans quote exactly; UTF-8; visible-text/script/style exclusion; href context and relative query preservation; email/phone validation/context; general vs role/person association; max bounds; no executable leads."
+179|      },
+180|      {
+181|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/enrichers/test_website_to_text.py",
+182|        "change": "Extend the existing live-retention suite: capture then authorized same-path extraction, one occurrence per duplicate input, persisted exact observation spans, no result on HOLD/REVIEW, and no additional graph nodes/edges."
+183|      },
+184|      {
+185|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/fixtures/acquisition/manifest.json",
+186|        "change": "Extend only with authored synthetic cases for relative queried href, visible anchor context, general inbox, named role/person, phone, and non-executable external/out-of-scope lead; retain exact raw spans and update hashes."
+187|      },
+188|      {
+189|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-enrichers/tests/fixtures/acquisition/observed-links-and-contacts.html",
+190|        "change": "New synthetic fixture only if existing static/named/generic/click pages cannot cover all required cases; do not alter unrelated fixture semantics."
+191|      },
+192|      {
+193|        "path": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/CHANGELOG.md",
+194|        "change": "Document shipped behavior and bounded non-goals after implementation, per repository convention."
+195|      }
+196|    ],
+197|    "contract_proposals": [
+198|      "`ObservedExtractionRequest`: retained snapshot identity/artifact, S02 occurrence_id/input_ref, source-proof context, and explicit S03 limits. It is a value-only request and cannot authorize retention, fetching, or graph mutation.",
+199|      "`ObservedObservation`: stable per-occurrence ID; `kind` from a closed observed-kind enum; `value`; optional role/person/company association fields marked observation context rather than accepted fact; exact `raw_span`; optional visible-text span; anchor text/context; `review_state=unreviewed`; `execution_state=not_executable`. Do not overload Email/Phone/Website/Individual.",
+200|      "`ObservedRawSpanReference`: artifact ID, snapshot/occurrence binding, zero-based half-open UTF-8 byte range, and optional linked normalized span. It must be independently resolvable from authorized retained bytes and compare extracted bytes to the stored quote/value; it must not require a normalized range for href attributes.",
+201|      "`ObservedExtractionResult`: immutable ordered tuple plus truncation/bounds metadata. IDs must derive from occurrence ID plus exact raw ranges/kind, never from content digest alone, so duplicate URLs/content remain distinct observations.",
+202|      "`GeneratedHypothesis`: separate closed kind family for FireEnrich-style aliases/roles. No observed extractor result may use it, and no generated hypothesis may be relabeled observed merely because its value looks like Email/Phone.",
+203|      "Evidence persistence should retain proof + raw observation spans and candidate IDs as unreviewed. `CandidateReference` alone is insufficient because it lacks semantic kind; add the kind at the observation/candidate payload level, while keeping existing occurrence/evidence validation."
+204|    ],
+205|    "tests_and_fixtures": {
+206|      "existing_reusable": [
+207|        "`test_website_to_text.py:175-208` proves registry-configured retained source proof and exact source span resolution.",
+208|        "`test_website_to_text.py:250-297` proves occurrence order/duplicates/failure/cancellation; `328-351` proves per-input byte bounds; `449-598` proves source-owned graph edges/one-to-many behavior.",
+209|        "`manifest.json:203-375` supplies static link, named/general contacts, stale role, and script literal. `static.html`, `named.html`, and `dynamic.html` demonstrate the raw forms.",
+210|        "`test_acquisition_fixtures.py:38-106, 124-176, 203-267` proves exact raw spans, negative trap verdicts, duplicate occurrence independence, and tamper rejection."
+211|      ],
+212|      "required_new_coverage": [
+213|        "Pure extractor invariants above plus exact final retained page span resolution.",
+214|        "Live result retains occurrence context and source proof; output is empty for HOLD/REVIEW; no extra graph mutations.",
+215|        "Out-of-scope/external links remain observation-only and cannot be executed; relative `href` query is retained exactly.",
+216|        "Stale/dynamic fixture behavior stays unchanged: historical observation is not a current claim; script literal is not visible HTTP text."
+217|      ]
+218|    },
+219|    "tooling_note": "LSP status reported pyright/pylsp configured but not started; a symbols request returned `No language server found for this action`. Mapping therefore used read/grep source tracing. Dynamic decorator/os.walk registration is an acknowledged static-call-graph gap.",
+220|    "delivery_note": "No repository files, index, or commit were modified. I did not write `/tmp/def45-source-map.md` because this assigned Explorer role is explicitly read-only and prohibits creating any file; the complete source map is returned here for the parent to persist if desired."
+221|  }
+222|}

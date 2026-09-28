@@ -1,0 +1,165 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+        "name": "WebsiteToText",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Class",
+        "startLine": 113,
+        "endLine": 598,
+        "content": "class WebsiteToText(Enricher):     \"\"\"Extract readable text using locally scoped admitted async HTTP.\"\"\"     InputType = Website     OutputType = Phrase     def __init__(self, *args, artifact_store: FilesystemArtifactStore | None = None, retention_authority: RetentionAuthority | None = None, **kwargs):         super().__init__(*args, **kwargs)         self._artifact_store = artifact_store         self._retention_authority = retention_authority     @classmethod     def name(cls):         return \"website_to_text\"     @classmethod     def category(cls):         return \"Website\"     @classmethod     def key(cls):         return \"website\"     @classmethod     def get_params_schema(cls) -> List[Dict[str, Any]]:         return [             {                 \"name\": \"enable_quic\",                 \"type\": \"bool\",                 \"default\": False,                 \"label\": \"Enable QUIC/HTTP3 probe\",                 \"description\": \"Legacy option retained only to reject unsafe QUIC requests explicitly\",             },             {                 \"name\": \"max_concurrency\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Max concurrent connections\",                 \"description\": \"Maximum simultaneous admitted HTTP operations\",             },             {                 \"name\": \"request_timeout\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Total timeout (seconds)\",                 \"description\": \"Deadline covering dispatch, redirects, retries and streaming\",             },             {                 \"name\": \"max_response_bytes\",                 \"type\": \"int\",                 \"default\": 1048576,                 \"label\": \"Maximum bytes per input\",                 \"description\": \"Finite response allocation applied while streaming\",             },             {                 \"name\": \"max_redirects\",                 \"type\": \"int\",                 \"default\": 3,                 \"label\": \"Maximum same-origin redirects\",                 \"description\": \"Destinations are checked before dispatch\",             },             {                 \"name\": \"max_retries\",                 \"type\": \"int\",                 \"default\": 0,                 \"label\": \"Maximum retries\",                 \"description\": \"Retries share the original allocation\",             },         ]     def _outputs_from_text(self, text):         return (Phrase(text=text),) if text else ()     @staticmethod     def _diagnostic(code, message, retryable=False):         return RedactedDiagnostic(code=code, safe_message=message, retryable=retryable)     def _cancelled_occurrence(self, index, source, input_ref, resources=None):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.HOLD,             diagnostic=self._diagnostic(                 \"cancelled\", \"The operation was cancelled before completion.\"             ),             actual_resources=resources,             fetch_status=FetchStatus.CANCELLED,         )     def _failed_occurrence(         self,         index,         source,         input_ref,         diagnostic=None,         resources=None,         fetch_status=None,     ):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.FAILURE,             diagnostic=diagnostic             or self._diagnostic(\"unexpected_error\", \"Unexpected processing failure.\"),             actual_resources=resources,             fetch_status=fetch_status,         )     def _build_operation(self, specs):         def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value         max_response_bytes = positive_int(\"max_response_bytes\", 1048576)         max_concurrency = positive_int(\"max_concurrency\", 10)         request_timeout = positive_int(\"request_timeout\", 10)         urls = tuple(str(source.url) for _index, source, _ref in specs)         origins = tuple(sorted(set(_origin(url) for url in urls)))         endpoint_digest = _digest(             {\"allowed_origins\": origins, \"redirects\": \"same-origin-only\"}         )         policy = TrustedFetchPolicy(             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             allowed_origins=origins,         )         parameters = FetchParameters(             max_redirects=self.params.get(\"max_redirects\", 3),             max_retries=self.params.get(\"max_retries\", 0),             max_bytes_per_input=max_response_bytes,         )         count = len(specs)         attempts = 1 + parameters.max_redirects + parameters.max_retries         request = AcquisitionRequest(             operation_id=f\"website-to-text-{uuid.uuid4().hex}\", ... [truncated]"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+            "name": "WebsiteToText",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Class",
+            "startLine": 113,
+            "endLine": 598,
+            "content": "class WebsiteToText(Enricher):     \"\"\"Extract readable text using locally scoped admitted async HTTP.\"\"\"     InputType = Website     OutputType = Phrase     def __init__(self, *args, artifact_store: FilesystemArtifactStore | None = None, retention_authority: RetentionAuthority | None = None, **kwargs):         super().__init__(*args, **kwargs)         self._artifact_store = artifact_store         self._retention_authority = retention_authority     @classmethod     def name(cls):         return \"website_to_text\"     @classmethod     def category(cls):         return \"Website\"     @classmethod     def key(cls):         return \"website\"     @classmethod     def get_params_schema(cls) -> List[Dict[str, Any]]:         return [             {                 \"name\": \"enable_quic\",                 \"type\": \"bool\",                 \"default\": False,                 \"label\": \"Enable QUIC/HTTP3 probe\",                 \"description\": \"Legacy option retained only to reject unsafe QUIC requests explicitly\",             },             {                 \"name\": \"max_concurrency\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Max concurrent connections\",                 \"description\": \"Maximum simultaneous admitted HTTP operations\",             },             {                 \"name\": \"request_timeout\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Total timeout (seconds)\",                 \"description\": \"Deadline covering dispatch, redirects, retries and streaming\",             },             {                 \"name\": \"max_response_bytes\",                 \"type\": \"int\",                 \"default\": 1048576,                 \"label\": \"Maximum bytes per input\",                 \"description\": \"Finite response allocation applied while streaming\",             },             {                 \"name\": \"max_redirects\",                 \"type\": \"int\",                 \"default\": 3,                 \"label\": \"Maximum same-origin redirects\",                 \"description\": \"Destinations are checked before dispatch\",             },             {                 \"name\": \"max_retries\",                 \"type\": \"int\",                 \"default\": 0,                 \"label\": \"Maximum retries\",                 \"description\": \"Retries share the original allocation\",             },         ]     def _outputs_from_text(self, text):         return (Phrase(text=text),) if text else ()     @staticmethod     def _diagnostic(code, message, retryable=False):         return RedactedDiagnostic(code=code, safe_message=message, retryable=retryable)     def _cancelled_occurrence(self, index, source, input_ref, resources=None):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.HOLD,             diagnostic=self._diagnostic(                 \"cancelled\", \"The operation was cancelled before completion.\"             ),             actual_resources=resources,             fetch_status=FetchStatus.CANCELLED,         )     def _failed_occurrence(         self,         index,         source,         input_ref,         diagnostic=None,         resources=None,         fetch_status=None,     ):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.FAILURE,             diagnostic=diagnostic             or self._diagnostic(\"unexpected_error\", \"Unexpected processing failure.\"),             actual_resources=resources,             fetch_status=fetch_status,         )     def _build_operation(self, specs):         def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value         max_response_bytes = positive_int(\"max_response_bytes\", 1048576)         max_concurrency = positive_int(\"max_concurrency\", 10)         request_timeout = positive_int(\"request_timeout\", 10)         urls = tuple(str(source.url) for _index, source, _ref in specs)         origins = tuple(sorted(set(_origin(url) for url in urls)))         endpoint_digest = _digest(             {\"allowed_origins\": origins, \"redirects\": \"same-origin-only\"}         )         policy = TrustedFetchPolicy(             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             allowed_origins=origins,         )         parameters = FetchParameters(             max_redirects=self.params.get(\"max_redirects\", 3),             max_retries=self.params.get(\"max_retries\", 0),             max_bytes_per_input=max_response_bytes,         )         count = len(specs)         attempts = 1 + parameters.max_redirects + parameters.max_retries         request = AcquisitionRequest(             operation_id=f\"website-to-text-{uuid.uuid4().hex}\", ... [truncated]"
+        },
+        {
+            "id": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+            "name": "OneToMany",
+            "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+            "nodeType": "Class",
+            "startLine": 38,
+            "endLine": 40,
+            "content": "class OneToMany(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=f\"{text}:1\"), Phrase(text=f\"{text}:2\"))"
+        },
+        {
+            "id": "Class:flowsint-enrichers/tests/enrichers/test_website_to_text.py:_SectioningWebsiteToText",
+            "name": "_SectioningWebsiteToText",
+            "filePath": "flowsint-enrichers/tests/enrichers/test_website_to_text.py",
+            "nodeType": "Class",
+            "startLine": 449,
+            "endLine": 451,
+            "content": "class _SectioningWebsiteToText(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=text + \" first\"), Phrase(text=text + \" second\"))"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+            "to": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Class:flowsint-enrichers/tests/enrichers/test_website_to_text.py:_SectioningWebsiteToText",
+            "to": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                    "name": "WebsiteToText",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Class",
+                    "startLine": 113,
+                    "endLine": 598,
+                    "content": "class WebsiteToText(Enricher):     \"\"\"Extract readable text using locally scoped admitted async HTTP.\"\"\"     InputType = Website     OutputType = Phrase     def __init__(self, *args, artifact_store: FilesystemArtifactStore | None = None, retention_authority: RetentionAuthority | None = None, **kwargs):         super().__init__(*args, **kwargs)         self._artifact_store = artifact_store         self._retention_authority = retention_authority     @classmethod     def name(cls):         return \"website_to_text\"     @classmethod     def category(cls):         return \"Website\"     @classmethod     def key(cls):         return \"website\"     @classmethod     def get_params_schema(cls) -> List[Dict[str, Any]]:         return [             {                 \"name\": \"enable_quic\",                 \"type\": \"bool\",                 \"default\": False,                 \"label\": \"Enable QUIC/HTTP3 probe\",                 \"description\": \"Legacy option retained only to reject unsafe QUIC requests explicitly\",             },             {                 \"name\": \"max_concurrency\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Max concurrent connections\",                 \"description\": \"Maximum simultaneous admitted HTTP operations\",             },             {                 \"name\": \"request_timeout\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Total timeout (seconds)\",                 \"description\": \"Deadline covering dispatch, redirects, retries and streaming\",             },             {                 \"name\": \"max_response_bytes\",                 \"type\": \"int\",                 \"default\": 1048576,                 \"label\": \"Maximum bytes per input\",                 \"description\": \"Finite response allocation applied while streaming\",             },             {                 \"name\": \"max_redirects\",                 \"type\": \"int\",                 \"default\": 3,                 \"label\": \"Maximum same-origin redirects\",                 \"description\": \"Destinations are checked before dispatch\",             },             {                 \"name\": \"max_retries\",                 \"type\": \"int\",                 \"default\": 0,                 \"label\": \"Maximum retries\",                 \"description\": \"Retries share the original allocation\",             },         ]     def _outputs_from_text(self, text):         return (Phrase(text=text),) if text else ()     @staticmethod     def _diagnostic(code, message, retryable=False):         return RedactedDiagnostic(code=code, safe_message=message, retryable=retryable)     def _cancelled_occurrence(self, index, source, input_ref, resources=None):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.HOLD,             diagnostic=self._diagnostic(                 \"cancelled\", \"The operation was cancelled before completion.\"             ),             actual_resources=resources,             fetch_status=FetchStatus.CANCELLED,         )     def _failed_occurrence(         self,         index,         source,         input_ref,         diagnostic=None,         resources=None,         fetch_status=None,     ):         return WebsiteTextOccurrence(             source,             index,             input_ref,             OutcomeStatus.FAILURE,             diagnostic=diagnostic             or self._diagnostic(\"unexpected_error\", \"Unexpected processing failure.\"),             actual_resources=resources,             fetch_status=fetch_status,         )     def _build_operation(self, specs):         def positive_int(name, default):             value = self.params.get(name, default)             if type(value) is not int or value <= 0:                 raise ValueError(f\"{name} must be a positive integer\")             return value         max_response_bytes = positive_int(\"max_response_bytes\", 1048576)         max_concurrency = positive_int(\"max_concurrency\", 10)         request_timeout = positive_int(\"request_timeout\", 10)         urls = tuple(str(source.url) for _index, source, _ref in specs)         origins = tuple(sorted(set(_origin(url) for url in urls)))         endpoint_digest = _digest(             {\"allowed_origins\": origins, \"redirects\": \"same-origin-only\"}         )         policy = TrustedFetchPolicy(             caller_id=_CALLER_ID,             scope=_SCOPE,             capability_digest=_CAPABILITY_DIGEST,             endpoint_policy_digest=endpoint_digest,             allowed_origins=origins,         )         parameters = FetchParameters(             max_redirects=self.params.get(\"max_redirects\", 3),             max_retries=self.params.get(\"max_retries\", 0),             max_bytes_per_input=max_response_bytes,         )         count = len(specs)         attempts = 1 + parameters.max_redirects + parameters.max_retries         request = AcquisitionRequest(             operation_id=f\"website-to-text-{uuid.uuid4().hex}\", ... [truncated]"
+                }
+            ]
+        },
+        {
+            "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+                    "name": "OneToMany",
+                    "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+                    "nodeType": "Class",
+                    "startLine": 38,
+                    "endLine": 40,
+                    "content": "class OneToMany(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=f\"{text}:1\"), Phrase(text=f\"{text}:2\"))"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-enrichers/tests/enrichers/test_website_to_text.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-enrichers/tests/enrichers/test_website_to_text.py:_SectioningWebsiteToText",
+                    "name": "_SectioningWebsiteToText",
+                    "filePath": "flowsint-enrichers/tests/enrichers/test_website_to_text.py",
+                    "nodeType": "Class",
+                    "startLine": 449,
+                    "endLine": 451,
+                    "content": "class _SectioningWebsiteToText(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=text + \" first\"), Phrase(text=text + \" second\"))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "docs",
+            "direct": true,
+            "symbolCount": 1
+        },
+        {
+            "name": "flowsint-enrichers",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+                    "name": "OneToMany",
+                    "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+                    "nodeType": "Class",
+                    "startLine": 38,
+                    "endLine": 40,
+                    "content": "class OneToMany(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=f\"{text}:1\"), Phrase(text=f\"{text}:2\"))"
+                },
+                {
+                    "id": "Class:flowsint-enrichers/tests/enrichers/test_website_to_text.py:_SectioningWebsiteToText",
+                    "name": "_SectioningWebsiteToText",
+                    "filePath": "flowsint-enrichers/tests/enrichers/test_website_to_text.py",
+                    "nodeType": "Class",
+                    "startLine": 449,
+                    "endLine": 451,
+                    "content": "class _SectioningWebsiteToText(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=text + \" first\"), Phrase(text=text + \" second\"))"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+        "rootSymbols": 1,
+        "totalSymbols": 3,
+        "totalEdges": 2,
+        "filesMatched": 3,
+        "truncated": false,
+        "direct": 2,
+        "processes": 0,
+        "modules": 2
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
