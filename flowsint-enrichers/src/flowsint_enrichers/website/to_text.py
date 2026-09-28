@@ -6,9 +6,10 @@ import asyncio
 import hashlib
 import json
 import uuid
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Any, Dict, List, Sequence
 from urllib.parse import urlsplit
+from pydantic import TypeAdapter
 
 from flowsint_core.core.enricher_base import Enricher
 from flowsint_core.core.forensics import legacy_execution_boundary
@@ -44,6 +45,7 @@ from flowsint_enrichers.registry import flowsint_enricher
 _CAPABILITY_DIGEST = hashlib.sha256(b"flowsint.website-to-text.fetch.v1").hexdigest()
 _CALLER_ID = "website-to-text"
 _SCOPE = "local-web-fetch"
+_MAX_OBSERVATION_RESULT_BYTES = 8 * 1024 * 1024
 
 
 class WebsiteFetchError(RuntimeError):
@@ -80,6 +82,7 @@ class WebsiteTextOccurrence:
     artifact_reference: object | None = None
     span_references: tuple[object, ...] = ()
     source_proof: str | None = None
+    observation_result: object | None = None
 
     def to_input_outcome(self) -> InputOutcome:
         evidence = ()
@@ -106,6 +109,10 @@ class WebsiteTextOccurrence:
             outputs=self.outputs,
             diagnostic=self.diagnostic,
             evidence=evidence,
+            metadata=(() if self.observation_result is None else ({
+                "format_version": "observed-extraction/1.0",
+                **asdict(self.observation_result),
+            },)),
         )
 
 
@@ -361,6 +368,8 @@ class WebsiteToText(Enricher):
                         event_at=artifact.event_at,
                     )
                     try:
+                        if result.observations is None or len(TypeAdapter(type(result.observations)).dump_json(result.observations)) > _MAX_OBSERVATION_RESULT_BYTES:
+                            raise ValueError("observation_result_too_large")
                         source_proof = encode_source_proof(PersistedSourceProof(
                             format_version="source-proof/1.0", input_ref=input_ref,
                             context=context, decision=decision, artifact=artifact,
@@ -369,7 +378,7 @@ class WebsiteToText(Enricher):
                     except ValueError:
                         occurrences.append(self._failed_occurrence(
                             index, source, input_ref,
-                            self._diagnostic("source_proof_too_large", "Source proof exceeds the evidence boundary."),
+                            self._diagnostic("bounded_result_rejected", "Source proof or observation metadata exceeds the evidence boundary."),
                             result.actual_resources, FetchStatus.TOOL_ERROR,
                         ))
                         continue
@@ -385,6 +394,7 @@ class WebsiteToText(Enricher):
                             artifact_reference=artifact,
                             span_references=result.spans,
                             source_proof=source_proof,
+                            observation_result=result.observations,
                         )
                     )
                 elif result.capture.state is ArtifactState.HOLD:

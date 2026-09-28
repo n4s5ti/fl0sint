@@ -25,5 +25,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bounded fetch now converts streaming read failures to typed outcomes, retains per-occurrence accounting through deadlines and cancellation, records delivered overflow bytes, enforces WebsiteToText's response cap per input, and reconstructs source outcomes by occurrence ID.
 - Bounded fetch now uses an independent deadline watcher and budgeted cleanup so cancellation-resistant transports cannot turn an expired operation into success or delay caller return indefinitely. Each admitted runtime object is atomically single-use, including its in-process model copies, so sequential or concurrent reuse cannot reset its allocation.
 - WebsiteToText now rejects fetch responses unless the operation ID, exact unique occurrence IDs, cardinality, and input references match the admitted operation before any evidence is associated.
+- **DEF-45 (S05) Observed Extraction**: Pure deterministic extraction of readable text,
+  links, and contact observations from retained HTML with exact byte spans. New immutable
+  observation models (ObservationKind, Observation, ObservedExtractionResult, RawSpan) in
+  acquisition.py with separate versioning. Pure extractor function extract_observations()
+  takes retained bytes only (no network/LLM/graph). Authorized bridge resolve_and_extract_observations()
+  in artifact_runtime.py validates policy and invokes pure extractor. WebsiteToText integration
+  attaches observations to occurrences post-capture without graph mutation; observations are
+  metadata-only, never converted to Email/Phone/Website/Individual nodes. Observations carry
+  unreviewed status always with explicit context spans for person/role associations. Links and
+  external leads marked not_executable. Preserves S02 occurrence identity and S03/S04 bounds.
 - Acquisition format 1.0 spans retain their original strict wire shape; normalized mappings
   use a separately versioned source-proof metadata contract.
+- Finished DEF-45 observed-extraction integration: one authoritative pure model family,
+  deadline-bounded live retained extraction, authorized saved-proof replay, exact raw
+  span/digest provenance, and versioned metadata on WebsiteToText scan and structured
+  results. Candidate links/forms remain unreviewed and non-executable.

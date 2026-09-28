@@ -21,6 +21,7 @@ from flowsint_execution.artifacts import ArtifactState, FilesystemArtifactStore,
 from flowsint_execution.artifact_runtime import (
     decode_source_proof, resolve_persisted_source_proof, resolve_persisted_span,
 )
+from flowsint_execution.extraction_runtime import resolve_and_extract_observations
 from flowsint_enrichers import ENRICHER_REGISTRY
 from flowsint_enrichers.website.to_text import WebsiteFetchError, WebsiteTextOccurrence, WebsiteToText
 from flowsint_execution.fetch import execute_fetch as real_execute_fetch
@@ -209,6 +210,30 @@ async def test_registry_runtime_config_emits_retrievable_structured_proof(tmp_pa
     serialized = result.model_dump_json()
     assert "hidden" not in serialized
     assert str(tmp_path / "runtime-store") not in serialized
+
+
+@pytest.mark.asyncio
+async def test_live_and_saved_paths_share_observation_result(tmp_path, monkeypatch):
+    config = _runtime_config(tmp_path)
+    monkeypatch.setenv("FLOWSINT_ARTIFACT_RUNTIME_CONFIG", str(config))
+    monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
+    monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
+    body = '<a href="?page=2">next</a><p>info@example.test</p>'
+    _patch_transport(monkeypatch, lambda _request: httpx.Response(200, text=body))
+    enricher = WebsiteToText(sketch_id="parity", params_schema=[], params={}, graph_service=_RecordingGraph())
+    live = await enricher.execute_structured([Website(url="https://runtime.example/final?view=full")])
+    outcome = live.outcomes[0]
+    metadata = outcome.metadata[0]
+    proof_value = outcome.evidence[0].artifact_reference
+    proof = decode_source_proof(proof_value)
+    state, saved = await resolve_and_extract_observations(
+        proof_value, caller_id="website-to-text", scope="local-web-fetch", source_family="http",
+        operation_id=proof.context.operation_id, occurrence_id=proof.context.occurrence_id, config_path=config,
+    )
+    assert state is ArtifactState.AVAILABLE and saved is not None
+    assert metadata["format_version"] == "observed-extraction/1.0"
+    assert [item["observation_id"] for item in metadata["observations"]] == [item.observation_id for item in saved.observations]
+    assert all(item["execution_state"] == "not_executable" for item in metadata["observations"])
 
 
 @pytest.mark.asyncio

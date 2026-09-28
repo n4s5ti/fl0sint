@@ -72,6 +72,7 @@ class InputOutcome(BaseModel):
     outputs: tuple[Any, ...] = ()
     diagnostic: RedactedDiagnostic | None = None
     evidence: tuple[EvidenceEnvelope, ...] = ()
+    metadata: tuple[Any, ...] = ()
 
     @model_validator(mode="after")
     def require_diagnostic_for_non_success(self) -> InputOutcome:

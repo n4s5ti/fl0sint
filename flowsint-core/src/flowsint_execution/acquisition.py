@@ -79,6 +79,10 @@ class ContractError(ValueError):
         super().__init__(code + (": " + ", ".join(field_paths) if field_paths else ""))
 
 
+class ArtifactBindingError(ValueError):
+    """Raised when body/digest/URL don't match artifact reference."""
+    pass
+
 def _unique(values, label):
     values = tuple(values)
     if len(values) != len(set(values)):
@@ -522,7 +526,6 @@ def _parse(raw, model):
         raise _error(exc) from None
     except (ValueError, TypeError, RecursionError):
         raise ContractError("malformed_contract") from None
-
 
 def parse_request(raw: str | bytes) -> AcquisitionRequest:
     return _parse(raw, AcquisitionRequest)

@@ -146,3 +146,27 @@ assert bundle.candidates[0].disposition == "unreviewed"
 Format `1.0` is the only supported wire format. Missing/unsupported versions and unknown fields are rejected, not silently dropped. Format version is not deployment policy identity: applicable capability and policy content digests identify implementation/configuration separately.
 
 Before downstream adoption, revert the DEF-41 implementation commit as a unit to restore canonical imports and wheel metadata. After adoption, stop the producer and retain existing bundles unchanged; migrate consumers explicitly rather than silently downgrading documents. Never rewrite origin digests, collapse duplicate occurrences, delete evidence, reset consumed resources or mint replacement operation IDs to conceal uncertain outcomes. Rollback does not authorize re-execution.
+# Observed extraction (`observed-extraction/1.0`)
+
+Observed extraction is metadata layered on the unchanged acquisition/1.0 contract. The
+authoritative value types and pure extractor are in
+`flowsint_execution.observed_extraction`. A live WebsiteToText request extracts only
+after the response has been admitted and retained, inside the existing source-proof
+worker and its original elapsed allocation. Saved replay uses
+`extraction_runtime.resolve_and_extract_observations(source_proof, ...)`; caller,
+scope, source family, operation, and occurrence must match the persisted proof and the
+current reviewed runtime policy.
+
+Raw observation spans are byte offsets into the retained body and are resolved against
+its exact length and SHA-256 digest. They are not normalized `SourceProofSpanReference`
+ranges. Links and forms are unreviewed, non-executable metadata. They never create
+Email, Phone, Individual, or graph-edge outputs. Relative references use the retained
+final page URL. Non-sensitive query parameters are retained so fragment-only references
+inherit the correct query. Empty attribute values are omitted because the contract
+requires a nonempty exact raw span; query strings containing credential-like names
+(`token`, `secret`, `password`, `key`, authorization codes, or signatures) are removed
+as a whole. This conservative policy can discard benign parameters with those names.
+
+HOLD and REVIEW resolution states produce no observations. A revoked or unavailable
+current policy cannot be bypassed with an older proof. Both the source proof and the
+machine-readable observation result are bounded before a success outcome is returned.

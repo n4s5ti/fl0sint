@@ -726,3 +726,15 @@ Once you've created and registered your enricher, it becomes available through t
 Remember that enrichers are the heart of Fl0sint's intelligence gathering capabilities. Well-designed enrichers that handle errors gracefully, log progress clearly, and create meaningful graph relationships make the entire platform more powerful and user-friendly.
 
 If you create new enrichers that you think can help the community, it's highly appreciated that you open-source them. Help the community as much as it helps you !
+# WebsiteToText observation metadata
+
+`WebsiteToText.scan()` returns occurrence envelopes. Successful retained occurrences
+include `observation_result`, an `ObservedExtractionResult` from the same pure extractor
+used for saved proof replay. `execute_structured()` exposes it in `InputOutcome.metadata`
+with `format_version: observed-extraction/1.0`; Phrase outputs and existing graph
+postprocessing are unchanged. Observation metadata is not an instruction to crawl a
+link, submit a form, accept a contact, or mutate the graph.
+
+Run `flowsint-core/examples/observed_extraction.py --url URL` with a reviewed artifact
+runtime configured for a controlled fetch. Replay uses `--proof`, `--runtime-config`,
+`--operation`, and `--occurrence`. Neither mode requires graph, planner, or LLM keys.

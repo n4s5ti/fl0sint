@@ -18,7 +18,7 @@ from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Annotated, Literal
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 import httpx
 from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, StrictInt, model_validator
@@ -218,6 +218,7 @@ class SourceProofOutcome:
     diagnostic: RedactedDiagnostic | None
     actual_resources: Resources
     spans: tuple[SpanReference, ...] = ()
+    observations: object | None = None
 
 
 @dataclass(frozen=True)
@@ -802,6 +803,7 @@ async def execute_fetch_with_source_proof(
                 if capture.state is not ArtifactState.AVAILABLE:
                     normalized = None
             spans = ()
+            observations = None
             if capture.artifact is not None and normalized is not None:
                 spans = tuple(SourceProofSpanReference(
                     span_id=f"span-{capture.artifact.snapshot_id}-{index}", artifact_id=capture.artifact.artifact_id,
@@ -809,8 +811,19 @@ async def execute_fetch_with_source_proof(
                     normalized_start=span.normalized_start, normalized_end=span.normalized_end,
                     raw_offset_unit="byte", normalized_offset_unit="unicode_code_point", source_encoding="utf-8",
                 ) for index, span in enumerate(normalized.spans))
+                if expired():
+                    raise TimeoutError
+                from .observed_extraction import extract_observations
+                observations = extract_observations(
+                    item.body or b"", artifact=capture.artifact,
+                    occurrence_id=item.occurrence_id, input_ref=item.input_ref,
+                    final_url=context.final_url or "", cancelled=expired,
+                )
+                if expired():
+                    raise TimeoutError
             outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status,
-                                               capture, normalized, item.diagnostic, item.actual_resources, spans))
+                                               capture, normalized, item.diagnostic, item.actual_resources, spans,
+                                               observations))
         return tuple(outcomes)
 
     def resources(elapsed: float, original: Resources) -> Resources:
@@ -855,6 +868,7 @@ async def execute_fetch_with_source_proof(
         outcomes = tuple(SourceProofOutcome(
             item.occurrence_id, item.input_ref, item.fetch_status, item.capture,
             item.normalized, item.diagnostic, resources(elapsed, item.actual_resources), item.spans,
+            item.observations,
         ) for item in outcomes)
     return SourceProofResult(fetched.operation_id, outcomes, total)
 
@@ -863,7 +877,14 @@ def _redacted_location(url: str) -> str:
     parts = urlsplit(url)
     host = f"[{parts.hostname}]" if parts.hostname and ":" in parts.hostname else parts.hostname
     port = f":{parts.port}" if parts.port is not None else ""
-    return f"{parts.scheme}://{host}{port}{parts.path or '/'}"
+    sensitive = {"access_token", "api_key", "apikey", "auth", "authorization",
+                 "code", "credential", "key", "password", "secret", "signature", "token"}
+    try:
+        pairs = parse_qsl(parts.query, keep_blank_values=True)
+        query = "" if any(name.lower() in sensitive for name, _ in pairs) else urlencode(pairs)
+    except ValueError:
+        query = ""
+    return urlunsplit((parts.scheme, f"{host}{port}", parts.path or "/", query, ""))
 
 
 async def _single_chunk(content: bytes):
