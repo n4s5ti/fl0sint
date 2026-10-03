@@ -1,0 +1,5 @@
+{
+  "command": "timeout 120 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd . --json",
+  "exit_code": 0,
+  "commit": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe"
+}

@@ -1,0 +1,7 @@
+{
+  "command": "timeout 600 env UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest",
+  "exit_code": 1,
+  "worktree": "/tmp/fl0sint-def46-base-7f6f3c83",
+  "commit": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe",
+  "result": "1027 passed, 2 failed; failures are absent DEF-45 fixture /tmp/def45-live-fixture.html and SQLite subprocess timeout. Both occur at the selected baseline."
+}

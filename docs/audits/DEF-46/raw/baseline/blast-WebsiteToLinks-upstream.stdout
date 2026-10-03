@@ -1,0 +1,75 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+    "repo": "fl0sint-def46-base-7f6f3c83",
+    "lbugPath": "/tmp/fl0sint-def46-base-7f6f3c83/.gitnexus/lbug",
+    "rootPath": "/tmp/fl0sint-def46-base-7f6f3c83",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+        "name": "WebsiteToLinks",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+        "nodeType": "Class",
+        "startLine": 12,
+        "endLine": 210,
+        "content": "class WebsiteToLinks(Enricher):     \"\"\"From website to spread crawler that extracts domains and internal/external links.\"\"\"     # Define types as class attributes - base class handles schema generation automatically     InputType = Website     OutputType = Website     @classmethod     def name(cls) -> str:         return \"website_to_links\"     @classmethod     def category(cls) -> str:         return \"Website\"     @classmethod     def key(cls) -> str:         return \"url\"     def extract_domain(self, url: str) -> str:         \"\"\"Extract domain from URL.\"\"\"         try:             parsed_url = urlparse(url)             return parsed_url.netloc         except Exception:             return \"\"     async def scan(self, …
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+            "name": "WebsiteToLinks",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+            "nodeType": "Class",
+            "startLine": 12,
+            "endLine": 210,
+            "content": "class WebsiteToLinks(Enricher):     \"\"\"From website to spread crawler that extracts domains and internal/external links.\"\"\"     # Define types as class attributes - base class handles schema generation automatically     InputType = Website     OutputType = Website     @classmethod     def name(cls) -> str:         return \"website_to_links\"     @classmethod     def category(cls) -> str:         return \"Website\"     @classmethod     def key(cls) -> str:         return \"url\"     def extract_domain(self, url: str) -> str:         \"\"\"Extract domain from URL.\"\"\"         try:             parsed_url = urlparse(url)             return parsed_url.netloc         except Exception:             return \"\"     async def scan(se…
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+                    "name": "WebsiteToLinks",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+                    "nodeType": "Class",
+                    "startLine": 12,
+                    "endLine": 210,
+                    "content": "class WebsiteToLinks(Enricher):     \"\"\"From website to spread crawler that extracts domains and internal/external links.\"\"\"     # Define types as class attributes - base class handles schema generation automatically     InputType = Website     OutputType = Website     @classmethod     def name(cls) -> str:         return \"website_to_links\"     @classmethod     def category(cls) -> str:         return \"Website\"     @classmethod     def key(cls) -> str:         return \"url\"     def extract_domain(self, url: str) -> str:         \"\"\"Extract domain from URL.\"\"\"         try:             parsed_url = urlparse(url)             return parsed_url.netloc         except Exception:             return \"\"     async def…
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/tmp/fl0sint-def46-base-7f6f3c83",
+        "rootPath": "/tmp/fl0sint-def46-base-7f6f3c83",
+        "repo": "fl0sint-def46-base-7f6f3c83",
+        "lbugPath": "/tmp/fl0sint-def46-base-7f6f3c83/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}
+
+
+Wall time: 1.32 seconds
+
+[Some lines truncated to 768 bytes. Read artifact://112 for full output]

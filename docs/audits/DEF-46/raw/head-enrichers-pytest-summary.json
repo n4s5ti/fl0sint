@@ -1,0 +1,7 @@
+{
+  "text": "{'pytest_exit': 0, 'tests': 184, 'failures': 0, 'errors': 0, 'skipped': 0}\n\n\nWall time: 20.41 seconds",
+  "details": {
+    "timeoutSeconds": 660,
+    "wallTimeMs": 20409.237421999685
+  }
+}

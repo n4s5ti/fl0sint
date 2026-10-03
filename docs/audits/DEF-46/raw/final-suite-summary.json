@@ -1,0 +1,15 @@
+{
+  "core": {
+    "pytest_exit": 1,
+    "tests": 1036,
+    "failures": 1,
+    "errors": 0,
+    "known_failure": "tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface (missing /tmp/def45-live-fixture.html; observed at baseline)"
+  },
+  "enrichers": {
+    "pytest_exit": 0,
+    "tests": 185,
+    "failures": 0,
+    "errors": 0
+  }
+}

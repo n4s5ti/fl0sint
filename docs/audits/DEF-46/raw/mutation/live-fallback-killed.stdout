@@ -1,0 +1,63 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_enabled_crawler_runs_without_neo4j_credentials_or_connection _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7364bc9686b0>
+
+    @pytest.mark.asyncio
+    async def test_enabled_crawler_runs_without_neo4j_credentials_or_connection(monkeypatch):
+        """The public default constructor selects capture mode before Neo4j is touched."""
+        monkeypatch.setenv("NEO4J_URI_BOLT", "")
+        monkeypatch.setenv("NEO4J_USERNAME", "")
+        monkeypatch.setenv("NEO4J_PASSWORD", "")
+    
+        def unexpected_connection(cls):
+            raise AssertionError("capture-only crawler attempted a Neo4j connection")
+    
+        monkeypatch.setattr(Neo4jConnection, "get_instance", classmethod(unexpected_connection))
+        with _crawler_site(link_count=0) as base_url:
+>           scraper = WebsiteToLinks(sketch_id="def46-no-neo4j")
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/enrichers/test_website_to_links_capture.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_enrichers/website/to_links.py:24: in __init__
+    super().__init__(*args, **kwargs)
+../flowsint-core/src/flowsint_core/core/enricher_base.py:144: in __init__
+    self._graph_service = create_graph_service(
+../flowsint-core/src/flowsint_core/core/graph/service.py:426: in create_graph_service
+    repository = Neo4jGraphRepository()
+                 ^^^^^^^^^^^^^^^^^^^^^^
+../flowsint-core/src/flowsint_core/core/forensics/fencing.py:257: in guarded
+    return function(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+../flowsint-core/src/flowsint_core/core/graph/repository.py:35: in __init__
+    self._connection = neo4j_connection or Neo4jConnection.get_instance()
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'flowsint_core.core.graph.connection.Neo4jConnection'>
+
+    def unexpected_connection(cls):
+>       raise AssertionError("capture-only crawler attempted a Neo4j connection")
+E       AssertionError: capture-only crawler attempted a Neo4j connection
+
+tests/enrichers/test_website_to_links_capture.py:141: AssertionError
+=============================== warnings summary ===============================
+../.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/enrichers/test_website_to_links_capture.py::test_enabled_crawler_runs_without_neo4j_credentials_or_connection - AssertionError: capture-only crawler attempted a Neo4j connection
+1 failed, 2 warnings in 4.43s
+
+
+Wall time: 7.47 seconds
+
+Command exited with code 1

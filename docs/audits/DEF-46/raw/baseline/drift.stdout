@@ -1,0 +1,20 @@
+{
+    "mode": "drift",
+    "result": {
+        "repo": "fl0sint-def46-base-7f6f3c83",
+        "lbugPath": "/tmp/fl0sint-def46-base-7f6f3c83/.gitnexus/lbug",
+        "changed_symbols": [],
+        "summary": {
+            "total": 0,
+            "file_modified": 0,
+            "file_removed": 0,
+            "file_unindexed": 0,
+            "symbol_stale": 0
+        }
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}
+
+
+Wall time: 1.79 seconds

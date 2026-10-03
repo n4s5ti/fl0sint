@@ -351,7 +351,7 @@ class GraphService:
         if self._enable_batching:
             self._repository.flush_batch()
 
-    def query(self, cypher: str, parameters: Dict[str, Any] = None) -> list:
+    def query(self, cypher: str, parameters: Optional[Dict[str, Any]] = None) -> list:
         """
         Execute a custom Cypher query.
 
@@ -363,7 +363,7 @@ class GraphService:
             List of result records
         """
         self._require_access("graph_service_query")
-        return self._repository.query(cypher, parameters)
+        return self._repository.query(cypher, parameters or {})
 
     def set_batch_size(self, size: int) -> None:
         """
@@ -410,27 +410,25 @@ def create_graph_service(
     Returns:
         Configured GraphService instance
     """
-    if not capture_only:
-        require_legacy_graph_access(
-            mode,
-            operation="graph_service_factory_construction",
-            case_reference=case_reference,
-        )
+    require_legacy_graph_access(
+        mode,
+        operation="graph_service_factory_construction",
+        case_reference=case_reference,
+    )
 
-    # Import Logger here to avoid circular imports
-    from flowsint_core.core.logger import Logger
-
-    # Use capture repository if capture_only mode requested
     if capture_only:
         repository = CaptureGraphRepository(sketch_id)
+        logger = None
     else:
-        # Neo4jGraphRepository uses Neo4jConnection.get_instance() singleton
+        from flowsint_core.core.logger import Logger
+
         repository = Neo4jGraphRepository()
+        logger = Logger
 
     return GraphService(
         sketch_id=sketch_id,
         repository=repository,
-        logger=Logger,
+        logger=logger,
         enable_batching=enable_batching,
         type_resolver=type_resolver,
         mode=mode,

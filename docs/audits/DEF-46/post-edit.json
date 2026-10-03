@@ -1,0 +1,34 @@
+{
+  "issue": "DEF-46",
+  "base_commit": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe",
+  "repair_start_commit": "56e5febe",
+  "state": "pre-commit repair verification",
+  "implementation": {
+    "capture_sink": "CaptureGraphRepository captures only unreviewed candidate operations and local batch-boundary events; it never returns a synthetic Neo4j element ID.",
+    "factory": "create_graph_service(capture_only=True) selects CaptureGraphRepository without importing Logger or constructing Neo4jGraphRepository.",
+    "enabled_caller": "WebsiteToLinks selects capture_only only for its default service and rejects an injected non-capture service, preventing a live fallback.",
+    "lineage": "scan clears the process-local capture buffer per execution, assigns a monotonic execution_id, and wraps each source in source_context({execution_id, input_index, source_url}).",
+    "failure_behavior": "All non-capture reads, updates, deletes, merges, queries, and relationship lookup methods record unsupported_publication_intent and raise NotImplementedError."
+  },
+  "deliverable_sha256": {
+    "raw": "raw/final-deliverable-sha256.txt",
+    "status": "Current hashes were recorded after all review fixes and scoped formatting."
+  },
+  "planned_vs_actual": {
+    "planned": [
+      "capture repository", "graph factory", "base graph-service seam", "enabled WebsiteToLinks caller", "focused core tests", "actual crawler tests", "DEF-46 evidence packet"
+    ],
+    "actual": "exactly the planned source, test, and evidence paths; no configuration file changed",
+    "unrelated_untracked_paths_preserved": ["fl0sint-def46-capture-sink/", "jev-ultrafast/"]
+  },
+  "verification": {
+    "core_compileall": "PASS: python -m compileall -q src",
+    "enrichers_compileall": "PASS: python -m compileall -q src",
+    "core_full_pytest": "1036 tests; 1035 passed, 1 failed. The only failure is the pre-existing missing /tmp/def45-live-fixture.html fixture.",
+    "enrichers_full_pytest": "185 passed, 0 failed, 0 errors",
+    "actual_crawler_fixtures": "5 passed",
+    "capture_repository_tests": "7 passed",
+    "mutation": "3/3 injected defects killed; sources restored byte-for-byte"
+  },
+  "raw_evidence": "raw/post/deliverable-sha256.txt and companion raw files"
+}

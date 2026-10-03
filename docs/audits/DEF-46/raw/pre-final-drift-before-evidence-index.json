@@ -1,0 +1,33 @@
+{
+    "mode": "drift",
+    "result": {
+        "repo": "fl0sint",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+        "changed_symbols": [
+            {
+                "symbol": "linear-summary.md",
+                "filePath": "docs/audits/DEF-46/linear-summary.md",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "recovery.md",
+                "filePath": "docs/audits/DEF-46/recovery.md",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "review.json",
+                "filePath": "docs/audits/DEF-46/review.json",
+                "category": "file_unindexed"
+            }
+        ],
+        "summary": {
+            "total": 3,
+            "file_modified": 0,
+            "file_removed": 0,
+            "file_unindexed": 3,
+            "symbol_stale": 0
+        }
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

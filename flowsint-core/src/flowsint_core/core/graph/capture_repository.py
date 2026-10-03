@@ -1,174 +1,204 @@
-"""
-Capture-only graph repository for isolated acquisition.
+"""Capture-only graph repository for isolated acquisition.
 
-This module provides a GraphRepository implementation that captures all
-graph operations without writing to Neo4j. It preserves input/source lineage
-and fails explicitly on unsupported methods.
-
-Used for: Isolated local acquisition with no Neo4j requirement.
+The repository records graph-publication candidates locally.  It never creates
+Neo4j element identifiers, reads graph state, or delegates an operation to a
+live repository.  Every captured candidate is explicitly unreviewed and
+carries the input lineage active when it was discovered.
 """
 
-from typing import Any, Dict, List, Optional
-from dataclasses import dataclass, field
-from datetime import datetime
-import json
-import uuid
+from __future__ import annotations
 
-from .repository_protocol import GraphRepositoryProtocol
+import copy
+from collections.abc import Generator
+from contextlib import contextmanager
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from typing import Any, Literal, NoReturn
+
 from .types import GraphDict
 
 
-@dataclass
+@dataclass(frozen=True)
 class CapturedOperation:
-    """Records a single captured graph operation with lineage."""
+    """One local, unreviewed graph-publication candidate."""
 
-    operation_id: str
-    operation_type: str
-    timestamp: str
+    sequence: int
+    captured_at: str
     method_name: str
-    parameters: Dict[str, Any]
-    source_input: Optional[Any] = None
-    result: Optional[Any] = None
-    error: Optional[str] = None
+    parameters: dict[str, Any]
+    source_input: Any | None
+    operation_type: str
+    disposition: Literal["unreviewed"] = "unreviewed"
+    error: str | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Serialize operation to dict."""
+    def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serializable snapshot without a graph element ID."""
         return {
-            "operation_id": self.operation_id,
-            "operation_type": self.operation_type,
-            "timestamp": self.timestamp,
+            "sequence": self.sequence,
+            "captured_at": self.captured_at,
             "method_name": self.method_name,
-            "parameters": self.parameters,
-            "source_input": self.source_input,
-            "result": self.result,
+            "parameters": copy.deepcopy(self.parameters),
+            "source_input": copy.deepcopy(self.source_input),
+            "operation_type": self.operation_type,
+            "disposition": self.disposition,
             "error": self.error,
         }
 
 
 class CaptureGraphRepository:
-    """
-    Capture-only graph repository that records operations without Neo4j writes.
-    
-    Features:
-    - Records all graph operations with timestamps
-    - Preserves input/source lineage
-    - Fails explicitly on unsupported methods
-    - No Neo4j connection required
-    - Returns plausible IDs for captured creates
-    """
+    """Capture safe creation candidates without a live graph dependency."""
 
-    def __init__(self, sketch_id: str = ""):
-        """Initialize capture repository."""
+    def __init__(self, sketch_id: str = "") -> None:
         self.sketch_id = sketch_id
-        self.operations: List[CapturedOperation] = []
-        self.batch_queue: List[Dict[str, Any]] = []
+        self.operations: list[CapturedOperation] = []
+        self.batch_queue: list[int] = []
         self.batch_size = 10
-        self.node_id_counter = 0
-        self.relationship_id_counter = 0
-        self._source_lineage: Dict[str, Any] = {}
+        self._source_input: Any | None = None
+        self._sequence = 0
 
-    def _generate_node_id(self) -> str:
-        """Generate a plausible node element ID."""
-        self.node_id_counter += 1
-        return f"node_{self.node_id_counter}_{uuid.uuid4().hex[:8]}"
+    @contextmanager
+    def source_context(self, source_input: Any) -> Generator[None, None, None]:
+        """Attach one acquisition input to candidates produced in this scope."""
+        previous = self._source_input
+        self._source_input = copy.deepcopy(source_input)
+        try:
+            yield
+        finally:
+            self._source_input = previous
 
-    def _generate_rel_id(self) -> str:
-        """Generate a plausible relationship element ID."""
-        self.relationship_id_counter += 1
-        return f"rel_{self.relationship_id_counter}_{uuid.uuid4().hex[:8]}"
-
-    def _capture_operation(
+    def _capture(
         self,
         method_name: str,
-        parameters: Dict[str, Any],
-        result: Optional[Any] = None,
-        error: Optional[str] = None,
+        parameters: dict[str, Any],
+        *,
+        operation_type: str,
+        error: str | None = None,
     ) -> CapturedOperation:
-        """Record an operation to capture list."""
+        self._sequence += 1
         operation = CapturedOperation(
-            operation_id=str(uuid.uuid4()),
-            operation_type="graph_write",
-            timestamp=datetime.utcnow().isoformat(),
+            sequence=self._sequence,
+            captured_at=datetime.now(timezone.utc).isoformat(),
             method_name=method_name,
-            parameters=parameters,
-            source_input=self._source_lineage.get(method_name),
-            result=result,
+            parameters=copy.deepcopy(parameters),
+            source_input=copy.deepcopy(self._source_input),
+            operation_type=operation_type,
             error=error,
         )
         self.operations.append(operation)
         return operation
 
-    def _unsupported(self, method_name: str) -> None:
-        """Fail explicitly on unsupported method."""
-        error_msg = (
-            f"Unsupported method '{method_name}' in capture-only repository. "
-            f"This method cannot be captured safely or requires live Neo4j access."
+    def _capture_candidate(
+        self, method_name: str, parameters: dict[str, Any]
+    ) -> CapturedOperation:
+        return self._capture(
+            method_name,
+            parameters,
+            operation_type="candidate_graph_mutation",
         )
-        self._capture_operation(method_name, {}, error=error_msg)
-        raise NotImplementedError(error_msg)
 
-    # Core node operations
-    def create_node(self, node_obj: GraphDict, sketch_id: str) -> Optional[str]:
-        """Capture node creation."""
-        element_id = self._generate_node_id()
-        self._capture_operation(
-            "create_node",
-            {"node_obj": node_obj, "sketch_id": sketch_id},
-            result=element_id,
+    def _unsupported(self, method_name: str, parameters: dict[str, Any]) -> NoReturn:
+        message = (
+            f"Unsupported method '{method_name}' in capture-only repository; "
+            "capture mode cannot read, mutate, or publish graph state."
         )
-        return element_id
+        self._capture(
+            method_name,
+            parameters,
+            operation_type="unsupported_publication_intent",
+            error=message,
+        )
+        raise NotImplementedError(message)
+
+    def create_node(self, node_obj: GraphDict, sketch_id: str) -> str | None:
+        """Record a node candidate, without manufacturing a graph element ID."""
+        self._capture_candidate(
+            "create_node", {"node_obj": node_obj, "sketch_id": sketch_id}
+        )
+        return None
+
+    def create_relationship(self, rel_obj: GraphDict, sketch_id: str) -> None:
+        """Record a relationship candidate without publishing it."""
+        self._capture_candidate(
+            "create_relationship", {"rel_obj": rel_obj, "sketch_id": sketch_id}
+        )
+
+    def batch_create_nodes(
+        self, nodes: list[GraphDict], sketch_id: str
+    ) -> dict[str, Any]:
+        """Record each batch member as an unreviewed node candidate."""
+        for node in nodes:
+            self.create_node(node, sketch_id)
+        return {"candidates": len(nodes), "disposition": "unreviewed"}
+
+    def batch_create_edges_by_element_id(
+        self, edges: list[GraphDict], sketch_id: str
+    ) -> dict[str, Any]:
+        """Record edge candidates only when no published element IDs are needed."""
+        for edge in edges:
+            self.create_relationship(edge, sketch_id)
+        return {"candidates": len(edges), "disposition": "unreviewed"}
+
+    def add_to_batch(self, operation_type: str, **kwargs: Any) -> None:
+        """Capture an enqueued create candidate and retain its flush lineage."""
+        method_by_type = {
+            "node": "create_node",
+            "relationship": "create_relationship",
+        }
+        method_name = method_by_type.get(operation_type)
+        if method_name is None:
+            self._unsupported(
+                "add_to_batch", {"operation_type": operation_type, **kwargs}
+            )
+        operation = self._capture_candidate(method_name, kwargs)
+        self.batch_queue.append(operation.sequence)
+        if len(self.batch_queue) >= self.batch_size:
+            self.flush_batch()
+
+    def flush_batch(self) -> None:
+        """Record a local flush boundary and discard no captured candidates."""
+        if not self.batch_queue:
+            return
+        self._capture(
+            "flush_batch",
+            {"candidate_sequences": list(self.batch_queue)},
+            operation_type="capture_batch_flush",
+        )
+        self.batch_queue.clear()
+
+    def set_batch_size(self, size: int) -> None:
+        """Configure a positive local auto-flush threshold."""
+        if type(size) is not int or size <= 0:
+            raise ValueError("batch size must be a positive integer")
+        self.batch_size = size
 
     def update_node(
         self, element_id: str, updates: GraphDict, sketch_id: str
-    ) -> Optional[str]:
-        """Capture node update."""
-        self._capture_operation(
+    ) -> str | None:
+        self._unsupported(
             "update_node",
             {"element_id": element_id, "updates": updates, "sketch_id": sketch_id},
-            result=element_id,
         )
-        return element_id
 
-    def delete_nodes(self, node_ids: List[str], sketch_id: str) -> int:
-        """Capture node deletion."""
-        count = len(node_ids)
-        self._capture_operation(
-            "delete_nodes",
-            {"node_ids": node_ids, "sketch_id": sketch_id},
-            result=count,
+    def delete_nodes(self, node_ids: list[str], sketch_id: str) -> int:
+        self._unsupported(
+            "delete_nodes", {"node_ids": node_ids, "sketch_id": sketch_id}
         )
-        return count
 
     def delete_all_sketch_nodes(self, sketch_id: str) -> int:
-        """Capture deletion of all sketch nodes."""
-        # This is unsupported as it's destructive without review
-        self._unsupported("delete_all_sketch_nodes")
+        self._unsupported("delete_all_sketch_nodes", {"sketch_id": sketch_id})
 
     def get_nodes_by_ids(
-        self, node_ids: List[str], sketch_id: str
-    ) -> List[Dict[str, Any]]:
-        """Reads are not captured (no side effects)."""
-        # Get operations don't have side effects in capture mode
-        return []
+        self, node_ids: list[str], sketch_id: str
+    ) -> list[dict[str, Any]]:
+        self._unsupported(
+            "get_nodes_by_ids", {"node_ids": node_ids, "sketch_id": sketch_id}
+        )
 
     def update_nodes_positions(
-        self, positions: List[Dict[str, Any]], sketch_id: str
+        self, positions: list[dict[str, Any]], sketch_id: str
     ) -> int:
-        """Capture position updates."""
-        count = len(positions)
-        self._capture_operation(
-            "update_nodes_positions",
-            {"positions": positions, "sketch_id": sketch_id},
-            result=count,
-        )
-        return count
-
-    # Core relationship operations
-    def create_relationship(self, rel_obj: GraphDict, sketch_id: str) -> None:
-        """Capture relationship creation."""
-        self._capture_operation(
-            "create_relationship",
-            {"rel_obj": rel_obj, "sketch_id": sketch_id},
+        self._unsupported(
+            "update_nodes_positions", {"positions": positions, "sketch_id": sketch_id}
         )
 
     def create_relationship_by_element_id(
@@ -177,16 +207,8 @@ class CaptureGraphRepository:
         to_element_id: str,
         rel_label: str,
         sketch_id: str,
-    ) -> Optional[Dict[str, Any]]:
-        """Capture relationship creation by element ID."""
-        rel_id = self._generate_rel_id()
-        result = {
-            "element_id": rel_id,
-            "from": from_element_id,
-            "to": to_element_id,
-            "label": rel_label,
-        }
-        self._capture_operation(
+    ) -> dict[str, Any] | None:
+        self._unsupported(
             "create_relationship_by_element_id",
             {
                 "from_element_id": from_element_id,
@@ -194,160 +216,76 @@ class CaptureGraphRepository:
                 "rel_label": rel_label,
                 "sketch_id": sketch_id,
             },
-            result=result,
         )
-        return result
 
     def update_relationship(
         self, element_id: str, rel_obj: GraphDict, sketch_id: str
-    ) -> Optional[Dict[str, Any]]:
-        """Capture relationship update."""
-        result = {"element_id": element_id, **rel_obj}
-        self._capture_operation(
+    ) -> dict[str, Any] | None:
+        self._unsupported(
             "update_relationship",
             {"element_id": element_id, "rel_obj": rel_obj, "sketch_id": sketch_id},
-            result=result,
         )
-        return result
 
-    def delete_relationships(self, relationship_ids: List[str], sketch_id: str) -> int:
-        """Capture relationship deletion."""
-        count = len(relationship_ids)
-        self._capture_operation(
+    def delete_relationships(self, relationship_ids: list[str], sketch_id: str) -> int:
+        self._unsupported(
             "delete_relationships",
             {"relationship_ids": relationship_ids, "sketch_id": sketch_id},
-            result=count,
         )
-        return count
 
-    # Graph queries
     def get_sketch_graph(
         self, sketch_id: str, limit: int = 100000
-    ) -> Dict[str, List[Dict[str, Any]]]:
-        """Reads are not captured."""
-        return {"nodes": [], "edges": []}
+    ) -> dict[str, list[dict[str, Any]]]:
+        self._unsupported("get_sketch_graph", {"sketch_id": sketch_id, "limit": limit})
 
-    def get_neighbors(self, node_id: str, sketch_id: str) -> Dict[str, Any]:
-        """Reads are not captured."""
-        return {"node": {}, "neighbors": []}
+    def get_neighbors(self, node_id: str, sketch_id: str) -> dict[str, Any]:
+        self._unsupported("get_neighbors", {"node_id": node_id, "sketch_id": sketch_id})
 
-    # Merge operations
     def merge_nodes(
         self,
-        old_node_ids: List[str],
-        new_node_data: Dict[str, Any],
-        new_node_id: Optional[str],
+        old_node_ids: list[str],
+        new_node_data: dict[str, Any],
+        new_node_id: str | None,
         sketch_id: str,
-    ) -> Optional[str]:
-        """Capture node merge."""
-        element_id = new_node_id or self._generate_node_id()
-        self._capture_operation(
+    ) -> str | None:
+        self._unsupported(
             "merge_nodes",
             {
                 "old_node_ids": old_node_ids,
                 "new_node_data": new_node_data,
+                "new_node_id": new_node_id,
                 "sketch_id": sketch_id,
             },
-            result=element_id,
         )
-        return element_id
 
-    # Batch operations
-    def batch_create_nodes(
-        self, nodes: List[GraphDict], sketch_id: str
-    ) -> Dict[str, Any]:
-        """Capture batch node creation."""
-        node_ids = [self._generate_node_id() for _ in nodes]
-        result = {
-            "created": len(node_ids),
-            "element_ids": node_ids,
-        }
-        self._capture_operation(
-            "batch_create_nodes",
-            {"nodes_count": len(nodes), "sketch_id": sketch_id},
-            result=result,
-        )
-        return result
-
-    def batch_create_edges_by_element_id(
-        self, edges: List[GraphDict], sketch_id: str
-    ) -> Dict[str, Any]:
-        """Capture batch relationship creation."""
-        edge_ids = [self._generate_rel_id() for _ in edges]
-        result = {
-            "created": len(edge_ids),
-            "element_ids": edge_ids,
-        }
-        self._capture_operation(
-            "batch_create_edges_by_element_id",
-            {"edges_count": len(edges), "sketch_id": sketch_id},
-            result=result,
-        )
-        return result
-
-    def add_to_batch(self, operation_type: str, **kwargs: Any) -> None:
-        """Queue operation for batch."""
-        operation = {
-            "type": operation_type,
-            "params": kwargs,
-            "timestamp": datetime.utcnow().isoformat(),
-        }
-        self.batch_queue.append(operation)
-        
-        # Auto-flush if batch size exceeded
-        if len(self.batch_queue) >= self.batch_size:
-            self.flush_batch()
-
-    def flush_batch(self) -> None:
-        """Flush batched operations."""
-        if not self.batch_queue:
-            return
-            
-        count = len(self.batch_queue)
-        self._capture_operation(
-            "flush_batch",
-            {"batched_operations": count},
-            result={"flushed": count},
-        )
-        self.batch_queue.clear()
-
-    def set_batch_size(self, size: int) -> None:
-        """Set the batch size."""
-        self.batch_size = size
-
-    # Custom queries
     def query(
-        self, cypher: str, parameters: Dict[str, Any] = {}
-    ) -> List[Dict[str, Any]]:
-        """Custom queries are not supported in capture mode."""
-        self._unsupported("query")
+        self, cypher: str, parameters: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        self._unsupported("query", {"cypher": cypher, "parameters": parameters or {}})
 
-    # Capture-specific methods
-    def get_captured_operations(self) -> List[CapturedOperation]:
-        """Get all captured operations."""
-        return self.operations.copy()
+    def get_captured_operations(self) -> tuple[CapturedOperation, ...]:
+        """Return all audit records, including rejected publication intent."""
+        return tuple(self.operations)
 
-    def get_captured_writes(self) -> List[CapturedOperation]:
-        """Get only write operations (excludes reads)."""
-        return [
-            op
-            for op in self.operations
-            if op.method_name
-            not in ["get_nodes_by_ids", "get_sketch_graph", "get_neighbors"]
-        ]
+    def get_captured_candidates(self) -> tuple[CapturedOperation, ...]:
+        """Return only safe, unreviewed create candidates."""
+        return tuple(
+            operation
+            for operation in self.operations
+            if operation.operation_type == "candidate_graph_mutation"
+        )
 
     def clear_captures(self) -> None:
-        """Clear all captured operations."""
+        """Discard this process-local capture buffer without touching graph state."""
         self.operations.clear()
         self.batch_queue.clear()
 
-    def export_captures(self) -> Dict[str, Any]:
-        """Export all captures as JSON-serializable dict."""
+    def export_captures(self) -> dict[str, Any]:
+        """Serialize local audit records and candidates for caller review."""
         return {
             "sketch_id": self.sketch_id,
-            "capture_timestamp": datetime.utcnow().isoformat(),
+            "disposition": "unreviewed",
             "total_operations": len(self.operations),
-            "write_operations": len(self.get_captured_writes()),
-            "operations": [op.to_dict() for op in self.operations],
-            "batch_queue_at_end": len(self.batch_queue),
+            "candidate_operations": len(self.get_captured_candidates()),
+            "operations": [operation.to_dict() for operation in self.operations],
+            "pending_batch_candidates": list(self.batch_queue),
         }

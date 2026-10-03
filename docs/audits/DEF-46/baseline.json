@@ -1,152 +1,45 @@
 {
   "issue": "DEF-46",
-  "session": "2026-10-03T16:27:00Z",
-  "phase": "baseline",
-  "description": "Pre-edit baseline for [S06] Isolate acquisition from graph writes with a complete capture sink",
+  "title": "[S06] Isolate acquisition from graph writes with a complete capture sink",
+  "kind": "reconstructed-before-edit baseline",
   "base_commit": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe",
-  "base_commit_short": "7f6f3c83",
-  "base_branch": "work/def-45-observed-extraction",
-  "base_message": "docs(audit): record restored tooling and remaining harness defect",
-  "base_timestamp": "2026-10-03T07:40:32Z",
-  "baseline_state": {
-    "graph_service_present": true,
-    "graph_repository_protocol": "exists",
-    "neo4j_repository_present": true,
-    "capture_repository_present": false,
-    "create_graph_service_supports_capture": false,
-    "test_capture_repository_present": false
+  "base_worktree": "/tmp/fl0sint-def46-base-7f6f3c83",
+  "repair_branch": "work/def-46-capture-sink",
+  "reconstruction_note": "The prior DEF-46 delivery committed an unverified partial implementation. This baseline was reconstructed from the accepted parent while repairing that work; it is not represented as a pre-existing review receipt.",
+  "baseline_behavior": {
+    "first_enabled_path": "flowsint_enrichers.website.to_links.WebsiteToLinks -> Enricher.__init__ -> create_graph_service -> Neo4jGraphRepository -> Neo4jConnection",
+    "capture_repository": "absent",
+    "default_acquisition": "required live Neo4j graph-service construction",
+    "observed_before_failure": "With NEO4J_URI_BOLT, NEO4J_USERNAME, and NEO4J_PASSWORD unset, WebsiteToLinks(sketch_id='def46-repro') raised ValueError: Neo4j connection credentials are required during construction."
   },
-  "deliverable_files": {
-    "new_files": [
-      "flowsint-core/src/flowsint_core/core/graph/capture_repository.py",
-      "flowsint-core/tests/test_capture_repository.py",
-      "docs/audits/DEF-46/scope-plan.json",
-      "docs/audits/DEF-46/acceptance.md",
-      "docs/audits/DEF-46/baseline.json"
-    ],
-    "modified_files": [
-      "flowsint-core/src/flowsint_core/core/graph/__init__.py",
-      "flowsint-core/src/flowsint_core/core/graph/service.py"
-    ]
-  },
-  "implementation_scope": {
-    "new_classes": [
-      "CapturedOperation: Dataclass recording single graph operation",
-      "CaptureGraphRepository: Capture-only implementation of GraphRepositoryProtocol"
-    ],
-    "new_functions": [
-      "create_graph_service(..., capture_only=False): Factory with capture mode support"
-    ],
-    "modified_functions": [
-      "create_graph_service: Added capture_only parameter and conditional repo selection"
-    ],
-    "new_exports": [
-      "CaptureGraphRepository",
-      "CapturedOperation"
-    ]
-  },
-  "acceptance_fixtures": [
-    {
-      "fixture_name": "more_than_auto_flush_no_writes",
-      "test_method": "TestCaptureGraphRepository.test_batch_greater_than_auto_flush_produces_no_writes",
-      "requirement": "DEF-46 Fixture 1"
+  "baseline_verification": {
+    "core_full_pytest": {
+      "command": "cd flowsint-core && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest",
+      "result": "1027 passed, 2 failed in 124.04s",
+      "failures": [
+        "tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface: missing /tmp/def45-live-fixture.html",
+        "tests/core/test_sqlite_runtime.py::test_sqlite_engine_enables_foreign_keys: subprocess timeout after 30 seconds"
+      ],
+      "classification": "pre-existing baseline failures; retained for head comparison"
     },
-    {
-      "fixture_name": "callback_exception_captured",
-      "test_method": "TestDiscoveryCallbackCapture.test_exception_in_callback_is_captured",
-      "requirement": "DEF-46 Fixture 2"
+    "enrichers_full_pytest": {
+      "command": "cd flowsint-enrichers && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest",
+      "result": "exit 0; 180 tests collected",
+      "classification": "baseline pass"
     },
-    {
-      "fixture_name": "unsupported_fails_explicitly",
-      "test_method": "TestCaptureGraphRepository.test_unsupported_method_fails_explicitly",
-      "requirement": "DEF-46 Fixture 3"
+    "graphos": {
+      "index": "2593 files parsed; index completed",
+      "drift": "total=0"
     },
-    {
-      "fixture_name": "scraper_no_credentials",
-      "test_method": "TestScraperWithoutCredentials.test_scraper_simulation_no_credentials_needed",
-      "requirement": "DEF-46 Fixture 4"
+    "blast": {
+      "target": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+      "upstream": "UNKNOWN (Python registry/dynamic-edge coverage gap)",
+      "downstream": "CRITICAL"
+    },
+    "doctor_hunt": {
+      "result": "not run as a source hunt: pip3r doctor --hunt requires --hunt-target for a CLI executable",
+      "classification": "tooling limitation / UNKNOWN, not a pass"
     }
-  ],
-  "test_coverage": {
-    "total_test_methods": 16,
-    "test_classes": [
-      "TestCaptureGraphRepository",
-      "TestCreateGraphServiceWithCapture",
-      "TestDiscoveryCallbackCapture",
-      "TestScraperWithoutCredentials"
-    ],
-    "coverage_areas": [
-      "Repository initialization and state",
-      "Node operations (create, update, delete)",
-      "Relationship operations",
-      "Batch auto-flush behavior",
-      "Unsupported method explicit failures",
-      "Service factory integration",
-      "Capture-only mode without Neo4j",
-      "Exception and callback capture",
-      "Export and lineage preservation"
-    ]
   },
-  "key_design_decisions": {
-    "singleton_avoidance": "CaptureGraphRepository not a singleton; new instance per service",
-    "protocol_compliance": "Fully implements GraphRepositoryProtocol for drop-in substitution",
-    "explicit_unsupported": "NotImplementedError on unsupported methods, not silent fallback",
-    "batch_auto_flush": "Default batch size 10, triggering auto-flush when exceeded",
-    "lineage_preservation": "All operations timestamped with parameters and results",
-    "no_network_calls": "CaptureGraphRepository requires zero network calls or Neo4j access",
-    "factory_mode_flag": "capture_only boolean parameter on create_graph_service for clear intent"
-  },
-  "blast_analysis_planned": {
-    "roots": [
-      "create_graph_service factory function",
-      "GraphService.__init__ repository injection point",
-      "CaptureGraphRepository constructor"
-    ],
-    "downstream_sinks": [
-      "Enricher.execute() -> graph_service.create_node()",
-      "Enricher.postprocess() -> graph_service callbacks",
-      "GraphService batching and flush"
-    ],
-    "exports_consumers": [
-      "graph/__init__.py re-exports",
-      "enricher_base.py imports GraphService",
-      "External callers of create_graph_service()"
-    ]
-  },
-  "known_limitations": {
-    "read_not_captured": "get_nodes_by_ids, get_sketch_graph, get_neighbors return empty (reads have no side effects)",
-    "id_generation": "Plausible synthetic IDs generated (node_N_XXXX, rel_N_XXXX), not persistent",
-    "lineage_tracking": "Source lineage via _source_lineage dict, not full call stack traces"
-  },
-  "mutation_testing_plan": [
-    {
-      "mutation": "Remove auto-flush at batch_size threshold",
-      "expected_failure": "test_batch_greater_than_auto_flush_produces_no_writes",
-      "test_method": "Inject condition change: if len(self.batch_queue) >= self.batch_size -> if False"
-    },
-    {
-      "mutation": "Silent failure on unsupported methods",
-      "expected_failure": "test_unsupported_method_fails_explicitly",
-      "test_method": "Remove NotImplementedError, just return None"
-    },
-    {
-      "mutation": "Lose captured operations on flush",
-      "expected_failure": "test_exception_in_callback_is_captured",
-      "test_method": "Don't append to self.operations in _capture_operation"
-    },
-    {
-      "mutation": "Neo4j connection on factory",
-      "expected_failure": "test_create_service_with_capture_mode",
-      "test_method": "Create Neo4jConnection in capture path"
-    }
-  ],
-  "review_readiness": {
-    "code_complete": true,
-    "tests_written": true,
-    "documentation_complete": true,
-    "acceptance_criteria_documented": true,
-    "mutation_testing_plan_documented": true,
-    "independent_review_assigned": false,
-    "blast_analysis_complete": false
-  }
+  "raw_evidence": "raw/baseline/"
 }
