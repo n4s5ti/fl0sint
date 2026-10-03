@@ -1,0 +1,94 @@
+{
+  "issue": "DEF-46",
+  "title": "[S06] Isolate acquisition from graph writes with a complete capture sink",
+  "base_sha": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe",
+  "base_short": "7f6f3c83",
+  "branch": "work/def-46-capture-sink",
+  "base_branch": "work/def-45-observed-extraction",
+  "blocker": "DEF-41 (S01) — marked done",
+  "milestone": "P1 — Standalone source-preserving scraper",
+  "checkout": "/home/n4s5ti/Documents/dev/fl0sint/fl0sint-def46-capture-sink",
+  "baseline_clean": true,
+  "prerequisites": [
+    "DEF-41 (S01): versioned acquisition bundle - DONE",
+    "DEF-44 (S04): retained source observation - DONE",
+    "DEF-45 (S05): readable text and typed contacts - DONE"
+  ],
+  "entry_conditions": {
+    "requirement": "Prevent legacy postprocessing and callbacks from publishing unreviewed observations while retaining reusable acquisition code",
+    "scope_description": "Complete capture-only graph sink via existing graph_service injection; trace constructor/execute/postprocess/flush, direct callbacks, batches, registry kwargs and task creation"
+  },
+  "scope": {
+    "enabled_local_acquisition": "Must not default to live graph, require Neo4j credentials, or connect on import",
+    "preserved_lineage": "Captured unreviewed operations and input/source lineage; unsupported methods fail explicitly",
+    "no_broad_replacement": "No deletion of historical graph data or broad replacement of graph storage"
+  },
+  "planned_paths": [
+    "flowsint-core/src/flowsint_core/core/graph/capture_repository.py",
+    "flowsint-core/src/flowsint_core/core/graph/__init__.py",
+    "flowsint-core/src/flowsint_core/core/graph/service.py",
+    "flowsint-core/tests/test_capture_repository.py",
+    "docs/audits/DEF-46/"
+  ],
+  "implementation_steps": [
+    "1. Trace all graph methods used by first enabled scraper/enricher path",
+    "2. Use existing graph_service injection seam; implement capture-only with explicit unsupported-method failure",
+    "3. Ensure enabled callers inject capture sink, cannot fall back to live graph by default",
+    "4. Return captured candidate operations as unreviewed; retain input/source lineage",
+    "5. Remove accepted-graph credentials from local acquisition path; verify import-time behavior"
+  ],
+  "acceptance_fixtures": [
+    {
+      "name": "more_than_auto_flush_no_writes",
+      "description": "More than auto-flush batch size produces no live graph writes",
+      "test_method": "test_batch_greater_than_auto_flush_produces_no_writes"
+    },
+    {
+      "name": "callback_exception_captured",
+      "description": "Direct discovery callback and exception after partial scan remain captured",
+      "test_method": "test_exception_in_callback_is_captured"
+    },
+    {
+      "name": "unsupported_fails_explicitly",
+      "description": "Unsupported graph method fails explicitly rather than delegating",
+      "test_method": "test_unsupported_method_fails_explicitly"
+    },
+    {
+      "name": "scraper_no_credentials",
+      "description": "Scraper runs with no Neo4j service or credentials",
+      "test_method": "test_scraper_simulation_no_credentials_needed"
+    }
+  ],
+  "blast_targets": {
+    "envelope": "Enricher constructor/execute/postprocess/flush, GraphRepository batching, registry kwargs forwarding, callback closures and task construction",
+    "root_discovery": "Use B02 verified command/native-route manifest to capture roots, callers, downstream sinks, exports/configuration consumers",
+    "before_mutation": "Capture index freshness, coverage, changed-file/symbol/test set",
+    "after_change": "Refresh safely, rerun analysis, compare predicted vs actual tracked/untracked drift"
+  },
+  "excluded": [
+    "Live Neo4j writes in capture mode",
+    "Deletion of historical graph data",
+    "Broad graph storage replacement",
+    "Model dependencies",
+    "Production behavior changes",
+    "New enricher implementations"
+  ],
+  "graph_policy": "Isolated worktree index only. Serial pip3r commands with --no-auto-index, explicit drift analysis. Python dynamic edge gaps marked UNKNOWN. New CaptureGraphRepository is pure Python, no Neo4j traces.",
+  "verification_approach": {
+    "mutation_testing": "Inject each captured operation defect, confirm test fails, restore with cmp",
+    "real_cases": [
+      "Batch > 5 items auto-flushes without Neo4j writes",
+      "Exception after partial scan captured with full lineage",
+      "Custom query() method raises NotImplementedError explicitly",
+      "No Neo4j credentials or connection required to run"
+    ],
+    "independent_review": "Separate reviewer reads code, tests, traces public caller to changed behavior; reviewer identity or self-review limitation recorded"
+  },
+  "evidence_requirements": {
+    "reproduction": "Expected behavior and actual commands with base/head/package/configuration hashes",
+    "blast_analysis": "Pre-edit and post-edit Blast, drift comparison, scoped Hunt and Doctor/test/contract results",
+    "blocking_findings": "Introduced findings fixed before review acceptance; preexisting findings explicitly classified",
+    "deliverable_proof": "Callable/testable through entrypoint; docs/examples agree with actual output; required cases PASS"
+  },
+  "recovery": "Revert via git reset --hard <base_sha>; feature disable: use live graph factory, not capture_only=True; preserves unrelated work, input lineage, immutable evidence"
+}

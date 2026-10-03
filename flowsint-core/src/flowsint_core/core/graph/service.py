@@ -16,6 +16,7 @@ from flowsint_core.core.forensics.fencing import (
 
 
 from .repository import Neo4jGraphRepository
+from .capture_repository import CaptureGraphRepository
 from .repository_protocol import GraphRepositoryProtocol
 from .serializer import GraphSerializer, TypeResolver
 from .types import GraphData, GraphDict, GraphNode
@@ -392,32 +393,39 @@ def create_graph_service(
     type_resolver: Optional[TypeResolver] = None,
     mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,
     case_reference: str | None = None,
+    capture_only: bool = False,
 ) -> GraphService:
     """
-    Factory function to create a GraphService instance with Neo4j repository.
+    Factory function to create a GraphService instance.
 
-    This is the recommended way to create a GraphService for production use.
-    For testing, inject an InMemoryGraphRepository or mock directly into GraphService.
+    This is the recommended way to create a GraphService.
+    For isolated acquisition without Neo4j, use capture_only=True.
 
     Args:
         sketch_id: Investigation sketch ID
         enable_batching: Enable batch operations
         type_resolver: Optional callable to resolve custom types by name
+        capture_only: If True, use CaptureGraphRepository (no Neo4j connection needed)
 
     Returns:
         Configured GraphService instance
     """
-    require_legacy_graph_access(
-        mode,
-        operation="graph_service_factory_construction",
-        case_reference=case_reference,
-    )
+    if not capture_only:
+        require_legacy_graph_access(
+            mode,
+            operation="graph_service_factory_construction",
+            case_reference=case_reference,
+        )
 
     # Import Logger here to avoid circular imports
     from flowsint_core.core.logger import Logger
 
-    # Neo4jGraphRepository uses Neo4jConnection.get_instance() singleton
-    repository = Neo4jGraphRepository()
+    # Use capture repository if capture_only mode requested
+    if capture_only:
+        repository = CaptureGraphRepository(sketch_id)
+    else:
+        # Neo4jGraphRepository uses Neo4jConnection.get_instance() singleton
+        repository = Neo4jGraphRepository()
 
     return GraphService(
         sketch_id=sketch_id,

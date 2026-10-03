@@ -9,6 +9,7 @@ This module provides all graph-related functionality including:
 """
 
 from .connection import Neo4jConnection, neo4j_connection
+from .capture_repository import CaptureGraphRepository, CapturedOperation
 from .repository import Neo4jGraphRepository
 from .repository_protocol import GraphRepositoryProtocol
 from .serializer import GraphSerializer, TypeResolver
@@ -25,6 +26,9 @@ __all__ = [
     # Connection
     "Neo4jConnection",
     "neo4j_connection",
+    # Capture
+    "CaptureGraphRepository",
+    "CapturedOperation",
     # Repository
     "Neo4jGraphRepository",
     "GraphRepositoryProtocol",
