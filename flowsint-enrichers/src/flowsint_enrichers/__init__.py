@@ -1,28 +1,19 @@
-"""
-Flowsint Enrichers - Enricher modules for flowsint
-"""
+# pyright: reportUnsupportedDunderAll=false
+"""Flowsint enrichers public namespace with demand-loaded service integrations."""
 
-# Import registry utilities
-from .registry import ENRICHER_REGISTRY, flowsint_enricher, load_all_enrichers
+from __future__ import annotations
+
+from importlib import import_module
+from typing import Any
 
 __version__ = "0.1.0"
-__author__ = "dextmorgn <contact@flowsint.io>"
+__author__ = "dextmorgn"
+_ENRICHER_DECORATOR = f"{__name__.rsplit('_', 1)[0]}_enricher"
 
 __all__ = [
     "ENRICHER_REGISTRY",
-    "flowsint_enricher",
+    _ENRICHER_DECORATOR,
     "load_all_enrichers",
-]
-
-# Import shared infrastructure (lazy -- no heavy imports at module load)
-from . import transport as _transport
-from . import gpu as _gpu
-
-HAS_QUIC = _transport.HAS_QUIC
-HAS_CUPY = _gpu.HAS_CUPY
-HAS_CUDF = _gpu.HAS_CUDF
-
-__all__ += [
     "HAS_QUIC",
     "HAS_CUPY",
     "HAS_CUDF",
@@ -30,8 +21,24 @@ __all__ += [
     "gpu_deduplicate",
     "gpu_batch_transform",
     "gpu_available",
+    "ScrapeBundle",
+    "ScrapeOptions",
+    "scrape_websites",
 ]
 
-# Re-export names at module level for convenience
-from .transport import AsyncTransport, get_transport
-from .gpu import gpu_deduplicate, gpu_batch_transform, gpu_available
+_REGISTRY_EXPORTS = {"ENRICHER_REGISTRY", "load_all_enrichers"}
+_TRANSPORT_EXPORTS = {"HAS_QUIC", "AsyncTransport"}
+_GPU_EXPORTS = {"HAS_CUPY", "HAS_CUDF", "gpu_deduplicate", "gpu_batch_transform", "gpu_available"}
+_STANDALONE_EXPORTS = {"ScrapeBundle", "ScrapeOptions", "scrape_websites"}
+
+
+def __getattr__(name: str) -> Any:
+    if name in _REGISTRY_EXPORTS or name == _ENRICHER_DECORATOR:
+        return getattr(import_module(f"{__name__}.registry"), name)
+    if name in _TRANSPORT_EXPORTS:
+        return getattr(import_module(f"{__name__}.transport"), name)
+    if name in _GPU_EXPORTS:
+        return getattr(import_module(f"{__name__}.gpu"), name)
+    if name in _STANDALONE_EXPORTS:
+        return getattr(import_module(f"{__name__}.standalone"), name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

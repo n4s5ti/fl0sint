@@ -1,0 +1,21 @@
+{
+  "issue": "DEF-47",
+  "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+  "implementation": {
+    "library": "flowsint_enrichers.standalone.scrape_websites",
+    "cli": "flowsint-standalone-scraper",
+    "shared_path": "CLI main() calls scrape_websites(); both use WebsiteTextExtractor.",
+    "source_acquisition": "WebsiteTextExtractor is a graph-free extraction component that reuses the admitted HTTP fetch, source-proof, retention, and observed-extraction implementation. WebsiteToText retains its normal core/graph boundary and delegates acquisition to this component. No fallback Enricher, logger, decorator, or broad import-error handling remains.",
+    "outputs": ["bundle.json", "outcomes.jsonl", "report.md", "source-artifacts/"],
+    "schema_version": "standalone-scraper/1.0"
+  },
+  "verification": {
+    "focused": "30 passed: test_standalone.py and test_website_to_text.py",
+    "isolated_cli": "child environment restricted to PATH, HOME and PYTHONPATH; real loopback mixed batch returned 2 with success/failure outcomes, one link, matching report operation id and empty stderr",
+    "wheel": "uv build --wheel --out-dir /tmp/def47-build succeeded",
+    "diff_check": "git diff --check succeeded",
+    "debug_scan": "no console.log, TODO:, HACK, or debugger under enrichers/src",
+    "full_enrichers": "187 passed, 3 failed in TestScan of pre-existing namechk behavior: mocked Hunter responses return one account instead of asserted two and log legacy Celery errors. The DEF-47-focused suite passes. `raw/namechk-baseline-comparison.json` reproduces the same three TestScan failures on base a59bdadf in a detached git worktree with imports verified from that baseline."
+  },
+  "review": "Same independent reviewer re-reviewed the graph-free component after fallback removal and reverified F1-F5. Final verdict: ACCEPT."
+}

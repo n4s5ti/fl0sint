@@ -1,0 +1,28 @@
+{
+  "issue": "DEF-47",
+  "status": "all-killed-and-restored",
+  "mutations": [
+    {
+      "id": "partial-exit-code",
+      "change": "forced ScrapeBundle.exit_code to always return success",
+      "expected_killer": "direct mixed-success function acceptance",
+      "result": "KILLED: expected exit 2, observed 0",
+      "raw": "/tmp/def47-mutation/partial-exit-killed.stdout"
+    },
+    {
+      "id": "jsonl-agreement",
+      "change": "removed outcome iteration from the JSONL writer",
+      "expected_killer": "bundle/JSONL/report agreement acceptance",
+      "result": "KILLED: expected outcome rows were absent",
+      "raw": "/tmp/def47-mutation/jsonl-agreement-killed.stdout"
+    },
+    {
+      "id": "service-free-import-guard",
+      "change": "replaced the base enricher import fallback `except (KeyError, ValueError)` with `except RuntimeError`",
+      "expected_killer": "service-free public import with AUTH, Redis, database, model, and runtime configuration removed",
+      "result": "KILLED: public `scrape_websites` import exited 1 before acquisition because the missing legacy-service configuration was no longer handled",
+      "restore": "exact original guard restored; repeated service-free public import and standalone fixture suite passed",
+      "raw_tool_artifact": "artifact://616"
+    }
+  ]
+}

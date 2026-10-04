@@ -1,0 +1,14 @@
+f95c3cb8d0dad1b99b8ec4611d97dea60e2de380b8d4bfb7e64a418f7f439248  flowsint-enrichers/src/flowsint_enrichers/standalone.py
+ad2a1c63ac8f199387a24bf2cdf2a4fcb18034c2f3b79307ee6b881ef634153b  flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py
+9b33a9a1cae1d6be09ce41d0c90be9630e47f702aa058c2fbd440519e09f05b4  flowsint-enrichers/src/flowsint_enrichers/website/to_text.py
+dc093a0046a36f94f302ee8c55ccfd7993e0bc3561c4c128e5fefb0667f8006d  flowsint-enrichers/tests/enrichers/test_standalone.py
+ba4bdb05eea4d28026ea192553f31b5bdaddad7f9408402ae16f17e6d2c60767  flowsint-enrichers/README.md
+50f1c48869bc15def06732d2e15106c818d24256654ed64df73a8d5d3802c3b9  docs/audits/DEF-47/acceptance.md
+4c9fc8fd971cbed80689b1fc5c0d6685f824adf429a62093ccde733c9b058b2d  docs/audits/DEF-47/review.json
+04a955ea6f0fda5c60ce6e30256cfff2b6cca0966c18e12ef62200c3a356d028  docs/audits/DEF-47/post-edit.json
+86a47804387a15249308ffcb68e16ac742d427ff0e5afb44a62d10f369d85c87  docs/audits/DEF-47/linear-summary.md
+8a07f78bcd42cd20666849185c2a21ce52d616b400432ddeff07cfdeb71fc806  docs/audits/DEF-47/raw/post-audit-summary.json
+77e52b72e0d3ed873873ac1a145bb34a60c9fdbbb3aec48630be1d05bf77d442  docs/audits/DEF-47/raw/namechk-baseline-comparison.json
+
+
+Wall time: 0.01 seconds

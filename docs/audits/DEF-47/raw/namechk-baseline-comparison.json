@@ -1,0 +1,13 @@
+{
+  "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+  "baseline_worktree": "/home/n4s5ti/Documents/dev/fl0sint-def47-baseline",
+  "isolation": "git worktree add --detach; imports verified from the baseline worktree's tests and social/to_namechk.py",
+  "command": "cd flowsint-enrichers && AUTH_SECRET=offline-test-secret REDIS_URL=redis://127.0.0.1:1 PYTHONPATH=src:../flowsint-core/src:../flowsint-execution/src:../flowsint-types/src /home/n4s5ti/Documents/dev/fl0sint-def47-standalone/.venv/bin/python -m pytest -q --tb=no tests/enrichers/test_namechk.py::TestScan",
+  "result": "3 failed",
+  "failures": [
+    "test_mocked_scan_returns_found_accounts: expected 2, got 1",
+    "test_mocked_scan_no_matches: expected 0, got 1",
+    "test_hunt_exception_returns_empty: expected 0, got 1"
+  ],
+  "conclusion": "The three current full-suite failures reproduce unchanged on the actual base revision with the same interpreter/dependency environment. They are pre-existing/environmental and are outside DEF-47."
+}

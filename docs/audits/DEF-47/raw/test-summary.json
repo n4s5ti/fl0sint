@@ -1,0 +1,10 @@
+{
+  "focused_command": "cd flowsint-enrichers && AUTH_SECRET=offline-test-secret REDIS_URL=redis://127.0.0.1:1 PYTHONPATH=src uv run --no-sync pytest -q tests/enrichers/test_standalone.py tests/enrichers/test_website_to_text.py",
+  "focused_result": "30 passed; two third-party deprecation warnings",
+  "full_command": "cd flowsint-enrichers && AUTH_SECRET=offline-test-secret REDIS_URL=redis://127.0.0.1:1 PYTHONPATH=src uv run --no-sync pytest -q",
+  "full_result": "187 passed, 3 failed",
+  "full_failure_scope": "tests/enrichers/test_namechk.py::TestScan: three mocked-Hunter assertions receive one SocialAccount instead of expected two; captured legacy Celery logger errors. The same three failures reproduce on base a59bdadf; see namechk-baseline-comparison.json.",
+  "wheel_command": "cd flowsint-enrichers && uv build --wheel --out-dir /tmp/def47-build",
+  "wheel_result": "built $$MAHGNEQE0CNV:L$_enrichers-1.2.8-py3-none-any.whl",
+  "isolated_cli_result": "See service-free-cli-proof.json. The CLI process had only PATH, HOME and PYTHONPATH."
+}

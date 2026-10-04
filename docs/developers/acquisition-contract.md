@@ -190,3 +190,9 @@ machine-readable observation result are bounded before a success outcome is retu
 The strict `observed-extraction/1.0` parser restores the actual Observation, enum, span,
 diagnostic, and result models. Unknown versions and fields are rejected. This metadata
 cannot choose a store path, caller authority, or executable operation.
+
+## DEF-47 standalone scraper
+
+The standalone scraper is the public local caller over the admitted WebsiteToText.scan implementation. It validates one URL or a keyed batch, scope/extraction values, and finite resource limits before creating its one operation ID or admitting any fetch. It passes that ID to the shared fetch operation and stores a standalone-scraper/1.0 JSON bundle, one corresponding JSONL record per input, and a Markdown report rendered from that same bundle.
+
+It creates an explicit local FilesystemArtifactStore and short-lived RetentionAuthority under the caller-selected output directory. It does not require a graph, planner, model key, PostgreSQL, Redis, or Celery runtime. Success, failure, and hold outcomes retain their input key/order and safe diagnostic; a completed mixed batch returns exit code 2 without erasing successful artifacts. Invocation or validation failure occurs before admission and returns 64. Every link and typed candidate is an unreviewed observation, never an accepted contact.

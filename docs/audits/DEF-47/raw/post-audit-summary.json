@@ -1,0 +1,18 @@
+{
+  "captured_at": "post-implementation; final refactor evidence appended after the prior index snapshot",
+  "previous_snapshot": {
+    "index_generation": "sha256:865c17d7ff0b5514d0026cc83208b094509c0bd1ac34ebcfde1d52c601893bb0",
+    "files_parsed": 2649,
+    "drift": {"total": 0, "file_modified": 0, "file_removed": 0, "file_unindexed": 0, "symbol_stale": 0},
+    "blast": {"WebsiteToText": {"upstream": "LOW", "downstream": "CRITICAL"}, "scrape_websites": {"upstream": "LOW", "downstream": "HIGH"}},
+    "doctor": {"status": "BLOCKED", "reason": "--hunt requires a Pip3r CLI probe target, but this repository has no bin/pip3r.mjs."}
+  },
+  "final_refactor_checks": {
+    "blast_command": "pip3r blast flowsint_enrichers.website.text_extraction.WebsiteTextExtractor --direction downstream --max-depth 2 --include-tests",
+    "blast_result": {"risk": "UNKNOWN", "completeness": "partial", "reason": "new target symbol is not indexed"},
+    "drift_command": "pip3r graphos --drift",
+    "drift_result": {"index_status": "ready", "total": 79, "file_modified": 10, "file_unindexed": 1, "symbol_stale": 68},
+    "drift_interpretation": "The working-tree index has not incorporated the new component/refactor. Drift is an honest UNKNOWN/partial signal, not evidence of zero impact.",
+    "doctor": {"status": "BLOCKED", "reason": "The previous hunt target is unsupported; the scoped doctor tool additionally rejects an absolute sibling-worktree cwd. No clean doctor result is claimed."}
+  }
+}
