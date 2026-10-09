@@ -233,11 +233,11 @@
     },
     "dogfood-negative": {
       "path": "raw/post/dogfood-negative.txt",
-      "sha256": "56441984829697b9e5294b978a4b3f7bd3d057ed0cbbc1ffe476c43d1090d639"
+      "sha256": "e8c7886c60a579add9944f34a5cc00adc3f8a44bf7b98ec7ef38fd307dcbab47"
     },
     "ci-local-replay": {
       "path": "raw/post/ci-local-replay.txt",
-      "sha256": "0ddde7c64cfd23a50ef7d7f2eeae7ed925d6d46b36481b129dee8d086f5e2ef0"
+      "sha256": "a52d732896bd0fd437bb404279e66344c657f598ae13730ce62b97b19ece799b"
     },
     "linear-summary": {
       "path": "linear-summary.md",
