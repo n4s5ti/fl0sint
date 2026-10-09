@@ -1,0 +1,8 @@
+{
+  "pip3r": "1.2.6",
+  "venv-python": "Python 3.12.13",
+  "system-python3 (validator CLI)": "Python 3.14.7",
+  "git": "git version 2.55.0",
+  "uv": "uv 0.11.19 (x86_64-unknown-linux-gnu)",
+  "pytest": "pytest 9.1.1"
+}

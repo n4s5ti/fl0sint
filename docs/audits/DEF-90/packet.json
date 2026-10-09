@@ -1,0 +1,1129 @@
+{
+  "schema": "fl0sint.audit-packet/v1",
+  "issue": "DEF-90",
+  "title": "[S09] Enforce audit-packet validity locally and in the existing CI workflow",
+  "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+  "head_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+  "source_tree": "5e50459a9e6cfc27899d04a612fb3426cda7a14e",
+  "configuration": {
+    ".github/workflows/tests.yml": "a4ff0991b99c2c0c55af69fc7bee566e3fcfb45a497f4c029ed582af997692ee",
+    "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
+    "pyproject.toml": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+    "uv.lock": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f",
+    "flowsint-enrichers/pyproject.toml": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b"
+  },
+  "tool_versions": {
+    "pip3r": "1.2.6",
+    "venv-python": "Python 3.12.13",
+    "system-python3 (validator CLI)": "Python 3.14.7",
+    "git": "git version 2.55.0",
+    "uv": "uv 0.11.19 (x86_64-unknown-linux-gnu)",
+    "pytest": "pytest 9.1.1"
+  },
+  "capabilities": {
+    "graph": false,
+    "model": false,
+    "browser": false,
+    "network": false
+  },
+  "artifacts": {
+    "pre-drift": {
+      "path": "raw/pre/drift.json",
+      "sha256": "1bd5f11997a0de66d95387ad195d2fb2e8e182528ffe4ae790a03c5b7938896d"
+    },
+    "pre-drift-stderr": {
+      "path": "raw/pre/drift.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-audit_packet": {
+      "path": "raw/pre/blast-audit_packet-up.json",
+      "sha256": "d9087b496e8ebc4793fc767f39b397fb73925ea07a97779b7e95f4db2c6b6f33"
+    },
+    "pre-blast-audit_packet-stderr": {
+      "path": "raw/pre/blast-audit_packet-up.stderr",
+      "sha256": "44cb55f8aed218a52accb8aa95f5c9b37d21971afbcc26bd48af267f3a46d00e"
+    },
+    "pre-blast-load_manifest-up": {
+      "path": "raw/pre/blast-load_manifest-up.json",
+      "sha256": "b7751f8b012bacdd44cd6db9b649cee9258e66cadc876a846395d190603ecf30"
+    },
+    "pre-blast-load_manifest-up-stderr": {
+      "path": "raw/pre/blast-load_manifest-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-load_manifest-down": {
+      "path": "raw/pre/blast-load_manifest-down.json",
+      "sha256": "30b0d8f09928c052ab8351505162968db9f0bae7f2a557709f0a0913cd4e946b"
+    },
+    "pre-blast-load_manifest-down-stderr": {
+      "path": "raw/pre/blast-load_manifest-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-hunt": {
+      "path": "raw/pre/doctor-hunt.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-hunt-stderr": {
+      "path": "raw/pre/doctor-hunt.stderr",
+      "sha256": "c2294b616547d490fd2fef9c4866705a1e939af63902ff4e5088c2ed37efca86"
+    },
+    "post-index": {
+      "path": "raw/post/index.json",
+      "sha256": "d8090de1ffa10287300c445dee42c4b2e6681323fec668ecf98c97128d6b7392"
+    },
+    "post-index-stderr": {
+      "path": "raw/post/index.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-drift": {
+      "path": "raw/post/drift.json",
+      "sha256": "1bd5f11997a0de66d95387ad195d2fb2e8e182528ffe4ae790a03c5b7938896d"
+    },
+    "post-drift-stderr": {
+      "path": "raw/post/drift.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-validate_packet-up": {
+      "path": "raw/post/blast-validate_packet-up.json",
+      "sha256": "21c68302971468c13bc949d4a2c28efa0b710e9db53070fe6229834204770800"
+    },
+    "post-blast-validate_packet-up-stderr": {
+      "path": "raw/post/blast-validate_packet-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-validate_packet-down": {
+      "path": "raw/post/blast-validate_packet-down.json",
+      "sha256": "37151a9e4a7c1a50a9c375f8199744a5a653480ee2cf250f2255e553ef40db63"
+    },
+    "post-blast-validate_packet-down-stderr": {
+      "path": "raw/post/blast-validate_packet-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-validate_changed-up": {
+      "path": "raw/post/blast-validate_changed-up.json",
+      "sha256": "b166b77ee9d9aa37a493ab3eb61e1ff3f170570dc726160dfd3ee5874aa4e633"
+    },
+    "post-blast-validate_changed-up-stderr": {
+      "path": "raw/post/blast-validate_changed-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-validate_changed-down": {
+      "path": "raw/post/blast-validate_changed-down.json",
+      "sha256": "7e1693580568ca2ebd84e9392139e6e2dd6e5c4d4ef377cbd6e26ff94f98801a"
+    },
+    "post-blast-validate_changed-down-stderr": {
+      "path": "raw/post/blast-validate_changed-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-main-up": {
+      "path": "raw/post/blast-main-up.json",
+      "sha256": "a7e2caca2d9f78230faa0d9b4f242891992afbafd174bfae7671639e349f6382"
+    },
+    "post-blast-main-up-stderr": {
+      "path": "raw/post/blast-main-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-main-down": {
+      "path": "raw/post/blast-main-down.json",
+      "sha256": "6dc9261aeaa8755ca6deb1cbc8054c990180ea09b747e76e2da040f0f7c29fa4"
+    },
+    "post-blast-main-down-stderr": {
+      "path": "raw/post/blast-main-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-observed_status-up": {
+      "path": "raw/post/blast-observed_status-up.json",
+      "sha256": "f7ce639f4ffb8b44a0ca8b6fcde2607f922b0185dac8649bd54471b3482d522b"
+    },
+    "post-blast-observed_status-up-stderr": {
+      "path": "raw/post/blast-observed_status-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-observed_status-down": {
+      "path": "raw/post/blast-observed_status-down.json",
+      "sha256": "34458e43e73ac19b757ff87a2834d85d73422db2c0230d8f31e31751d770deca"
+    },
+    "post-blast-observed_status-down-stderr": {
+      "path": "raw/post/blast-observed_status-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-load_manifest-up": {
+      "path": "raw/post/blast-load_manifest-up.json",
+      "sha256": "b7751f8b012bacdd44cd6db9b649cee9258e66cadc876a846395d190603ecf30"
+    },
+    "post-blast-load_manifest-up-stderr": {
+      "path": "raw/post/blast-load_manifest-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-load_manifest-down": {
+      "path": "raw/post/blast-load_manifest-down.json",
+      "sha256": "30b0d8f09928c052ab8351505162968db9f0bae7f2a557709f0a0913cd4e946b"
+    },
+    "post-blast-load_manifest-down-stderr": {
+      "path": "raw/post/blast-load_manifest-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-doctor-hunt": {
+      "path": "raw/post/doctor-hunt.json",
+      "sha256": "d8b3c6b285df4bf89ae1c1b50a08302b93bc94731d1621678fcef24afe02f4eb"
+    },
+    "post-doctor-hunt-stderr": {
+      "path": "raw/post/doctor-hunt.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-drift-final": {
+      "path": "raw/post/drift-final.json",
+      "sha256": "1bd5f11997a0de66d95387ad195d2fb2e8e182528ffe4ae790a03c5b7938896d"
+    },
+    "post-drift-final-stderr": {
+      "path": "raw/post/drift-final.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "enrichers-full-base": {
+      "path": "raw/pre/enrichers-pytest.stdout",
+      "sha256": "a8f53d933003349ec252093c72d32d2d628df7b221a6c480d0602c6295d55f55"
+    },
+    "enrichers-full-head": {
+      "path": "raw/post/enrichers-pytest.stdout",
+      "sha256": "24838b02a114bcd3f3b978a12a20af7883255db6cc009f6d2ad3217169d68ec9"
+    },
+    "focused-tests": {
+      "path": "raw/post/focused-pytest.stdout",
+      "sha256": "b6507c9fe78cb15a5bea11e0a516e7fa3095bdd24071f26ce1888bed2b452b05"
+    },
+    "mutation-check": {
+      "path": "mutation-check.json",
+      "sha256": "9caa31280d944be39b2bb7d7eef31d962b9c67c6498e6347f258c1e9f9063f1b"
+    },
+    "mutate-script": {
+      "path": "raw/post/mutate.py",
+      "sha256": "a91bdcdb5c8cbd403c8d3d4064ecec3a55d7735210996f21fa5c68d3a4ab1940"
+    },
+    "cli-smoke": {
+      "path": "raw/post/cli-smoke.txt",
+      "sha256": "0666c48bd69ce8aa9d168338f4819660d0b58a10ed2acf1cf23a3a7d55c9ed91"
+    },
+    "ci-workflow-trace": {
+      "path": "raw/post/ci-workflow-trace.json",
+      "sha256": "d2f43505ab03446b6687e9a2af6109bbf4fd6f31c77fa27d6b4d9fefa7d097fd"
+    },
+    "ci-hosted-run": {
+      "path": "raw/post/ci-hosted-run.md",
+      "sha256": "ad709d232329e3d15c8e20f56a92c8d3c22ead9597d5e7cd31165fe03002e929"
+    },
+    "def47-compat": {
+      "path": "raw/post/def47-compat.txt",
+      "sha256": "61fd2466ffb4d53b006c243d6cfbc4f1de530af514dc3ab99f51bfc0b33c591c"
+    },
+    "blast-comparison": {
+      "path": "raw/post/blast-comparison.json",
+      "sha256": "a4af6dc4f72b3149b08ea6e98afcf3b68bfa61eb6aeea0baf4846239e45809c0"
+    },
+    "review-final-raw": {
+      "path": "raw/post/review-final-raw.txt",
+      "sha256": "0d2d357ea286c791e9548576da31c82e762384834a96e0d754008552772dbb62"
+    },
+    "tool-versions": {
+      "path": "raw/tool-versions.json",
+      "sha256": "d7d7f33f1f525e69224a3eb1e6fce23cff623c8461d768c963ec28deda70a9a3"
+    },
+    "acceptance": {
+      "path": "acceptance.md",
+      "sha256": "db42afd9aca7b0198608fa0390f60b2e63c3da07de5457c7745155c4d620ae3a"
+    },
+    "dogfood-negative": {
+      "path": "raw/post/dogfood-negative.txt",
+      "sha256": "56441984829697b9e5294b978a4b3f7bd3d057ed0cbbc1ffe476c43d1090d639"
+    },
+    "ci-local-replay": {
+      "path": "raw/post/ci-local-replay.txt",
+      "sha256": "0ddde7c64cfd23a50ef7d7f2eeae7ed925d6d46b36481b129dee8d086f5e2ef0"
+    },
+    "linear-summary": {
+      "path": "linear-summary.md",
+      "sha256": "4acc79282cf8cd9265a56c8d98119669f3976e07c560e85402b7614db4592779"
+    },
+    "types-full": {
+      "path": "raw/post/types-pytest.stdout",
+      "sha256": "73a445bc463726de958afae29b0e6733c5cb5456077edaa8cf8a600b38be0a03"
+    },
+    "core-full": {
+      "path": "raw/post/core-pytest.stdout",
+      "sha256": "58c70aab4f7b2a29f82c46fcdef8b8f3f1edcc7f1ce92d8f5a289d83cd33963a"
+    },
+    "core-full-base": {
+      "path": "raw/pre/core-pytest-base.stdout",
+      "sha256": "0da6efedd2b9ddecb3104b8bbd4ec39029f3957e48413be4a9a543d7c79468f1"
+    },
+    "api-full": {
+      "path": "raw/post/api-pytest.stdout",
+      "sha256": "08e7a506c9f86dbf277f888655618899911b1861927f776401df4bba1ceb4731"
+    },
+    "api-full-base": {
+      "path": "raw/pre/api-pytest-base.stdout",
+      "sha256": "c4c4ab6ce3e04bc20d581150cb6045a4dc2b58e935c4f295a5792e784f39d1bb"
+    },
+    "scope-plan": {
+      "path": "scope-plan.json",
+      "sha256": "0cfbf5b18e6e7b1e8593c67f616e6fe5880dc3a8497fe15e1f96a657aec6d7ca"
+    },
+    "review": {
+      "path": "review.json",
+      "sha256": "0ce78e0ee8633adcf0b69fdd89dbb8dc01f159a56547e91b306dec86b9285333"
+    },
+    "recovery": {
+      "path": "recovery.md",
+      "sha256": "29e86a56cc1752f2656d4c6a3f439c73445caeb95feabd20a56ecb75823b00ae"
+    }
+  },
+  "index": {
+    "mode": "isolated-worktree (pip3r graphos --index --cwd <worktree>, rebuilt at head_commit)",
+    "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+    "drift": "post-drift"
+  },
+  "analyses": [
+    {
+      "id": "pre-drift",
+      "phase": "pre",
+      "kind": "drift",
+      "target": "isolated base index",
+      "analyzed_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-drift"
+    },
+    {
+      "id": "pre-blast-audit_packet",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "audit_packet",
+      "analyzed_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json audit_packet",
+      "exit_code": 0,
+      "status": "UNKNOWN",
+      "artifact": "pre-blast-audit_packet"
+    },
+    {
+      "id": "pre-blast-load_manifest-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:load_manifest",
+      "analyzed_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-load_manifest-up"
+    },
+    {
+      "id": "pre-blast-load_manifest-down",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:load_manifest",
+      "analyzed_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/acquisition_fixtures.py:load_manifest",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-load_manifest-down"
+    },
+    {
+      "id": "pre-hunt",
+      "phase": "pre",
+      "kind": "doctor",
+      "target": "doctor --hunt (source tree)",
+      "analyzed_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --hunt --json",
+      "exit_code": 1,
+      "status": "BLOCKED",
+      "artifact": "pre-hunt"
+    },
+    {
+      "id": "post-index",
+      "phase": "post",
+      "kind": "index",
+      "target": "isolated head index",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-index"
+    },
+    {
+      "id": "post-drift",
+      "phase": "post",
+      "kind": "drift",
+      "target": "isolated head index",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-drift"
+    },
+    {
+      "id": "post-blast-validate_packet-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:validate_packet",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:validate_packet",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-validate_packet-up"
+    },
+    {
+      "id": "post-blast-validate_packet-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:validate_packet",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:validate_packet",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-validate_packet-down"
+    },
+    {
+      "id": "post-blast-validate_changed-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:validate_changed",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:validate_changed",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-validate_changed-up"
+    },
+    {
+      "id": "post-blast-validate_changed-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:validate_changed",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:validate_changed",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-validate_changed-down"
+    },
+    {
+      "id": "post-blast-main-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:main",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:main",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-main-up"
+    },
+    {
+      "id": "post-blast-main-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:main",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:main",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-main-down"
+    },
+    {
+      "id": "post-blast-observed_status-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:observed_status",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:observed_status",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-observed_status-up"
+    },
+    {
+      "id": "post-blast-observed_status-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/audit_packet.py:observed_status",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:observed_status",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-observed_status-down"
+    },
+    {
+      "id": "post-blast-load_manifest-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:load_manifest",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-load_manifest-up"
+    },
+    {
+      "id": "post-blast-load_manifest-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:load_manifest",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/acquisition_fixtures.py:load_manifest",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-load_manifest-down"
+    },
+    {
+      "id": "post-doctor-hunt",
+      "phase": "post",
+      "kind": "doctor",
+      "target": "doctor --hunt --hunt-target scripts/audit_packet.py",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --hunt --hunt-target /home/n4s5ti/Documents/dev/fl0sint-def90-packet/scripts/audit_packet.py --json",
+      "exit_code": 0,
+      "status": "DEGRADED",
+      "artifact": "post-doctor-hunt"
+    },
+    {
+      "id": "post-drift-final",
+      "phase": "post",
+      "kind": "drift",
+      "target": "isolated head index (after all post analyses)",
+      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-drift-final"
+    }
+  ],
+  "commands": [
+    {
+      "id": "enrichers-full-base",
+      "command": "cd <pkg>-enrichers && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest -q -p no:cacheprovider  # at base",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "enrichers-full-base"
+    },
+    {
+      "id": "enrichers-full-head",
+      "command": "cd <pkg>-enrichers && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest -q -p no:cacheprovider  # at head",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "enrichers-full-head"
+    },
+    {
+      "id": "focused-tests",
+      "command": "cd <pkg>-enrichers && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest tests/enrichers/test_audit_packet.py -q -p no:cacheprovider -rA",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "focused-tests"
+    },
+    {
+      "id": "mutation-check",
+      "command": "python3 /tmp/def90/mutate.py  (copied as raw/post/mutate.py)",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "mutation-check"
+    },
+    {
+      "id": "cli-smoke",
+      "command": "python3 scripts/audit_packet.py validate|changed on the real repository",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "cli-smoke"
+    },
+    {
+      "id": "ci-workflow-trace",
+      "command": "python3 /tmp/def90/ci_trace.py (YAML parse of .github/workflows/tests.yml)",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "ci-workflow-trace"
+    },
+    {
+      "id": "ci-hosted-run",
+      "command": "GitHub-hosted Tests workflow run",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "ci-hosted-run"
+    },
+    {
+      "id": "def47-compat",
+      "command": "git diff --name-status a59bdadf work/def-47-standalone -- docs/audits",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "def47-compat"
+    },
+    {
+      "id": "blast-comparison",
+      "command": "python: compare pre/post load_manifest blasts; list upstream files of new symbols",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast-comparison"
+    },
+    {
+      "id": "dogfood-negative",
+      "command": "tamper this packet (artifact bytes; required case -> SKIP), validate, restore (cmp)",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "dogfood-negative"
+    },
+    {
+      "id": "ci-local-replay",
+      "command": "exact audit-packets `run:` script from the committed workflow, in a clean clone of the first packet commit, BASE_SHA=a59bdadf",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "ci-local-replay"
+    },
+    {
+      "id": "types-full",
+      "command": "cd <pkg>-types && uv run --no-sync pytest -q -p no:cacheprovider  # unchanged package; base == head source",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "types-full"
+    },
+    {
+      "id": "core-full",
+      "command": "cd <pkg>-core && uv run --no-sync pytest -q -p no:cacheprovider  # unchanged package; base == head source",
+      "exit_code": 1,
+      "status": "FAIL",
+      "artifact": "core-full"
+    },
+    {
+      "id": "api-full",
+      "command": "cd <pkg>-api && uv run --no-sync pytest -q -p no:cacheprovider  # unchanged package; base == head source",
+      "exit_code": 1,
+      "status": "FAIL",
+      "artifact": "api-full"
+    }
+  ],
+  "coverage_limitations": [
+    {
+      "ref": "pre-blast-audit_packet",
+      "description": "Expected absence check: target-symbol-unresolved proves no pre-existing audit_packet symbol in the graph, which pip3r reports as UNKNOWN, not PASS."
+    },
+    {
+      "ref": "pre-hunt",
+      "description": "pip3r doctor --hunt probes a CLI executable, not --cwd sources; without --hunt-target it exits 1 with empty JSON (DEF-39/DEF-46 known gap)."
+    },
+    {
+      "ref": "post-doctor-hunt",
+      "description": "hunt coverage.commandsDiscovered is 0; with --hunt-target the CLI probe ran but discovered no commands for a python script entry, so hunt coverage of this change is 0"
+    }
+  ],
+  "required_cases": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "T-MUT",
+    "T-CI-LOCAL",
+    "T-CI-HOSTED"
+  ],
+  "cases": [
+    {
+      "id": "F1",
+      "title": "Missing pre-edit report is rejected",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "F2",
+      "title": "Valid JSON with stale HEAD/index metadata is rejected",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "F3",
+      "title": "Unknown/degraded semantic result with process exit 0 is not accepted as PASS",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "F4",
+      "title": "An untracked/new file outside the scope plan is flagged",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "F5",
+      "title": "Required failing/skipped case cannot be hidden by a green aggregate count",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "F6",
+      "title": "Explicitly disabled graph/model features do not require irrelevant checks",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "F7",
+      "title": "A complete coherent packet passes; independent review status remains separate",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests",
+        "cli-smoke"
+      ]
+    },
+    {
+      "id": "F8",
+      "title": "The scraper runtime executes without importing or invoking this development validator",
+      "status": "PASS",
+      "evidence": [
+        "focused-tests",
+        "enrichers-full-head"
+      ]
+    },
+    {
+      "id": "T-MUT",
+      "title": "New tests defend behaviour: every injected validator defect is killed and restored",
+      "status": "PASS",
+      "evidence": [
+        "mutation-check"
+      ]
+    },
+    {
+      "id": "T-CI-LOCAL",
+      "title": "CI job definition traced: triggers, checkout ref/history, command, report publication",
+      "status": "PASS",
+      "evidence": [
+        "ci-workflow-trace"
+      ]
+    },
+    {
+      "id": "T-CI-HOSTED",
+      "title": "Audit packet validity job observed on a GitHub-hosted run",
+      "status": "PASS",
+      "evidence": [
+        "ci-hosted-run"
+      ]
+    }
+  ],
+  "scope": {
+    "predicted_paths": [
+      "scripts/audit_packet.py",
+      "flowsint-enrichers/tests/enrichers/test_audit_packet.py",
+      ".github/workflows/tests.yml",
+      "docs/audit-packet.md",
+      "CHANGELOG.md",
+      "docs/audits/DEF-90/"
+    ],
+    "predicted_symbols": [
+      "scripts/audit_packet.py:validate_packet",
+      "scripts/audit_packet.py:validate_changed",
+      "scripts/audit_packet.py:main"
+    ],
+    "actual_symbols": [
+      "scripts/audit_packet.py:GitError",
+      "scripts/audit_packet.py:git_bytes",
+      "scripts/audit_packet.py:git",
+      "scripts/audit_packet.py:git_ok",
+      "scripts/audit_packet.py:sha256",
+      "scripts/audit_packet.py:path_matches",
+      "scripts/audit_packet.py:Checker",
+      "scripts/audit_packet.py:_load_json",
+      "scripts/audit_packet.py:observed_status",
+      "scripts/audit_packet.py:validate_packet",
+      "scripts/audit_packet.py:_validate",
+      "scripts/audit_packet.py:_resolve_commit",
+      "scripts/audit_packet.py:_check_revisions",
+      "scripts/audit_packet.py:_check_artifacts",
+      "scripts/audit_packet.py:_artifact_ref",
+      "scripts/audit_packet.py:_check_capabilities",
+      "scripts/audit_packet.py:_check_configuration",
+      "scripts/audit_packet.py:_status",
+      "scripts/audit_packet.py:_check_result_entry",
+      "scripts/audit_packet.py:_check_analyses",
+      "scripts/audit_packet.py:_check_commands",
+      "scripts/audit_packet.py:_check_disclosure",
+      "scripts/audit_packet.py:_check_cases",
+      "scripts/audit_packet.py:in_packet_tree",
+      "scripts/audit_packet.py:_changed_paths",
+      "scripts/audit_packet.py:_check_scope",
+      "scripts/audit_packet.py:_check_labels",
+      "scripts/audit_packet.py:_check_mutations",
+      "scripts/audit_packet.py:_check_findings",
+      "scripts/audit_packet.py:_check_debt",
+      "scripts/audit_packet.py:_check_review",
+      "scripts/audit_packet.py:_check_rollback",
+      "scripts/audit_packet.py:validate_changed",
+      "scripts/audit_packet.py:_print_packet",
+      "scripts/audit_packet.py:main"
+    ],
+    "explained_changes": [
+      {
+        "symbol": "scripts/audit_packet.py:GitError",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:git_bytes",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:git",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:git_ok",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:sha256",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:path_matches",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:Checker",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_load_json",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:observed_status",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_validate",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_resolve_commit",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_revisions",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_artifacts",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_artifact_ref",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_capabilities",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_configuration",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_status",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_result_entry",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_analyses",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_commands",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_disclosure",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_cases",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:in_packet_tree",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_changed_paths",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_scope",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_labels",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_mutations",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_findings",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_debt",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_review",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_check_rollback",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      },
+      {
+        "symbol": "scripts/audit_packet.py:_print_packet",
+        "reason": "Private helper/constant of the new stdlib module; the pre-edit plan listed 'validate_packet, validate_changed, main and private helpers'. No existing symbol was modified."
+      }
+    ]
+  },
+  "mutations": [
+    {
+      "id": "M1",
+      "path": "scripts/audit_packet.py",
+      "description": "blast payload semantics ignored: 'if kind == \"blast\" and \"risk\" in payload:' -> 'if kind == \"blastX\" and \"risk\" in payload:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M2",
+      "path": "scripts/audit_packet.py",
+      "description": "post-head source commits not stale: '    if newer:\\n' -> '    if False:\\n'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M3",
+      "path": "scripts/audit_packet.py",
+      "description": "untracked files excluded from scope: 'committed + [f\"untracked:{p}\" for p in untracked]' -> 'committed'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M4",
+      "path": "scripts/audit_packet.py",
+      "description": "SKIP accepted for required cases: 'not in (\"PASS\", \"NOT_APPLICABLE\"):' -> 'not in (\"PASS\", \"NOT_APPLICABLE\", \"SKIP\"):'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M5",
+      "path": "scripts/audit_packet.py",
+      "description": "NOT_APPLICABLE ignores capability flag: 'capabilities.get(cap) is not False' -> 'False'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M6",
+      "path": "scripts/audit_packet.py",
+      "description": "analysis revision not checked: 'if analyzed is not None and expected and analyzed != expected:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M7",
+      "path": "scripts/audit_packet.py",
+      "description": "label self-approval allowed: 'if {\"approved\", \"accepted\", \"approved_by\"} & set(entry):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M8",
+      "path": "scripts/audit_packet.py",
+      "description": "pre-edit blast not required: 'REQUIRED_ANALYSES = {\"pre\": (\"blast\",),' -> 'REQUIRED_ANALYSES = {\"pre\": (),'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M9",
+      "path": "scripts/audit_packet.py",
+      "description": "case_totals not compared: 'if counts.get(status, 0) != value:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M10",
+      "path": "scripts/audit_packet.py",
+      "description": "PASS evidence status not checked: 'elif status == \"PASS\" and results[ref] != \"PASS\":' -> 'elif False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M11",
+      "path": "scripts/audit_packet.py",
+      "description": "unrecognized payload fails open: 'if not isinstance(payload, dict) or not RECOGNIZED[kind](payload):' -> 'if not isinstance(payload, dict) or False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M12",
+      "path": "scripts/audit_packet.py",
+      "description": "legacy evidence rewrite allowed: '        if status != \"A\":\\n' -> '        if False:\\n'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M13",
+      "path": "scripts/audit_packet.py",
+      "description": "waived cases hidden from report: 'for ident, status in sorted({**results, **cases}.items())' -> 'for ident, status in sorted(results.items())'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M14",
+      "path": "scripts/audit_packet.py",
+      "description": "root fixtures not label-gated: 'LABEL_PATTERNS = (\"fixtures/*\", \"*/fixtures/*\")' -> 'LABEL_PATTERNS = (\"*/fixtures/*\",)'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M15",
+      "path": "scripts/audit_packet.py",
+      "description": "legacy freeze dropped when a manifest is added: '            report[\"errors\"].extend(errors)\\n' -> ''",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    },
+    {
+      "id": "M16",
+      "path": "scripts/audit_packet.py",
+      "description": "case/result id collision allowed: '        if ident in results:\\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides' -> '        if False:\\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+    }
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "summary": "Semantic PASS check failed open on unparseable/unrecognized pip3r payloads",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R2",
+      "summary": "NOT_APPLICABLE required cases were absent from the reviewer-facing report",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R3",
+      "summary": "Root-level fixtures/ paths were not label-gated",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R4",
+      "summary": "Legacy evidence could be rewritten or deleted with exit 0 in changed mode",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R5",
+      "summary": "Sibling packet directories counted as out-of-scope source changes",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R6",
+      "summary": "Legacy freeze bypassed when the same change adds packet.json",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R7",
+      "summary": "Case id colliding with an analysis/command id hid an UNKNOWN row",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "C1",
+      "summary": "New CI gate would reject DEF-47's pre-schema packet on merge",
+      "origin": "introduced",
+      "blocking": true,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "P1",
+      "summary": "pip3r doctor --hunt cannot probe a source tree without --hunt-target (exit 1, empty JSON)",
+      "origin": "preexisting",
+      "blocking": false,
+      "classification": "preexisting-debt",
+      "link": "docs/audits/DEF-39/audit-procedure.md \u00a75; DEF-46 baseline.json doctor_hunt"
+    }
+  ],
+  "baseline_debt": [
+    {
+      "id": "core-suite",
+      "description": "Preexisting at base a59bdadf (main checkout, same commit) and identical at head: tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface",
+      "evidence": "core-full"
+    },
+    {
+      "id": "api-suite",
+      "description": "Preexisting at base a59bdadf (main checkout, same commit) and identical at head (api package unchanged): tests/test_events_auth.py::test_log_stream_requires_auth_header; tests/test_events_auth.py::test_status_stream_requires_auth_header; tests/test_events_auth.py::test_log_stream_rejects_token_query_param; tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database; tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head; tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only; tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models",
+      "evidence": "api-full"
+    },
+    {
+      "id": "hosted-python-tests",
+      "description": "Hosted Tests/Python tests job fails at dependency resolution (ghunt httpx<0.28 vs enrichers httpx>=0.28) on main b0c82d8d (run 36369242551) and def-43 b7a6f28b (run 36369217612), per fetched logs; preexisting and unrelated to DEF-90",
+      "evidence": "ci-hosted-run"
+    }
+  ],
+  "label_changes": [],
+  "review": {
+    "status": "accepted",
+    "reviewer": "OMP `reviewer` subagent Def90Reviewer (agent id Def90Reviewer; model not reported in its output)",
+    "independent": true,
+    "evidence": "review",
+    "limitation": "Reviewer is an OMP subagent (not a human); Linear acceptance remains with the issue owner."
+  },
+  "rollback": {
+    "procedure": "git revert the DEF-90 commits; see recovery.md",
+    "document": "recovery"
+  }
+}

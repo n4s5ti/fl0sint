@@ -1,0 +1,720 @@
+s.FFF.....FFFF..                                                         [100%]
+=================================== FAILURES ===================================
+_____________________ test_log_stream_requires_auth_header _____________________
+
+client = <starlette.testclient.TestClient object at 0x7097759b6fc0>
+
+    def test_log_stream_requires_auth_header(client):
+        """No Authorization header -> 401 (no token in URL accepted)."""
+>       res = client.get("/api/events/sketch/abc/stream")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_events_auth.py:19: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:465: in get
+    return super().get(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:437: in request
+    return super().request(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:340: in handle_request
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:337: in handle_request
+    portal.call(self.app, scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/applications.py:112: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:187: in __call__
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:165: in __call__
+    await self.app(scope, receive, _send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py:85: in __call__
+    await self.app(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:714: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:734: in app
+    await route.handle(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:288: in handle
+    await self.app(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:76: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:73: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/routing.py:291: in app
+    solved_result = await solve_dependencies(
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:640: in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/concurrency.py:37: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/to_thread.py:63: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2518: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1002: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/flowsint-api/app/api/deps.py:50: in get_current_user
+    payload = jwt.decode(token, AUTH_SECRET, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jwt.py:159: in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jws.py:74: in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+jwt = None
+
+    def _load(jwt):
+        if isinstance(jwt, str):
+            jwt = jwt.encode("utf-8")
+        try:
+>           signing_input, crypto_segment = jwt.rsplit(b".", 1)
+                                            ^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'rsplit'
+
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jws.py:180: AttributeError
+___________________ test_status_stream_requires_auth_header ____________________
+
+client = <starlette.testclient.TestClient object at 0x709769fde990>
+
+    def test_status_stream_requires_auth_header(client):
+>       res = client.get("/api/events/sketch/abc/status/stream")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_events_auth.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:465: in get
+    return super().get(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:437: in request
+    return super().request(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:340: in handle_request
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:337: in handle_request
+    portal.call(self.app, scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/applications.py:112: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:187: in __call__
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:165: in __call__
+    await self.app(scope, receive, _send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py:85: in __call__
+    await self.app(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:714: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:734: in app
+    await route.handle(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:288: in handle
+    await self.app(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:76: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:73: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/routing.py:291: in app
+    solved_result = await solve_dependencies(
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:640: in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/concurrency.py:37: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/to_thread.py:63: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2518: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1002: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/flowsint-api/app/api/deps.py:50: in get_current_user
+    payload = jwt.decode(token, AUTH_SECRET, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jwt.py:159: in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jws.py:74: in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+jwt = None
+
+    def _load(jwt):
+        if isinstance(jwt, str):
+            jwt = jwt.encode("utf-8")
+        try:
+>           signing_input, crypto_segment = jwt.rsplit(b".", 1)
+                                            ^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'rsplit'
+
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jws.py:180: AttributeError
+__________________ test_log_stream_rejects_token_query_param ___________________
+
+client = <starlette.testclient.TestClient object at 0x709769fdf650>
+
+    def test_log_stream_rejects_token_query_param(client):
+        """A token in the URL must NOT authenticate the request anymore."""
+        token = create_access_token({"sub": "user@example.com"})
+>       res = client.get(f"/api/events/sketch/abc/stream?token={token}")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_events_auth.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:465: in get
+    return super().get(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:437: in request
+    return super().request(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:340: in handle_request
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/testclient.py:337: in handle_request
+    portal.call(self.app, scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../../../../.local/share/uv/python/cpython-3.12.13-linux-x86_64-gnu/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/applications.py:112: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:187: in __call__
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:165: in __call__
+    await self.app(scope, receive, _send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/cors.py:85: in __call__
+    await self.app(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:714: in __call__
+    await self.middleware_stack(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:734: in app
+    await route.handle(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:288: in handle
+    await self.app(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:76: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/routing.py:73: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/routing.py:291: in app
+    solved_result = await solve_dependencies(
+../../fl0sint/.venv/lib/python3.12/site-packages/fastapi/dependencies/utils.py:640: in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/starlette/concurrency.py:37: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/to_thread.py:63: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2518: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1002: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/flowsint-api/app/api/deps.py:50: in get_current_user
+    payload = jwt.decode(token, AUTH_SECRET, algorithms=[ALGORITHM])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jwt.py:159: in decode
+    payload = jws.verify(token, key, algorithms, verify=verify_signature)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jws.py:74: in verify
+    header, payload, signing_input, signature = _load(token)
+                                                ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+jwt = None
+
+    def _load(jwt):
+        if isinstance(jwt, str):
+            jwt = jwt.encode("utf-8")
+        try:
+>           signing_input, crypto_segment = jwt.rsplit(b".", 1)
+                                            ^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'rsplit'
+
+../../fl0sint/.venv/lib/python3.12/site-packages/jose/jws.py:180: AttributeError
+______________ test_alembic_head_bootstraps_empty_sqlite_database ______________
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-41/test_alembic_head_bootstraps_e0')
+
+    def test_alembic_head_bootstraps_empty_sqlite_database(tmp_path: Path) -> None:
+>       _upgrade_sqlite(tmp_path / "flowsint.db")
+
+tests/test_sqlite_migrations.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+db_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-41/test_alembic_head_bootstraps_e0/flowsint.db')
+
+    def _upgrade_sqlite(db_path: Path) -> None:
+        api_dir = Path(__file__).resolve().parents[1]
+        repo_dir = api_dir.parent
+        env = os.environ.copy()
+        env["DATABASE_URL"] = f"sqlite:///{db_path}"
+        package_paths = [
+            repo_dir / "flowsint-core" / "src",
+            repo_dir / "flowsint-types" / "src",
+            repo_dir / "flowsint-enrichers" / "src",
+        ]
+        inherited_pythonpath = env.get("PYTHONPATH")
+        env["PYTHONPATH"] = os.pathsep.join(
+            [*(str(path) for path in package_paths)]
+            + ([inherited_pythonpath] if inherited_pythonpath else [])
+        )
+        result = subprocess.run(
+            [sys.executable, "-m", "alembic", "upgrade", "head"],
+            cwd=api_dir,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=60,
+        )
+    
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/__main__.py", line 4, in <module>
+E             main(prog="alembic")
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 630, in main
+E             CommandLine(prog=prog).main(argv=argv)
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 624, in main
+E             self.run_cmd(cfg, options)
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 601, in run_cmd
+E             fn(
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/command.py", line 401, in upgrade
+E             script.run_env()
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/script/base.py", line 585, in run_env
+E             util.load_python_file(self.dir, "env.py")
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 93, in load_python_file
+E             module = load_module_py(module_id, path)
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 109, in load_module_py
+E             spec.loader.exec_module(module)  # type: ignore
+E             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+E           File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+E           File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 85, in <module>
+E             run_migrations_online()
+E           File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 56, in run_migrations_online
+E             raise RuntimeError(
+E         RuntimeError: Expected one Alembic head for SQLite baseline, got ['14b9218242a4', 'e5f6a7b8c9d0']
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3', '-m', 'alembic', 'upgrade', 'head'], re...untimeError(\nRuntimeError: Expected one Alembic head for SQLite baseline, got [\'14b9218242a4\', \'e5f6a7b8c9d0\']\n').returncode
+
+tests/test_sqlite_migrations.py:70: AssertionError
+_____________________ test_stage4_is_the_sole_alembic_head _____________________
+
+    def test_stage4_is_the_sole_alembic_head() -> None:
+        api_dir = Path(__file__).resolve().parents[1]
+        config = Config(str(api_dir / "alembic.ini"))
+        config.set_main_option("script_location", str(api_dir / "alembic"))
+        script = ScriptDirectory.from_config(config)
+    
+>       assert script.get_heads() == [CURRENT_ALEMBIC_HEAD]
+E       AssertionError: assert ['14b9218242a...e5f6a7b8c9d0'] == ['e5f6a7b8c9d0']
+E         
+E         At index 0 diff: '14b9218242a4' != 'e5f6a7b8c9d0'
+E         Left contains one more item: 'e5f6a7b8c9d0'
+E         
+E         Full diff:
+E           [
+E         +     '14b9218242a4',
+E               'e5f6a7b8c9d0',
+E           ]
+
+tests/test_sqlite_migrations.py:89: AssertionError
+__________________ test_sqlite_evidence_schema_is_append_only __________________
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-41/test_sqlite_evidence_schema_is0')
+
+    def test_sqlite_evidence_schema_is_append_only(tmp_path: Path) -> None:
+        db_path = tmp_path / "flowsint.db"
+>       _upgrade_sqlite(db_path)
+
+tests/test_sqlite_migrations.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+db_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-41/test_sqlite_evidence_schema_is0/flowsint.db')
+
+    def _upgrade_sqlite(db_path: Path) -> None:
+        api_dir = Path(__file__).resolve().parents[1]
+        repo_dir = api_dir.parent
+        env = os.environ.copy()
+        env["DATABASE_URL"] = f"sqlite:///{db_path}"
+        package_paths = [
+            repo_dir / "flowsint-core" / "src",
+            repo_dir / "flowsint-types" / "src",
+            repo_dir / "flowsint-enrichers" / "src",
+        ]
+        inherited_pythonpath = env.get("PYTHONPATH")
+        env["PYTHONPATH"] = os.pathsep.join(
+            [*(str(path) for path in package_paths)]
+            + ([inherited_pythonpath] if inherited_pythonpath else [])
+        )
+        result = subprocess.run(
+            [sys.executable, "-m", "alembic", "upgrade", "head"],
+            cwd=api_dir,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=60,
+        )
+    
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/__main__.py", line 4, in <module>
+E             main(prog="alembic")
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 630, in main
+E             CommandLine(prog=prog).main(argv=argv)
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 624, in main
+E             self.run_cmd(cfg, options)
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 601, in run_cmd
+E             fn(
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/command.py", line 401, in upgrade
+E             script.run_env()
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/script/base.py", line 585, in run_env
+E             util.load_python_file(self.dir, "env.py")
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 93, in load_python_file
+E             module = load_module_py(module_id, path)
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 109, in load_module_py
+E             spec.loader.exec_module(module)  # type: ignore
+E             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+E           File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+E           File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 85, in <module>
+E             run_migrations_online()
+E           File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 56, in run_migrations_online
+E             raise RuntimeError(
+E         RuntimeError: Expected one Alembic head for SQLite baseline, got ['14b9218242a4', 'e5f6a7b8c9d0']
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3', '-m', 'alembic', 'upgrade', 'head'], re...untimeError(\nRuntimeError: Expected one Alembic head for SQLite baseline, got [\'14b9218242a4\', \'e5f6a7b8c9d0\']\n').returncode
+
+tests/test_sqlite_migrations.py:70: AssertionError
+_______________ test_sqlite_baseline_round_trips_core_orm_models _______________
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-41/test_sqlite_baseline_round_tri0')
+
+    def test_sqlite_baseline_round_trips_core_orm_models(tmp_path: Path) -> None:
+        db_path = tmp_path / "flowsint.db"
+>       _upgrade_sqlite(db_path)
+
+tests/test_sqlite_migrations.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+db_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-41/test_sqlite_baseline_round_tri0/flowsint.db')
+
+    def _upgrade_sqlite(db_path: Path) -> None:
+        api_dir = Path(__file__).resolve().parents[1]
+        repo_dir = api_dir.parent
+        env = os.environ.copy()
+        env["DATABASE_URL"] = f"sqlite:///{db_path}"
+        package_paths = [
+            repo_dir / "flowsint-core" / "src",
+            repo_dir / "flowsint-types" / "src",
+            repo_dir / "flowsint-enrichers" / "src",
+        ]
+        inherited_pythonpath = env.get("PYTHONPATH")
+        env["PYTHONPATH"] = os.pathsep.join(
+            [*(str(path) for path in package_paths)]
+            + ([inherited_pythonpath] if inherited_pythonpath else [])
+        )
+        result = subprocess.run(
+            [sys.executable, "-m", "alembic", "upgrade", "head"],
+            cwd=api_dir,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=60,
+        )
+    
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: Traceback (most recent call last):
+E           File "<frozen runpy>", line 198, in _run_module_as_main
+E           File "<frozen runpy>", line 88, in _run_code
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/__main__.py", line 4, in <module>
+E             main(prog="alembic")
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 630, in main
+E             CommandLine(prog=prog).main(argv=argv)
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 624, in main
+E             self.run_cmd(cfg, options)
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 601, in run_cmd
+E             fn(
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/command.py", line 401, in upgrade
+E             script.run_env()
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/script/base.py", line 585, in run_env
+E             util.load_python_file(self.dir, "env.py")
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 93, in load_python_file
+E             module = load_module_py(module_id, path)
+E                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 109, in load_module_py
+E             spec.loader.exec_module(module)  # type: ignore
+E             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+E           File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+E           File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 85, in <module>
+E             run_migrations_online()
+E           File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 56, in run_migrations_online
+E             raise RuntimeError(
+E         RuntimeError: Expected one Alembic head for SQLite baseline, got ['14b9218242a4', 'e5f6a7b8c9d0']
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3', '-m', 'alembic', 'upgrade', 'head'], re...untimeError(\nRuntimeError: Expected one Alembic head for SQLite baseline, got [\'14b9218242a4\', \'e5f6a7b8c9d0\']\n').returncode
+
+tests/test_sqlite_migrations.py:70: AssertionError
+=============================== warnings summary ===============================
+../../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../fl0sint/flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+../../fl0sint/flowsint-api/app/api/schemas/base.py:4
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/schemas/base.py:4: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ORMBase(BaseModel):
+
+../../fl0sint/flowsint-api/app/api/routes/sketches.py:42
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/routes/sketches.py:42: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeData(BaseModel):
+
+../../fl0sint/flowsint-api/app/api/schemas/chat.py:7
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/schemas/chat.py:7: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class ChatMessageRead(BaseModel):
+
+../../fl0sint/flowsint-api/app/api/schemas/custom_type.py:9
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/schemas/custom_type.py:9: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CustomTypeCreate(BaseModel):
+
+../../fl0sint/flowsint-api/app/api/schemas/custom_type.py:39
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/schemas/custom_type.py:39: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CustomTypeUpdate(BaseModel):
+
+../../fl0sint/flowsint-api/app/api/schemas/custom_type.py:61
+  /home/n4s5ti/Documents/dev/fl0sint/flowsint-api/app/api/schemas/custom_type.py:61: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class CustomTypeRead(ORMBase):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_events_auth.py::test_log_stream_requires_auth_header - AttributeError: 'NoneType' object has no attribute 'rsplit'
+FAILED tests/test_events_auth.py::test_status_stream_requires_auth_header - AttributeError: 'NoneType' object has no attribute 'rsplit'
+FAILED tests/test_events_auth.py::test_log_stream_rejects_token_query_param - AttributeError: 'NoneType' object has no attribute 'rsplit'
+FAILED tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database - AssertionError: Traceback (most recent call last):
+    File "<frozen runpy>", line 198, in _run_module_as_main
+    File "<frozen runpy>", line 88, in _run_code
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/__main__.py", line 4, in <module>
+      main(prog="alembic")
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 630, in main
+      CommandLine(prog=prog).main(argv=argv)
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 624, in main
+      self.run_cmd(cfg, options)
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 601, in run_cmd
+      fn(
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/command.py", line 401, in upgrade
+      script.run_env()
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/script/base.py", line 585, in run_env
+      util.load_python_file(self.dir, "env.py")
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 93, in load_python_file
+      module = load_module_py(module_id, path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 109, in load_module_py
+      spec.loader.exec_module(module)  # type: ignore
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+    File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+    File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 85, in <module>
+      run_migrations_online()
+    File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 56, in run_migrations_online
+      raise RuntimeError(
+  RuntimeError: Expected one Alembic head for SQLite baseline, got ['14b9218242a4', 'e5f6a7b8c9d0']
+  
+assert 1 == 0
+ +  where 1 = CompletedProcess(args=['/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3', '-m', 'alembic', 'upgrade', 'head'], re...untimeError(\nRuntimeError: Expected one Alembic head for SQLite baseline, got [\'14b9218242a4\', \'e5f6a7b8c9d0\']\n').returncode
+FAILED tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head - AssertionError: assert ['14b9218242a...e5f6a7b8c9d0'] == ['e5f6a7b8c9d0']
+  
+  At index 0 diff: '14b9218242a4' != 'e5f6a7b8c9d0'
+  Left contains one more item: 'e5f6a7b8c9d0'
+  
+  Full diff:
+    [
+  +     '14b9218242a4',
+        'e5f6a7b8c9d0',
+    ]
+FAILED tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only - AssertionError: Traceback (most recent call last):
+    File "<frozen runpy>", line 198, in _run_module_as_main
+    File "<frozen runpy>", line 88, in _run_code
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/__main__.py", line 4, in <module>
+      main(prog="alembic")
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 630, in main
+      CommandLine(prog=prog).main(argv=argv)
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 624, in main
+      self.run_cmd(cfg, options)
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 601, in run_cmd
+      fn(
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/command.py", line 401, in upgrade
+      script.run_env()
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/script/base.py", line 585, in run_env
+      util.load_python_file(self.dir, "env.py")
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 93, in load_python_file
+      module = load_module_py(module_id, path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 109, in load_module_py
+      spec.loader.exec_module(module)  # type: ignore
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+    File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+    File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 85, in <module>
+      run_migrations_online()
+    File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 56, in run_migrations_online
+      raise RuntimeError(
+  RuntimeError: Expected one Alembic head for SQLite baseline, got ['14b9218242a4', 'e5f6a7b8c9d0']
+  
+assert 1 == 0
+ +  where 1 = CompletedProcess(args=['/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3', '-m', 'alembic', 'upgrade', 'head'], re...untimeError(\nRuntimeError: Expected one Alembic head for SQLite baseline, got [\'14b9218242a4\', \'e5f6a7b8c9d0\']\n').returncode
+FAILED tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models - AssertionError: Traceback (most recent call last):
+    File "<frozen runpy>", line 198, in _run_module_as_main
+    File "<frozen runpy>", line 88, in _run_code
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/__main__.py", line 4, in <module>
+      main(prog="alembic")
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 630, in main
+      CommandLine(prog=prog).main(argv=argv)
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 624, in main
+      self.run_cmd(cfg, options)
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/config.py", line 601, in run_cmd
+      fn(
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/command.py", line 401, in upgrade
+      script.run_env()
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/script/base.py", line 585, in run_env
+      util.load_python_file(self.dir, "env.py")
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 93, in load_python_file
+      module = load_module_py(module_id, path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/alembic/util/pyfiles.py", line 109, in load_module_py
+      spec.loader.exec_module(module)  # type: ignore
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+    File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+    File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 85, in <module>
+      run_migrations_online()
+    File "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/flowsint-api/alembic/env.py", line 56, in run_migrations_online
+      raise RuntimeError(
+  RuntimeError: Expected one Alembic head for SQLite baseline, got ['14b9218242a4', 'e5f6a7b8c9d0']
+  
+assert 1 == 0
+ +  where 1 = CompletedProcess(args=['/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python3', '-m', 'alembic', 'upgrade', 'head'], re...untimeError(\nRuntimeError: Expected one Alembic head for SQLite baseline, got [\'14b9218242a4\', \'e5f6a7b8c9d0\']\n').returncode
+7 failed, 8 passed, 1 skipped, 8 warnings in 15.16s
+exit=1 wall=22s

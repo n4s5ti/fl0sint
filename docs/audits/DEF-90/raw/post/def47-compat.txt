@@ -1,0 +1,15 @@
+$ git diff --name-status --no-renames a59bdadf work/def-47-standalone -- docs/audits
+A	docs/audits/DEF-47/acceptance.md
+A	docs/audits/DEF-47/baseline.json
+A	docs/audits/DEF-47/linear-summary.md
+A	docs/audits/DEF-47/mutation-check.json
+A	docs/audits/DEF-47/post-edit.json
+A	docs/audits/DEF-47/raw/final-hashes.sha256
+A	docs/audits/DEF-47/raw/namechk-baseline-comparison.json
+A	docs/audits/DEF-47/raw/post-audit-summary.json
+A	docs/audits/DEF-47/raw/service-free-cli-proof.json
+A	docs/audits/DEF-47/raw/test-summary.json
+A	docs/audits/DEF-47/recovery.md
+A	docs/audits/DEF-47/review.json
+A	docs/audits/DEF-47/scope-plan.json
+# All entries are additions (A) under docs/audits/DEF-47/, which is in LEGACY_PACKETS, so changed mode reports LEGACY and passes rather than failing with E_PACKET_MISSING.
