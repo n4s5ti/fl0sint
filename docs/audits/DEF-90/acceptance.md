@@ -53,3 +53,15 @@ An independent `reviewer` subagent reviewed the change over five rounds and acce
 
 - **T-CI-HOSTED: PASS.** PR #2 run 37883849516: the Audit packet validity job passed. The hosted Python tests job fails on dependency resolution; the same dependency error appears in the fetched logs for `main` b0c82d8d and def-43, so it is preexisting and recorded as baseline debt.
 - **Hunt coverage of this change is 0** (DEGRADED/BLOCKED). It is disclosed, not passed.
+
+## Independent audit and re-pin (2026-10-09)
+
+A fresh, read-only audit agent reviewed `a59bdadf..66fb000b` and returned **pass_with_observations**.
+It reproduced 32 tests, 18/18 mutants, all 68 artifact digests and four hosted CI runs.
+
+Findings:
+- **A90-02 (info), fixed in `d9a3b17f`.** The `E_STALE_HEAD` example in `docs/audit-packet.md` was stale.
+- **A90-01 (low), open.** `NOT_APPLICABLE` relevance is self-declared. The waiver is surfaced in the report for a reviewer to check.
+- **A90-04 (low), open.** Untracked files under `docs/audits/` are ignored locally. CI is unaffected.
+
+The source head moved to `d9a3b17f` with a docs-only change. Post-edit pip3r analyses, the focused and enrichers suites, and the CLI smoke were re-run at that head; drift is 0. The types, core and api suite records predate this commit. Those packages are unchanged.

@@ -1,29 +1,37 @@
 $ python3 scripts/audit_packet.py validate docs/audits/DEF-46
-INVALID docs/audits/DEF-46 at e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e
+INVALID docs/audits/DEF-46 at d9a3b17f9f9e035653d847507352674beee41463
   error E_PACKET_MISSING: docs/audits/DEF-46/packet.json does not exist
   review: None (reviewer=None, independent=None); acceptance is not decided here
 exit=1
 $ python3 scripts/audit_packet.py changed --base a59bdadf
 audit packets changed since a59bdadff13e95147b5b7056d4f73dd30122887d: 1
-VALID docs/audits/DEF-90 at e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e
+INVALID docs/audits/DEF-90 at d9a3b17f9f9e035653d847507352674beee41463
+  error E_STALE_HEAD: source changed after head_commit before the packet was published (HEAD): docs/audit-packet.md
+  error E_ARTIFACT_DIGEST: artifacts.enrichers-full-head: sha256 mismatch for raw/post/enrichers-pytest.stdout
+  error E_ARTIFACT_DIGEST: artifacts.focused-tests: sha256 mismatch for raw/post/focused-pytest.stdout
+  error E_ARTIFACT_DIGEST: artifacts.cli-smoke: sha256 mismatch for raw/post/cli-smoke.txt
   limitation result api-full: FAIL
   limitation result core-full: FAIL
   limitation result post-doctor-hunt: DEGRADED
   limitation result pre-blast-audit_packet: UNKNOWN
   limitation result pre-hunt: BLOCKED
   review: accepted (reviewer=OMP `reviewer` subagent Def90Reviewer (agent id Def90Reviewer; model not reported in its output), independent=True); acceptance is not decided here
-exit=0
+exit=1
 $ python3 scripts/audit_packet.py changed --base 7f6f3c83
 audit packets changed since 7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe: 2
 LEGACY docs/audits/DEF-46: pre-schema packet, not validated (no PASS claimed)
-VALID docs/audits/DEF-90 at e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e
+INVALID docs/audits/DEF-90 at d9a3b17f9f9e035653d847507352674beee41463
+  error E_STALE_HEAD: source changed after head_commit before the packet was published (HEAD): docs/audit-packet.md
+  error E_ARTIFACT_DIGEST: artifacts.enrichers-full-head: sha256 mismatch for raw/post/enrichers-pytest.stdout
+  error E_ARTIFACT_DIGEST: artifacts.focused-tests: sha256 mismatch for raw/post/focused-pytest.stdout
+  error E_ARTIFACT_DIGEST: artifacts.cli-smoke: sha256 mismatch for raw/post/cli-smoke.txt
   limitation result api-full: FAIL
   limitation result core-full: FAIL
   limitation result post-doctor-hunt: DEGRADED
   limitation result pre-blast-audit_packet: UNKNOWN
   limitation result pre-hunt: BLOCKED
   review: accepted (reviewer=OMP `reviewer` subagent Def90Reviewer (agent id Def90Reviewer; model not reported in its output), independent=True); acceptance is not decided here
-exit=0
+exit=1
 $ python3 scripts/audit_packet.py changed --base nonexistent-ref
 error: git merge-base nonexistent-ref HEAD: fatal: Not a valid object name nonexistent-ref
 exit=2

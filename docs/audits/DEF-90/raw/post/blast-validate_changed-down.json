@@ -25,6 +25,15 @@
             "content": "def validate_changed(root, base):     \"\"\"Validate every audit packet touched between merge-base(base, HEAD) and HEAD.\"\"\"     root = Path(root).resolve()     merge_base = git(root, \"merge-base\", base, \"HEAD\").strip()     entries = [         line.split(\"\\t\", 1)         for line in git(root, \"diff\", \"--name-status\", \"--no-renames\", merge_base, \"HEAD\").splitlines()     ]     names, stray, rewritten = set(), set(), {}     for status, path in entries:         parts = PurePosixPath(path).parts         if parts[:2] != (\"docs\", \"audits\") or len(parts) < 3:             continue         if len(parts) == 3:             stray.add(path)             continue         names.add(parts[2])         if status != \"A\":             rewritten.setdefault(parts[2], []).append(f\"{status} {path}\")     packets = []     for name in sorted(names):         packet_dir = root / AUDITS_DIR / name         errors = [             {\"code\": \"E_LEGACY_EVIDENCE_CHANGED\", \"message\": f\"frozen legacy evidence changed: {change}\"}             for change in rewritten.get(name, [])         ] if name in LEGACY_PACKETS else []         if (packet_dir / PACKET_FILE).is_file() or name not in LEGACY_PACKETS:             report = validate_packet(root, packet_dir)             # Adding a manifest to a legacy directory does not unfreeze its old evidence.             report[\"errors\"].extend(errors)             report[\"packet_valid\"] = report[\"packet_valid\"] and not errors             packets.append(report)             continue         packets.append({             \"packet\": f\"{AUDITS_DIR}/{name}\",             \"legacy\": True,             \"packet_valid\": False if errors else None,             \"errors\": errors,         })     return {         \"schema\": REPORT_SCHEMA,         \"mode\": \"changed\",         \"base\": merge_base,         \"rev\": git(root, \"rev-parse\", \"HEAD\").strip(),         \"valid\": all(p[\"packet_valid\"] is not False for p in packets),         \"packets\": packets,         \"unvalidated_audit_files\": sorted(stray),     }"
         },
         {
+            "id": "Method:scripts/audit_packet.py:Checker.error#2",
+            "name": "error",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Method",
+            "startLine": 104,
+            "endLine": 105,
+            "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
+        },
+        {
             "id": "Function:scripts/audit_packet.py:git_bytes",
             "name": "git_bytes",
             "filePath": "scripts/audit_packet.py",
@@ -212,15 +221,6 @@
             "startLine": 700,
             "endLine": 707,
             "content": "def _check_rollback(c, manifest):     rollback = c.field(manifest, \"rollback\", dict, \"packet\")     if rollback is None:         return     c.field(rollback, \"procedure\", str, \"rollback\")     document = c.field(rollback, \"document\", str, \"rollback\")     if document is not None:         _artifact_ref(c, document, \"rollback.document\")"
-        },
-        {
-            "id": "Method:scripts/audit_packet.py:Checker.error#2",
-            "name": "error",
-            "filePath": "scripts/audit_packet.py",
-            "nodeType": "Method",
-            "startLine": 104,
-            "endLine": 105,
-            "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
         }
     ],
     "edges": [
@@ -376,6 +376,15 @@
                     "startLine": 710,
                     "endLine": 757,
                     "content": "def validate_changed(root, base):     \"\"\"Validate every audit packet touched between merge-base(base, HEAD) and HEAD.\"\"\"     root = Path(root).resolve()     merge_base = git(root, \"merge-base\", base, \"HEAD\").strip()     entries = [         line.split(\"\\t\", 1)         for line in git(root, \"diff\", \"--name-status\", \"--no-renames\", merge_base, \"HEAD\").splitlines()     ]     names, stray, rewritten = set(), set(), {}     for status, path in entries:         parts = PurePosixPath(path).parts         if parts[:2] != (\"docs\", \"audits\") or len(parts) < 3:             continue         if len(parts) == 3:             stray.add(path)             continue         names.add(parts[2])         if status != \"A\":             rewritten.setdefault(parts[2], []).append(f\"{status} {path}\")     packets = []     for name in sorted(names):         packet_dir = root / AUDITS_DIR / name         errors = [             {\"code\": \"E_LEGACY_EVIDENCE_CHANGED\", \"message\": f\"frozen legacy evidence changed: {change}\"}             for change in rewritten.get(name, [])         ] if name in LEGACY_PACKETS else []         if (packet_dir / PACKET_FILE).is_file() or name not in LEGACY_PACKETS:             report = validate_packet(root, packet_dir)             # Adding a manifest to a legacy directory does not unfreeze its old evidence.             report[\"errors\"].extend(errors)             report[\"packet_valid\"] = report[\"packet_valid\"] and not errors             packets.append(report)             continue         packets.append({             \"packet\": f\"{AUDITS_DIR}/{name}\",             \"legacy\": True,             \"packet_valid\": False if errors else None,             \"errors\": errors,         })     return {         \"schema\": REPORT_SCHEMA,         \"mode\": \"changed\",         \"base\": merge_base,         \"rev\": git(root, \"rev-parse\", \"HEAD\").strip(),         \"valid\": all(p[\"packet_valid\"] is not False for p in packets),         \"packets\": packets,         \"unvalidated_audit_files\": sorted(stray),     }"
+                },
+                {
+                    "id": "Method:scripts/audit_packet.py:Checker.error#2",
+                    "name": "error",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Method",
+                    "startLine": 104,
+                    "endLine": 105,
+                    "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
                 },
                 {
                     "id": "Function:scripts/audit_packet.py:git_bytes",
@@ -565,15 +574,6 @@
                     "startLine": 700,
                     "endLine": 707,
                     "content": "def _check_rollback(c, manifest):     rollback = c.field(manifest, \"rollback\", dict, \"packet\")     if rollback is None:         return     c.field(rollback, \"procedure\", str, \"rollback\")     document = c.field(rollback, \"document\", str, \"rollback\")     if document is not None:         _artifact_ref(c, document, \"rollback.document\")"
-                },
-                {
-                    "id": "Method:scripts/audit_packet.py:Checker.error#2",
-                    "name": "error",
-                    "filePath": "scripts/audit_packet.py",
-                    "nodeType": "Method",
-                    "startLine": 104,
-                    "endLine": 105,
-                    "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
                 }
             ]
         }

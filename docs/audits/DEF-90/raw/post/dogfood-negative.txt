@@ -1,5 +1,5 @@
 $ (tamper) echo {} > raw/post/drift.json
-INVALID docs/audits/DEF-90 at 83c26148e6fcc03573da2ccf90e69fc6b1ae40eb
+INVALID docs/audits/DEF-90 at c4b78f3c84b220ee018e9360e59192bc6724e5bb
   error E_ARTIFACT_DIGEST: artifacts.post-drift: sha256 mismatch for raw/post/drift.json
   limitation result api-full: FAIL
   limitation result core-full: FAIL
@@ -9,7 +9,7 @@ INVALID docs/audits/DEF-90 at 83c26148e6fcc03573da2ccf90e69fc6b1ae40eb
   review: accepted (reviewer=OMP `reviewer` subagent Def90Reviewer (agent id Def90Reviewer; model not reported in its output), independent=True); acceptance is not decided here
 exit=1
 $ (tamper) required case F3 -> SKIP
-INVALID docs/audits/DEF-90 at 83c26148e6fcc03573da2ccf90e69fc6b1ae40eb
+INVALID docs/audits/DEF-90 at c4b78f3c84b220ee018e9360e59192bc6724e5bb
   error E_CASE_NOT_PASS: required case F3 is SKIP
   limitation case F3: SKIP
   limitation result api-full: FAIL
