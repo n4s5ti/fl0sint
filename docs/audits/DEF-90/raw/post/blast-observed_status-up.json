@@ -38,8 +38,8 @@
             "name": "_check_result_entry",
             "filePath": "scripts/audit_packet.py",
             "nodeType": "Function",
-            "startLine": 394,
-            "endLine": 408,
+            "startLine": 402,
+            "endLine": 416,
             "content": "def _check_result_entry(c, entry, where, artifacts, capabilities, kind=None):     status = _status(c, entry, where, capabilities)     c.field(entry, \"command\", str, where)     exit_code = c.field(entry, \"exit_code\", int, where)     art = c.field(entry, \"artifact\", str, where)     if art is not None and _artifact_ref(c, art, where) and art in artifacts and status == \"PASS\":         observed = observed_status(kind, artifacts[art])         if observed:             c.error(                 \"E_SEMANTIC_MISMATCH\",                 f\"{where}: declared PASS but artifact shows {observed[0]} ({observed[1]})\",             )     if status == \"PASS\" and exit_code is not None and exit_code != 0:         c.error(\"E_EXIT_STATUS\", f\"{where}: declared PASS with exit code {exit_code}\")     return status"
         },
         {
@@ -47,8 +47,8 @@
             "name": "_check_analyses",
             "filePath": "scripts/audit_packet.py",
             "nodeType": "Function",
-            "startLine": 411,
-            "endLine": 457,
+            "startLine": 419,
+            "endLine": 465,
             "content": "def _check_analyses(c, manifest, base, head, artifacts, capabilities, results):     analyses = c.items(manifest, \"analyses\", \"packet\")     present = {\"pre\": set(), \"post\": set()}     by_id = {}     for index, entry in enumerate(analyses):         where = f\"analyses[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         phase = c.field(entry, \"phase\", str, where)         kind = c.field(entry, \"kind\", str, where)         if phase not in (None, \"pre\", \"post\"):             c.error(\"E_SCHEMA\", f\"{where}.phase: expected 'pre' or 'post'\")             phase = None         if kind is not None and kind not in ANALYSIS_KINDS:             c.error(\"E_SCHEMA\", f\"{where}.kind: {kind!r} is not one of {sorted(ANALYSIS_KINDS)}\")             kind = None         analyzed = c.field(entry, \"analyzed_commit\", str, where)         expected = {\"pre\": base, \"post\": head}.get(phase)         if analyzed is not None and expected and analyzed != expected:             c.error(                 \"E_STALE_ANALYSIS\",                 f\"{where}: {phase} analysis ran against {analyzed}, expected {phase == 'pre' and 'base' or 'head'}_commit {expected}\",             )         status = _check_result_entry(c, entry, where, artifacts, capabilities, kind)         if ident is not None and status is not None:             results[ident] = status             by_id[ident] = entry         if phase and kind and status != \"NOT_APPLICABLE\":             present[phase].add(kind)     for phase, kinds in REQUIRED_ANALYSES.items():         for kind in kinds:             if kind not in present[phase]:                 code = \"E_PRE_MISSING\" if phase == \"pre\" else \"E_POST_MISSING\"                 c.error(code, f\"no {phase}-edit {kind} report recorded\")     index = c.field(manifest, \"index\", dict, \"packet\")     if index is not None:         c.field(index, \"mode\", str, \"index\")         analyzed = c.field(index, \"analyzed_commit\", str, \"index\")         if analyzed is not None and head and analyzed != head:             c.error(\"E_STALE_INDEX\", f\"index analyzed_commit {analyzed} != head_commit {head}\")         drift = c.field(index, \"drift\", str, \"index\")         if drift is not None:             entry = by_id.get(drift)             if entry is None or entry.get(\"kind\") != \"drift\" or entry.get(\"phase\") != \"post\":                 c.error(\"E_REF\", f\"index.drift {drift!r} must name a post-edit drift analysis\")             elif results.get(drift) != \"PASS\":                 c.error(\"E_STALE_INDEX\", f\"index freshness drift {drift!r} is {results.get(drift)}, not PASS\")"
         },
         {
@@ -56,8 +56,8 @@
             "name": "_check_commands",
             "filePath": "scripts/audit_packet.py",
             "nodeType": "Function",
-            "startLine": 460,
-            "endLine": 468,
+            "startLine": 468,
+            "endLine": 476,
             "content": "def _check_commands(c, manifest, artifacts, capabilities, results):     for index, entry in enumerate(c.items(manifest, \"commands\", \"packet\")):         where = f\"commands[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         status = _check_result_entry(c, entry, where, artifacts, capabilities)         if ident is not None and status is not None:             if ident in results:                 c.error(\"E_SCHEMA\", f\"{where}: id collides with an analysis id\")             results[ident] = status"
         }
     ],
@@ -121,8 +121,8 @@
                     "name": "_check_result_entry",
                     "filePath": "scripts/audit_packet.py",
                     "nodeType": "Function",
-                    "startLine": 394,
-                    "endLine": 408,
+                    "startLine": 402,
+                    "endLine": 416,
                     "content": "def _check_result_entry(c, entry, where, artifacts, capabilities, kind=None):     status = _status(c, entry, where, capabilities)     c.field(entry, \"command\", str, where)     exit_code = c.field(entry, \"exit_code\", int, where)     art = c.field(entry, \"artifact\", str, where)     if art is not None and _artifact_ref(c, art, where) and art in artifacts and status == \"PASS\":         observed = observed_status(kind, artifacts[art])         if observed:             c.error(                 \"E_SEMANTIC_MISMATCH\",                 f\"{where}: declared PASS but artifact shows {observed[0]} ({observed[1]})\",             )     if status == \"PASS\" and exit_code is not None and exit_code != 0:         c.error(\"E_EXIT_STATUS\", f\"{where}: declared PASS with exit code {exit_code}\")     return status"
                 },
                 {
@@ -130,8 +130,8 @@
                     "name": "_check_analyses",
                     "filePath": "scripts/audit_packet.py",
                     "nodeType": "Function",
-                    "startLine": 411,
-                    "endLine": 457,
+                    "startLine": 419,
+                    "endLine": 465,
                     "content": "def _check_analyses(c, manifest, base, head, artifacts, capabilities, results):     analyses = c.items(manifest, \"analyses\", \"packet\")     present = {\"pre\": set(), \"post\": set()}     by_id = {}     for index, entry in enumerate(analyses):         where = f\"analyses[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         phase = c.field(entry, \"phase\", str, where)         kind = c.field(entry, \"kind\", str, where)         if phase not in (None, \"pre\", \"post\"):             c.error(\"E_SCHEMA\", f\"{where}.phase: expected 'pre' or 'post'\")             phase = None         if kind is not None and kind not in ANALYSIS_KINDS:             c.error(\"E_SCHEMA\", f\"{where}.kind: {kind!r} is not one of {sorted(ANALYSIS_KINDS)}\")             kind = None         analyzed = c.field(entry, \"analyzed_commit\", str, where)         expected = {\"pre\": base, \"post\": head}.get(phase)         if analyzed is not None and expected and analyzed != expected:             c.error(                 \"E_STALE_ANALYSIS\",                 f\"{where}: {phase} analysis ran against {analyzed}, expected {phase == 'pre' and 'base' or 'head'}_commit {expected}\",             )         status = _check_result_entry(c, entry, where, artifacts, capabilities, kind)         if ident is not None and status is not None:             results[ident] = status             by_id[ident] = entry         if phase and kind and status != \"NOT_APPLICABLE\":             present[phase].add(kind)     for phase, kinds in REQUIRED_ANALYSES.items():         for kind in kinds:             if kind not in present[phase]:                 code = \"E_PRE_MISSING\" if phase == \"pre\" else \"E_POST_MISSING\"                 c.error(code, f\"no {phase}-edit {kind} report recorded\")     index = c.field(manifest, \"index\", dict, \"packet\")     if index is not None:         c.field(index, \"mode\", str, \"index\")         analyzed = c.field(index, \"analyzed_commit\", str, \"index\")         if analyzed is not None and head and analyzed != head:             c.error(\"E_STALE_INDEX\", f\"index analyzed_commit {analyzed} != head_commit {head}\")         drift = c.field(index, \"drift\", str, \"index\")         if drift is not None:             entry = by_id.get(drift)             if entry is None or entry.get(\"kind\") != \"drift\" or entry.get(\"phase\") != \"post\":                 c.error(\"E_REF\", f\"index.drift {drift!r} must name a post-edit drift analysis\")             elif results.get(drift) != \"PASS\":                 c.error(\"E_STALE_INDEX\", f\"index freshness drift {drift!r} is {results.get(drift)}, not PASS\")"
                 },
                 {
@@ -139,8 +139,8 @@
                     "name": "_check_commands",
                     "filePath": "scripts/audit_packet.py",
                     "nodeType": "Function",
-                    "startLine": 460,
-                    "endLine": 468,
+                    "startLine": 468,
+                    "endLine": 476,
                     "content": "def _check_commands(c, manifest, artifacts, capabilities, results):     for index, entry in enumerate(c.items(manifest, \"commands\", \"packet\")):         where = f\"commands[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         status = _check_result_entry(c, entry, where, artifacts, capabilities)         if ident is not None and status is not None:             if ident in results:                 c.error(\"E_SCHEMA\", f\"{where}: id collides with an analysis id\")             results[ident] = status"
                 }
             ]
@@ -164,8 +164,8 @@
                     "name": "_check_result_entry",
                     "filePath": "scripts/audit_packet.py",
                     "nodeType": "Function",
-                    "startLine": 394,
-                    "endLine": 408,
+                    "startLine": 402,
+                    "endLine": 416,
                     "content": "def _check_result_entry(c, entry, where, artifacts, capabilities, kind=None):     status = _status(c, entry, where, capabilities)     c.field(entry, \"command\", str, where)     exit_code = c.field(entry, \"exit_code\", int, where)     art = c.field(entry, \"artifact\", str, where)     if art is not None and _artifact_ref(c, art, where) and art in artifacts and status == \"PASS\":         observed = observed_status(kind, artifacts[art])         if observed:             c.error(                 \"E_SEMANTIC_MISMATCH\",                 f\"{where}: declared PASS but artifact shows {observed[0]} ({observed[1]})\",             )     if status == \"PASS\" and exit_code is not None and exit_code != 0:         c.error(\"E_EXIT_STATUS\", f\"{where}: declared PASS with exit code {exit_code}\")     return status"
                 }
             ]
@@ -179,8 +179,8 @@
                     "name": "_check_analyses",
                     "filePath": "scripts/audit_packet.py",
                     "nodeType": "Function",
-                    "startLine": 411,
-                    "endLine": 457,
+                    "startLine": 419,
+                    "endLine": 465,
                     "content": "def _check_analyses(c, manifest, base, head, artifacts, capabilities, results):     analyses = c.items(manifest, \"analyses\", \"packet\")     present = {\"pre\": set(), \"post\": set()}     by_id = {}     for index, entry in enumerate(analyses):         where = f\"analyses[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         phase = c.field(entry, \"phase\", str, where)         kind = c.field(entry, \"kind\", str, where)         if phase not in (None, \"pre\", \"post\"):             c.error(\"E_SCHEMA\", f\"{where}.phase: expected 'pre' or 'post'\")             phase = None         if kind is not None and kind not in ANALYSIS_KINDS:             c.error(\"E_SCHEMA\", f\"{where}.kind: {kind!r} is not one of {sorted(ANALYSIS_KINDS)}\")             kind = None         analyzed = c.field(entry, \"analyzed_commit\", str, where)         expected = {\"pre\": base, \"post\": head}.get(phase)         if analyzed is not None and expected and analyzed != expected:             c.error(                 \"E_STALE_ANALYSIS\",                 f\"{where}: {phase} analysis ran against {analyzed}, expected {phase == 'pre' and 'base' or 'head'}_commit {expected}\",             )         status = _check_result_entry(c, entry, where, artifacts, capabilities, kind)         if ident is not None and status is not None:             results[ident] = status             by_id[ident] = entry         if phase and kind and status != \"NOT_APPLICABLE\":             present[phase].add(kind)     for phase, kinds in REQUIRED_ANALYSES.items():         for kind in kinds:             if kind not in present[phase]:                 code = \"E_PRE_MISSING\" if phase == \"pre\" else \"E_POST_MISSING\"                 c.error(code, f\"no {phase}-edit {kind} report recorded\")     index = c.field(manifest, \"index\", dict, \"packet\")     if index is not None:         c.field(index, \"mode\", str, \"index\")         analyzed = c.field(index, \"analyzed_commit\", str, \"index\")         if analyzed is not None and head and analyzed != head:             c.error(\"E_STALE_INDEX\", f\"index analyzed_commit {analyzed} != head_commit {head}\")         drift = c.field(index, \"drift\", str, \"index\")         if drift is not None:             entry = by_id.get(drift)             if entry is None or entry.get(\"kind\") != \"drift\" or entry.get(\"phase\") != \"post\":                 c.error(\"E_REF\", f\"index.drift {drift!r} must name a post-edit drift analysis\")             elif results.get(drift) != \"PASS\":                 c.error(\"E_STALE_INDEX\", f\"index freshness drift {drift!r} is {results.get(drift)}, not PASS\")"
                 },
                 {
@@ -188,8 +188,8 @@
                     "name": "_check_commands",
                     "filePath": "scripts/audit_packet.py",
                     "nodeType": "Function",
-                    "startLine": 460,
-                    "endLine": 468,
+                    "startLine": 468,
+                    "endLine": 476,
                     "content": "def _check_commands(c, manifest, artifacts, capabilities, results):     for index, entry in enumerate(c.items(manifest, \"commands\", \"packet\")):         where = f\"commands[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         status = _check_result_entry(c, entry, where, artifacts, capabilities)         if ident is not None and status is not None:             if ident in results:                 c.error(\"E_SCHEMA\", f\"{where}: id collides with an analysis id\")             results[ident] = status"
                 }
             ]

@@ -27,6 +27,8 @@ MUTANTS = [
     ("M14", "root fixtures not label-gated", 'LABEL_PATTERNS = ("fixtures/*", "*/fixtures/*")', 'LABEL_PATTERNS = ("*/fixtures/*",)'),
     ("M15", "legacy freeze dropped when a manifest is added", '            report["errors"].extend(errors)\n', ""),
     ("M16", "case/result id collision allowed", "        if ident in results:\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides", "        if False:\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides"),
+    ("M17", "staleness measured to HEAD, not the packet revision", 'packet_rev = published or "HEAD"', 'packet_rev = "HEAD"'),
+    ("M18", "rename detection hides source moved into packet", '"diff", "--name-only", "--no-renames", head, packet_rev', '"diff", "--name-only", head, packet_rev'),
 ]
 original = open(TARGET, "rb").read()
 digest = hashlib.sha256(original).hexdigest()

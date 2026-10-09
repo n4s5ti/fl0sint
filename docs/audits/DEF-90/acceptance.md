@@ -1,13 +1,13 @@
 # DEF-90 [S09] acceptance
 
 - **Base:** `a59bdadf`. This is DEF-46, the latest accepted branch head. DEF-47 is still in review, so its branch was not used.
-- **Head (source):** `b9af7f9b`. The packet is committed separately.
+- **Head (source):** `e3b9416f`. The initial source was `b9af7f9b`; it was followed by stacked-branch staleness fixes `e8ea3afa` and `e3b9416f`. The packet is committed separately.
 - **Worktree:** `/home/n4s5ti/Documents/dev/fl0sint-def90-packet`, branch `work/def-90-packet-validator`.
 - **Machine-checked manifest:** `packet.json`. Run `python3 scripts/audit_packet.py validate docs/audits/DEF-90`; the result is VALID.
 
 ## Required fixtures
 
-All fixtures run against real git state through `test_audit_packet.py`: 29 tests passed, and the mutation check killed 16 of 16 mutants.
+All fixtures run against real git state through `test_audit_packet.py`: 32 tests passed, and the mutation check killed 18 of 18 mutants.
 
 | Case | Result | Test(s) |
 |---|---|---|
@@ -38,7 +38,7 @@ Fixture and label surfacing are covered by `test_fixture_label_change_is_surface
 
 ## Tests (enrichers suite at base vs head, other packages run once)
 
-- **enrichers:** 185 passed at base; 214 passed at head (185 + 29 new).
+- **enrichers:** 185 passed at base; 217 passed at head (185 + 32 new).
 - **types:** 54 passed.
 - **core:** 1 failure, preexisting: the `/tmp/def45-live-fixture.html` fixture.
 - **api:** 7 failures, preexisting: `test_events_auth` ×3 and `test_sqlite_migrations` ×4.
@@ -47,7 +47,7 @@ The core and api failure sets are identical at base `a59bdadf` (in the main chec
 
 ## Review
 
-An independent `reviewer` subagent reviewed the change over three rounds and accepted it. It raised R1–R7, all fixed and re-verified by the same reviewer. Coordinator finding C1 (the gate would have blocked DEF-47) is fixed by adding DEF-47 to `LEGACY_PACKETS`. The reviewer is an AI subagent; Linear acceptance remains with the owner.
+An independent `reviewer` subagent reviewed the change over five rounds and accepted it. It raised R1–R8, all fixed and re-verified by the same reviewer. Coordinator finding C1 (the gate would have blocked DEF-47) is fixed by adding DEF-47 to `LEGACY_PACKETS`. D48-1, from the hosted run on stacked PR #3, is fixed by measuring staleness to the packet's publishing revision. The reviewer is an AI subagent; Linear acceptance remains with the owner.
 
 ## Open and not claimed
 

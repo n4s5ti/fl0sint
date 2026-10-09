@@ -27,8 +27,22 @@
       "round": 3,
       "verdict": "ACCEPT; R6-R7 resolved; no open findings",
       "evidence": "29/29 focused tests; mutation-check sha256 matched the live validator; 16/16 killed"
+    },
+    {
+      "round": 4,
+      "verdict": "changes-requested",
+      "findings": [
+        "R8 staleness diff lacks --no-renames: source moved into a packet dir was hidden (P2)"
+      ],
+      "scope": "stacked-branch staleness fix e8ea3afa"
+    },
+    {
+      "round": 5,
+      "verdict": "ACCEPT; all findings closed",
+      "evidence": "32/32 focused; 18/18 mutations hash-matched at e3b9416f"
     }
   ],
   "self_review_limitation": "The reviewer is an AI subagent and not a human. This acceptance covers the internal review pass only; acceptance of the Linear issue remains with the issue owner.",
-  "coordinator_finding": "C1: DEF-47 (in review, pre-schema packet without packet.json) would fail the new CI gate on merge. Fixed by adding DEF-47 to LEGACY_PACKETS."
+  "coordinator_finding": "C1: DEF-47 (in review, pre-schema packet without packet.json) would fail the new CI gate on merge. Fixed by adding DEF-47 to LEGACY_PACKETS.",
+  "coordinator_finding_2": "D48-1: the hosted Audit packet validity job on stacked PR #3 failed. The inherited DEF-90 packet was reported stale because later issues changed source. Fixed in e8ea3afa: staleness is now measured to the packet's publishing revision."
 }

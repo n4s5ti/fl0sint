@@ -295,22 +295,30 @@ def _check_revisions(c, manifest):
     actual_tree = git(c.root, "rev-parse", f"{head}^{{tree}}").strip()
     if tree is not None and tree != actual_tree:
         c.error("E_SOURCE_DIGEST", f"source_tree {tree} != {actual_tree} for head_commit")
-    # Evidence describes head_commit; anything newer outside the packet is stale.
-    if not git_ok(c.root, "merge-base", "--is-ancestor", head, "HEAD"):
-        c.error("E_STALE_HEAD", f"head_commit {head} is not an ancestor of HEAD")
+    # Evidence describes head_commit. It is stale if source changed between head_commit and
+    # the revision that published the packet. Later commits on a stacked branch belong to
+    # other packets and do not make this one stale.
+    rel_packet = c.packet_dir.relative_to(c.root).as_posix()
+    pending = git(c.root, "status", "--porcelain", "--untracked-files=all", "--", rel_packet).strip()
+    published = None if pending else git(c.root, "log", "-1", "--format=%H", "HEAD", "--", rel_packet).strip()
+    packet_rev = published or "HEAD"
+    if not git_ok(c.root, "merge-base", "--is-ancestor", head, packet_rev):
+        c.error("E_STALE_HEAD", f"head_commit {head} is not an ancestor of the packet revision {packet_rev}")
         return base, head
     newer = [
-        p for p in git(c.root, "diff", "--name-only", head, "HEAD").splitlines()
+        p for p in git(c.root, "diff", "--name-only", "--no-renames", head, packet_rev).splitlines()
         if not in_packet_tree(p)
     ]
     if newer:
-        c.error("E_STALE_HEAD", f"HEAD changed source after head_commit: {', '.join(newer[:10])}")
-    dirty = [
-        line[3:] for line in git(c.root, "status", "--porcelain", "--untracked-files=no").splitlines()
-        if not in_packet_tree(line[3:])
-    ]
-    if dirty:
-        c.error("E_STALE_HEAD", f"working tree has uncommitted tracked changes: {', '.join(dirty[:10])}")
+        c.error("E_STALE_HEAD", f"source changed after head_commit before the packet was published "
+                f"({packet_rev[:12]}): {', '.join(newer[:10])}")
+    if packet_rev == "HEAD":
+        dirty = [
+            line[3:] for line in git(c.root, "status", "--porcelain", "--untracked-files=no").splitlines()
+            if not in_packet_tree(line[3:])
+        ]
+        if dirty:
+            c.error("E_STALE_HEAD", f"working tree has uncommitted tracked changes: {', '.join(dirty[:10])}")
     return base, head
 
 

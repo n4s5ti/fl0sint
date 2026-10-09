@@ -200,6 +200,29 @@ def test_source_change_after_head_commit_is_stale(packet):
     assert "E_STALE_HEAD" in {e["code"] for e in packet.validate()["errors"]}
 
 
+def test_later_commits_on_a_stacked_branch_do_not_stale_a_published_packet(packet):
+    packet.write()
+    _commit(packet.repo, "publish packet")
+    (packet.repo / "src/app.py").write_text("def run():\n    return 5\n")
+    _commit(packet.repo, "next issue changes source")
+    report = packet.validate()
+    assert report["errors"] == [], report["errors"]
+
+
+def test_source_published_with_the_packet_after_head_is_stale(packet):
+    packet.write()
+    (packet.repo / "src/app.py").write_text("def run():\n    return 6\n")
+    _commit(packet.repo, "packet plus unaudited source edit")
+    assert "E_STALE_HEAD" in {e["code"] for e in packet.validate()["errors"]}
+
+
+def test_moving_source_into_the_packet_is_stale(packet):
+    packet.write()
+    _git(packet.repo, "mv", "src/app.py", "docs/audits/DEF-900/raw/app.py")
+    _commit(packet.repo, "packet plus a source file moved into it")
+    assert "E_STALE_HEAD" in {e["code"] for e in packet.validate()["errors"]}
+
+
 def test_uncommitted_source_edit_is_stale(packet):
     packet.write()
     (packet.repo / "src/app.py").write_text("def run():\n    return 4\n")

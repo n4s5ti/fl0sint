@@ -1,4 +1,4 @@
-.............................                                            [100%]
+................................                                         [100%]
 =============================== warnings summary ===============================
 ../../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
   /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
@@ -15,6 +15,9 @@ PASSED tests/enrichers/test_audit_packet.py::test_complete_packet_is_valid_and_r
 PASSED tests/enrichers/test_audit_packet.py::test_missing_pre_edit_report_is_rejected
 PASSED tests/enrichers/test_audit_packet.py::test_missing_or_altered_pre_edit_artifact_is_rejected
 PASSED tests/enrichers/test_audit_packet.py::test_source_change_after_head_commit_is_stale
+PASSED tests/enrichers/test_audit_packet.py::test_later_commits_on_a_stacked_branch_do_not_stale_a_published_packet
+PASSED tests/enrichers/test_audit_packet.py::test_source_published_with_the_packet_after_head_is_stale
+PASSED tests/enrichers/test_audit_packet.py::test_moving_source_into_the_packet_is_stale
 PASSED tests/enrichers/test_audit_packet.py::test_uncommitted_source_edit_is_stale
 PASSED tests/enrichers/test_audit_packet.py::test_stale_index_and_analysis_metadata_are_rejected
 PASSED tests/enrichers/test_audit_packet.py::test_nonzero_drift_cannot_certify_index_freshness
@@ -40,6 +43,6 @@ PASSED tests/enrichers/test_audit_packet.py::test_configuration_digest_is_recomp
 PASSED tests/enrichers/test_audit_packet.py::test_changed_scope_cli_validates_packets_and_freezes_legacy_evidence
 PASSED tests/enrichers/test_audit_packet.py::test_scraper_runtime_does_not_import_or_invoke_validator[runtime]
 PASSED tests/enrichers/test_audit_packet.py::test_scraper_runtime_does_not_import_or_invoke_validator[control]
-29 passed, 2 warnings in 18.83s
+32 passed, 2 warnings in 17.53s
 /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/neo4j/_sync/driver.py:547: DeprecationWarning: Relying on Driver's destructor to close the session is deprecated. Please make sure to close the session. Use it as a context (`with` statement) or make sure to call `.close()` explicitly. Future versions of the driver will not close drivers automatically.
-exit=0 wall=22s
+exit=0

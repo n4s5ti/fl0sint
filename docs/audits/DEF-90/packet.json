@@ -3,8 +3,8 @@
   "issue": "DEF-90",
   "title": "[S09] Enforce audit-packet validity locally and in the existing CI workflow",
   "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
-  "head_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
-  "source_tree": "5e50459a9e6cfc27899d04a612fb3426cda7a14e",
+  "head_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+  "source_tree": "5e830d7e4f7303b859d7518b877326a5551e4bd2",
   "configuration": {
     ".github/workflows/tests.yml": "a4ff0991b99c2c0c55af69fc7bee566e3fcfb45a497f4c029ed582af997692ee",
     "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
@@ -69,7 +69,7 @@
     },
     "post-index": {
       "path": "raw/post/index.json",
-      "sha256": "d8090de1ffa10287300c445dee42c4b2e6681323fec668ecf98c97128d6b7392"
+      "sha256": "bbde773fcaf8c114ce0af2d8a06efb207d8f5905250b548836af1bd1dbc8096d"
     },
     "post-index-stderr": {
       "path": "raw/post/index.stderr",
@@ -85,7 +85,7 @@
     },
     "post-blast-validate_packet-up": {
       "path": "raw/post/blast-validate_packet-up.json",
-      "sha256": "21c68302971468c13bc949d4a2c28efa0b710e9db53070fe6229834204770800"
+      "sha256": "6b968c078a8aee299f09c5164285766392cc478790c0193c07370987a839fc14"
     },
     "post-blast-validate_packet-up-stderr": {
       "path": "raw/post/blast-validate_packet-up.stderr",
@@ -93,7 +93,7 @@
     },
     "post-blast-validate_packet-down": {
       "path": "raw/post/blast-validate_packet-down.json",
-      "sha256": "37151a9e4a7c1a50a9c375f8199744a5a653480ee2cf250f2255e553ef40db63"
+      "sha256": "465e525fd5a6f47fbf3a608384358a887fe729888a1c6e06458ec5ab0a40d48a"
     },
     "post-blast-validate_packet-down-stderr": {
       "path": "raw/post/blast-validate_packet-down.stderr",
@@ -101,7 +101,7 @@
     },
     "post-blast-validate_changed-up": {
       "path": "raw/post/blast-validate_changed-up.json",
-      "sha256": "b166b77ee9d9aa37a493ab3eb61e1ff3f170570dc726160dfd3ee5874aa4e633"
+      "sha256": "f7cf12b3073dc7e174c1e811b781be432a5973ee5e25ac280e7955ba6f5a1dc9"
     },
     "post-blast-validate_changed-up-stderr": {
       "path": "raw/post/blast-validate_changed-up.stderr",
@@ -109,7 +109,7 @@
     },
     "post-blast-validate_changed-down": {
       "path": "raw/post/blast-validate_changed-down.json",
-      "sha256": "7e1693580568ca2ebd84e9392139e6e2dd6e5c4d4ef377cbd6e26ff94f98801a"
+      "sha256": "cd14542f8f30103b069ba21beefa239d93e8c9c6c2500206ff34f9f3802dd9d8"
     },
     "post-blast-validate_changed-down-stderr": {
       "path": "raw/post/blast-validate_changed-down.stderr",
@@ -117,7 +117,7 @@
     },
     "post-blast-main-up": {
       "path": "raw/post/blast-main-up.json",
-      "sha256": "a7e2caca2d9f78230faa0d9b4f242891992afbafd174bfae7671639e349f6382"
+      "sha256": "ccd5408b08c3e9bc16a018c82bfd6b5445a4c9b0fce2928c956188f4c68e4a9b"
     },
     "post-blast-main-up-stderr": {
       "path": "raw/post/blast-main-up.stderr",
@@ -125,7 +125,7 @@
     },
     "post-blast-main-down": {
       "path": "raw/post/blast-main-down.json",
-      "sha256": "6dc9261aeaa8755ca6deb1cbc8054c990180ea09b747e76e2da040f0f7c29fa4"
+      "sha256": "310c7ff6b738a14dfda75b5c859489004ffdbb340c013f8ba2652d14d4d4f985"
     },
     "post-blast-main-down-stderr": {
       "path": "raw/post/blast-main-down.stderr",
@@ -133,7 +133,7 @@
     },
     "post-blast-observed_status-up": {
       "path": "raw/post/blast-observed_status-up.json",
-      "sha256": "f7ce639f4ffb8b44a0ca8b6fcde2607f922b0185dac8649bd54471b3482d522b"
+      "sha256": "aeaba7e696e8e02981959afb24aa2768b1bcadd94aab5513084136a7eab7b940"
     },
     "post-blast-observed_status-up-stderr": {
       "path": "raw/post/blast-observed_status-up.stderr",
@@ -165,7 +165,7 @@
     },
     "post-doctor-hunt": {
       "path": "raw/post/doctor-hunt.json",
-      "sha256": "d8b3c6b285df4bf89ae1c1b50a08302b93bc94731d1621678fcef24afe02f4eb"
+      "sha256": "3d3f619a95f7bc6d9feae035d5af0d38cd0453315e951cb7c2eea2dfa8a75795"
     },
     "post-doctor-hunt-stderr": {
       "path": "raw/post/doctor-hunt.stderr",
@@ -185,27 +185,27 @@
     },
     "enrichers-full-head": {
       "path": "raw/post/enrichers-pytest.stdout",
-      "sha256": "24838b02a114bcd3f3b978a12a20af7883255db6cc009f6d2ad3217169d68ec9"
+      "sha256": "2fa8ab5175129ea8563b16098728278c56364b6dbf6945b21dd8a4f74e6b57e1"
     },
     "focused-tests": {
       "path": "raw/post/focused-pytest.stdout",
-      "sha256": "b6507c9fe78cb15a5bea11e0a516e7fa3095bdd24071f26ce1888bed2b452b05"
+      "sha256": "e8eae18366980d3f92ccbeba13d51e29a12a8bed8884f4bb035e18fc7ed04c7e"
     },
     "mutation-check": {
       "path": "mutation-check.json",
-      "sha256": "9caa31280d944be39b2bb7d7eef31d962b9c67c6498e6347f258c1e9f9063f1b"
+      "sha256": "ad52a0d0d601b2b3e8c966023a8cbac1a199d0db39486fbde133009e7452a3b5"
     },
     "mutate-script": {
       "path": "raw/post/mutate.py",
-      "sha256": "a91bdcdb5c8cbd403c8d3d4064ecec3a55d7735210996f21fa5c68d3a4ab1940"
+      "sha256": "7117bbf7b21e28d47e02392b4e7a7960bcbd752a59a1c52c64c9a8c3b20731a4"
     },
     "cli-smoke": {
       "path": "raw/post/cli-smoke.txt",
-      "sha256": "0666c48bd69ce8aa9d168338f4819660d0b58a10ed2acf1cf23a3a7d55c9ed91"
+      "sha256": "866bebacf57417fbe90225fee91bfe54445bc0f1cce9f520e902f5312f4e3abe"
     },
     "ci-workflow-trace": {
       "path": "raw/post/ci-workflow-trace.json",
-      "sha256": "d2f43505ab03446b6687e9a2af6109bbf4fd6f31c77fa27d6b4d9fefa7d097fd"
+      "sha256": "43f06c7389a6f8c8d53e8ffe59eb64e641efe25f4aef0e9a49bb444bf4b8063b"
     },
     "ci-hosted-run": {
       "path": "raw/post/ci-hosted-run.md",
@@ -229,19 +229,19 @@
     },
     "acceptance": {
       "path": "acceptance.md",
-      "sha256": "db42afd9aca7b0198608fa0390f60b2e63c3da07de5457c7745155c4d620ae3a"
+      "sha256": "45be4b4fc34b53c91da3195d27bd61e5b08ade044a47d43e5152595944afa10d"
     },
     "dogfood-negative": {
       "path": "raw/post/dogfood-negative.txt",
-      "sha256": "56441984829697b9e5294b978a4b3f7bd3d057ed0cbbc1ffe476c43d1090d639"
+      "sha256": "e8c7886c60a579add9944f34a5cc00adc3f8a44bf7b98ec7ef38fd307dcbab47"
     },
     "ci-local-replay": {
       "path": "raw/post/ci-local-replay.txt",
-      "sha256": "0ddde7c64cfd23a50ef7d7f2eeae7ed925d6d46b36481b129dee8d086f5e2ef0"
+      "sha256": "a52d732896bd0fd437bb404279e66344c657f598ae13730ce62b97b19ece799b"
     },
     "linear-summary": {
       "path": "linear-summary.md",
-      "sha256": "4acc79282cf8cd9265a56c8d98119669f3976e07c560e85402b7614db4592779"
+      "sha256": "9fe724bba2a3877c225b04d1bf5fff0cf5d4a1122d9f309691c2af8c36075f6c"
     },
     "types-full": {
       "path": "raw/post/types-pytest.stdout",
@@ -269,7 +269,7 @@
     },
     "review": {
       "path": "review.json",
-      "sha256": "0ce78e0ee8633adcf0b69fdd89dbb8dc01f159a56547e91b306dec86b9285333"
+      "sha256": "74e6e00b638b8704d74f7827e9c0cd1bef9ba45b5b3191344d61ecaebef33fc3"
     },
     "recovery": {
       "path": "recovery.md",
@@ -278,7 +278,7 @@
   },
   "index": {
     "mode": "isolated-worktree (pip3r graphos --index --cwd <worktree>, rebuilt at head_commit)",
-    "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+    "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
     "drift": "post-drift"
   },
   "analyses": [
@@ -342,7 +342,7 @@
       "phase": "post",
       "kind": "index",
       "target": "isolated head index",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --json",
       "exit_code": 0,
       "status": "PASS",
@@ -353,7 +353,7 @@
       "phase": "post",
       "kind": "drift",
       "target": "isolated head index",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",
@@ -364,7 +364,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_packet",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:validate_packet",
       "exit_code": 0,
       "status": "PASS",
@@ -375,7 +375,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_packet",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:validate_packet",
       "exit_code": 0,
       "status": "PASS",
@@ -386,7 +386,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_changed",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:validate_changed",
       "exit_code": 0,
       "status": "PASS",
@@ -397,7 +397,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_changed",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:validate_changed",
       "exit_code": 0,
       "status": "PASS",
@@ -408,7 +408,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:main",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:main",
       "exit_code": 0,
       "status": "PASS",
@@ -419,7 +419,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:main",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:main",
       "exit_code": 0,
       "status": "PASS",
@@ -430,7 +430,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:observed_status",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:observed_status",
       "exit_code": 0,
       "status": "PASS",
@@ -441,7 +441,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:observed_status",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:observed_status",
       "exit_code": 0,
       "status": "PASS",
@@ -452,7 +452,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/acquisition_fixtures.py:load_manifest",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
       "exit_code": 0,
       "status": "PASS",
@@ -463,7 +463,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/acquisition_fixtures.py:load_manifest",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/acquisition_fixtures.py:load_manifest",
       "exit_code": 0,
       "status": "PASS",
@@ -474,7 +474,7 @@
       "phase": "post",
       "kind": "doctor",
       "target": "doctor --hunt --hunt-target scripts/audit_packet.py",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --hunt --hunt-target /home/n4s5ti/Documents/dev/fl0sint-def90-packet/scripts/audit_packet.py --json",
       "exit_code": 0,
       "status": "DEGRADED",
@@ -485,7 +485,7 @@
       "phase": "post",
       "kind": "drift",
       "target": "isolated head index (after all post analyses)",
-      "analyzed_commit": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",
@@ -900,7 +900,7 @@
       "description": "blast payload semantics ignored: 'if kind == \"blast\" and \"risk\" in payload:' -> 'if kind == \"blastX\" and \"risk\" in payload:'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M2",
@@ -908,7 +908,7 @@
       "description": "post-head source commits not stale: '    if newer:\\n' -> '    if False:\\n'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M3",
@@ -916,7 +916,7 @@
       "description": "untracked files excluded from scope: 'committed + [f\"untracked:{p}\" for p in untracked]' -> 'committed'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M4",
@@ -924,7 +924,7 @@
       "description": "SKIP accepted for required cases: 'not in (\"PASS\", \"NOT_APPLICABLE\"):' -> 'not in (\"PASS\", \"NOT_APPLICABLE\", \"SKIP\"):'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M5",
@@ -932,7 +932,7 @@
       "description": "NOT_APPLICABLE ignores capability flag: 'capabilities.get(cap) is not False' -> 'False'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M6",
@@ -940,7 +940,7 @@
       "description": "analysis revision not checked: 'if analyzed is not None and expected and analyzed != expected:' -> 'if False:'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M7",
@@ -948,7 +948,7 @@
       "description": "label self-approval allowed: 'if {\"approved\", \"accepted\", \"approved_by\"} & set(entry):' -> 'if False:'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M8",
@@ -956,7 +956,7 @@
       "description": "pre-edit blast not required: 'REQUIRED_ANALYSES = {\"pre\": (\"blast\",),' -> 'REQUIRED_ANALYSES = {\"pre\": (),'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M9",
@@ -964,7 +964,7 @@
       "description": "case_totals not compared: 'if counts.get(status, 0) != value:' -> 'if False:'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M10",
@@ -972,7 +972,7 @@
       "description": "PASS evidence status not checked: 'elif status == \"PASS\" and results[ref] != \"PASS\":' -> 'elif False:'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M11",
@@ -980,7 +980,7 @@
       "description": "unrecognized payload fails open: 'if not isinstance(payload, dict) or not RECOGNIZED[kind](payload):' -> 'if not isinstance(payload, dict) or False:'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M12",
@@ -988,7 +988,7 @@
       "description": "legacy evidence rewrite allowed: '        if status != \"A\":\\n' -> '        if False:\\n'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M13",
@@ -996,7 +996,7 @@
       "description": "waived cases hidden from report: 'for ident, status in sorted({**results, **cases}.items())' -> 'for ident, status in sorted(results.items())'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M14",
@@ -1004,7 +1004,7 @@
       "description": "root fixtures not label-gated: 'LABEL_PATTERNS = (\"fixtures/*\", \"*/fixtures/*\")' -> 'LABEL_PATTERNS = (\"*/fixtures/*\",)'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M15",
@@ -1012,7 +1012,7 @@
       "description": "legacy freeze dropped when a manifest is added: '            report[\"errors\"].extend(errors)\\n' -> ''",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     },
     {
       "id": "M16",
@@ -1020,7 +1020,23 @@
       "description": "case/result id collision allowed: '        if ident in results:\\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides' -> '        if False:\\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides'",
       "killed": true,
       "killed_by": "mutation-check",
-      "restored_sha256": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e"
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
+    },
+    {
+      "id": "M17",
+      "path": "scripts/audit_packet.py",
+      "description": "staleness measured to HEAD, not the packet revision: 'packet_rev = published or \"HEAD\"' -> 'packet_rev = \"HEAD\"'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
+    },
+    {
+      "id": "M18",
+      "path": "scripts/audit_packet.py",
+      "description": "rename detection hides source moved into packet: '\"diff\", \"--name-only\", \"--no-renames\", head, packet_rev' -> '\"diff\", \"--name-only\", head, packet_rev'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3"
     }
   ],
   "findings": [
@@ -1085,6 +1101,22 @@
       "summary": "New CI gate would reject DEF-47's pre-schema packet on merge",
       "origin": "introduced",
       "blocking": true,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "D48-1",
+      "summary": "changed mode reported inherited packets as stale on stacked branches",
+      "origin": "introduced",
+      "blocking": true,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R8",
+      "summary": "staleness diff rename detection hid source moved into a packet directory",
+      "origin": "introduced",
+      "blocking": false,
       "classification": "fixed",
       "link": "review.json"
     },

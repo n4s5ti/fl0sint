@@ -1,6 +1,7 @@
 ........................................................................ [ 33%]
-........................................................................ [ 67%]
-......................................................................   [100%]
+........................................................................ [ 66%]
+........................................................................ [ 99%]
+.                                                                        [100%]
 =============================== warnings summary ===============================
 ../../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
   /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
@@ -11,5 +12,11 @@
     class NodeMetadata(BaseModel):
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-214 passed, 2 warnings in 38.53s
-exit=0 wall=42s
+217 passed, 2 warnings in 105.55s (0:01:45)
+ERROR:root:Failed to batch insert logs: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5433 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5433 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+exit=0
