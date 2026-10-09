@@ -33,5 +33,5 @@ PASSED tests/enrichers/test_release_smoke.py::test_retained_bytes_must_be_the_fi
 PASSED tests/enrichers/test_release_smoke.py::test_audit_rejects_service_imports_external_connects_and_silence
 PASSED tests/enrichers/test_release_smoke.py::test_baseline_failures_stay_visible_and_new_failures_fail
 PASSED tests/enrichers/test_release_smoke.py::test_pytest_failure_lines_are_parsed
-22 passed, 2 warnings in 2.60s
+22 passed, 2 warnings in 2.33s
 exit=0

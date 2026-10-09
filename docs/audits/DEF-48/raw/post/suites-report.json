@@ -6,29 +6,29 @@
       "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
       "cwd": "flowsint-types",
       "exit_code": 0,
-      "summary": "54 passed in 0.31s",
-      "wall_seconds": 1.04
+      "summary": "54 passed in 0.35s",
+      "wall_seconds": 1.36
     },
     "core": {
       "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
       "cwd": "flowsint-core",
       "exit_code": 1,
-      "summary": "1 failed, 1035 passed, 2 warnings in 24.33s",
-      "wall_seconds": 28.7
+      "summary": "1 failed, 1035 passed, 2 warnings in 23.77s",
+      "wall_seconds": 27.19
     },
     "enrichers": {
       "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
       "cwd": "flowsint-enrichers",
       "exit_code": 1,
-      "summary": "3 failed, 239 passed, 2 warnings in 36.09s",
-      "wall_seconds": 38.69
+      "summary": "3 failed, 242 passed, 2 warnings in 35.46s",
+      "wall_seconds": 38.57
     },
     "api": {
       "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
       "cwd": "flowsint-api",
       "exit_code": 1,
-      "summary": "7 failed, 8 passed, 1 skipped, 8 warnings in 26.67s",
-      "wall_seconds": 30.47
+      "summary": "7 failed, 8 passed, 1 skipped, 8 warnings in 12.76s",
+      "wall_seconds": 16.32
     }
   },
   "comparison": {

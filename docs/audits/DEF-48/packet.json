@@ -3,8 +3,8 @@
   "issue": "DEF-48",
   "title": "[S08] Audit standalone release behavior and build the reproducible smoke harness",
   "base_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
-  "head_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
-  "source_tree": "9117f4c588b7f032c8ad6d2328264a8916c2fd42",
+  "head_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
+  "source_tree": "2c885dc765371b21b0f75d6061999bcb5d1e8568",
   "configuration": {
     ".github/workflows/tests.yml": "a4ff0991b99c2c0c55af69fc7bee566e3fcfb45a497f4c029ed582af997692ee",
     "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
@@ -108,7 +108,7 @@
     },
     "post-index": {
       "path": "raw/post/index.json",
-      "sha256": "6efa60ec4c262a2bc0a4e855f886eeb1e10e2bc566e08be023dc52b67133b4c9"
+      "sha256": "6b9455e857fc769c709291e4174369285791c90ce3687d9775c5b23d82cb55b4"
     },
     "post-index-stderr": {
       "path": "raw/post/index.stderr",
@@ -220,7 +220,7 @@
     },
     "post-blast-fixture_server-up": {
       "path": "raw/post/blast-fixture_server-up.json",
-      "sha256": "572afd699aff2d95c15cf26543c1ec739fb76ed141b14e6ec6a56b75a63ba333"
+      "sha256": "3d3569832e297e33b1d3e6cd125314085fd8be163c3f3be4e774cb03e5437155"
     },
     "post-blast-fixture_server-up-stderr": {
       "path": "raw/post/blast-fixture_server-up.stderr",
@@ -260,7 +260,7 @@
     },
     "post-doctor-hunt": {
       "path": "raw/post/doctor-hunt.json",
-      "sha256": "9e1c2772d714dec83cf0c6cd7cbc0c6f8a66044c6012fbf5014842f04e15a806"
+      "sha256": "40380f263a229b06cd9201899a3b62fae450ade53e49bda936f7414f9377ff83"
     },
     "post-doctor-hunt-stderr": {
       "path": "raw/post/doctor-hunt.stderr",
@@ -276,19 +276,19 @@
     },
     "release-smoke": {
       "path": "raw/post/smoke-report.json",
-      "sha256": "12fd043bd37808ec866340f3ad5c52f12c7e42bfe05ef6c9571e9be256805b2d"
+      "sha256": "9d009e62973eea283dad08f05ebd7741d64af2289ed4aec9aa4b3bdc9188e190"
     },
     "release-smoke-stdout": {
       "path": "raw/post/smoke.stdout",
-      "sha256": "ab93576a7ffc8a51338d43bb8658b178534d898d3f499f2e2ad2024cb2d7d029"
+      "sha256": "72f7507b0514759545c68f46d59d6c01dd7475703285b7df2c5a39c5e90fdce0"
     },
     "suites-head": {
       "path": "raw/post/suites-report.json",
-      "sha256": "ac183664c2fc5aeec287e1b5666c350fcb4c2f4c87f22dd6ea8c5d1f35681aad"
+      "sha256": "c33989b61af64d28797acc02ecc51156d977af0eef08f9024d57bfb89a0d91da"
     },
     "suites-head-stdout": {
       "path": "raw/post/suites.stdout",
-      "sha256": "c2f010346d28c72909039bcdea22abb7aebe0c724c14902cc8361a775aca1d1f"
+      "sha256": "4483791d2fbba31017eb03c440b83d5b57e2eb0a437c6b637257779f69bc94fc"
     },
     "suites-base": {
       "path": "raw/pre/suites-discover.json",
@@ -296,15 +296,15 @@
     },
     "verify-replay": {
       "path": "raw/post/verify-report.json",
-      "sha256": "ddc49370ab70cf0f16fe1dac2490c1fcb9d98bb797559d9a525b3f0bb3d7eb44"
+      "sha256": "92968def95778c8be8f5bb0cc9d79904d32df780f1091c8240c3cfefec6c5e9f"
     },
     "verify-stdout": {
       "path": "raw/post/verify.stdout",
-      "sha256": "b5e5512c0b6f47eeca3a3c7d1df9cdc5b55bd29a26ea291c16caec8574187656"
+      "sha256": "0d29842d58b609950face88d1c16a9b382ea30930781ba416f96c911bb7b743c"
     },
     "focused-tests": {
       "path": "raw/post/focused-pytest.stdout",
-      "sha256": "cdd70f3cc5829f67031c736949b8d2f7a7737a53486d960a346b948cac8b369b"
+      "sha256": "94adc0a8c2dfd153c529fb8190b526411ed6307f7349a826d2dcb92f49a8d32a"
     },
     "mutation-check": {
       "path": "mutation-check.json",
@@ -316,19 +316,19 @@
     },
     "harness-batch-bundle": {
       "path": "examples/batch/bundle.json",
-      "sha256": "4cb0527f5830d53aca462cf242c80c65c98f557b22d19bc60dfe7f996e56a5e8"
+      "sha256": "766757aa59bd2abeaa267cdc3fb32e797e5625e0c5d2207556fe5896dac37763"
     },
     "harness-batch-report": {
       "path": "examples/batch/report.md",
-      "sha256": "572189a40f593f45107a68f79eacb8f2715e8d08552dda19dae2ac7c6a61d9af"
+      "sha256": "088a0d960a53d8f79d63e2db5b3da876dc401ddf0680a47a1e8704c900ee5c9d"
     },
     "harness-batch-jsonl": {
       "path": "examples/batch/outcomes.jsonl",
-      "sha256": "b92bd3588f360b88efaf7fef93da108c0c5ff332f3d73bf37829084cf08046e1"
+      "sha256": "58b7e6a35ec10635398b6e4d44679eee2a09121672a8fcf95aedee5f25664e03"
     },
     "harness-single-report": {
       "path": "examples/single/report.md",
-      "sha256": "8d42b83c62b76f34c4ac59ed1a8d6e793626153f76e7f57e9dc3a19a38c8e69e"
+      "sha256": "a91b51802df93de5abe7b786ddddb8b1f3fc562e299d181af002b55810c2e33e"
     },
     "independent-review": {
       "path": "review.json",
@@ -340,12 +340,12 @@
     },
     "acceptance": {
       "path": "acceptance.md",
-      "sha256": "9ed917de304f946ab3d081ebac04e22bbf09de7d99857901f60fb2eba47bbd35"
+      "sha256": "5a72a94735d3697944ea80ef16cde33f8128a7a7063b2b0a9cfc06c0bf6b1a77"
     }
   },
   "index": {
     "mode": "isolated-worktree index rebuilt at head_commit",
-    "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+    "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
     "drift": "post-drift-final"
   },
   "analyses": [
@@ -358,7 +358,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --json",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-index"
+      "artifact": "pre-index",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-drift",
@@ -369,7 +370,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-drift"
+      "artifact": "pre-drift",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-release_smoke-up",
@@ -380,7 +382,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json release_smoke",
       "exit_code": 0,
       "status": "UNKNOWN",
-      "artifact": "pre-blast-release_smoke-up"
+      "artifact": "pre-blast-release_smoke-up",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-main-up",
@@ -391,7 +394,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json main",
       "exit_code": 0,
       "status": "UNKNOWN",
-      "artifact": "pre-blast-main-up"
+      "artifact": "pre-blast-main-up",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-fixture_server-up",
@@ -402,7 +406,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json scripts/acquisition_fixtures.py:fixture_server",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-blast-fixture_server-up"
+      "artifact": "pre-blast-fixture_server-up",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-load_manifest-up",
@@ -413,7 +418,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-blast-load_manifest-up"
+      "artifact": "pre-blast-load_manifest-up",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-scrape_websites-up",
@@ -424,7 +430,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json scrape_websites",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-blast-scrape_websites-up"
+      "artifact": "pre-blast-scrape_websites-up",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-scrape_websites-down",
@@ -435,7 +442,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json --direction downstream scrape_websites",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-blast-scrape_websites-down"
+      "artifact": "pre-blast-scrape_websites-down",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-blast-render_markdown_report-up",
@@ -446,7 +454,8 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json render_markdown_report",
       "exit_code": 0,
       "status": "PASS",
-      "artifact": "pre-blast-render_markdown_report-up"
+      "artifact": "pre-blast-render_markdown_report-up",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "pre-doctor-hunt",
@@ -457,14 +466,15 @@
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --hunt --json",
       "exit_code": 1,
       "status": "BLOCKED",
-      "artifact": "pre-doctor-hunt"
+      "artifact": "pre-doctor-hunt",
+      "capture_note": "Captured against the immutable base e40aa006 in a separate detached worktree after DEF-48 editing had begun in the working worktree. Content equals a true pre-edit capture (fixed base, additions-only change), but the timing is not pre-edit."
     },
     {
       "id": "post-index",
       "phase": "post",
       "kind": "index",
       "target": "index",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --json",
       "exit_code": 0,
       "status": "PASS",
@@ -475,7 +485,7 @@
       "phase": "post",
       "kind": "drift",
       "target": "drift",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",
@@ -486,7 +496,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/release_smoke.py:verify_bundle",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:verify_bundle",
       "exit_code": 0,
       "status": "PASS",
@@ -497,7 +507,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scripts/release_smoke.py:verify_bundle",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:verify_bundle",
       "exit_code": 0,
       "status": "PASS",
@@ -508,7 +518,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/release_smoke.py:check_expectations",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:check_expectations",
       "exit_code": 0,
       "status": "PASS",
@@ -519,7 +529,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scripts/release_smoke.py:check_expectations",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:check_expectations",
       "exit_code": 0,
       "status": "PASS",
@@ -530,7 +540,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/release_smoke.py:run_release",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:run_release",
       "exit_code": 0,
       "status": "PASS",
@@ -541,7 +551,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scripts/release_smoke.py:run_release",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:run_release",
       "exit_code": 0,
       "status": "PASS",
@@ -552,7 +562,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/release_smoke.py:run_cli",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:run_cli",
       "exit_code": 0,
       "status": "PASS",
@@ -563,7 +573,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scripts/release_smoke.py:run_cli",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:run_cli",
       "exit_code": 0,
       "status": "PASS",
@@ -574,7 +584,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/release_smoke.py:audit_problems",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:audit_problems",
       "exit_code": 0,
       "status": "PASS",
@@ -585,7 +595,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scripts/release_smoke.py:audit_problems",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:audit_problems",
       "exit_code": 0,
       "status": "PASS",
@@ -596,7 +606,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/release_smoke.py:compare_baseline",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:compare_baseline",
       "exit_code": 0,
       "status": "PASS",
@@ -607,7 +617,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scripts/release_smoke.py:compare_baseline",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:compare_baseline",
       "exit_code": 0,
       "status": "PASS",
@@ -618,7 +628,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/acquisition_fixtures.py:fixture_server",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/acquisition_fixtures.py:fixture_server",
       "exit_code": 0,
       "status": "PASS",
@@ -629,7 +639,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/acquisition_fixtures.py:load_manifest",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
       "exit_code": 0,
       "status": "PASS",
@@ -640,7 +650,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scrape_websites",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scrape_websites",
       "exit_code": 0,
       "status": "PASS",
@@ -651,7 +661,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "--direction downstream scrape_websites",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scrape_websites",
       "exit_code": 0,
       "status": "PASS",
@@ -662,7 +672,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "render_markdown_report",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json render_markdown_report",
       "exit_code": 0,
       "status": "PASS",
@@ -673,7 +683,7 @@
       "phase": "post",
       "kind": "doctor",
       "target": "doctor-hunt",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --hunt --hunt-target /home/n4s5ti/Documents/dev/fl0sint-def48-smoke/scripts/release_smoke.py --json",
       "exit_code": 0,
       "status": "DEGRADED",
@@ -684,7 +694,7 @@
       "phase": "post",
       "kind": "drift",
       "target": "drift-final",
-      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "analyzed_commit": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
       "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",
@@ -694,7 +704,7 @@
   "commands": [
     {
       "id": "release-smoke",
-      "command": "python3 scripts/release_smoke.py --report <r> run --revision d5b56a71a6603f65f6e1895f027e125ce55525bb --work-dir /tmp/def48/run-head",
+      "command": "python3 scripts/release_smoke.py --report <r> run --revision 3cfc9d61b8d3c4fc56dec835004735cf270f3ef3 --work-dir <empty dir>",
       "exit_code": 0,
       "status": "PASS",
       "artifact": "release-smoke"
@@ -938,6 +948,18 @@
       {
         "symbol": "scripts/release_smoke.py:negative_controls",
         "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "path": "docs/audit-packet.md",
+        "reason": "Merged in from upstream DEF-90 (work/def-90-packet-validator, separately audited packet docs/audits/DEF-90); not a DEF-48 change."
+      },
+      {
+        "path": "flowsint-enrichers/tests/enrichers/test_audit_packet.py",
+        "reason": "Merged in from upstream DEF-90 (work/def-90-packet-validator, separately audited packet docs/audits/DEF-90); not a DEF-48 change."
+      },
+      {
+        "path": "scripts/audit_packet.py",
+        "reason": "Merged in from upstream DEF-90 (work/def-90-packet-validator, separately audited packet docs/audits/DEF-90); not a DEF-48 change."
       }
     ]
   },

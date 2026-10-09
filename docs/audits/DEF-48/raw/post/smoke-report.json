@@ -2,19 +2,19 @@
   "schema": "release-smoke/1",
   "mode": "run",
   "package": {
-    "revision": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
-    "source_tree": "9117f4c588b7f032c8ad6d2328264a8916c2fd42",
+    "revision": "3cfc9d61b8d3c4fc56dec835004735cf270f3ef3",
+    "source_tree": "2c885dc765371b21b0f75d6061999bcb5d1e8568",
     "wheels": {
       "flowsint_core-1.2.8-py3-none-any.whl": "fb48403fd56a60a4ea8434549cac54d68ab1654a6bb390b75298abd929425107",
       "flowsint_enrichers-1.2.8-py3-none-any.whl": "1842146718879deed7000f29e2496eb39f03cbeca2bc4bab0135fa91985c3626",
       "flowsint_types-1.2.8-py3-none-any.whl": "cb73176b1d96dfbf1c78989d9fb83ab65425dbf7074963fc08be1c85ffe1b24a"
     },
-    "lock_export_sha256": "ed1aaf0d6730225d68b82f101a2b5fb4d13021e7e47092b363ba3d6b71ac916a",
+    "lock_export_sha256": "fd89092806dded4ebc4ccb67f910fa9076f8c8aa73a721cf2386714d16a472aa",
     "uv_lock_sha256": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f",
     "entrypoint": "flowsint-standalone-scraper",
     "python": "Python 3.12.13"
   },
-  "work_dir": "/tmp/def48/run-head",
+  "work_dir": "/home/n4s5ti/.cache/fl0sint-audit/def48/run",
   "cases": [
     {
       "id": "S1",
@@ -22,7 +22,7 @@
       "status": "PASS",
       "problems": [],
       "exit_code": 0,
-      "stdout": "{\"bundle\": \"/tmp/def48/run-head/single/bundle.json\", \"exit_code\": 0, \"jsonl\": \"/tmp/def48/run-head/single/outcomes.jsonl\", \"operation_id\": \"standalone-website-to-text-60bd9147e6ed46768b1d8cf9e1ba2704\", \"report\": \"/tmp/def48/run-head/single/report.md\"}"
+      "stdout": "{\"bundle\": \"/home/n4s5ti/.cache/fl0sint-audit/def48/run/single/bundle.json\", \"exit_code\": 0, \"jsonl\": \"/home/n4s5ti/.cache/fl0sint-audit/def48/run/single/outcomes.jsonl\", \"operation_id\": \"standalone-website-to-text-fb6859c3646f4e6ebaf5f6f242e3325e\", \"report\": \"/home/n4s5ti/.cache/fl0sint-audit/def48/run/single/report.md\"}"
     },
     {
       "id": "S2",
@@ -30,7 +30,7 @@
       "status": "PASS",
       "problems": [],
       "exit_code": 2,
-      "stdout": "{\"bundle\": \"/tmp/def48/run-head/batch/bundle.json\", \"exit_code\": 2, \"jsonl\": \"/tmp/def48/run-head/batch/outcomes.jsonl\", \"operation_id\": \"standalone-website-to-text-3b89086f917a4f928dc5a520e172bced\", \"report\": \"/tmp/def48/run-head/batch/report.md\"}"
+      "stdout": "{\"bundle\": \"/home/n4s5ti/.cache/fl0sint-audit/def48/run/batch/bundle.json\", \"exit_code\": 2, \"jsonl\": \"/home/n4s5ti/.cache/fl0sint-audit/def48/run/batch/outcomes.jsonl\", \"operation_id\": \"standalone-website-to-text-f3cfdee2866a4954aa03988cc3c3fd2e\", \"report\": \"/home/n4s5ti/.cache/fl0sint-audit/def48/run/batch/report.md\"}"
     },
     {
       "id": "S3",
@@ -73,8 +73,8 @@
       "problems": [],
       "rejections": {
         "broken-lineage": [
-          "E_LINEAGE: outcomes[0] (static): observed_link 'http://127.0.0.1:33453/named' is attributed to input-999/9bfdae1694f6",
-          "E_LINEAGE: outcomes[0] (static): observed_link 'http://127.0.0.1:33453/named' is attributed to input-999/9bfdae1694f6"
+          "E_LINEAGE: outcomes[0] (static): observed_link 'http://127.0.0.1:37071/named' is attributed to input-999/c5173c744612",
+          "E_LINEAGE: outcomes[0] (static): observed_link 'http://127.0.0.1:37071/named' is attributed to input-999/c5173c744612"
         ],
         "missing-source-proof": [
           "E_SOURCE_PROOF_MISSING: outcomes[0] (static): success without source proof"
@@ -87,40 +87,40 @@
     }
   ],
   "measurements": {
-    "build_install_seconds": 1.69,
+    "build_install_seconds": 2.19,
     "single": {
-      "wall_seconds": 1.705,
-      "user_cpu_seconds": 1.596,
-      "system_cpu_seconds": 0.086,
-      "peak_rss_kib": 81224,
-      "output_bytes": 28626
+      "wall_seconds": 1.559,
+      "user_cpu_seconds": 1.341,
+      "system_cpu_seconds": 0.108,
+      "peak_rss_kib": 79296,
+      "output_bytes": 28628
     },
     "batch": {
-      "wall_seconds": 0.719,
-      "user_cpu_seconds": 0.669,
-      "system_cpu_seconds": 0.033,
-      "peak_rss_kib": 64588,
+      "wall_seconds": 0.759,
+      "user_cpu_seconds": 0.651,
+      "system_cpu_seconds": 0.043,
+      "peak_rss_kib": 64572,
       "output_bytes": 152834
     },
     "limit": {
-      "wall_seconds": 0.834,
-      "user_cpu_seconds": 0.751,
-      "system_cpu_seconds": 0.046,
-      "peak_rss_kib": 63972,
+      "wall_seconds": 0.668,
+      "user_cpu_seconds": 0.62,
+      "system_cpu_seconds": 0.035,
+      "peak_rss_kib": 64004,
       "output_bytes": 2870
     },
     "cancel": {
-      "wall_seconds": 0.91,
-      "user_cpu_seconds": 0.692,
-      "system_cpu_seconds": 0.052,
-      "peak_rss_kib": 64032,
+      "wall_seconds": 0.788,
+      "user_cpu_seconds": 0.618,
+      "system_cpu_seconds": 0.047,
+      "peak_rss_kib": 64036,
       "output_bytes": 2852
     },
     "invalid": {
-      "wall_seconds": 0.499,
-      "user_cpu_seconds": 0.461,
-      "system_cpu_seconds": 0.029,
-      "peak_rss_kib": 51904,
+      "wall_seconds": 0.508,
+      "user_cpu_seconds": 0.473,
+      "system_cpu_seconds": 0.031,
+      "peak_rss_kib": 51948,
       "output_bytes": 0
     }
   },

@@ -64,14 +64,14 @@
             "confidence": 0.85
         },
         {
-            "from": "Function:scripts/acquisition_fixtures.py:main",
-            "to": "Function:scripts/acquisition_fixtures.py:smoke",
+            "from": "File:scripts/acquisition_fixtures.py",
+            "to": "Function:scripts/acquisition_fixtures.py:main",
             "type": "CALLS",
             "confidence": 0.85
         },
         {
-            "from": "File:scripts/acquisition_fixtures.py",
-            "to": "Function:scripts/acquisition_fixtures.py:main",
+            "from": "Function:scripts/acquisition_fixtures.py:main",
+            "to": "Function:scripts/acquisition_fixtures.py:smoke",
             "type": "CALLS",
             "confidence": 0.85
         }

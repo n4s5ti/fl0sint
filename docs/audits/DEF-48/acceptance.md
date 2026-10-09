@@ -42,3 +42,20 @@ Example outputs are in `examples/`.
 - **Hunt coverage:** 0. Pre-edit hunt is BLOCKED and post-edit hunt is DEGRADED; both are disclosed.
 - **Offline verification:** it proves that output is grounded in the retained bytes, not that the extractor produced it. S2 covers extraction live.
 - **Hosted Python tests job:** blocked by DEF-130.
+
+## Pre-edit capture timing (disclosure, audit finding A48-02)
+
+The `phase: pre` analyses were run against the immutable base `e40aa006` in a separate, detached worktree, **after DEF-48 editing had begun** in the working worktree. Their content equals a true pre-edit capture, because the base is fixed and the change only adds files. Their timing is not pre-edit. Each pre analysis in `packet.json` carries a `capture_note` saying so.
+
+## Independent audit and re-pin (2026-10-09)
+
+A fresh, read-only audit agent reviewed `e40aa006..d5b56a71` (packet `c6eb57bc`, PR head `d4ab2b74`) and returned **pass_with_observations**. It reproduced S1–S8, the wheel digests, `verify`, `suites` and the 11 baseline failures at base.
+
+Findings:
+- **A48-01 (low), wording fixed in `3cfc9d61`.** Offline verify cannot prove origin; source proofs are unsigned.
+- **A48-02 (low), disclosed above.**
+- **A48-03 (info), wording fixed in `3cfc9d61`.** Process spawns are not recorded by the audit hook.
+- **A48-04 (info), wording fixed in `3cfc9d61`.** The `suites` gate excludes mcp-server.
+- **A48-05 (info), open and fail-safe.** Parametrized test ids containing spaces are truncated.
+
+Head re-pinned to `3cfc9d61`, which also merges DEF-90 through `5470ca5c`. Smoke S1–S8, `suites`, `verify --python`, the focused tests and the post-edit pip3r analyses were all re-run there. Enrichers now show 242 passed, which includes the DEF-90 validator tests merged in.
