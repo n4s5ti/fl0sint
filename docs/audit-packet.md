@@ -33,7 +33,7 @@ repository root.
 | Field | Meaning and what the validator checks |
 |---|---|
 | `issue` | `DEF-<n>`. It must equal the directory name. |
-| `base_commit`, `head_commit` | Full SHA-1 values. `base_commit` must be an ancestor of `head_commit`, and `head_commit` must be an ancestor of HEAD. After `head_commit`, only files inside `docs/audits/<ISSUE>/` packet directories may change, whether by commit or by a tracked working-tree edit. Each packet directory is gated separately, so packet directories are also excluded from the scope check. |
+| `base_commit`, `head_commit` | Full SHA-1 values. `base_commit` must be an ancestor of `head_commit`, and `head_commit` must be an ancestor of HEAD. Between `head_commit` and the revision that published the packet, only files inside `docs/audits/<ISSUE>/` directories may change. That revision is the last commit touching the packet; if the packet has uncommitted edits, it is HEAD plus tracked working-tree edits. Later commits on a stacked branch belong to their own packets and do not make this one stale. Each packet directory is gated separately, so packet directories are also excluded from the scope check. |
 | `source_tree` | Must equal `git rev-parse <head_commit>^{tree}`. |
 | `configuration` | `{path: sha256}`. Each digest is recomputed from `git show <head_commit>:<path>`. |
 | `tool_versions` | Non-empty `{tool: version}`. |
@@ -105,8 +105,8 @@ INVALID docs/audits/DEF-90 at <HEAD>
    worktree. Files written into an indexed worktree appear as `file_unindexed` drift.
 3. Copy the outputs into `docs/audits/<ISSUE>/raw/`, set `head_commit`, `source_tree` and the
    post-edit `analyzed_commit` values to the new commit, then recompute the artifact digests.
-4. Commit the packet by itself. A commit that touches only the packet does not make it stale.
-   Any later source commit does, until steps 2–4 are repeated.
+4. Commit the packet by itself. Committing source together with the packet, or between
+   `head_commit` and the packet commit, makes it stale until steps 2–4 are repeated.
 
 ## Release-gate reviewer use
 
