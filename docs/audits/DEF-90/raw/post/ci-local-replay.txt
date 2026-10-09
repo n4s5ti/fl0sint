@@ -1,16 +1,15 @@
-# clean clone at 9ccada545a306481180ec38c76ac363fe617ab5b
+# clean clone at c4b78f3c84b220ee018e9360e59192bc6724e5bb
 #   if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
 #     BASE_SHA="$(git rev-parse HEAD^)"
 #   fi
 #   python3 scripts/audit_packet.py --report "$RUNNER_TEMP/audit-packet-report.json" changed --base "$BASE_SHA"
 #   
 audit packets changed since a59bdadff13e95147b5b7056d4f73dd30122887d: 1
-INVALID docs/audits/DEF-90 at 9ccada545a306481180ec38c76ac363fe617ab5b
-  error E_ARTIFACT_DIGEST: artifacts.acceptance: sha256 mismatch for acceptance.md
+VALID docs/audits/DEF-90 at c4b78f3c84b220ee018e9360e59192bc6724e5bb
   limitation result api-full: FAIL
   limitation result core-full: FAIL
   limitation result post-doctor-hunt: DEGRADED
   limitation result pre-blast-audit_packet: UNKNOWN
   limitation result pre-hunt: BLOCKED
   review: accepted (reviewer=OMP `reviewer` subagent Def90Reviewer (agent id Def90Reviewer; model not reported in its output), independent=True); acceptance is not decided here
-exit=1
+exit=0
