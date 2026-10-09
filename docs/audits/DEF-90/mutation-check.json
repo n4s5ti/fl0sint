@@ -1,7 +1,7 @@
 {
   "target": "scripts/audit_packet.py",
-  "sha256_before": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e",
-  "sha256_after": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e",
+  "sha256_before": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3",
+  "sha256_after": "2364a242c8387df247206aa6f18881dcd3df6ca63df5b4039612f2f43a7a0be3",
   "command": "uv run --no-sync pytest tests/enrichers/test_audit_packet.py -q -p no:cacheprovider -x",
   "mutations": [
     {
@@ -193,6 +193,30 @@
       "killed": true,
       "failing_tests": [
         "FAILED tests/enrichers/test_audit_packet.py::test_case_id_cannot_shadow_a_result_id - AssertionError: assert 'E_SCHEMA' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M17",
+      "description": "staleness measured to HEAD, not the packet revision",
+      "replaced": "packet_rev = published or \"HEAD\"",
+      "with": "packet_rev = \"HEAD\"",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_later_commits_on_a_stacked_branch_do_not_stale_a_published_packet - AssertionError: [{'code': 'E_STALE_HEAD', 'message': 'source changed after head_commit before the packet was published (HEAD): src/app.py'}]"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M18",
+      "description": "rename detection hides source moved into packet",
+      "replaced": "\"diff\", \"--name-only\", \"--no-renames\", head, packet_rev",
+      "with": "\"diff\", \"--name-only\", head, packet_rev",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_moving_source_into_the_packet_is_stale - AssertionError: assert 'E_STALE_HEAD' in set()"
       ],
       "restored_cmp_equal": true
     }

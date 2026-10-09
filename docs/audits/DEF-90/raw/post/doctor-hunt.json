@@ -38,7 +38,7 @@
             "TypeAlias",
             "Namespace"
         ],
-        "fileCount": 2643,
+        "fileCount": 2706,
         "indexStatus": "ready",
         "warnings": []
     },
@@ -52,7 +52,7 @@
             "low": 0,
             "info": 0
         },
-        "durationMs": 2118,
+        "durationMs": 1925,
         "coverage": {
             "commandsDiscovered": 0,
             "commandsProbed": 0,

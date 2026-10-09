@@ -1,4 +1,4 @@
-DEF-90 [S09] is ready for review on `work/def-90-packet-validator`: source is `b9af7f9b` (`feat(audit): validate audit packets locally and in CI`) on base `a59bdadf` (DEF-46), and the packet is in `docs/audits/DEF-90/`. Nothing has been pushed or merged.
+DEF-90 [S09] is ready for review on `work/def-90-packet-validator`: source is `e3b9416f` (initial `b9af7f9b`, then stacked-branch staleness fixes `e8ea3afa` and `e3b9416f`) on base `a59bdadf` (DEF-46), and the packet is in `docs/audits/DEF-90/`. Nothing has been pushed or merged.
 
 **Deliverable**
 * `scripts/audit_packet.py validate <packet-dir>` and `changed --base <ref>`: a stdlib-only development validator for `docs/audits/<ISSUE>/packet.json` (schema `fl0sint.audit-packet/v1`). It checks:
@@ -20,9 +20,9 @@ DEF-90 [S09] is ready for review on `work/def-90-packet-validator`: source is `b
 * Legacy pre-schema packets (DEF-23, DEF-38 to DEF-47, DEF-105) are reported, never passed. A change may add files to them; modifying or deleting their existing evidence fails. DEF-47 is included so that its in-review packet does not block its merge.
 
 **Evidence**
-* 29 focused tests pass and cover all 8 required fixtures. F8 runs the real WebsiteToLinks capture crawl in a subprocess with an audit hook and a positive control.
-* The mutation check killed 16 of 16 mutants and restored the file byte-identically.
-* Enrichers: 185 passed at base and 214 at head.
+* 32 focused tests pass and cover all 8 required fixtures. F8 runs the real WebsiteToLinks capture crawl in a subprocess with an audit hook and a positive control.
+* The mutation check killed 18 of 18 mutants and restored the file byte-identically.
+* Enrichers: 185 passed at base and 217 at head.
 * Types: 54 passed.
 * Core (1 failure) and api (7 failures): the failures are preexisting and identical at base, and are recorded as baseline debt.
 * Blast/drift: isolated index at base and at head, drift 0. The new symbols have no package-source callers, and the `load_manifest` blasts are identical before and after.
