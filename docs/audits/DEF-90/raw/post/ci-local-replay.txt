@@ -1,0 +1,24 @@
+# clean clone: /tmp/def90-replay at 598787846617d548473553b4bb7afa73c78ff65e; status entries: 0
+# run script extracted verbatim from the committed workflow:
+#   if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
+#     BASE_SHA="$(git rev-parse HEAD^)"
+#   fi
+#   python3 scripts/audit_packet.py --report "$RUNNER_TEMP/audit-packet-report.json" changed --base "$BASE_SHA"
+#   
+# env: BASE_SHA=a59bdadff13e95147b5b7056d4f73dd30122887d (pull_request.base.sha) RUNNER_TEMP=/tmp/def90/replay-tmp
+audit packets changed since a59bdadff13e95147b5b7056d4f73dd30122887d: 1
+VALID docs/audits/DEF-90 at 598787846617d548473553b4bb7afa73c78ff65e
+  limitation case T-CI-HOSTED: UNKNOWN
+  limitation result api-full: FAIL
+  limitation result ci-hosted-run: UNKNOWN
+  limitation result core-full: FAIL
+  limitation result post-doctor-hunt: DEGRADED
+  limitation result pre-blast-audit_packet: UNKNOWN
+  limitation result pre-hunt: BLOCKED
+  review: accepted (reviewer=OMP `reviewer` subagent Def90Reviewer (agent id Def90Reviewer; model not reported in its output), independent=True); acceptance is not decided here
+exit=0
+# zero-SHA push fallback (github.event.before all zeros -> HEAD^):
+audit packets changed since b9af7f9b87b8cac8affd990b273008d8af7016f0: 1
+exit=0
+# report file:
+{"mode": "changed", "base": "b9af7f9b87b8cac8affd990b273008d8af7016f0", "rev": "598787846617d548473553b4bb7afa73c78ff65e", "valid": true} [('docs/audits/DEF-90', True)]

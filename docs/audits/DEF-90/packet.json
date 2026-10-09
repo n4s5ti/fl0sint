@@ -235,6 +235,14 @@
       "path": "raw/post/dogfood-negative.txt",
       "sha256": "56441984829697b9e5294b978a4b3f7bd3d057ed0cbbc1ffe476c43d1090d639"
     },
+    "ci-local-replay": {
+      "path": "raw/post/ci-local-replay.txt",
+      "sha256": "0ddde7c64cfd23a50ef7d7f2eeae7ed925d6d46b36481b129dee8d086f5e2ef0"
+    },
+    "linear-summary": {
+      "path": "linear-summary.md",
+      "sha256": "4acc79282cf8cd9265a56c8d98119669f3976e07c560e85402b7614db4592779"
+    },
     "types-full": {
       "path": "raw/post/types-pytest.stdout",
       "sha256": "73a445bc463726de958afae29b0e6733c5cb5456077edaa8cf8a600b38be0a03"
@@ -554,6 +562,13 @@
       "exit_code": 0,
       "status": "PASS",
       "artifact": "dogfood-negative"
+    },
+    {
+      "id": "ci-local-replay",
+      "command": "exact audit-packets `run:` script from the committed workflow, in a clean clone of the first packet commit, BASE_SHA=a59bdadf",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "ci-local-replay"
     },
     {
       "id": "types-full",
