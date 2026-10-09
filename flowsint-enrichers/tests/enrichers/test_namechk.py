@@ -58,6 +58,19 @@ class TestGracefulDegradation:
 # ===================================================================
 # 3. Mocked scan
 # ===================================================================
+def _naminter_available(mod):
+    """Behave as if the optional naminter package is installed, whether or not it is.
+
+    naminter is not a locked dependency, so CI never has it. The scan path is exercised
+    against a mocked Hunter.hunt, and the real Naminter session must never be constructed.
+    """
+    return (
+        patch.object(mod, "HAS_NAMECHK", True),
+        patch.object(mod.Hunter, "__init__", MagicMock(return_value=None)),
+        patch.object(mod.Hunter, "close", AsyncMock(return_value=None)),
+    )
+
+
 class TestScan:
     @pytest.mark.asyncio
     async def test_mocked_scan_returns_found_accounts(self):
@@ -67,7 +80,8 @@ class TestScan:
             {"site": "twitter", "url": "https://twitter.com/testuser", "exists": True},
             {"site": "nonexistent", "url": "https://example.com/nonexistent", "exists": False},
         ]
-        with patch.object(mod.Hunter, "hunt", AsyncMock(return_value=fake_results)):
+        available, init, close = _naminter_available(mod)
+        with available, init, close, patch.object(mod.Hunter, "hunt", AsyncMock(return_value=fake_results)):
             e = ENRICHER_REGISTRY._enrichers["username_to_namechk"]
             enricher = e(sketch_id="test", scan_id="test")
             results = await enricher.scan([
@@ -83,7 +97,8 @@ class TestScan:
         fake_results = [
             {"site": "github", "url": "", "exists": False},
         ]
-        with patch.object(mod.Hunter, "hunt", AsyncMock(return_value=fake_results)):
+        available, init, close = _naminter_available(mod)
+        with available, init, close, patch.object(mod.Hunter, "hunt", AsyncMock(return_value=fake_results)):
             e = ENRICHER_REGISTRY._enrichers["username_to_namechk"]
             enricher = e(sketch_id="test", scan_id="test")
             results = await enricher.scan([
@@ -93,8 +108,8 @@ class TestScan:
     @pytest.mark.asyncio
     async def test_hunt_exception_returns_empty(self):
         import flowsint_enrichers.social.to_namechk as mod
-        with patch.object(mod.Hunter, "hunt", AsyncMock(side_effect=RuntimeError("boom"))), \
-             patch.object(mod.Hunter, "__init__", MagicMock(return_value=None)):
+        available, init, close = _naminter_available(mod)
+        with available, init, close, patch.object(mod.Hunter, "hunt", AsyncMock(side_effect=RuntimeError("boom"))):
             e = ENRICHER_REGISTRY._enrichers["username_to_namechk"]
             enricher = e(sketch_id="test", scan_id="test")
             results = await enricher.scan([
