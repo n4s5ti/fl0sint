@@ -3,6 +3,7 @@ from __future__ import annotations
 import dataclasses
 import hashlib
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 
@@ -265,9 +266,14 @@ def test_models_reject_string_enums_and_generated_promotion():
             was_truncated=False, observations_skipped=0, total_observations_found=1)
 
 
+LIVE_FIXTURE = Path(__file__).parent / "fixtures" / "def45-live-fixture.html"
+# Same bytes as docs/audits/DEF-45/raw/scripts/def45-live-fixture.html (DEF-45 checksums.json).
+LIVE_FIXTURE_SHA256 = "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e"
+
+
 def test_live_fixture_exercises_expected_acceptance_surface():
-    with open("/tmp/def45-live-fixture.html", "rb") as fixture:
-        body = fixture.read()
+    body = LIVE_FIXTURE.read_bytes()
+    assert hashlib.sha256(body).hexdigest() == LIVE_FIXTURE_SHA256
     result = extract(body)
     values = {o.value: o for o in result.observations}
     assert "hidden@directory.test" not in values
