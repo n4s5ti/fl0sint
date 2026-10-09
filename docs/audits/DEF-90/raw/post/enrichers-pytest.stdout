@@ -12,7 +12,7 @@
     class NodeMetadata(BaseModel):
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-217 passed, 2 warnings in 105.55s (0:01:45)
+217 passed, 2 warnings in 34.86s
 ERROR:root:Failed to batch insert logs: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5433 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
 connection to server at "localhost" (127.0.0.1), port 5433 failed: Connection refused

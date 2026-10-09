@@ -7,14 +7,14 @@
         "warnings": [
             "No workspace packages with recognised entry files — sidecar will be empty"
         ],
-        "generation": "sha256:d8f8f4fd882b1b0b8e3a9f384242d645079f8f48e6419cc1734aead6534f1320",
+        "generation": "sha256:dbec05f1a4a4c3ad111d8c9b7e81c1625e3363caca28459d18dcd4fda1583e41",
         "planAction": "incremental",
         "deltaAdded": 0,
-        "deltaModified": 2,
+        "deltaModified": 3,
         "deltaDeleted": 0,
         "deltaRenamed": 0,
         "deltaUnreadable": 0,
-        "indexLatencyMs": 52654,
+        "indexLatencyMs": 41812,
         "filesParsed": 2706
     }
 }

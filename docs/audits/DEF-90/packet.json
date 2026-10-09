@@ -3,8 +3,8 @@
   "issue": "DEF-90",
   "title": "[S09] Enforce audit-packet validity locally and in the existing CI workflow",
   "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
-  "head_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
-  "source_tree": "5e830d7e4f7303b859d7518b877326a5551e4bd2",
+  "head_commit": "d9a3b17f9f9e035653d847507352674beee41463",
+  "source_tree": "56785381c23615201b429ce20ee426e009158e37",
   "configuration": {
     ".github/workflows/tests.yml": "a4ff0991b99c2c0c55af69fc7bee566e3fcfb45a497f4c029ed582af997692ee",
     "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
@@ -69,7 +69,7 @@
     },
     "post-index": {
       "path": "raw/post/index.json",
-      "sha256": "bbde773fcaf8c114ce0af2d8a06efb207d8f5905250b548836af1bd1dbc8096d"
+      "sha256": "3ee2f5fe80e3382b14195213fb6a02255a831ab0aafc817e631e1e38352cbc3d"
     },
     "post-index-stderr": {
       "path": "raw/post/index.stderr",
@@ -109,7 +109,7 @@
     },
     "post-blast-validate_changed-down": {
       "path": "raw/post/blast-validate_changed-down.json",
-      "sha256": "cd14542f8f30103b069ba21beefa239d93e8c9c6c2500206ff34f9f3802dd9d8"
+      "sha256": "d8ae33b6fa762cabb8ee4884579baea1966660f73254c41ea816cf9702b34ccf"
     },
     "post-blast-validate_changed-down-stderr": {
       "path": "raw/post/blast-validate_changed-down.stderr",
@@ -125,7 +125,7 @@
     },
     "post-blast-main-down": {
       "path": "raw/post/blast-main-down.json",
-      "sha256": "310c7ff6b738a14dfda75b5c859489004ffdbb340c013f8ba2652d14d4d4f985"
+      "sha256": "66adb4992b04daea261a966ad2225ea67aaae5d8bd338375b27c7ecb4ee9504d"
     },
     "post-blast-main-down-stderr": {
       "path": "raw/post/blast-main-down.stderr",
@@ -165,7 +165,7 @@
     },
     "post-doctor-hunt": {
       "path": "raw/post/doctor-hunt.json",
-      "sha256": "3d3f619a95f7bc6d9feae035d5af0d38cd0453315e951cb7c2eea2dfa8a75795"
+      "sha256": "8ed97323406a3a9013be6ef0e4602f0c4e1111304298f52bb5b429a187b53519"
     },
     "post-doctor-hunt-stderr": {
       "path": "raw/post/doctor-hunt.stderr",
@@ -185,11 +185,11 @@
     },
     "enrichers-full-head": {
       "path": "raw/post/enrichers-pytest.stdout",
-      "sha256": "2fa8ab5175129ea8563b16098728278c56364b6dbf6945b21dd8a4f74e6b57e1"
+      "sha256": "04facada7a97bbea2a3b6e5c740ceda43d61ee020095c1fb5ac66c81c98b5190"
     },
     "focused-tests": {
       "path": "raw/post/focused-pytest.stdout",
-      "sha256": "e8eae18366980d3f92ccbeba13d51e29a12a8bed8884f4bb035e18fc7ed04c7e"
+      "sha256": "c3bfe68d234a660547d9de9426a4594d7cd2d25d0ceaf4dec7ba143d68c837b0"
     },
     "mutation-check": {
       "path": "mutation-check.json",
@@ -201,7 +201,7 @@
     },
     "cli-smoke": {
       "path": "raw/post/cli-smoke.txt",
-      "sha256": "866bebacf57417fbe90225fee91bfe54445bc0f1cce9f520e902f5312f4e3abe"
+      "sha256": "d1e2558cc38599c48bd34771e52db071d39e56c32f9c45b2c40fa4ff9d039e98"
     },
     "ci-workflow-trace": {
       "path": "raw/post/ci-workflow-trace.json",
@@ -278,7 +278,7 @@
   },
   "index": {
     "mode": "isolated-worktree (pip3r graphos --index --cwd <worktree>, rebuilt at head_commit)",
-    "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+    "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
     "drift": "post-drift"
   },
   "analyses": [
@@ -342,7 +342,7 @@
       "phase": "post",
       "kind": "index",
       "target": "isolated head index",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --json",
       "exit_code": 0,
       "status": "PASS",
@@ -353,7 +353,7 @@
       "phase": "post",
       "kind": "drift",
       "target": "isolated head index",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",
@@ -364,7 +364,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_packet",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:validate_packet",
       "exit_code": 0,
       "status": "PASS",
@@ -375,7 +375,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_packet",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:validate_packet",
       "exit_code": 0,
       "status": "PASS",
@@ -386,7 +386,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_changed",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:validate_changed",
       "exit_code": 0,
       "status": "PASS",
@@ -397,7 +397,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:validate_changed",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:validate_changed",
       "exit_code": 0,
       "status": "PASS",
@@ -408,7 +408,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:main",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:main",
       "exit_code": 0,
       "status": "PASS",
@@ -419,7 +419,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:main",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:main",
       "exit_code": 0,
       "status": "PASS",
@@ -430,7 +430,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:observed_status",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/audit_packet.py:observed_status",
       "exit_code": 0,
       "status": "PASS",
@@ -441,7 +441,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/audit_packet.py:observed_status",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/audit_packet.py:observed_status",
       "exit_code": 0,
       "status": "PASS",
@@ -452,7 +452,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/acquisition_fixtures.py:load_manifest",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
       "exit_code": 0,
       "status": "PASS",
@@ -463,7 +463,7 @@
       "phase": "post",
       "kind": "blast",
       "target": "scripts/acquisition_fixtures.py:load_manifest",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json --direction downstream scripts/acquisition_fixtures.py:load_manifest",
       "exit_code": 0,
       "status": "PASS",
@@ -474,7 +474,7 @@
       "phase": "post",
       "kind": "doctor",
       "target": "doctor --hunt --hunt-target scripts/audit_packet.py",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --hunt --hunt-target /home/n4s5ti/Documents/dev/fl0sint-def90-packet/scripts/audit_packet.py --json",
       "exit_code": 0,
       "status": "DEGRADED",
@@ -485,7 +485,7 @@
       "phase": "post",
       "kind": "drift",
       "target": "isolated head index (after all post analyses)",
-      "analyzed_commit": "e3b9416f3771f69a4ea6ac39b1f9de277afdaa2e",
+      "analyzed_commit": "d9a3b17f9f9e035653d847507352674beee41463",
       "command": "timeout 300 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def90-packet --no-auto-index --json",
       "exit_code": 0,
       "status": "PASS",

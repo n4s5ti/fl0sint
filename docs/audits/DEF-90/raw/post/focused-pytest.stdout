@@ -43,6 +43,6 @@ PASSED tests/enrichers/test_audit_packet.py::test_configuration_digest_is_recomp
 PASSED tests/enrichers/test_audit_packet.py::test_changed_scope_cli_validates_packets_and_freezes_legacy_evidence
 PASSED tests/enrichers/test_audit_packet.py::test_scraper_runtime_does_not_import_or_invoke_validator[runtime]
 PASSED tests/enrichers/test_audit_packet.py::test_scraper_runtime_does_not_import_or_invoke_validator[control]
-32 passed, 2 warnings in 17.53s
+32 passed, 2 warnings in 20.03s
 /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/neo4j/_sync/driver.py:547: DeprecationWarning: Relying on Driver's destructor to close the session is deprecated. Please make sure to close the session. Use it as a context (`with` statement) or make sure to call `.close()` explicitly. Future versions of the driver will not close drivers automatically.
 exit=0

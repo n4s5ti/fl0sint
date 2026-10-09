@@ -25,6 +25,15 @@
             "content": "def main(argv=None):     parser = argparse.ArgumentParser(description=__doc__)     parser.add_argument(\"--repo\", default=\".\", help=\"repository root (default: .)\")     parser.add_argument(\"--report\", help=\"also write the JSON report to this path\")     parser.add_argument(\"--json\", action=\"store_true\", help=\"print the JSON report\")     sub = parser.add_subparsers(dest=\"command\", required=True)     one = sub.add_parser(\"validate\", help=\"validate one packet directory\")     one.add_argument(\"packet_dir\")     changed = sub.add_parser(\"changed\", help=\"validate packets touched since BASE\")     changed.add_argument(\"--base\", required=True, help=\"base ref or commit\")     args = parser.parse_args(argv)     root = Path(args.repo).resolve()     try:         if args.command == \"validate\":             report = validate_packet(root, Path(args.packet_dir).resolve())             ok = report[\"packet_valid\"]         else:             report = validate_changed(root, args.base)             ok = report[\"valid\"]     except GitError as exc:         print(f\"error: {exc}\", file=sys.stderr)         return 2     if args.report:         Path(args.report).write_text(json.dumps(report, indent=2) + \"\\n\", encoding=\"utf-8\")     if args.json:         print(json.dumps(report, indent=2))     elif args.command == \"validate\":         _print_packet(report, sys.stdout)     else:         print(f\"audit packets changed since {report['base']}: {len(report['packets'])}\")         for packet in report[\"packets\"]:             _print_packet(packet, sys.stdout)         for path in report[\"unvalidated_audit_files\"]:             print(f\"UNVALIDATED {path}: not inside an issue packet directory\")     return 0 if ok else 1"
         },
         {
+            "id": "Method:scripts/audit_packet.py:Checker.error#2",
+            "name": "error",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Method",
+            "startLine": 104,
+            "endLine": 105,
+            "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
+        },
+        {
             "id": "Function:scripts/audit_packet.py:git_bytes",
             "name": "git_bytes",
             "filePath": "scripts/audit_packet.py",
@@ -230,15 +239,6 @@
             "startLine": 760,
             "endLine": 781,
             "content": "def _print_packet(report, out):     if report.get(\"legacy\"):         print(f\"LEGACY {report['packet']}: pre-schema packet, not validated (no PASS claimed)\", file=out)         for err in report[\"errors\"]:             print(f\"  error {err['code']}: {err['message']}\", file=out)         return     verdict = \"VALID\" if report[\"packet_valid\"] else \"INVALID\"     print(f\"{verdict} {report['packet']} at {report['rev']}\", file=out)     for err in report[\"errors\"]:         print(f\"  error {err['code']}: {err['message']}\", file=out)     for warn in report[\"warnings\"]:         print(f\"  warning {warn['code']}: {warn['message']}\", file=out)     for item in report[\"non_pass_results\"]:         print(f\"  limitation {item['source']} {item['id']}: {item['status']}\", file=out)     for path in report[\"requires_human_review\"]:         print(f\"  human review required: {path}\", file=out)     review = report.get(\"review\") or {}     print(         f\"  review: {review.get('status')} (reviewer={review.get('reviewer')}, \"         f\"independent={review.get('independent')}); acceptance is not decided here\",         file=out,     )"
-        },
-        {
-            "id": "Method:scripts/audit_packet.py:Checker.error#2",
-            "name": "error",
-            "filePath": "scripts/audit_packet.py",
-            "nodeType": "Method",
-            "startLine": 104,
-            "endLine": 105,
-            "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
         }
     ],
     "edges": [
@@ -261,12 +261,6 @@
             "confidence": 0.85
         },
         {
-            "from": "Function:scripts/audit_packet.py:validate_packet",
-            "to": "Method:scripts/audit_packet.py:Checker.error#2",
-            "type": "CALLS",
-            "confidence": 0.85
-        },
-        {
             "from": "Function:scripts/audit_packet.py:validate_changed",
             "to": "Function:scripts/audit_packet.py:git",
             "type": "CALLS",
@@ -281,6 +275,12 @@
         {
             "from": "Function:scripts/audit_packet.py:validate_packet",
             "to": "Function:scripts/audit_packet.py:_validate",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/audit_packet.py:validate_packet",
+            "to": "Method:scripts/audit_packet.py:Checker.error#2",
             "type": "CALLS",
             "confidence": 0.85
         },
@@ -412,6 +412,15 @@
                     "startLine": 784,
                     "endLine": 819,
                     "content": "def main(argv=None):     parser = argparse.ArgumentParser(description=__doc__)     parser.add_argument(\"--repo\", default=\".\", help=\"repository root (default: .)\")     parser.add_argument(\"--report\", help=\"also write the JSON report to this path\")     parser.add_argument(\"--json\", action=\"store_true\", help=\"print the JSON report\")     sub = parser.add_subparsers(dest=\"command\", required=True)     one = sub.add_parser(\"validate\", help=\"validate one packet directory\")     one.add_argument(\"packet_dir\")     changed = sub.add_parser(\"changed\", help=\"validate packets touched since BASE\")     changed.add_argument(\"--base\", required=True, help=\"base ref or commit\")     args = parser.parse_args(argv)     root = Path(args.repo).resolve()     try:         if args.command == \"validate\":             report = validate_packet(root, Path(args.packet_dir).resolve())             ok = report[\"packet_valid\"]         else:             report = validate_changed(root, args.base)             ok = report[\"valid\"]     except GitError as exc:         print(f\"error: {exc}\", file=sys.stderr)         return 2     if args.report:         Path(args.report).write_text(json.dumps(report, indent=2) + \"\\n\", encoding=\"utf-8\")     if args.json:         print(json.dumps(report, indent=2))     elif args.command == \"validate\":         _print_packet(report, sys.stdout)     else:         print(f\"audit packets changed since {report['base']}: {len(report['packets'])}\")         for packet in report[\"packets\"]:             _print_packet(packet, sys.stdout)         for path in report[\"unvalidated_audit_files\"]:             print(f\"UNVALIDATED {path}: not inside an issue packet directory\")     return 0 if ok else 1"
+                },
+                {
+                    "id": "Method:scripts/audit_packet.py:Checker.error#2",
+                    "name": "error",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Method",
+                    "startLine": 104,
+                    "endLine": 105,
+                    "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
                 },
                 {
                     "id": "Function:scripts/audit_packet.py:git_bytes",
@@ -619,15 +628,6 @@
                     "startLine": 760,
                     "endLine": 781,
                     "content": "def _print_packet(report, out):     if report.get(\"legacy\"):         print(f\"LEGACY {report['packet']}: pre-schema packet, not validated (no PASS claimed)\", file=out)         for err in report[\"errors\"]:             print(f\"  error {err['code']}: {err['message']}\", file=out)         return     verdict = \"VALID\" if report[\"packet_valid\"] else \"INVALID\"     print(f\"{verdict} {report['packet']} at {report['rev']}\", file=out)     for err in report[\"errors\"]:         print(f\"  error {err['code']}: {err['message']}\", file=out)     for warn in report[\"warnings\"]:         print(f\"  warning {warn['code']}: {warn['message']}\", file=out)     for item in report[\"non_pass_results\"]:         print(f\"  limitation {item['source']} {item['id']}: {item['status']}\", file=out)     for path in report[\"requires_human_review\"]:         print(f\"  human review required: {path}\", file=out)     review = report.get(\"review\") or {}     print(         f\"  review: {review.get('status')} (reviewer={review.get('reviewer')}, \"         f\"independent={review.get('independent')}); acceptance is not decided here\",         file=out,     )"
-                },
-                {
-                    "id": "Method:scripts/audit_packet.py:Checker.error#2",
-                    "name": "error",
-                    "filePath": "scripts/audit_packet.py",
-                    "nodeType": "Method",
-                    "startLine": 104,
-                    "endLine": 105,
-                    "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
                 }
             ]
         }
@@ -679,15 +679,6 @@
             "label": "LIKELY AFFECTED",
             "symbols": [
                 {
-                    "id": "Method:scripts/audit_packet.py:Checker.error#2",
-                    "name": "error",
-                    "filePath": "scripts/audit_packet.py",
-                    "nodeType": "Method",
-                    "startLine": 104,
-                    "endLine": 105,
-                    "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
-                },
-                {
                     "id": "Function:scripts/audit_packet.py:git",
                     "name": "git",
                     "filePath": "scripts/audit_packet.py",
@@ -704,6 +695,15 @@
                     "startLine": 216,
                     "endLine": 271,
                     "content": "def _validate(c, report):     root, packet_dir = c.root, c.packet_dir     try:         rel_packet = packet_dir.relative_to(root).as_posix()     except ValueError:         c.error(\"E_PACKET_PATH\", f\"{packet_dir} is outside the repository {root}\")         return     report[\"packet\"] = rel_packet     report[\"rev\"] = git(root, \"rev-parse\", \"HEAD\").strip()     manifest_path = packet_dir / PACKET_FILE     if not manifest_path.is_file():         c.error(\"E_PACKET_MISSING\", f\"{rel_packet}/{PACKET_FILE} does not exist\")         return     manifest = _load_json(manifest_path.read_bytes())     if not isinstance(manifest, dict):         c.error(\"E_SCHEMA\", f\"{PACKET_FILE} is not a JSON object\")         return     if manifest.get(\"schema\") != SCHEMA:         c.error(\"E_SCHEMA\", f\"schema must be {SCHEMA!r}\")         return     issue = c.field(manifest, \"issue\", str, \"packet\")     report[\"issue\"] = issue     if issue is not None and (not ISSUE_RE.fullmatch(issue) or issue != packet_dir.name):         c.error(\"E_ISSUE\", f\"issue {issue!r} must be DEF-<n> and equal the directory name {packet_dir.name!r}\")     base, head = _check_revisions(c, manifest)     artifacts = _check_artifacts(c, manifest)     capabilities = _check_capabilities(c, manifest)     versions = c.field(manifest, \"tool_versions\", dict, \"packet\")     if versions is not None and (         not versions or not all(isinstance(v, str) and v.strip() for v in versions.values())     ):         c.error(\"E_SCHEMA\", \"packet.tool_versions: expected non-empty mapping of name to version\")     if head:         _check_configuration(c, manifest, head)     results = {}     _check_analyses(c, manifest, base, head, artifacts, capabilities, results)     _check_commands(c, manifest, artifacts, capabilities, results)     _check_disclosure(c, manifest, results, report)     cases = _check_cases(c, manifest, results, capabilities)     changed = _changed_paths(c, base, head) if base and head else []     _check_scope(c, manifest, changed)     _check_labels(c, manifest, changed, report)     _check_mutations(c, manifest, head, results)     _check_findings(c, manifest)     report[\"baseline_debt\"] = _check_debt(c, manifest, results)     report[\"review\"] = _check_review(c, manifest)     _check_rollback(c, manifest)     report[\"non_pass_results\"] = [         {\"id\": ident, \"source\": \"case\" if ident in cases else \"result\", \"status\": status}         for ident, status in sorted({**results, **cases}.items())         if status != \"PASS\"     ]"
+                },
+                {
+                    "id": "Method:scripts/audit_packet.py:Checker.error#2",
+                    "name": "error",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Method",
+                    "startLine": 104,
+                    "endLine": 105,
+                    "content": "    def error(self, code, message):         self.errors.append({\"code\": code, \"message\": message})"
                 }
             ]
         },
