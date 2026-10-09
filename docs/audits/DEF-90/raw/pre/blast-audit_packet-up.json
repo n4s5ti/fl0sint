@@ -1,0 +1,38 @@
+{
+    "symbol": "audit_packet",
+    "repo": "fl0sint-def90-packet",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": null,
+    "symbols": [],
+    "edges": [],
+    "files": [],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+        "repo": "fl0sint-def90-packet",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/.gitnexus/lbug",
+        "symbol": "audit_packet",
+        "rootSymbols": 0,
+        "totalSymbols": 0,
+        "totalEdges": 0,
+        "filesMatched": 0,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "reason": "target symbol not indexed",
+    "hint": "No indexed definition was found for \"audit_packet\". The index may omit this language construct; rebuild or use a supported declaration form before relying on impact results.",
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "target-symbol-unresolved"
+    ],
+    "indexStatus": "ready"
+}

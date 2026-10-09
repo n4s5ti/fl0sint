@@ -1,0 +1,200 @@
+{
+  "target": "scripts/audit_packet.py",
+  "sha256_before": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e",
+  "sha256_after": "068e16c48635b3697f06bda6620104e77622b91305b072973692d56458c6ce3e",
+  "command": "uv run --no-sync pytest tests/enrichers/test_audit_packet.py -q -p no:cacheprovider -x",
+  "mutations": [
+    {
+      "id": "M1",
+      "description": "blast payload semantics ignored",
+      "replaced": "if kind == \"blast\" and \"risk\" in payload:",
+      "with": "if kind == \"blastX\" and \"risk\" in payload:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_unknown_blast_with_exit_zero_is_not_accepted_as_pass - AssertionError: assert 'E_SEMANTIC_MISMATCH' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M2",
+      "description": "post-head source commits not stale",
+      "replaced": "    if newer:\n",
+      "with": "    if False:\n",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_source_change_after_head_commit_is_stale - AssertionError: assert 'E_STALE_HEAD' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M3",
+      "description": "untracked files excluded from scope",
+      "replaced": "committed + [f\"untracked:{p}\" for p in untracked]",
+      "with": "committed",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_untracked_file_outside_scope_is_flagged - AssertionError: assert 'E_SCOPE_PATH' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M4",
+      "description": "SKIP accepted for required cases",
+      "replaced": "not in (\"PASS\", \"NOT_APPLICABLE\"):",
+      "with": "not in (\"PASS\", \"NOT_APPLICABLE\", \"SKIP\"):",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_required_case_failure_is_not_hidden_by_green_totals[SKIP] - AssertionError: assert {'E_AGGREGATE...ASE_NOT_PASS'} <= {'E_AGGREGATE_MISMATCH'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M5",
+      "description": "NOT_APPLICABLE ignores capability flag",
+      "replaced": "capabilities.get(cap) is not False",
+      "with": "False",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_disabled_capability_permits_only_its_own_checks_to_be_not_applicable - AssertionError: assert 'E_NOT_APPLICABLE' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M6",
+      "description": "analysis revision not checked",
+      "replaced": "if analyzed is not None and expected and analyzed != expected:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_stale_index_and_analysis_metadata_are_rejected - AssertionError: assert {'E_STALE_ANA..._STALE_INDEX'} <= {'E_STALE_INDEX'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M7",
+      "description": "label self-approval allowed",
+      "replaced": "if {\"approved\", \"accepted\", \"approved_by\"} & set(entry):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_fixture_label_change_is_surfaced_and_cannot_self_approve - AssertionError: assert 'E_LABEL_SELF_APPROVAL' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M8",
+      "description": "pre-edit blast not required",
+      "replaced": "REQUIRED_ANALYSES = {\"pre\": (\"blast\",),",
+      "with": "REQUIRED_ANALYSES = {\"pre\": (),",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_missing_pre_edit_report_is_rejected - AssertionError: assert 'E_PRE_MISSING' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M9",
+      "description": "case_totals not compared",
+      "replaced": "if counts.get(status, 0) != value:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_required_case_failure_is_not_hidden_by_green_totals[FAIL] - AssertionError: assert {'E_AGGREGATE...ASE_NOT_PASS'} <= {'E_CASE_NOT_PASS'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M10",
+      "description": "PASS evidence status not checked",
+      "replaced": "elif status == \"PASS\" and results[ref] != \"PASS\":",
+      "with": "elif False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_unknown_blast_with_exit_zero_is_not_accepted_as_pass - AssertionError: assert 'E_CASE_EVIDENCE' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M11",
+      "description": "unrecognized payload fails open",
+      "replaced": "if not isinstance(payload, dict) or not RECOGNIZED[kind](payload):",
+      "with": "if not isinstance(payload, dict) or False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_unrecognizable_payload_declared_pass_is_rejected[post-blast-{\"error\": \"index unavailable\"}] - AssertionError: assert 'E_SEMANTIC_MISMATCH' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M12",
+      "description": "legacy evidence rewrite allowed",
+      "replaced": "        if status != \"A\":\n",
+      "with": "        if False:\n",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_changed_scope_cli_validates_packets_and_freezes_legacy_evidence - AssertionError: assert [] == ['E_LEGACY_EVIDENCE_CHANGED']"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M13",
+      "description": "waived cases hidden from report",
+      "replaced": "for ident, status in sorted({**results, **cases}.items())",
+      "with": "for ident, status in sorted(results.items())",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_disabled_capability_permits_only_its_own_checks_to_be_not_applicable - AssertionError: assert {'id': 'G1', 'source': 'case', 'status': 'NOT_APPLICABLE'} in []"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M14",
+      "description": "root fixtures not label-gated",
+      "replaced": "LABEL_PATTERNS = (\"fixtures/*\", \"*/fixtures/*\")",
+      "with": "LABEL_PATTERNS = (\"*/fixtures/*\",)",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_fixture_label_change_is_surfaced_and_cannot_self_approve - AssertionError: assert ['tests/fixtures/labels.json'] == ['fixtures/ro.../labels.json']"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M15",
+      "description": "legacy freeze dropped when a manifest is added",
+      "replaced": "            report[\"errors\"].extend(errors)\n",
+      "with": "",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_changed_scope_cli_validates_packets_and_freezes_legacy_evidence - AssertionError: assert 'E_LEGACY_EVIDENCE_CHANGED' in {'E_ARTIFACT_MISSING', 'E_ISSUE'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M16",
+      "description": "case/result id collision allowed",
+      "replaced": "        if ident in results:\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides",
+      "with": "        if False:\n            c.error(\"E_SCHEMA\", f\"{where}: case id collides",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_audit_packet.py::test_case_id_cannot_shadow_a_result_id - AssertionError: assert 'E_SCHEMA' in set()"
+      ],
+      "restored_cmp_equal": true
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/.gitnexus/lbug",
+        "success": true,
+        "warnings": [
+            "No workspace packages with recognised entry files — sidecar will be empty"
+        ],
+        "generation": "sha256:8a5b42de716bea0fb0c372fbe08b2424847b643cd1fc2ff2737cc3b420c07ce2",
+        "planAction": "incremental",
+        "deltaAdded": 3,
+        "deltaModified": 0,
+        "deltaDeleted": 0,
+        "deltaRenamed": 0,
+        "deltaUnreadable": 0,
+        "indexLatencyMs": 47921,
+        "filesParsed": 2643
+    }
+}

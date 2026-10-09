@@ -1,0 +1,59 @@
+{
+  "workflow": ".github/workflows/tests.yml",
+  "rev": "b9af7f9b87b8cac8affd990b273008d8af7016f0",
+  "triggers": {
+    "pull_request": null,
+    "push": {
+      "branches": [
+        "main"
+      ]
+    }
+  },
+  "jobs": [
+    "audit-packets",
+    "test"
+  ],
+  "audit_packets_job": {
+    "permissions": {
+      "contents": "read"
+    },
+    "checkout": {
+      "name": "Checkout repository",
+      "uses": "actions/checkout@v6",
+      "with": {
+        "ref": "${{ github.event.pull_request.head.sha || github.sha }}",
+        "fetch-depth": 0
+      }
+    },
+    "validate_env": {
+      "BASE_SHA": "${{ github.event.pull_request.base.sha || github.event.before }}"
+    },
+    "validate_run": "if [ -z \"$BASE_SHA\" ] || [ \"$BASE_SHA\" = \"0000000000000000000000000000000000000000\" ]; then\n  BASE_SHA=\"$(git rev-parse HEAD^)\"\nfi\npython3 scripts/audit_packet.py --report \"$RUNNER_TEMP/audit-packet-report.json\" changed --base \"$BASE_SHA\"\n",
+    "publish": {
+      "name": "Publish audit packet report",
+      "if": "always()",
+      "uses": "actions/upload-artifact@v4",
+      "with": {
+        "name": "audit-packet-report",
+        "path": "${{ runner.temp }}/audit-packet-report.json",
+        "if-no-files-found": "warn"
+      }
+    }
+  },
+  "validator_tests_run_in": {
+    "job": "test",
+    "command": "make test",
+    "via": "Makefile test -> <pkg>-enrichers pytest discovers tests/enrichers/test_audit_packet.py"
+  },
+  "checks": {
+    "runs_on_pull_request": true,
+    "runs_on_push_main": true,
+    "full_history": true,
+    "reviews_pr_head_not_merge_commit": true,
+    "zero_sha_fallback": true,
+    "report_published_always": true,
+    "read_only_token": true,
+    "no_secrets_or_services": true
+  },
+  "all_checks_pass": true
+}
