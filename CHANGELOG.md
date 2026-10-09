@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **DEF-90 (S09) audit-packet validator**: `scripts/audit_packet.py validate|changed`, a
+  stdlib-only development checker for `docs/audits/<ISSUE>/packet.json`. It checks artifact
+  digests, base/head/index freshness, pip3r semantic status (exit 0 is not treated as PASS),
+  required cases, scope drift including untracked files, mutations, findings, and
+  undeclared or self-approved fixture-label changes. The new **Audit packet validity** CI
+  job runs it on changed packets and publishes the JSON report. Review acceptance stays
+  outside the tool. See `docs/audit-packet.md`.
 - Reviewed operation/caller/scope-bound local source retention, exact UTF-8 HTML raw-byte to
   normalized-character spans, deduplicated content with occurrence lineage, authorized
   resolution, explicit HOLD/REVIEW recovery, and shared WebsiteToText/connector capture.
