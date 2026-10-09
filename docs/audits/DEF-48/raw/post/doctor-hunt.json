@@ -1,0 +1,70 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 2726,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "hunt": {
+        "findings": [],
+        "counts": {
+            "total": 0,
+            "critical": 0,
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "info": 0
+        },
+        "durationMs": 108,
+        "coverage": {
+            "commandsDiscovered": 0,
+            "commandsProbed": 0,
+            "jsonContractsExercised": 0,
+            "delegatedSurfacesCaptured": 0,
+            "spawns": 1,
+            "discoveryCap": null,
+            "commands": [],
+            "target": {
+                "command": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/scripts/release_smoke.py",
+                "argv": []
+            }
+        }
+    }
+}

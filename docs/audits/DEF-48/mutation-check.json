@@ -1,0 +1,260 @@
+{
+  "target": "scripts/release_smoke.py",
+  "sha256_before": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f",
+  "sha256_after": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f",
+  "command": ".venv/bin/python -m pytest tests/enrichers/test_release_smoke.py -q -p no:cacheprovider -x",
+  "mutations": [
+    {
+      "id": "M1",
+      "description": "observation lineage not checked",
+      "replaced": "if item.get(\"occurrence_id\") != occurrence or item.get(\"input_ref\") != proof.get(\"input_ref\"):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_broken_observation_lineage_fails - AssertionError: assert 'E_LINEAGE' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M2",
+      "description": "proof context not checked",
+      "replaced": "            if context.get(field) != value:",
+      "with": "            if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_proof_context_must_match_the_outcome - assert False"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M4",
+      "description": "retained digest not checked",
+      "replaced": "if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_missing_or_altered_retained_body_fails - AssertionError: assert 'E_SOURCE_DIGEST' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M5",
+      "description": "error without diagnostic accepted",
+      "replaced": "if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_error_and_empty_success_stay_distinct - AssertionError: assert 'E_ERROR_EMPTY' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M6",
+      "description": "jsonl not compared",
+      "replaced": "if lines is not None and lines != expected_lines:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_jsonl_and_report_must_agree_with_bundle - AssertionError: assert 'E_JSONL' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M7",
+      "description": "report render not compared",
+      "replaced": "if render is not None and report != render(bundle):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_jsonl_and_report_must_agree_with_bundle - AssertionError: assert 'E_REPORT' in {'E_JSONL'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M8",
+      "description": "fixture digest not compared",
+      "replaced": "if artifact[\"content_digest\"] != final[\"sha256\"]:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_retained_bytes_must_be_the_fixture_bytes - AssertionError: assert 'E_SOURCE_DIGEST' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M9",
+      "description": "outcome status/code not compared",
+      "replaced": "if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_error_and_empty_success_stay_distinct - AssertionError: assert 'E_OUTCOME' in {'E_ERROR_EMPTY'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M10",
+      "description": "forbidden imports allowed",
+      "replaced": "elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:",
+      "with": "elif False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_audit_rejects_service_imports_external_connects_and_silence - AssertionError: assert []"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M11",
+      "description": "silent audit accepted",
+      "replaced": "if not any(event[\"event\"] == \"import\" for event in events):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_audit_rejects_service_imports_external_connects_and_silence - assert []"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M12",
+      "description": "baseline debt dropped",
+      "replaced": "\"baseline_debt\": sorted(current & known),",
+      "with": "\"baseline_debt\": [],",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_baseline_failures_stay_visible_and_new_failures_fail - AssertionError: assert {'new_failure...atus': 'FAIL'} == {'new_failure...atus': 'FAIL'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M13",
+      "description": "new failures pass",
+      "replaced": "\"status\": \"FAIL\" if current - known else \"PASS\",",
+      "with": "\"status\": \"PASS\",",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_baseline_failures_stay_visible_and_new_failures_fail - AssertionError: assert {'new_failure...atus': 'PASS'} == {'new_failure...atus': 'FAIL'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M14",
+      "description": "log lines parsed as failures",
+      "replaced": "FAILURE_LINE = re.compile(r\"^(?:FAILED|ERROR) ([^\\s:]+\\.py(?:::\\S+)?)(?:\\s|$)\")",
+      "with": "FAILURE_LINE = re.compile(r\"^(?:FAILED|ERROR)\\s+(\\S+?\\.py\\S*)\")",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_pytest_failure_lines_are_parsed - AssertionError: assert ['celery.app.... 'tests/y.py'] == ['tests/x.py:... 'tests/y.py']"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M15",
+      "description": "span bounds/href not checked",
+      "replaced": "if urljoin(artifact.get(\"final_url\") or \"\", raw) != value:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_span_text_not_in_retained_bytes_fails - AssertionError: assert 'E_SPAN' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M16",
+      "description": "non-link value not bound to span",
+      "replaced": "value.removeprefix(\"mailto:\").casefold() in raw.casefold()):",
+      "with": "True):",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_forged_candidate_value_fails - AssertionError: assert 'E_SPAN' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M17",
+      "description": "outcome text not bound to spans",
+      "replaced": "if outcome.get(\"text\") != ([emitted_text] if emitted_text else []):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_fabricated_text_fails_even_with_consistent_report - AssertionError: assert 'E_SPAN' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M18",
+      "description": "source_url not bound to final_url",
+      "replaced": "if item.get(\"source_url\") != artifact.get(\"final_url\"):",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_link_rebased_onto_another_host_fails - assert 'E_LINEAGE' in {'E_SPAN'}"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M19",
+      "description": "unrecorded link/candidate allowed",
+      "replaced": "if item.get(\"observation_id\") not in observation_ids:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_unrecorded_candidate_fails - AssertionError: assert 'E_LINEAGE' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M20",
+      "description": "failure may carry source reference",
+      "replaced": "if outcome.get(\"source_reference\") is not None:",
+      "with": "if False:",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_failure_cannot_smuggle_a_source_reference - AssertionError: assert 'E_ERROR_EMPTY' in set()"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M21",
+      "description": "digest shape not validated",
+      "replaced": "if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)",
+      "with": "if False and (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_path_shaped_digest_is_rejected_without_reading_it[/etc/passwd] - ValueError: '/etc/passwd.body' is not in the subpath of '/home/n4s5ti/.cache/omp/session-tmp/omp.bzVT2zWF/pytest-of-n4s5ti/pytest-136/test_path_shaped_digest_is_rej0/copy'"
+      ],
+      "restored_cmp_equal": true
+    },
+    {
+      "id": "M22",
+      "description": "malformed record spans not guarded",
+      "replaced": "bad(\"E_SPAN\", f\"{where}: artifact record spans are malformed\")\n            continue",
+      "with": "pass",
+      "pytest_exit": 1,
+      "killed": true,
+      "failing_tests": [
+        "FAILED tests/enrichers/test_release_smoke.py::test_malformed_record_span_is_reported_not_raised - KeyError: 'raw_start'"
+      ],
+      "restored_cmp_equal": true
+    }
+  ]
+}

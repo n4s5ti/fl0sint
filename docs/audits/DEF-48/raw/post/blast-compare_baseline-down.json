@@ -1,0 +1,68 @@
+{
+    "symbol": "scripts/release_smoke.py:compare_baseline",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:scripts/release_smoke.py:compare_baseline",
+        "name": "compare_baseline",
+        "filePath": "scripts/release_smoke.py",
+        "nodeType": "Function",
+        "startLine": 317,
+        "endLine": 329,
+        "content": "def compare_baseline(observed, baseline):     \"\"\"Classify failures per package; known failures are kept and reported, never dropped.\"\"\"     result = {}     for package, failures in observed.items():         known = set(baseline.get(package, []))         current = set(failures)         result[package] = {             \"new_failures\": sorted(current - known),             \"baseline_debt\": sorted(current & known),             \"baseline_resolved\": sorted(known - current),             \"status\": \"FAIL\" if current - known else \"PASS\",         }     return result"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/release_smoke.py:compare_baseline",
+            "name": "compare_baseline",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 317,
+            "endLine": 329,
+            "content": "def compare_baseline(observed, baseline):     \"\"\"Classify failures per package; known failures are kept and reported, never dropped.\"\"\"     result = {}     for package, failures in observed.items():         known = set(baseline.get(package, []))         current = set(failures)         result[package] = {             \"new_failures\": sorted(current - known),             \"baseline_debt\": sorted(current & known),             \"baseline_resolved\": sorted(known - current),             \"status\": \"FAIL\" if current - known else \"PASS\",         }     return result"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "scripts/release_smoke.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:compare_baseline",
+                    "name": "compare_baseline",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 317,
+                    "endLine": 329,
+                    "content": "def compare_baseline(observed, baseline):     \"\"\"Classify failures per package; known failures are kept and reported, never dropped.\"\"\"     result = {}     for package, failures in observed.items():         known = set(baseline.get(package, []))         current = set(failures)         result[package] = {             \"new_failures\": sorted(current - known),             \"baseline_debt\": sorted(current & known),             \"baseline_resolved\": sorted(known - current),             \"status\": \"FAIL\" if current - known else \"PASS\",         }     return result"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scripts/release_smoke.py:compare_baseline",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

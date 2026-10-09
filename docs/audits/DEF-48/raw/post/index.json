@@ -1,0 +1,20 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "success": true,
+        "warnings": [
+            "No workspace packages with recognised entry files — sidecar will be empty"
+        ],
+        "generation": "sha256:d45df70b10fbf8a072cc9c8d957585eaddf6844aa7452beea96f4e3a21f99204",
+        "planAction": "rebuild",
+        "deltaAdded": 0,
+        "deltaModified": 0,
+        "deltaDeleted": 0,
+        "deltaRenamed": 0,
+        "deltaUnreadable": 0,
+        "indexLatencyMs": 44782,
+        "filesParsed": 2726
+    }
+}

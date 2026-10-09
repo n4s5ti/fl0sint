@@ -1,0 +1,1273 @@
+{
+  "schema": "fl0sint.audit-packet/v1",
+  "issue": "DEF-48",
+  "title": "[S08] Audit standalone release behavior and build the reproducible smoke harness",
+  "base_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+  "head_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+  "source_tree": "9117f4c588b7f032c8ad6d2328264a8916c2fd42",
+  "configuration": {
+    ".github/workflows/tests.yml": "a4ff0991b99c2c0c55af69fc7bee566e3fcfb45a497f4c029ed582af997692ee",
+    "Makefile": "79a2828739c05694ca5a57714eba136da05a6b2d0d6c03bbe8bd5cd21ada83b2",
+    "pyproject.toml": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+    "uv.lock": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f",
+    "flowsint-enrichers/pyproject.toml": "c2b5fdc39fa1bbca3fca0c44a8d74617e34d090c3a95e24ecaeff2d5853fa5da",
+    "docs/release/p1-baseline-failures.json": "a8f6c8f43cbb8de020754588c32fe66436e6ff3f2cad571f769d737267378f85"
+  },
+  "tool_versions": {
+    "pip3r": "1.2.6",
+    "python (harness)": "3.14.7 system / 3.12.13 venv",
+    "uv": "uv 0.11.19 (x86_64-unknown-linux-gnu)",
+    "git": "git version 2.55.0"
+  },
+  "capabilities": {
+    "graph": false,
+    "model": false,
+    "browser": false,
+    "network": false
+  },
+  "artifacts": {
+    "pre-index": {
+      "path": "raw/pre/index.json",
+      "sha256": "bdfc93fc206de2d1833b54cc97c6fb43187ddca67c5ae95456be398fc3d4c949"
+    },
+    "pre-index-stderr": {
+      "path": "raw/pre/index.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-drift": {
+      "path": "raw/pre/drift.json",
+      "sha256": "90e7b27fd686b833e16577f983c0214c8c6c04f7f57e7973f4d184d33a603238"
+    },
+    "pre-drift-stderr": {
+      "path": "raw/pre/drift.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-release_smoke-up": {
+      "path": "raw/pre/blast-release_smoke-up.json",
+      "sha256": "22172ceb8c73b4083ad1537598a92a5e4a32d87612b3ab69bf1ac8b64398cf52"
+    },
+    "pre-blast-release_smoke-up-stderr": {
+      "path": "raw/pre/blast-release_smoke-up.stderr",
+      "sha256": "ccee2bbdb2c46e9ec4c813c738488fc03af7676a08216493ed95aa35d27125b6"
+    },
+    "pre-blast-main-up": {
+      "path": "raw/pre/blast-main-up.json",
+      "sha256": "c8c2e6588dd09db238f19a6a5fff38e42013aadfaab2ab68cf577af576cc4553"
+    },
+    "pre-blast-main-up-stderr": {
+      "path": "raw/pre/blast-main-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-fixture_server-up": {
+      "path": "raw/pre/blast-fixture_server-up.json",
+      "sha256": "28a787b037268d65777a922d05b9ad33003066b31f9ee0fa23bb0c3dac59980c"
+    },
+    "pre-blast-fixture_server-up-stderr": {
+      "path": "raw/pre/blast-fixture_server-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-load_manifest-up": {
+      "path": "raw/pre/blast-load_manifest-up.json",
+      "sha256": "9c83920bf91089e08db0a5a3198e146b4394cac3665b62a77bdb2ffbb4f2ee33"
+    },
+    "pre-blast-load_manifest-up-stderr": {
+      "path": "raw/pre/blast-load_manifest-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-scrape_websites-up": {
+      "path": "raw/pre/blast-scrape_websites-up.json",
+      "sha256": "fc91b724826a4c45771d76e86431691a98a6238596f12c9d817064b1d2c3f79d"
+    },
+    "pre-blast-scrape_websites-up-stderr": {
+      "path": "raw/pre/blast-scrape_websites-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-scrape_websites-down": {
+      "path": "raw/pre/blast-scrape_websites-down.json",
+      "sha256": "4986a46da847c0e8ec6b2b622a8e110c5c4fb57c27a3930de508749547502552"
+    },
+    "pre-blast-scrape_websites-down-stderr": {
+      "path": "raw/pre/blast-scrape_websites-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-blast-render_markdown_report-up": {
+      "path": "raw/pre/blast-render_markdown_report-up.json",
+      "sha256": "edb1a65a0fd139b6dd1937f9c6c5dd0b01aa6113eee7a3948b2e97164b48c791"
+    },
+    "pre-blast-render_markdown_report-up-stderr": {
+      "path": "raw/pre/blast-render_markdown_report-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-doctor-hunt": {
+      "path": "raw/pre/doctor-hunt.json",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pre-doctor-hunt-stderr": {
+      "path": "raw/pre/doctor-hunt.stderr",
+      "sha256": "ba704a7a3c46a5349015e0674bc490940886b48cfa40d185aaeebf0d74f1de9a"
+    },
+    "post-index": {
+      "path": "raw/post/index.json",
+      "sha256": "6efa60ec4c262a2bc0a4e855f886eeb1e10e2bc566e08be023dc52b67133b4c9"
+    },
+    "post-index-stderr": {
+      "path": "raw/post/index.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-drift": {
+      "path": "raw/post/drift.json",
+      "sha256": "883be9786cb67b9006d2bed0d86d77bb2d586afca3e926e9d73972f6ba83a9fb"
+    },
+    "post-drift-stderr": {
+      "path": "raw/post/drift.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-verify_bundle-up": {
+      "path": "raw/post/blast-verify_bundle-up.json",
+      "sha256": "50a02d996c25afb3af8580490b1983533d9bf75a75e58d3cd6b0d2143c8dc737"
+    },
+    "post-blast-verify_bundle-up-stderr": {
+      "path": "raw/post/blast-verify_bundle-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-verify_bundle-down": {
+      "path": "raw/post/blast-verify_bundle-down.json",
+      "sha256": "ab5a9e516f1908c0dde3b212989dc83963b340cb58878ae66d96d15f77bac8f2"
+    },
+    "post-blast-verify_bundle-down-stderr": {
+      "path": "raw/post/blast-verify_bundle-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-check_expectations-up": {
+      "path": "raw/post/blast-check_expectations-up.json",
+      "sha256": "fc2c530b98c9e9f1e96edd22b985db50aebac33e6301b669c98253919239abdf"
+    },
+    "post-blast-check_expectations-up-stderr": {
+      "path": "raw/post/blast-check_expectations-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-check_expectations-down": {
+      "path": "raw/post/blast-check_expectations-down.json",
+      "sha256": "00ab64852217bb6c3b31c2d2d6decbd876bf429e4329ce1bb77439b6d7e79492"
+    },
+    "post-blast-check_expectations-down-stderr": {
+      "path": "raw/post/blast-check_expectations-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-run_release-up": {
+      "path": "raw/post/blast-run_release-up.json",
+      "sha256": "0730817ba5193a0b93db97e06c3f2e628abde0e1de6ec570c12fd46d736bc1f2"
+    },
+    "post-blast-run_release-up-stderr": {
+      "path": "raw/post/blast-run_release-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-run_release-down": {
+      "path": "raw/post/blast-run_release-down.json",
+      "sha256": "38409b260dcbb2a6f33c12a3963e3c4423a0c69c7083374820c912a361fdf04b"
+    },
+    "post-blast-run_release-down-stderr": {
+      "path": "raw/post/blast-run_release-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-run_cli-up": {
+      "path": "raw/post/blast-run_cli-up.json",
+      "sha256": "cd43cf4156b776c0c16b1880ba042959a35f7f29119eac723958980b7e584842"
+    },
+    "post-blast-run_cli-up-stderr": {
+      "path": "raw/post/blast-run_cli-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-run_cli-down": {
+      "path": "raw/post/blast-run_cli-down.json",
+      "sha256": "b655d9609853ba1dba4484681b5debef6b4de91b2fd95e7f79792313b8183b05"
+    },
+    "post-blast-run_cli-down-stderr": {
+      "path": "raw/post/blast-run_cli-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-audit_problems-up": {
+      "path": "raw/post/blast-audit_problems-up.json",
+      "sha256": "24412362d1bc9a903d1b8e0405e05237685a5f12af4d26bb6e7e0f82b7baaf90"
+    },
+    "post-blast-audit_problems-up-stderr": {
+      "path": "raw/post/blast-audit_problems-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-audit_problems-down": {
+      "path": "raw/post/blast-audit_problems-down.json",
+      "sha256": "0308c109d40fc7ddb02fe1d33bb9f94534347c30cf23fd91869da83ef60a2deb"
+    },
+    "post-blast-audit_problems-down-stderr": {
+      "path": "raw/post/blast-audit_problems-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-compare_baseline-up": {
+      "path": "raw/post/blast-compare_baseline-up.json",
+      "sha256": "64981833e65165f50314e46392cc2c534b7fda175d2a24a8dc3de67b1b18a0cd"
+    },
+    "post-blast-compare_baseline-up-stderr": {
+      "path": "raw/post/blast-compare_baseline-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-compare_baseline-down": {
+      "path": "raw/post/blast-compare_baseline-down.json",
+      "sha256": "59439c1bb474da84b483b64d8b36b0d0c55fc725f55f9c2c4841b26a978a2e05"
+    },
+    "post-blast-compare_baseline-down-stderr": {
+      "path": "raw/post/blast-compare_baseline-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-fixture_server-up": {
+      "path": "raw/post/blast-fixture_server-up.json",
+      "sha256": "572afd699aff2d95c15cf26543c1ec739fb76ed141b14e6ec6a56b75a63ba333"
+    },
+    "post-blast-fixture_server-up-stderr": {
+      "path": "raw/post/blast-fixture_server-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-load_manifest-up": {
+      "path": "raw/post/blast-load_manifest-up.json",
+      "sha256": "a280c70a573b0b212c7c33b2e3de752242f70fa6e1cbbd614ce686f7ec917bd1"
+    },
+    "post-blast-load_manifest-up-stderr": {
+      "path": "raw/post/blast-load_manifest-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-scrape_websites-up": {
+      "path": "raw/post/blast-scrape_websites-up.json",
+      "sha256": "ab6f6f8d2c7f07c99b8779a5a68b58fa4a3c1520f33ece38158c7a72392133e3"
+    },
+    "post-blast-scrape_websites-up-stderr": {
+      "path": "raw/post/blast-scrape_websites-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-scrape_websites-down": {
+      "path": "raw/post/blast-scrape_websites-down.json",
+      "sha256": "28910dcfc43a6617b6d824858d19b17cb8b0511a1f3822666e7eb3ee0dcfa01c"
+    },
+    "post-blast-scrape_websites-down-stderr": {
+      "path": "raw/post/blast-scrape_websites-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-blast-render_markdown_report-up": {
+      "path": "raw/post/blast-render_markdown_report-up.json",
+      "sha256": "93759bf413b7fb7d8ae38fbd9669cad1b58b8462e213d34a81c16c53da8b490e"
+    },
+    "post-blast-render_markdown_report-up-stderr": {
+      "path": "raw/post/blast-render_markdown_report-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-doctor-hunt": {
+      "path": "raw/post/doctor-hunt.json",
+      "sha256": "9e1c2772d714dec83cf0c6cd7cbc0c6f8a66044c6012fbf5014842f04e15a806"
+    },
+    "post-doctor-hunt-stderr": {
+      "path": "raw/post/doctor-hunt.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "post-drift-final": {
+      "path": "raw/post/drift-final.json",
+      "sha256": "883be9786cb67b9006d2bed0d86d77bb2d586afca3e926e9d73972f6ba83a9fb"
+    },
+    "post-drift-final-stderr": {
+      "path": "raw/post/drift-final.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "release-smoke": {
+      "path": "raw/post/smoke-report.json",
+      "sha256": "12fd043bd37808ec866340f3ad5c52f12c7e42bfe05ef6c9571e9be256805b2d"
+    },
+    "release-smoke-stdout": {
+      "path": "raw/post/smoke.stdout",
+      "sha256": "ab93576a7ffc8a51338d43bb8658b178534d898d3f499f2e2ad2024cb2d7d029"
+    },
+    "suites-head": {
+      "path": "raw/post/suites-report.json",
+      "sha256": "ac183664c2fc5aeec287e1b5666c350fcb4c2f4c87f22dd6ea8c5d1f35681aad"
+    },
+    "suites-head-stdout": {
+      "path": "raw/post/suites.stdout",
+      "sha256": "c2f010346d28c72909039bcdea22abb7aebe0c724c14902cc8361a775aca1d1f"
+    },
+    "suites-base": {
+      "path": "raw/pre/suites-discover.json",
+      "sha256": "726446ff4b7c130ae4648473d322b2357d5f299b774851ca4b075f04cd6e1fb4"
+    },
+    "verify-replay": {
+      "path": "raw/post/verify-report.json",
+      "sha256": "ddc49370ab70cf0f16fe1dac2490c1fcb9d98bb797559d9a525b3f0bb3d7eb44"
+    },
+    "verify-stdout": {
+      "path": "raw/post/verify.stdout",
+      "sha256": "b5e5512c0b6f47eeca3a3c7d1df9cdc5b55bd29a26ea291c16caec8574187656"
+    },
+    "focused-tests": {
+      "path": "raw/post/focused-pytest.stdout",
+      "sha256": "cdd70f3cc5829f67031c736949b8d2f7a7737a53486d960a346b948cac8b369b"
+    },
+    "mutation-check": {
+      "path": "mutation-check.json",
+      "sha256": "9b8b7c1fad242ac6fc19e76bc7b463d4c9200e848e20b476a83ff473ca333d2c"
+    },
+    "mutate-script": {
+      "path": "raw/post/mutate.py",
+      "sha256": "040411a4448ed7d3637a0bd16a56e238f9ccec86cc76014011db29e41b442681"
+    },
+    "harness-batch-bundle": {
+      "path": "examples/batch/bundle.json",
+      "sha256": "4cb0527f5830d53aca462cf242c80c65c98f557b22d19bc60dfe7f996e56a5e8"
+    },
+    "harness-batch-report": {
+      "path": "examples/batch/report.md",
+      "sha256": "572189a40f593f45107a68f79eacb8f2715e8d08552dda19dae2ac7c6a61d9af"
+    },
+    "harness-batch-jsonl": {
+      "path": "examples/batch/outcomes.jsonl",
+      "sha256": "b92bd3588f360b88efaf7fef93da108c0c5ff332f3d73bf37829084cf08046e1"
+    },
+    "harness-single-report": {
+      "path": "examples/single/report.md",
+      "sha256": "8d42b83c62b76f34c4ac59ed1a8d6e793626153f76e7f57e9dc3a19a38c8e69e"
+    },
+    "independent-review": {
+      "path": "review.json",
+      "sha256": "da658b7d6ad60e922820a69c2ec86e44b8aeacacb6ced0a6718a7eca3fefa5a3"
+    },
+    "recovery": {
+      "path": "recovery.md",
+      "sha256": "b25c2882206c94f4f832b47bb51fc3e86bbfd47ab64580dfd9b83d9d7f573113"
+    },
+    "acceptance": {
+      "path": "acceptance.md",
+      "sha256": "9ed917de304f946ab3d081ebac04e22bbf09de7d99857901f60fb2eba47bbd35"
+    }
+  },
+  "index": {
+    "mode": "isolated-worktree index rebuilt at head_commit",
+    "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+    "drift": "post-drift-final"
+  },
+  "analyses": [
+    {
+      "id": "pre-index",
+      "phase": "pre",
+      "kind": "index",
+      "target": "index",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-index"
+    },
+    {
+      "id": "pre-drift",
+      "phase": "pre",
+      "kind": "drift",
+      "target": "drift",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-drift"
+    },
+    {
+      "id": "pre-blast-release_smoke-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "release_smoke",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json release_smoke",
+      "exit_code": 0,
+      "status": "UNKNOWN",
+      "artifact": "pre-blast-release_smoke-up"
+    },
+    {
+      "id": "pre-blast-main-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "main",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json main",
+      "exit_code": 0,
+      "status": "UNKNOWN",
+      "artifact": "pre-blast-main-up"
+    },
+    {
+      "id": "pre-blast-fixture_server-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:fixture_server",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json scripts/acquisition_fixtures.py:fixture_server",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-fixture_server-up"
+    },
+    {
+      "id": "pre-blast-load_manifest-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:load_manifest",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-load_manifest-up"
+    },
+    {
+      "id": "pre-blast-scrape_websites-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "scrape_websites",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-scrape_websites-up"
+    },
+    {
+      "id": "pre-blast-scrape_websites-down",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "--direction downstream scrape_websites",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json --direction downstream scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-scrape_websites-down"
+    },
+    {
+      "id": "pre-blast-render_markdown_report-up",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "render_markdown_report",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --no-auto-index --json render_markdown_report",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "pre-blast-render_markdown_report-up"
+    },
+    {
+      "id": "pre-doctor-hunt",
+      "phase": "pre",
+      "kind": "doctor",
+      "target": "doctor-hunt",
+      "analyzed_commit": "e40aa00668da49ac930d1c1fa9b344da1ef7eb8b",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-base --hunt --json",
+      "exit_code": 1,
+      "status": "BLOCKED",
+      "artifact": "pre-doctor-hunt"
+    },
+    {
+      "id": "post-index",
+      "phase": "post",
+      "kind": "index",
+      "target": "index",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-index"
+    },
+    {
+      "id": "post-drift",
+      "phase": "post",
+      "kind": "drift",
+      "target": "drift",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-drift"
+    },
+    {
+      "id": "post-blast-verify_bundle-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/release_smoke.py:verify_bundle",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:verify_bundle",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-verify_bundle-up"
+    },
+    {
+      "id": "post-blast-verify_bundle-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scripts/release_smoke.py:verify_bundle",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:verify_bundle",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-verify_bundle-down"
+    },
+    {
+      "id": "post-blast-check_expectations-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/release_smoke.py:check_expectations",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:check_expectations",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-check_expectations-up"
+    },
+    {
+      "id": "post-blast-check_expectations-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scripts/release_smoke.py:check_expectations",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:check_expectations",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-check_expectations-down"
+    },
+    {
+      "id": "post-blast-run_release-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/release_smoke.py:run_release",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:run_release",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-run_release-up"
+    },
+    {
+      "id": "post-blast-run_release-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scripts/release_smoke.py:run_release",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:run_release",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-run_release-down"
+    },
+    {
+      "id": "post-blast-run_cli-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/release_smoke.py:run_cli",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:run_cli",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-run_cli-up"
+    },
+    {
+      "id": "post-blast-run_cli-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scripts/release_smoke.py:run_cli",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:run_cli",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-run_cli-down"
+    },
+    {
+      "id": "post-blast-audit_problems-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/release_smoke.py:audit_problems",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:audit_problems",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-audit_problems-up"
+    },
+    {
+      "id": "post-blast-audit_problems-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scripts/release_smoke.py:audit_problems",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:audit_problems",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-audit_problems-down"
+    },
+    {
+      "id": "post-blast-compare_baseline-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/release_smoke.py:compare_baseline",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/release_smoke.py:compare_baseline",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-compare_baseline-up"
+    },
+    {
+      "id": "post-blast-compare_baseline-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scripts/release_smoke.py:compare_baseline",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scripts/release_smoke.py:compare_baseline",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-compare_baseline-down"
+    },
+    {
+      "id": "post-blast-fixture_server-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:fixture_server",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/acquisition_fixtures.py:fixture_server",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-fixture_server-up"
+    },
+    {
+      "id": "post-blast-load_manifest-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scripts/acquisition_fixtures.py:load_manifest",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scripts/acquisition_fixtures.py:load_manifest",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-load_manifest-up"
+    },
+    {
+      "id": "post-blast-scrape_websites-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "scrape_websites",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-scrape_websites-up"
+    },
+    {
+      "id": "post-blast-scrape_websites-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "--direction downstream scrape_websites",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json --direction downstream scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-scrape_websites-down"
+    },
+    {
+      "id": "post-blast-render_markdown_report-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "render_markdown_report",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json render_markdown_report",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-blast-render_markdown_report-up"
+    },
+    {
+      "id": "post-doctor-hunt",
+      "phase": "post",
+      "kind": "doctor",
+      "target": "doctor-hunt",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --hunt --hunt-target /home/n4s5ti/Documents/dev/fl0sint-def48-smoke/scripts/release_smoke.py --json",
+      "exit_code": 0,
+      "status": "DEGRADED",
+      "artifact": "post-doctor-hunt"
+    },
+    {
+      "id": "post-drift-final",
+      "phase": "post",
+      "kind": "drift",
+      "target": "drift-final",
+      "analyzed_commit": "d5b56a71a6603f65f6e1895f027e125ce55525bb",
+      "command": "timeout 900 env PIP3R_DISCLOSURE=off pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-def48-smoke --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "post-drift-final"
+    }
+  ],
+  "commands": [
+    {
+      "id": "release-smoke",
+      "command": "python3 scripts/release_smoke.py --report <r> run --revision d5b56a71a6603f65f6e1895f027e125ce55525bb --work-dir /tmp/def48/run-head",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "release-smoke"
+    },
+    {
+      "id": "suites-head",
+      "command": "AUTH_SECRET=ci-only-dummy-secret REDIS_URL=redis://127.0.0.1:6379/0 python3 scripts/release_smoke.py --report <r> suites  (worktree .venv from uv sync --frozen --all-packages)",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "suites-head"
+    },
+    {
+      "id": "suites-base",
+      "command": "same suites command at base e40aa006 with an empty baseline (failure discovery)",
+      "exit_code": 1,
+      "status": "FAIL",
+      "artifact": "suites-base"
+    },
+    {
+      "id": "verify-replay",
+      "command": "python3 scripts/release_smoke.py verify /tmp/def48/run-head/batch --python /tmp/def48/run-head/venv/bin/python",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "verify-replay"
+    },
+    {
+      "id": "focused-tests",
+      "command": "cd flowsint-enrichers && AUTH_SECRET=x REDIS_URL=redis://127.0.0.1:1 ../.venv/bin/python -m pytest tests/enrichers/test_release_smoke.py -q",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "focused-tests"
+    },
+    {
+      "id": "mutation-check",
+      "command": "python3 /tmp/def48/mutate.py (copied as raw/post/mutate.py)",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "mutation-check"
+    },
+    {
+      "id": "independent-review",
+      "command": "OMP reviewer subagent Def48Reviewer, two rounds, read-only",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "independent-review"
+    }
+  ],
+  "coverage_limitations": [
+    {
+      "ref": "pre-blast-release_smoke-up",
+      "description": "Expected absence check: no release_smoke symbol existed at base (target-symbol-unresolved)."
+    },
+    {
+      "ref": "pre-blast-main-up",
+      "description": "Bare `main` is ambiguous at base (27 roots), so the result is recorded as UNKNOWN. Post-edit blasts target scripts/release_smoke.py symbols by file."
+    },
+    {
+      "ref": "pre-doctor-hunt",
+      "description": "pip3r doctor --hunt requires a CLI target; without --hunt-target it exits 1 (DEF-39/46/90 known gap)."
+    },
+    {
+      "ref": "post-doctor-hunt",
+      "description": "With --hunt-target scripts/release_smoke.py the probe discovered 0 commands for a python script entry, so hunt coverage of this change is 0."
+    }
+  ],
+  "required_cases": [
+    "AC1",
+    "AC2",
+    "AC3",
+    "AC4",
+    "ST1",
+    "ST2",
+    "ST3",
+    "ST4",
+    "ST5"
+  ],
+  "cases": [
+    {
+      "id": "AC1",
+      "title": "All P1 component cases pass from the documented invocation (packaged entrypoint, clean venv)",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke"
+      ]
+    },
+    {
+      "id": "AC2",
+      "title": "An intentionally broken lineage or missing source proof fails the harness",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke",
+        "focused-tests",
+        "mutation-check"
+      ]
+    },
+    {
+      "id": "AC3",
+      "title": "Baseline unrelated failures remain visible rather than silently removed",
+      "status": "PASS",
+      "evidence": [
+        "suites-head",
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "AC4",
+      "title": "Outputs can be replayed/inspected locally without calling the original website",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke",
+        "verify-replay"
+      ]
+    },
+    {
+      "id": "ST1",
+      "title": "Single-page and mixed-batch journeys via the packaged entrypoint in a clean environment",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke"
+      ]
+    },
+    {
+      "id": "ST2",
+      "title": "Fixture assertions: spans, lineage, empty vs error, no graph connection, limits, cancellation",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke",
+        "focused-tests"
+      ]
+    },
+    {
+      "id": "ST3",
+      "title": "Setup/test commands, package/source digests, output examples and resource measurements recorded",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke"
+      ]
+    },
+    {
+      "id": "ST4",
+      "title": "Hidden imports/services audited; predicted vs actual symbols compared",
+      "status": "PASS",
+      "evidence": [
+        "release-smoke",
+        "post-drift-final"
+      ]
+    },
+    {
+      "id": "ST5",
+      "title": "Release checklist invokes only P1 gates and defers browser/graph/learning",
+      "status": "PASS",
+      "evidence": [
+        "independent-review"
+      ]
+    }
+  ],
+  "scope": {
+    "predicted_paths": [
+      "scripts/release_smoke.py",
+      "flowsint-enrichers/tests/enrichers/test_release_smoke.py",
+      "docs/release/",
+      "CHANGELOG.md",
+      "docs/audits/DEF-48/"
+    ],
+    "predicted_symbols": [
+      "scripts/release_smoke.py:verify_bundle",
+      "scripts/release_smoke.py:check_expectations",
+      "scripts/release_smoke.py:run_release",
+      "scripts/release_smoke.py:run_suites",
+      "scripts/release_smoke.py:main"
+    ],
+    "actual_symbols": [
+      "scripts/release_smoke.py:sha256",
+      "scripts/release_smoke.py:_decode_proof",
+      "scripts/release_smoke.py:_collapse",
+      "scripts/release_smoke.py:verify_bundle",
+      "scripts/release_smoke.py:check_expectations",
+      "scripts/release_smoke.py:parse_failures",
+      "scripts/release_smoke.py:compare_baseline",
+      "scripts/release_smoke.py:run_suites",
+      "scripts/release_smoke.py:Run",
+      "scripts/release_smoke.py:_load_fixtures",
+      "scripts/release_smoke.py:_sh",
+      "scripts/release_smoke.py:build_and_install",
+      "scripts/release_smoke.py:_render_with",
+      "scripts/release_smoke.py:run_cli",
+      "scripts/release_smoke.py:audit_problems",
+      "scripts/release_smoke.py:negative_controls",
+      "scripts/release_smoke.py:run_release",
+      "scripts/release_smoke.py:main"
+    ],
+    "explained_changes": [
+      {
+        "symbol": "scripts/release_smoke.py:sha256",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:_decode_proof",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:_collapse",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:parse_failures",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:compare_baseline",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:Run",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:_load_fixtures",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:_sh",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:build_and_install",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:_render_with",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:run_cli",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:audit_problems",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      },
+      {
+        "symbol": "scripts/release_smoke.py:negative_controls",
+        "reason": "Helper of the new stdlib harness module; no existing symbol changed (pre/post blasts of fixture_server, load_manifest, scrape_websites, render_markdown_report are identical)."
+      }
+    ]
+  },
+  "mutations": [
+    {
+      "id": "M1",
+      "path": "scripts/release_smoke.py",
+      "description": "observation lineage not checked: 'if item.get(\"occurrence_id\") != occurrence or item.get(\"input_ref\") != proof.get(\"input_ref\"):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M2",
+      "path": "scripts/release_smoke.py",
+      "description": "proof context not checked: '            if context.get(field) != value:' -> '            if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M4",
+      "path": "scripts/release_smoke.py",
+      "description": "retained digest not checked: 'if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M5",
+      "path": "scripts/release_smoke.py",
+      "description": "error without diagnostic accepted: 'if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M6",
+      "path": "scripts/release_smoke.py",
+      "description": "jsonl not compared: 'if lines is not None and lines != expected_lines:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M7",
+      "path": "scripts/release_smoke.py",
+      "description": "report render not compared: 'if render is not None and report != render(bundle):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M8",
+      "path": "scripts/release_smoke.py",
+      "description": "fixture digest not compared: 'if artifact[\"content_digest\"] != final[\"sha256\"]:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M9",
+      "path": "scripts/release_smoke.py",
+      "description": "outcome status/code not compared: 'if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M10",
+      "path": "scripts/release_smoke.py",
+      "description": "forbidden imports allowed: 'elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:' -> 'elif False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M11",
+      "path": "scripts/release_smoke.py",
+      "description": "silent audit accepted: 'if not any(event[\"event\"] == \"import\" for event in events):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M12",
+      "path": "scripts/release_smoke.py",
+      "description": "baseline debt dropped: '\"baseline_debt\": sorted(current & known),' -> '\"baseline_debt\": [],'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M13",
+      "path": "scripts/release_smoke.py",
+      "description": "new failures pass: '\"status\": \"FAIL\" if current - known else \"PASS\",' -> '\"status\": \"PASS\",'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M14",
+      "path": "scripts/release_smoke.py",
+      "description": "log lines parsed as failures: 'FAILURE_LINE = re.compile(r\"^(?:FAILED|ERROR) ([^\\\\s:]+\\\\.py(?:::\\\\S+)?)(?:\\\\s|$)\")' -> 'FAILURE_LINE = re.compile(r\"^(?:FAILED|ERROR)\\\\s+(\\\\S+?\\\\.py\\\\S*)\")'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M15",
+      "path": "scripts/release_smoke.py",
+      "description": "span bounds/href not checked: 'if urljoin(artifact.get(\"final_url\") or \"\", raw) != value:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M16",
+      "path": "scripts/release_smoke.py",
+      "description": "non-link value not bound to span: 'value.removeprefix(\"mailto:\").casefold() in raw.casefold()):' -> 'True):'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M17",
+      "path": "scripts/release_smoke.py",
+      "description": "outcome text not bound to spans: 'if outcome.get(\"text\") != ([emitted_text] if emitted_text else []):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M18",
+      "path": "scripts/release_smoke.py",
+      "description": "source_url not bound to final_url: 'if item.get(\"source_url\") != artifact.get(\"final_url\"):' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M19",
+      "path": "scripts/release_smoke.py",
+      "description": "unrecorded link/candidate allowed: 'if item.get(\"observation_id\") not in observation_ids:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M20",
+      "path": "scripts/release_smoke.py",
+      "description": "failure may carry source reference: 'if outcome.get(\"source_reference\") is not None:' -> 'if False:'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M21",
+      "path": "scripts/release_smoke.py",
+      "description": "digest shape not validated: 'if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)' -> 'if False and (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    },
+    {
+      "id": "M22",
+      "path": "scripts/release_smoke.py",
+      "description": "malformed record spans not guarded: 'bad(\"E_SPAN\", f\"{where}: artifact record spans are malformed\")\\n            continue' -> 'pass'",
+      "killed": true,
+      "killed_by": "mutation-check",
+      "restored_sha256": "3aeed1f8a59ff6c184c46e8712c7b43f697b6a6b9b2454fdde5e12678c84e21f"
+    }
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "summary": "verify accepted forged non-link candidate values",
+      "origin": "introduced",
+      "blocking": true,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R2",
+      "summary": "verify accepted fabricated outcome text",
+      "origin": "introduced",
+      "blocking": true,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R3",
+      "summary": "verify accepted relative links rebased via source_url",
+      "origin": "introduced",
+      "blocking": true,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R4",
+      "summary": "malformed record spans crashed verify",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R5",
+      "summary": "path-shaped content_digest used to build a read path",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R6",
+      "summary": "cancel path could double-reap the child",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R7",
+      "summary": "failure/hold outcomes could carry an unvalidated source_reference",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R8",
+      "summary": "standalone verify did not re-render report prose; now --python, with the limitation printed when it is absent",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R9",
+      "summary": "checklist overclaimed that the audit hook enforces isolation",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "R10",
+      "summary": "offline bound (grounded but never-extracted observations) undocumented",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "C1",
+      "summary": "peak RSS reported the parent's inherited ru_maxrss; replaced with child VmHWM",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "C2",
+      "summary": "suite parser counted 'ERROR <logger>' log lines as test failures",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "C3",
+      "summary": "mutants M2/M7 survived because other checks masked them; targeted tests added",
+      "origin": "introduced",
+      "blocking": false,
+      "classification": "fixed",
+      "link": "review.json"
+    },
+    {
+      "id": "P1",
+      "summary": "Standalone bundle outcome.input_ref (hash of the Website input) and proof/observation input_ref (hash of the URL) are different namespaces; join on occurrence_id",
+      "origin": "preexisting",
+      "blocking": false,
+      "classification": "out-of-scope",
+      "link": "DEF-47 standalone.py _outcome_record; docs/release/p1-release-checklist.md Known limitations"
+    },
+    {
+      "id": "P2",
+      "summary": "Hosted Tests/Python tests job cannot resolve dependencies",
+      "origin": "preexisting",
+      "blocking": false,
+      "classification": "preexisting-debt",
+      "link": "DEF-130"
+    },
+    {
+      "id": "P3",
+      "summary": "pip3r doctor --hunt has no source-tree mode (hunt coverage 0)",
+      "origin": "preexisting",
+      "blocking": false,
+      "classification": "preexisting-debt",
+      "link": "docs/audits/DEF-39/audit-procedure.md \u00a75"
+    }
+  ],
+  "baseline_debt": [
+    {
+      "id": "suite-core",
+      "description": "core: tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface",
+      "evidence": "suites-head"
+    },
+    {
+      "id": "suite-enrichers",
+      "description": "enrichers: tests/enrichers/test_namechk.py::TestScan::test_hunt_exception_returns_empty; tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_no_matches; tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_returns_found_accounts",
+      "evidence": "suites-head"
+    },
+    {
+      "id": "suite-api",
+      "description": "api: tests/test_events_auth.py::test_log_stream_rejects_token_query_param; tests/test_events_auth.py::test_log_stream_requires_auth_header; tests/test_events_auth.py::test_status_stream_requires_auth_header; tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database; tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models; tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only; tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head",
+      "evidence": "suites-head"
+    }
+  ],
+  "label_changes": [],
+  "review": {
+    "status": "accepted",
+    "reviewer": "OMP `reviewer` subagent Def48Reviewer (model not reported in its output)",
+    "independent": true,
+    "evidence": "independent-review",
+    "limitation": "Reviewer is an OMP subagent, not a human; Linear acceptance remains with the issue owner."
+  },
+  "rollback": {
+    "procedure": "git revert the DEF-48 commits; see recovery.md",
+    "document": "recovery"
+  }
+}

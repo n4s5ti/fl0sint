@@ -1,0 +1,448 @@
+{
+    "symbol": "scrape_websites",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+        "name": "scrape_websites",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+        "nodeType": "Function",
+        "startLine": 269,
+        "endLine": 311,
+        "content": "async def scrape_websites(     inputs: str | Mapping[str, str],     *,     output_dir: str | Path,     options: ScrapeOptions | None = None, ) -> ScrapeBundle:     \"\"\"Acquire one URL or a keyed URL batch and persist matching evidence artifacts.     Validation completes before this function creates or admits the underlying fetch operation.     The function deliberately supplies no graph, model, planner, PostgreSQL, Redis, or Celery service.     \"\"\"     resolved_options = options or ScrapeOptions()     resolved_options.validate()     normalized_inputs = _normalize_inputs(inputs)     destination = Path(output_dir)     operation_id = f\"standalone-website-to-text-{uuid.uuid4().hex}\"     scanner = WebsiteTextExtractor(         params={             \"max_concurrency\": resolved_options.max_concurrency,             \"request_timeout\": resolved_options.request_timeout,             \"max_response_bytes\": resolved_options.max_response_bytes,             \"max_redirects\": resolved_options.max_redirects,             \"max_retries\": resolved_options.max_retries,         },         artifact_store=FilesystemArtifactStore(destination / \"source-artifacts\"),         retention_authority=_authority(operation_id),     )     occurrences = await scanner.scan(         [Website(url=url) for _, url in normalized_inputs], operation_id=operation_id     )     payload = {         \"schema_version\": SCHEMA_VERSION,         \"operation_id\": operation_id,         \"scope\": resolved_options.scope,         \"extraction\": resolved_options.extraction,         \"options\": _jsonable(resolved_options),         \"outcomes\": [             _outcome_record(key, occurrence)             for (key, _), occurrence in zip(normalized_inputs, occurrences)         ],     }     return _write_bundle(payload, destination)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "name": "scrape_websites",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 269,
+            "endLine": 311,
+            "content": "async def scrape_websites(     inputs: str | Mapping[str, str],     *,     output_dir: str | Path,     options: ScrapeOptions | None = None, ) -> ScrapeBundle:     \"\"\"Acquire one URL or a keyed URL batch and persist matching evidence artifacts.     Validation completes before this function creates or admits the underlying fetch operation.     The function deliberately supplies no graph, model, planner, PostgreSQL, Redis, or Celery service.     \"\"\"     resolved_options = options or ScrapeOptions()     resolved_options.validate()     normalized_inputs = _normalize_inputs(inputs)     destination = Path(output_dir)     operation_id = f\"standalone-website-to-text-{uuid.uuid4().hex}\"     scanner = WebsiteTextExtractor(         params={             \"max_concurrency\": resolved_options.max_concurrency,             \"request_timeout\": resolved_options.request_timeout,             \"max_response_bytes\": resolved_options.max_response_bytes,             \"max_redirects\": resolved_options.max_redirects,             \"max_retries\": resolved_options.max_retries,         },         artifact_store=FilesystemArtifactStore(destination / \"source-artifacts\"),         retention_authority=_authority(operation_id),     )     occurrences = await scanner.scan(         [Website(url=url) for _, url in normalized_inputs], operation_id=operation_id     )     payload = {         \"schema_version\": SCHEMA_VERSION,         \"operation_id\": operation_id,         \"scope\": resolved_options.scope,         \"extraction\": resolved_options.extraction,         \"options\": _jsonable(resolved_options),         \"outcomes\": [             _outcome_record(key, occurrence)             for (key, _), occurrence in zip(normalized_inputs, occurrences)         ],     }     return _write_bundle(payload, destination)"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+            "name": "_jsonable",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 93,
+            "endLine": 108,
+            "content": "def _jsonable(value: Any) -> Any:     if value is None or isinstance(value, (str, int, float, bool)):         return value     if isinstance(value, Enum):         return value.value     if isinstance(value, datetime):         return value.isoformat()     if hasattr(value, \"model_dump\"):         return _jsonable(value.model_dump(mode=\"json\"))     if isinstance(value, Mapping):         return {str(key): _jsonable(item) for key, item in value.items()}     if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):         return [_jsonable(item) for item in value]     if hasattr(value, \"__dict__\"):         return _jsonable(vars(value))     return str(value)"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_normalize_inputs",
+            "name": "_normalize_inputs",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 111,
+            "endLine": 135,
+            "content": "def _normalize_inputs(inputs: object) -> tuple[tuple[str, str], ...]:     if isinstance(inputs, str):         items = ((\"input-0\", inputs),)     elif isinstance(inputs, Mapping):         items = tuple(inputs.items())     else:         raise InvocationError(\"inputs must be one URL string or a keyed URL mapping\")     if not items:         raise InvocationError(\"at least one input URL is required\")     normalized: list[tuple[str, str]] = []     seen_keys: set[str] = set()     for key, url in items:         if not isinstance(key, str) or not key:             raise InvocationError(\"each input key must be a non-empty string\")         if key in seen_keys:             raise InvocationError(f\"duplicate input key: {key}\")         if not isinstance(url, str):             raise InvocationError(f\"input {key} must be a URL string\")         parts = urlsplit(url)         if parts.scheme not in {\"http\", \"https\"} or not parts.hostname:             raise InvocationError(f\"input {key} must be an absolute http(s) URL\")         seen_keys.add(key)         normalized.append((key, url))     return tuple(normalized)"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_authority",
+            "name": "_authority",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 138,
+            "endLine": 151,
+            "content": "def _authority(operation_id: str) -> RetentionAuthority:     policy_digest = hashlib.sha256(         f\"{SCHEMA_VERSION}:{operation_id}\".encode(\"utf-8\")     ).hexdigest()     return RetentionAuthority(         issuer_id=\"standalone-scraper\",         reviewer_id=\"standalone-scraper\",         policy_id=\"standalone-source-retention\",         policy_digest=policy_digest,         caller_id=\"website-to-text\",         scope=\"local-web-fetch\",         source_family=\"http\",         expires_at=datetime.now(timezone.utc) + timedelta(hours=1),     )"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_serialized_observations",
+            "name": "_serialized_observations",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 154,
+            "endLine": 166,
+            "content": "def _serialized_observations(     occurrence: WebsiteTextOccurrence, ) -> tuple[str, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:     if occurrence.observation_result is None:         return \"\", [], [], []     metadata = serialize_observed_extraction_metadata(occurrence.observation_result)     payload = _jsonable(metadata.payload)     observations = list(payload.get(\"observations\", []))     links = [item for item in observations if item.get(\"kind\") == \"observed_link\"]     candidates = [item for item in observations if item.get(\"kind\") != \"observed_link\"]     for item in candidates:         item[\"disposition\"] = \"unreviewed\"     return str(payload.get(\"readable_text\", \"\")), observations, links, candidates"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_outcome_record",
+            "name": "_outcome_record",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 169,
+            "endLine": 195,
+            "content": "def _outcome_record(key: str, occurrence: WebsiteTextOccurrence) -> dict[str, Any]:     readable_text, observations, links, candidates = _serialized_observations(occurrence)     diagnostic = None     if occurrence.diagnostic is not None:         diagnostic = _jsonable(occurrence.diagnostic)     source_reference = None     if occurrence.source_proof is not None:         source_reference = {             \"source_proof\": occurrence.source_proof,             \"artifact\": _jsonable(occurrence.artifact_reference),             \"spans\": _jsonable(occurrence.span_references),         }     return {         \"key\": key,         \"input_ref\": occurrence.input_ref,         \"requested_url\": str(occurrence.source.url),         \"status\": occurrence.status.value,         \"text\": [output.text for output in occurrence.outputs] or ([readable_text] if readable_text else []),         \"links\": links,         \"candidates\": candidates,         \"observations\": observations,         \"disposition\": \"unreviewed\",         \"source_reference\": source_reference,         \"diagnostic\": diagnostic,         \"resources\": _jsonable(occurrence.actual_resources),         \"fetch_status\": _jsonable(occurrence.fetch_status),     }"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+            "name": "render_markdown_report",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 198,
+            "endLine": 241,
+            "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\""
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+            "name": "_write_bundle",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 244,
+            "endLine": 266,
+            "content": "def _write_bundle(payload: dict[str, Any], output_dir: Path) -> ScrapeBundle:     output_dir.mkdir(parents=True, exist_ok=True)     json_path = output_dir / \"bundle.json\"     jsonl_path = output_dir / \"outcomes.jsonl\"     report_path = output_dir / \"report.md\"     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")     jsonl_path.write_text(         \"\".join(             json.dumps(                 {                     \"schema_version\": payload[\"schema_version\"],                     \"operation_id\": payload[\"operation_id\"],                     \"outcome\": outcome,                 },                 sort_keys=True,             )             + \"\\n\"             for outcome in payload[\"outcomes\"]         ),         encoding=\"utf-8\",     )     report_path.write_text(render_markdown_report(payload), encoding=\"utf-8\")     return ScrapeBundle(payload, json_path, jsonl_path, report_path)"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrence_specs#2",
+            "name": "_scan_occurrence_specs",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+            "nodeType": "Method",
+            "startLine": 225,
+            "endLine": 379,
+            "content": "    async def _scan_occurrence_specs(         self,         specs: Sequence[tuple[int, Website, str]],         *,         operation_id: str | None = None,     ):         specs = tuple(specs)         if not specs:             return ()         if self.params.get(\"enable_quic\", False):             diagnostic = self._diagnostic(                 \"unsafe_transport_disabled\",                 \"Legacy QUIC transport is disabled because it cannot satisfy the fetch policy.\",             )             return tuple(                 self._failed_occurrence(                     *spec,                     diagnostic,                     Resources(requests=0, bytes=0, elapsed_seconds=0.0),                     FetchStatus.POLICY_DENIED,                 )                 for spec in specs             )         try:             operation = self._build_operation(specs, operation_id=operation_id)             runtime = None             if self._artifact_store is None or self._retention_authority is None:                 runtime = load_artifact_runtime(                     caller_id=_CALLER_ID, scope=_SCOPE, source_family=\"http\",                     config_path=self._runtime_config,                 )             store = self._artifact_store or (runtime.store if runtime else None)             authority = self._retention_authority or (runtime.authority if runtime else None)             decision = (                 authority.issue(operation.operation_id)                 if authority is not None                 else None             )             fetched = await execute_fetch_with_source_proof(                 operation,                 artifact_store=store,                 retention_decision=decision,             )         except asyncio.CancelledError:             return tuple(self._cancelled_occurrence(*spec) for spec in specs)         except Exception:             return tuple(self._failed_occurrence(*spec) for spec in specs)         expected = {             item.occurrence_id: item.input_ref for item in operation.inputs         }         returned_ids = [result.occurrence_id for result in fetched.outcomes]         result_is_bound = (             fetched.operation_id == operation.operation_id             and len(fetched.outcomes) == len(operation.inputs)             and len(set(returned_ids)) == len(returned_ids)             and set(returned_ids) == set(expected)             and all(                 result.input_ref == expected.get(result.occurrence_id)                 for result in fetched.outcomes             )         )         if not result_is_bound:             return tuple(                 self._failed_occurrence(                     *spec,                     self._diagnostic(                         \"invalid_fetch_result\",                         \"The fetch result did not match the admitted operation.\",                     ),                 )                 for spec in specs             )         outcome_by_id = {             result.occurrence_id: result for result in fetched.outcomes         }         occurrences = []         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):             result = outcome_by_id.get(admitted.occurrence_id)             if result.fetch_status is FetchStatus.SUCCESS:                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:                     artifact = result.capture.artifact                     context = ArtifactContext(                         operation_id=operation.operation_id,                         occurrence_id=admitted.occurrence_id,                         caller_id=_CALLER_ID,                         scope=_SCOPE,                         source_family=\"http\",                         origin=artifact.origin,                         requested_url=artifact.requested_url,                         final_url=artifact.final_url,                         retrieved_at=artifact.retrieved_at,                         event_at=artifact.event_at,                     )                     try:                         if result.observations is None:                             raise ValueError(\"observation_result_too_large\")                         observation_metadata = serialize_observed_extraction_metadata(result.observations)                         if len(observation_metadata.model_dump_json(warnings=\"error\")) > _MAX_OBSERVATION_RESULT_BYTES:                             raise ValueError(\"observation_result_too_large\")                         source_proof = encode_source_proof(PersistedSourceProof(                             format_version=\"source-proof/1.0\", input_ref=result.input_ref,                             context=context, decision=decision, artifact=artifact,                             spans=result.spans,                         ))                     except ValueError:                         occurrences.append(self._failed_occurrence(                             index, source, input_ref,                             ... [truncated]"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrences#3",
+            "name": "_scan_occurrences",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+            "nodeType": "Method",
+            "startLine": 381,
+            "endLine": 394,
+            "content": "    async def _scan_occurrences(         self,         data: Sequence[Website],         *,         start_index=0,         operation_id: str | None = None,     ):         return await self._scan_occurrence_specs(             tuple(                 (start_index + offset, source, canonical_input_hash(source))                 for offset, source in enumerate(data)             ),             operation_id=operation_id,         )"
+        },
+        {
+            "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor.scan#2",
+            "name": "scan",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+            "nodeType": "Method",
+            "startLine": 405,
+            "endLine": 408,
+            "content": "    async def scan(         self, data: List[Website], *, operation_id: str | None = None     ):         return list(await self._scan_occurrences(data, operation_id=operation_id))"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor.scan#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_normalize_inputs",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_authority",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_outcome_record",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor.scan#2",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrences#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_outcome_record",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_outcome_record",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_serialized_observations",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrences#3",
+            "to": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrence_specs#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_serialized_observations",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "count": 8,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+                    "name": "scrape_websites",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 269,
+                    "endLine": 311,
+                    "content": "async def scrape_websites(     inputs: str | Mapping[str, str],     *,     output_dir: str | Path,     options: ScrapeOptions | None = None, ) -> ScrapeBundle:     \"\"\"Acquire one URL or a keyed URL batch and persist matching evidence artifacts.     Validation completes before this function creates or admits the underlying fetch operation.     The function deliberately supplies no graph, model, planner, PostgreSQL, Redis, or Celery service.     \"\"\"     resolved_options = options or ScrapeOptions()     resolved_options.validate()     normalized_inputs = _normalize_inputs(inputs)     destination = Path(output_dir)     operation_id = f\"standalone-website-to-text-{uuid.uuid4().hex}\"     scanner = WebsiteTextExtractor(         params={             \"max_concurrency\": resolved_options.max_concurrency,             \"request_timeout\": resolved_options.request_timeout,             \"max_response_bytes\": resolved_options.max_response_bytes,             \"max_redirects\": resolved_options.max_redirects,             \"max_retries\": resolved_options.max_retries,         },         artifact_store=FilesystemArtifactStore(destination / \"source-artifacts\"),         retention_authority=_authority(operation_id),     )     occurrences = await scanner.scan(         [Website(url=url) for _, url in normalized_inputs], operation_id=operation_id     )     payload = {         \"schema_version\": SCHEMA_VERSION,         \"operation_id\": operation_id,         \"scope\": resolved_options.scope,         \"extraction\": resolved_options.extraction,         \"options\": _jsonable(resolved_options),         \"outcomes\": [             _outcome_record(key, occurrence)             for (key, _), occurrence in zip(normalized_inputs, occurrences)         ],     }     return _write_bundle(payload, destination)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+                    "name": "_jsonable",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 93,
+                    "endLine": 108,
+                    "content": "def _jsonable(value: Any) -> Any:     if value is None or isinstance(value, (str, int, float, bool)):         return value     if isinstance(value, Enum):         return value.value     if isinstance(value, datetime):         return value.isoformat()     if hasattr(value, \"model_dump\"):         return _jsonable(value.model_dump(mode=\"json\"))     if isinstance(value, Mapping):         return {str(key): _jsonable(item) for key, item in value.items()}     if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):         return [_jsonable(item) for item in value]     if hasattr(value, \"__dict__\"):         return _jsonable(vars(value))     return str(value)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_normalize_inputs",
+                    "name": "_normalize_inputs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 111,
+                    "endLine": 135,
+                    "content": "def _normalize_inputs(inputs: object) -> tuple[tuple[str, str], ...]:     if isinstance(inputs, str):         items = ((\"input-0\", inputs),)     elif isinstance(inputs, Mapping):         items = tuple(inputs.items())     else:         raise InvocationError(\"inputs must be one URL string or a keyed URL mapping\")     if not items:         raise InvocationError(\"at least one input URL is required\")     normalized: list[tuple[str, str]] = []     seen_keys: set[str] = set()     for key, url in items:         if not isinstance(key, str) or not key:             raise InvocationError(\"each input key must be a non-empty string\")         if key in seen_keys:             raise InvocationError(f\"duplicate input key: {key}\")         if not isinstance(url, str):             raise InvocationError(f\"input {key} must be a URL string\")         parts = urlsplit(url)         if parts.scheme not in {\"http\", \"https\"} or not parts.hostname:             raise InvocationError(f\"input {key} must be an absolute http(s) URL\")         seen_keys.add(key)         normalized.append((key, url))     return tuple(normalized)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_authority",
+                    "name": "_authority",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 138,
+                    "endLine": 151,
+                    "content": "def _authority(operation_id: str) -> RetentionAuthority:     policy_digest = hashlib.sha256(         f\"{SCHEMA_VERSION}:{operation_id}\".encode(\"utf-8\")     ).hexdigest()     return RetentionAuthority(         issuer_id=\"standalone-scraper\",         reviewer_id=\"standalone-scraper\",         policy_id=\"standalone-source-retention\",         policy_digest=policy_digest,         caller_id=\"website-to-text\",         scope=\"local-web-fetch\",         source_family=\"http\",         expires_at=datetime.now(timezone.utc) + timedelta(hours=1),     )"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_serialized_observations",
+                    "name": "_serialized_observations",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 154,
+                    "endLine": 166,
+                    "content": "def _serialized_observations(     occurrence: WebsiteTextOccurrence, ) -> tuple[str, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:     if occurrence.observation_result is None:         return \"\", [], [], []     metadata = serialize_observed_extraction_metadata(occurrence.observation_result)     payload = _jsonable(metadata.payload)     observations = list(payload.get(\"observations\", []))     links = [item for item in observations if item.get(\"kind\") == \"observed_link\"]     candidates = [item for item in observations if item.get(\"kind\") != \"observed_link\"]     for item in candidates:         item[\"disposition\"] = \"unreviewed\"     return str(payload.get(\"readable_text\", \"\")), observations, links, candidates"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_outcome_record",
+                    "name": "_outcome_record",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 169,
+                    "endLine": 195,
+                    "content": "def _outcome_record(key: str, occurrence: WebsiteTextOccurrence) -> dict[str, Any]:     readable_text, observations, links, candidates = _serialized_observations(occurrence)     diagnostic = None     if occurrence.diagnostic is not None:         diagnostic = _jsonable(occurrence.diagnostic)     source_reference = None     if occurrence.source_proof is not None:         source_reference = {             \"source_proof\": occurrence.source_proof,             \"artifact\": _jsonable(occurrence.artifact_reference),             \"spans\": _jsonable(occurrence.span_references),         }     return {         \"key\": key,         \"input_ref\": occurrence.input_ref,         \"requested_url\": str(occurrence.source.url),         \"status\": occurrence.status.value,         \"text\": [output.text for output in occurrence.outputs] or ([readable_text] if readable_text else []),         \"links\": links,         \"candidates\": candidates,         \"observations\": observations,         \"disposition\": \"unreviewed\",         \"source_reference\": source_reference,         \"diagnostic\": diagnostic,         \"resources\": _jsonable(occurrence.actual_resources),         \"fetch_status\": _jsonable(occurrence.fetch_status),     }"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+                    "name": "render_markdown_report",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 241,
+                    "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\""
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+                    "name": "_write_bundle",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 244,
+                    "endLine": 266,
+                    "content": "def _write_bundle(payload: dict[str, Any], output_dir: Path) -> ScrapeBundle:     output_dir.mkdir(parents=True, exist_ok=True)     json_path = output_dir / \"bundle.json\"     jsonl_path = output_dir / \"outcomes.jsonl\"     report_path = output_dir / \"report.md\"     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")     jsonl_path.write_text(         \"\".join(             json.dumps(                 {                     \"schema_version\": payload[\"schema_version\"],                     \"operation_id\": payload[\"operation_id\"],                     \"outcome\": outcome,                 },                 sort_keys=True,             )             + \"\\n\"             for outcome in payload[\"outcomes\"]         ),         encoding=\"utf-8\",     )     report_path.write_text(render_markdown_report(payload), encoding=\"utf-8\")     return ScrapeBundle(payload, json_path, jsonl_path, report_path)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+            "count": 3,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrence_specs#2",
+                    "name": "_scan_occurrence_specs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 225,
+                    "endLine": 379,
+                    "content": "    async def _scan_occurrence_specs(         self,         specs: Sequence[tuple[int, Website, str]],         *,         operation_id: str | None = None,     ):         specs = tuple(specs)         if not specs:             return ()         if self.params.get(\"enable_quic\", False):             diagnostic = self._diagnostic(                 \"unsafe_transport_disabled\",                 \"Legacy QUIC transport is disabled because it cannot satisfy the fetch policy.\",             )             return tuple(                 self._failed_occurrence(                     *spec,                     diagnostic,                     Resources(requests=0, bytes=0, elapsed_seconds=0.0),                     FetchStatus.POLICY_DENIED,                 )                 for spec in specs             )         try:             operation = self._build_operation(specs, operation_id=operation_id)             runtime = None             if self._artifact_store is None or self._retention_authority is None:                 runtime = load_artifact_runtime(                     caller_id=_CALLER_ID, scope=_SCOPE, source_family=\"http\",                     config_path=self._runtime_config,                 )             store = self._artifact_store or (runtime.store if runtime else None)             authority = self._retention_authority or (runtime.authority if runtime else None)             decision = (                 authority.issue(operation.operation_id)                 if authority is not None                 else None             )             fetched = await execute_fetch_with_source_proof(                 operation,                 artifact_store=store,                 retention_decision=decision,             )         except asyncio.CancelledError:             return tuple(self._cancelled_occurrence(*spec) for spec in specs)         except Exception:             return tuple(self._failed_occurrence(*spec) for spec in specs)         expected = {             item.occurrence_id: item.input_ref for item in operation.inputs         }         returned_ids = [result.occurrence_id for result in fetched.outcomes]         result_is_bound = (             fetched.operation_id == operation.operation_id             and len(fetched.outcomes) == len(operation.inputs)             and len(set(returned_ids)) == len(returned_ids)             and set(returned_ids) == set(expected)             and all(                 result.input_ref == expected.get(result.occurrence_id)                 for result in fetched.outcomes             )         )         if not result_is_bound:             return tuple(                 self._failed_occurrence(                     *spec,                     self._diagnostic(                         \"invalid_fetch_result\",                         \"The fetch result did not match the admitted operation.\",                     ),                 )                 for spec in specs             )         outcome_by_id = {             result.occurrence_id: result for result in fetched.outcomes         }         occurrences = []         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):             result = outcome_by_id.get(admitted.occurrence_id)             if result.fetch_status is FetchStatus.SUCCESS:                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:                     artifact = result.capture.artifact                     context = ArtifactContext(                         operation_id=operation.operation_id,                         occurrence_id=admitted.occurrence_id,                         caller_id=_CALLER_ID,                         scope=_SCOPE,                         source_family=\"http\",                         origin=artifact.origin,                         requested_url=artifact.requested_url,                         final_url=artifact.final_url,                         retrieved_at=artifact.retrieved_at,                         event_at=artifact.event_at,                     )                     try:                         if result.observations is None:                             raise ValueError(\"observation_result_too_large\")                         observation_metadata = serialize_observed_extraction_metadata(result.observations)                         if len(observation_metadata.model_dump_json(warnings=\"error\")) > _MAX_OBSERVATION_RESULT_BYTES:                             raise ValueError(\"observation_result_too_large\")                         source_proof = encode_source_proof(PersistedSourceProof(                             format_version=\"source-proof/1.0\", input_ref=result.input_ref,                             context=context, decision=decision, artifact=artifact,                             spans=result.spans,                         ))                     except ValueError:                         occurrences.append(self._failed_occurrence(                             index, source, input_ref,                             ... [truncated]"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrences#3",
+                    "name": "_scan_occurrences",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 381,
+                    "endLine": 394,
+                    "content": "    async def _scan_occurrences(         self,         data: Sequence[Website],         *,         start_index=0,         operation_id: str | None = None,     ):         return await self._scan_occurrence_specs(             tuple(                 (start_index + offset, source, canonical_input_hash(source))                 for offset, source in enumerate(data)             ),             operation_id=operation_id,         )"
+                },
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor.scan#2",
+                    "name": "scan",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 405,
+                    "endLine": 408,
+                    "content": "    async def scan(         self, data: List[Website], *, operation_id: str | None = None     ):         return list(await self._scan_occurrences(data, operation_id=operation_id))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-enrichers",
+            "direct": true,
+            "symbolCount": 10
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor.scan#2",
+                    "name": "scan",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 405,
+                    "endLine": 408,
+                    "content": "    async def scan(         self, data: List[Website], *, operation_id: str | None = None     ):         return list(await self._scan_occurrences(data, operation_id=operation_id))"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_jsonable",
+                    "name": "_jsonable",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 93,
+                    "endLine": 108,
+                    "content": "def _jsonable(value: Any) -> Any:     if value is None or isinstance(value, (str, int, float, bool)):         return value     if isinstance(value, Enum):         return value.value     if isinstance(value, datetime):         return value.isoformat()     if hasattr(value, \"model_dump\"):         return _jsonable(value.model_dump(mode=\"json\"))     if isinstance(value, Mapping):         return {str(key): _jsonable(item) for key, item in value.items()}     if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):         return [_jsonable(item) for item in value]     if hasattr(value, \"__dict__\"):         return _jsonable(vars(value))     return str(value)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_normalize_inputs",
+                    "name": "_normalize_inputs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 111,
+                    "endLine": 135,
+                    "content": "def _normalize_inputs(inputs: object) -> tuple[tuple[str, str], ...]:     if isinstance(inputs, str):         items = ((\"input-0\", inputs),)     elif isinstance(inputs, Mapping):         items = tuple(inputs.items())     else:         raise InvocationError(\"inputs must be one URL string or a keyed URL mapping\")     if not items:         raise InvocationError(\"at least one input URL is required\")     normalized: list[tuple[str, str]] = []     seen_keys: set[str] = set()     for key, url in items:         if not isinstance(key, str) or not key:             raise InvocationError(\"each input key must be a non-empty string\")         if key in seen_keys:             raise InvocationError(f\"duplicate input key: {key}\")         if not isinstance(url, str):             raise InvocationError(f\"input {key} must be a URL string\")         parts = urlsplit(url)         if parts.scheme not in {\"http\", \"https\"} or not parts.hostname:             raise InvocationError(f\"input {key} must be an absolute http(s) URL\")         seen_keys.add(key)         normalized.append((key, url))     return tuple(normalized)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_authority",
+                    "name": "_authority",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 138,
+                    "endLine": 151,
+                    "content": "def _authority(operation_id: str) -> RetentionAuthority:     policy_digest = hashlib.sha256(         f\"{SCHEMA_VERSION}:{operation_id}\".encode(\"utf-8\")     ).hexdigest()     return RetentionAuthority(         issuer_id=\"standalone-scraper\",         reviewer_id=\"standalone-scraper\",         policy_id=\"standalone-source-retention\",         policy_digest=policy_digest,         caller_id=\"website-to-text\",         scope=\"local-web-fetch\",         source_family=\"http\",         expires_at=datetime.now(timezone.utc) + timedelta(hours=1),     )"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_outcome_record",
+                    "name": "_outcome_record",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 169,
+                    "endLine": 195,
+                    "content": "def _outcome_record(key: str, occurrence: WebsiteTextOccurrence) -> dict[str, Any]:     readable_text, observations, links, candidates = _serialized_observations(occurrence)     diagnostic = None     if occurrence.diagnostic is not None:         diagnostic = _jsonable(occurrence.diagnostic)     source_reference = None     if occurrence.source_proof is not None:         source_reference = {             \"source_proof\": occurrence.source_proof,             \"artifact\": _jsonable(occurrence.artifact_reference),             \"spans\": _jsonable(occurrence.span_references),         }     return {         \"key\": key,         \"input_ref\": occurrence.input_ref,         \"requested_url\": str(occurrence.source.url),         \"status\": occurrence.status.value,         \"text\": [output.text for output in occurrence.outputs] or ([readable_text] if readable_text else []),         \"links\": links,         \"candidates\": candidates,         \"observations\": observations,         \"disposition\": \"unreviewed\",         \"source_reference\": source_reference,         \"diagnostic\": diagnostic,         \"resources\": _jsonable(occurrence.actual_resources),         \"fetch_status\": _jsonable(occurrence.fetch_status),     }"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+                    "name": "_write_bundle",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 244,
+                    "endLine": 266,
+                    "content": "def _write_bundle(payload: dict[str, Any], output_dir: Path) -> ScrapeBundle:     output_dir.mkdir(parents=True, exist_ok=True)     json_path = output_dir / \"bundle.json\"     jsonl_path = output_dir / \"outcomes.jsonl\"     report_path = output_dir / \"report.md\"     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")     jsonl_path.write_text(         \"\".join(             json.dumps(                 {                     \"schema_version\": payload[\"schema_version\"],                     \"operation_id\": payload[\"operation_id\"],                     \"outcome\": outcome,                 },                 sort_keys=True,             )             + \"\\n\"             for outcome in payload[\"outcomes\"]         ),         encoding=\"utf-8\",     )     report_path.write_text(render_markdown_report(payload), encoding=\"utf-8\")     return ScrapeBundle(payload, json_path, jsonl_path, report_path)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrences#3",
+                    "name": "_scan_occurrences",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 381,
+                    "endLine": 394,
+                    "content": "    async def _scan_occurrences(         self,         data: Sequence[Website],         *,         start_index=0,         operation_id: str | None = None,     ):         return await self._scan_occurrence_specs(             tuple(                 (start_index + offset, source, canonical_input_hash(source))                 for offset, source in enumerate(data)             ),             operation_id=operation_id,         )"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_serialized_observations",
+                    "name": "_serialized_observations",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 154,
+                    "endLine": 166,
+                    "content": "def _serialized_observations(     occurrence: WebsiteTextOccurrence, ) -> tuple[str, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:     if occurrence.observation_result is None:         return \"\", [], [], []     metadata = serialize_observed_extraction_metadata(occurrence.observation_result)     payload = _jsonable(metadata.payload)     observations = list(payload.get(\"observations\", []))     links = [item for item in observations if item.get(\"kind\") == \"observed_link\"]     candidates = [item for item in observations if item.get(\"kind\") != \"observed_link\"]     for item in candidates:         item[\"disposition\"] = \"unreviewed\"     return str(payload.get(\"readable_text\", \"\")), observations, links, candidates"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+                    "name": "render_markdown_report",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 241,
+                    "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\""
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor._scan_occurrence_specs#2",
+                    "name": "_scan_occurrence_specs",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 225,
+                    "endLine": 379,
+                    "content": "    async def _scan_occurrence_specs(         self,         specs: Sequence[tuple[int, Website, str]],         *,         operation_id: str | None = None,     ):         specs = tuple(specs)         if not specs:             return ()         if self.params.get(\"enable_quic\", False):             diagnostic = self._diagnostic(                 \"unsafe_transport_disabled\",                 \"Legacy QUIC transport is disabled because it cannot satisfy the fetch policy.\",             )             return tuple(                 self._failed_occurrence(                     *spec,                     diagnostic,                     Resources(requests=0, bytes=0, elapsed_seconds=0.0),                     FetchStatus.POLICY_DENIED,                 )                 for spec in specs             )         try:             operation = self._build_operation(specs, operation_id=operation_id)             runtime = None             if self._artifact_store is None or self._retention_authority is None:                 runtime = load_artifact_runtime(                     caller_id=_CALLER_ID, scope=_SCOPE, source_family=\"http\",                     config_path=self._runtime_config,                 )             store = self._artifact_store or (runtime.store if runtime else None)             authority = self._retention_authority or (runtime.authority if runtime else None)             decision = (                 authority.issue(operation.operation_id)                 if authority is not None                 else None             )             fetched = await execute_fetch_with_source_proof(                 operation,                 artifact_store=store,                 retention_decision=decision,             )         except asyncio.CancelledError:             return tuple(self._cancelled_occurrence(*spec) for spec in specs)         except Exception:             return tuple(self._failed_occurrence(*spec) for spec in specs)         expected = {             item.occurrence_id: item.input_ref for item in operation.inputs         }         returned_ids = [result.occurrence_id for result in fetched.outcomes]         result_is_bound = (             fetched.operation_id == operation.operation_id             and len(fetched.outcomes) == len(operation.inputs)             and len(set(returned_ids)) == len(returned_ids)             and set(returned_ids) == set(expected)             and all(                 result.input_ref == expected.get(result.occurrence_id)                 for result in fetched.outcomes             )         )         if not result_is_bound:             return tuple(                 self._failed_occurrence(                     *spec,                     self._diagnostic(                         \"invalid_fetch_result\",                         \"The fetch result did not match the admitted operation.\",                     ),                 )                 for spec in specs             )         outcome_by_id = {             result.occurrence_id: result for result in fetched.outcomes         }         occurrences = []         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):             result = outcome_by_id.get(admitted.occurrence_id)             if result.fetch_status is FetchStatus.SUCCESS:                 if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:                     artifact = result.capture.artifact                     context = ArtifactContext(                         operation_id=operation.operation_id,                         occurrence_id=admitted.occurrence_id,                         caller_id=_CALLER_ID,                         scope=_SCOPE,                         source_family=\"http\",                         origin=artifact.origin,                         requested_url=artifact.requested_url,                         final_url=artifact.final_url,                         retrieved_at=artifact.retrieved_at,                         event_at=artifact.event_at,                     )                     try:                         if result.observations is None:                             raise ValueError(\"observation_result_too_large\")                         observation_metadata = serialize_observed_extraction_metadata(result.observations)                         if len(observation_metadata.model_dump_json(warnings=\"error\")) > _MAX_OBSERVATION_RESULT_BYTES:                             raise ValueError(\"observation_result_too_large\")                         source_proof = encode_source_proof(PersistedSourceProof(                             format_version=\"source-proof/1.0\", input_ref=result.input_ref,                             context=context, decision=decision, artifact=artifact,                             spans=result.spans,                         ))                     except ValueError:                         occurrences.append(self._failed_occurrence(                             index, source, input_ref,                             ... [truncated]"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scrape_websites",
+        "rootSymbols": 1,
+        "totalSymbols": 11,
+        "totalEdges": 13,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 6,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,8 @@
+{
+  "schema": "release-smoke/1",
+  "mode": "verify",
+  "output_dir": "/tmp/def48/run-head/batch",
+  "problems": [],
+  "report_rerendered": true,
+  "valid": true
+}

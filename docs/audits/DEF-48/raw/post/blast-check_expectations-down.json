@@ -1,0 +1,68 @@
+{
+    "symbol": "scripts/release_smoke.py:check_expectations",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:scripts/release_smoke.py:check_expectations",
+        "name": "check_expectations",
+        "filePath": "scripts/release_smoke.py",
+        "nodeType": "Function",
+        "startLine": 268,
+        "endLine": 302,
+        "content": "def check_expectations(output_dir, manifest, base_url):     \"\"\"Compare the batch bundle with the fixture corpus' retained bytes and labels.\"\"\"     bundle = json.loads((Path(output_dir) / \"bundle.json\").read_text(encoding=\"utf-8\"))     sources = {s[\"id\"]: s for s in manifest[\"sources\"]}     problems = []     outcomes = {o[\"key\"]: o for o in bundle[\"outcomes\"]}     if list(outcomes) != list(BATCH):         problems.append(f\"E_LINEAGE: keys {list(outcomes)} != submitted {list(BATCH)}\")     for key, (source_id, status, code) in BATCH.items():         outcome = outcomes.get(key)         if outcome is None:             continue         source = sources[source_id]         if outcome[\"requested_url\"] != base_url + source[\"route\"]:             problems.append(f\"E_LINEAGE: {key} requested {outcome['requested_url']}\")         if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:             problems.append(f\"E_OUTCOME: {key} is {outcome['status']}/{outcome['diagnostic']}, expected {status}/{code}\")         if status != \"success\" or outcome[\"source_reference\"] is None:             continue         final = sources[source[\"response\"][\"location\"].strip(\"/\")] if \"location\" in source[\"response\"] else source         artifact = outcome[\"source_reference\"][\"artifact\"]         if artifact[\"content_digest\"] != final[\"sha256\"]:             problems.append(f\"E_SOURCE_DIGEST: {key} retained bytes differ from fixture {final['id']}\")         if artifact[\"final_url\"] != base_url + final[\"route\"]:             problems.append(f\"E_LINEAGE: {key} final_url {artifact['final_url']}\")     empty, failure = outcomes.get(\"empty\"), outcomes.get(\"failure\")     if empty and (empty[\"text\"] or empty[\"diagnostic\"] is not None or empty[\"source_reference\"] is None):         problems.append(\"E_ERROR_EMPTY: legitimate empty page is not an empty success with source proof\")     if failure and (failure[\"source_reference\"] is not None or failure[\"diagnostic\"] is None):         problems.append(\"E_ERROR_EMPTY: HTTP failure is not an explicit error\")     first, again = outcomes.get(\"static\"), outcomes.get(\"static-again\")     if first and again and first[\"source_reference\"] and again[\"source_reference\"]:         if first[\"source_reference\"][\"artifact\"][\"snapshot_id\"] == again[\"source_reference\"][\"artifact\"][\"snapshot_id\"]:             problems.append(\"E_LINEAGE: duplicate URL occurrences share one snapshot\")     return problems"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/release_smoke.py:check_expectations",
+            "name": "check_expectations",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 268,
+            "endLine": 302,
+            "content": "def check_expectations(output_dir, manifest, base_url):     \"\"\"Compare the batch bundle with the fixture corpus' retained bytes and labels.\"\"\"     bundle = json.loads((Path(output_dir) / \"bundle.json\").read_text(encoding=\"utf-8\"))     sources = {s[\"id\"]: s for s in manifest[\"sources\"]}     problems = []     outcomes = {o[\"key\"]: o for o in bundle[\"outcomes\"]}     if list(outcomes) != list(BATCH):         problems.append(f\"E_LINEAGE: keys {list(outcomes)} != submitted {list(BATCH)}\")     for key, (source_id, status, code) in BATCH.items():         outcome = outcomes.get(key)         if outcome is None:             continue         source = sources[source_id]         if outcome[\"requested_url\"] != base_url + source[\"route\"]:             problems.append(f\"E_LINEAGE: {key} requested {outcome['requested_url']}\")         if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:             problems.append(f\"E_OUTCOME: {key} is {outcome['status']}/{outcome['diagnostic']}, expected {status}/{code}\")         if status != \"success\" or outcome[\"source_reference\"] is None:             continue         final = sources[source[\"response\"][\"location\"].strip(\"/\")] if \"location\" in source[\"response\"] else source         artifact = outcome[\"source_reference\"][\"artifact\"]         if artifact[\"content_digest\"] != final[\"sha256\"]:             problems.append(f\"E_SOURCE_DIGEST: {key} retained bytes differ from fixture {final['id']}\")         if artifact[\"final_url\"] != base_url + final[\"route\"]:             problems.append(f\"E_LINEAGE: {key} final_url {artifact['final_url']}\")     empty, failure = outcomes.get(\"empty\"), outcomes.get(\"failure\")     if empty and (empty[\"text\"] or empty[\"diagnostic\"] is not None or empty[\"source_reference\"] is None):         problems.append(\"E_ERROR_EMPTY: legitimate empty page is not an empty success with source proof\")     if failure and (failure[\"source_reference\"] is not None or failure[\"diagnostic\"] is None):         problems.append(\"E_ERROR_EMPTY: HTTP failure is not an explicit error\")     first, again = outcomes.get(\"static\"), outcomes.get(\"static-again\")     if first and again and first[\"source_reference\"] and again[\"source_reference\"]:         if first[\"source_reference\"][\"artifact\"][\"snapshot_id\"] == again[\"source_reference\"][\"artifact\"][\"snapshot_id\"]:             problems.append(\"E_LINEAGE: duplicate URL occurrences share one snapshot\")     return problems"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "scripts/release_smoke.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:check_expectations",
+                    "name": "check_expectations",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 268,
+                    "endLine": 302,
+                    "content": "def check_expectations(output_dir, manifest, base_url):     \"\"\"Compare the batch bundle with the fixture corpus' retained bytes and labels.\"\"\"     bundle = json.loads((Path(output_dir) / \"bundle.json\").read_text(encoding=\"utf-8\"))     sources = {s[\"id\"]: s for s in manifest[\"sources\"]}     problems = []     outcomes = {o[\"key\"]: o for o in bundle[\"outcomes\"]}     if list(outcomes) != list(BATCH):         problems.append(f\"E_LINEAGE: keys {list(outcomes)} != submitted {list(BATCH)}\")     for key, (source_id, status, code) in BATCH.items():         outcome = outcomes.get(key)         if outcome is None:             continue         source = sources[source_id]         if outcome[\"requested_url\"] != base_url + source[\"route\"]:             problems.append(f\"E_LINEAGE: {key} requested {outcome['requested_url']}\")         if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:             problems.append(f\"E_OUTCOME: {key} is {outcome['status']}/{outcome['diagnostic']}, expected {status}/{code}\")         if status != \"success\" or outcome[\"source_reference\"] is None:             continue         final = sources[source[\"response\"][\"location\"].strip(\"/\")] if \"location\" in source[\"response\"] else source         artifact = outcome[\"source_reference\"][\"artifact\"]         if artifact[\"content_digest\"] != final[\"sha256\"]:             problems.append(f\"E_SOURCE_DIGEST: {key} retained bytes differ from fixture {final['id']}\")         if artifact[\"final_url\"] != base_url + final[\"route\"]:             problems.append(f\"E_LINEAGE: {key} final_url {artifact['final_url']}\")     empty, failure = outcomes.get(\"empty\"), outcomes.get(\"failure\")     if empty and (empty[\"text\"] or empty[\"diagnostic\"] is not None or empty[\"source_reference\"] is None):         problems.append(\"E_ERROR_EMPTY: legitimate empty page is not an empty success with source proof\")     if failure and (failure[\"source_reference\"] is not None or failure[\"diagnostic\"] is None):         problems.append(\"E_ERROR_EMPTY: HTTP failure is not an explicit error\")     first, again = outcomes.get(\"static\"), outcomes.get(\"static-again\")     if first and again and first[\"source_reference\"] and again[\"source_reference\"]:         if first[\"source_reference\"][\"artifact\"][\"snapshot_id\"] == again[\"source_reference\"][\"artifact\"][\"snapshot_id\"]:             problems.append(\"E_LINEAGE: duplicate URL occurrences share one snapshot\")     return problems"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scripts/release_smoke.py:check_expectations",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}
