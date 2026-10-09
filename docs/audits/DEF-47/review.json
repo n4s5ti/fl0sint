@@ -1,0 +1,56 @@
+{
+  "issue": "DEF-47",
+  "status": "accepted",
+  "reviewer": "def47-independent-review",
+  "independence": "Coordinator-launched reviewer; implementation was performed by def47-delivery.",
+  "initial_findings": [
+    {
+      "id": "F1",
+      "priority": "P1",
+      "finding": "README keyed-batch example used unsupported scope and extraction values.",
+      "fix": "Use local-web-fetch and observed-readable-text.",
+      "same_reviewer_reverified": true
+    },
+    {
+      "id": "F2",
+      "priority": "P1",
+      "finding": "README library example passed unsupported scope and extraction keyword arguments.",
+      "fix": "Import ScrapeOptions and pass it through options=.",
+      "same_reviewer_reverified": true
+    },
+    {
+      "id": "F3",
+      "priority": "P2",
+      "finding": "Offline proof depended on inherited main-worktree configuration.",
+      "fix": "Use the worktree environment and explicit dummy variables only for the legacy test-package initializer.",
+      "same_reviewer_reverified": true
+    },
+    {
+      "id": "F4",
+      "priority": "P2",
+      "finding": "Fallback Enricher failed to initialize graph state.",
+      "fix": "Removed the fallback architecture entirely: WebsiteTextExtractor is real graph-free acquisition and WebsiteToText again uses normal core imports.",
+      "same_reviewer_reverified": true
+    },
+    {
+      "id": "F5",
+      "priority": "P3",
+      "finding": "Refactor left duplicate WebsiteFetchError classes and repeated public module aliases.",
+      "fix": "Keep the one legacy WebsiteFetchError and one InputType/OutputType alias block in to_text.py.",
+      "same_reviewer_reverified": true
+    }
+  ],
+  "final_reverification": {
+    "environment": "isolated env -i with worktree virtual environment and live loopback fixture",
+    "verified": [
+      "standalone directly constructs WebsiteTextExtractor; its imports are execution/types only",
+      "WebsiteToText restored to unconditional core imports and delegates acquisition",
+      "CLI exit 0/2/64, validation before output, no source swap, retained source proof",
+      "bundle/JSONL/Markdown/lineage operation-id agreement and unreviewed disposition",
+      "package-root library example and README offline command",
+      "post-cleanup focused suite: 30 passed"
+    ],
+    "verdict": "ACCEPT",
+    "open_findings": []
+  }
+}

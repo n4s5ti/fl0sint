@@ -1,0 +1,68 @@
+{
+    "symbol": "scripts/release_smoke.py:run_cli",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:scripts/release_smoke.py:run_cli",
+        "name": "run_cli",
+        "filePath": "scripts/release_smoke.py",
+        "nodeType": "Function",
+        "startLine": 441,
+        "endLine": 478,
+        "content": "def run_cli(run, entry, name, arguments, cancel_after_connect=False):     \"\"\"Run the packaged entrypoint with a minimal environment and an audit hook.\"\"\"     hook = run.work / \"hook\"     hook.mkdir(exist_ok=True)     (hook / \"sitecustomize.py\").write_text(SITECUSTOMIZE, encoding=\"utf-8\")     audit = run.work / f\"{name}.audit.jsonl\"     output = run.work / name     env = {\"PATH\": \"/usr/bin:/bin\", \"HOME\": str(run.work), \"PYTHONPATH\": str(hook),            \"RELEASE_SMOKE_AUDIT_LOG\": str(audit)}     started = time.monotonic()     out_log, err_log = run.work / f\"{name}.stdout\", run.work / f\"{name}.stderr\"     with open(out_log, \"w\") as stdout_file, open(err_log, \"w\") as stderr_file:         proc = subprocess.Popen([str(entry), *arguments, \"--output-dir\", str(output)], env=env,                                 stdout=stdout_file, stderr=stderr_file)         if cancel_after_connect:             deadline = time.monotonic() + 20             # waitid(WNOWAIT) observes exit without reaping, so wait4 below still owns the child.             while time.monotonic() < deadline and os.waitid(                 os.P_PID, proc.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT             ) is None:                 if audit.exists() and '\"socket.connect\"' in audit.read_text(encoding=\"utf-8\"):                     time.sleep(0.1)                     proc.send_signal(signal.SIGINT)                     break                 time.sleep(0.02)         # wait4 gives this process' own rusage (RUSAGE_CHILDREN would mix in the build).         _, wait_status, usage = os.wait4(proc.pid, 0)         proc.returncode = os.waitstatus_to_exitcode(wait_status)     stdout, stderr = out_log.read_text(), err_log.read_text()     events = [json.loads(line) for line in audit.read_text(encoding=\"utf-8\").splitlines()] if audit.exists() else []     run.measurements[name] = {         \"wall_seconds\": round(time.monotonic() - started, 3),         \"user_cpu_seconds\": round(usage.ru_utime, 3),         \"system_cpu_seconds\": round(usage.ru_stime, 3),         \"peak_rss_kib\": next((e[\"kib\"] for e in events if e[\"event\"] == \"peak_rss\"), None),         \"output_bytes\": sum(p.stat().st_size for p in output.rglob(\"*\") if p.is_file()) if output.exists() else 0,     }     return proc.returncode, stdout, stderr, output, events"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/release_smoke.py:run_cli",
+            "name": "run_cli",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 441,
+            "endLine": 478,
+            "content": "def run_cli(run, entry, name, arguments, cancel_after_connect=False):     \"\"\"Run the packaged entrypoint with a minimal environment and an audit hook.\"\"\"     hook = run.work / \"hook\"     hook.mkdir(exist_ok=True)     (hook / \"sitecustomize.py\").write_text(SITECUSTOMIZE, encoding=\"utf-8\")     audit = run.work / f\"{name}.audit.jsonl\"     output = run.work / name     env = {\"PATH\": \"/usr/bin:/bin\", \"HOME\": str(run.work), \"PYTHONPATH\": str(hook),            \"RELEASE_SMOKE_AUDIT_LOG\": str(audit)}     started = time.monotonic()     out_log, err_log = run.work / f\"{name}.stdout\", run.work / f\"{name}.stderr\"     with open(out_log, \"w\") as stdout_file, open(err_log, \"w\") as stderr_file:         proc = subprocess.Popen([str(entry), *arguments, \"--output-dir\", str(output)], env=env,                                 stdout=stdout_file, stderr=stderr_file)         if cancel_after_connect:             deadline = time.monotonic() + 20             # waitid(WNOWAIT) observes exit without reaping, so wait4 below still owns the child.             while time.monotonic() < deadline and os.waitid(                 os.P_PID, proc.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT             ) is None:                 if audit.exists() and '\"socket.connect\"' in audit.read_text(encoding=\"utf-8\"):                     time.sleep(0.1)                     proc.send_signal(signal.SIGINT)                     break                 time.sleep(0.02)         # wait4 gives this process' own rusage (RUSAGE_CHILDREN would mix in the build).         _, wait_status, usage = os.wait4(proc.pid, 0)         proc.returncode = os.waitstatus_to_exitcode(wait_status)     stdout, stderr = out_log.read_text(), err_log.read_text()     events = [json.loads(line) for line in audit.read_text(encoding=\"utf-8\").splitlines()] if audit.exists() else []     run.measurements[name] = {         \"wall_seconds\": round(time.monotonic() - started, 3),         \"user_cpu_seconds\": round(usage.ru_utime, 3),         \"system_cpu_seconds\": round(usage.ru_stime, 3),         \"peak_rss_kib\": next((e[\"kib\"] for e in events if e[\"event\"] == \"peak_rss\"), None),         \"output_bytes\": sum(p.stat().st_size for p in output.rglob(\"*\") if p.is_file()) if output.exists() else 0,     }     return proc.returncode, stdout, stderr, output, events"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "scripts/release_smoke.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:run_cli",
+                    "name": "run_cli",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 441,
+                    "endLine": 478,
+                    "content": "def run_cli(run, entry, name, arguments, cancel_after_connect=False):     \"\"\"Run the packaged entrypoint with a minimal environment and an audit hook.\"\"\"     hook = run.work / \"hook\"     hook.mkdir(exist_ok=True)     (hook / \"sitecustomize.py\").write_text(SITECUSTOMIZE, encoding=\"utf-8\")     audit = run.work / f\"{name}.audit.jsonl\"     output = run.work / name     env = {\"PATH\": \"/usr/bin:/bin\", \"HOME\": str(run.work), \"PYTHONPATH\": str(hook),            \"RELEASE_SMOKE_AUDIT_LOG\": str(audit)}     started = time.monotonic()     out_log, err_log = run.work / f\"{name}.stdout\", run.work / f\"{name}.stderr\"     with open(out_log, \"w\") as stdout_file, open(err_log, \"w\") as stderr_file:         proc = subprocess.Popen([str(entry), *arguments, \"--output-dir\", str(output)], env=env,                                 stdout=stdout_file, stderr=stderr_file)         if cancel_after_connect:             deadline = time.monotonic() + 20             # waitid(WNOWAIT) observes exit without reaping, so wait4 below still owns the child.             while time.monotonic() < deadline and os.waitid(                 os.P_PID, proc.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT             ) is None:                 if audit.exists() and '\"socket.connect\"' in audit.read_text(encoding=\"utf-8\"):                     time.sleep(0.1)                     proc.send_signal(signal.SIGINT)                     break                 time.sleep(0.02)         # wait4 gives this process' own rusage (RUSAGE_CHILDREN would mix in the build).         _, wait_status, usage = os.wait4(proc.pid, 0)         proc.returncode = os.waitstatus_to_exitcode(wait_status)     stdout, stderr = out_log.read_text(), err_log.read_text()     events = [json.loads(line) for line in audit.read_text(encoding=\"utf-8\").splitlines()] if audit.exists() else []     run.measurements[name] = {         \"wall_seconds\": round(time.monotonic() - started, 3),         \"user_cpu_seconds\": round(usage.ru_utime, 3),         \"system_cpu_seconds\": round(usage.ru_stime, 3),         \"peak_rss_kib\": next((e[\"kib\"] for e in events if e[\"event\"] == \"peak_rss\"), None),         \"output_bytes\": sum(p.stat().st_size for p in output.rglob(\"*\") if p.is_file()) if output.exists() else 0,     }     return proc.returncode, stdout, stderr, output, events"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scripts/release_smoke.py:run_cli",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,68 @@
+{
+    "symbol": "scripts/release_smoke.py:audit_problems",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:scripts/release_smoke.py:audit_problems",
+        "name": "audit_problems",
+        "filePath": "scripts/release_smoke.py",
+        "nodeType": "Function",
+        "startLine": 481,
+        "endLine": 492,
+        "content": "def audit_problems(events, port):     problems = []     for event in events:         if event[\"event\"] == \"socket.connect\":             address = event[\"address\"]             if not (isinstance(address, list) and address[:2] == [\"127.0.0.1\", port]):                 problems.append(f\"E_SERVICE: connection to {address} (only the loopback fixture is allowed)\")         elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:             problems.append(f\"E_SERVICE: imported service/model module {event['module']}\")     if not any(event[\"event\"] == \"import\" for event in events):         problems.append(\"E_SERVICE: audit hook recorded nothing; isolation is unproven\")     return problems"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/release_smoke.py:audit_problems",
+            "name": "audit_problems",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 481,
+            "endLine": 492,
+            "content": "def audit_problems(events, port):     problems = []     for event in events:         if event[\"event\"] == \"socket.connect\":             address = event[\"address\"]             if not (isinstance(address, list) and address[:2] == [\"127.0.0.1\", port]):                 problems.append(f\"E_SERVICE: connection to {address} (only the loopback fixture is allowed)\")         elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:             problems.append(f\"E_SERVICE: imported service/model module {event['module']}\")     if not any(event[\"event\"] == \"import\" for event in events):         problems.append(\"E_SERVICE: audit hook recorded nothing; isolation is unproven\")     return problems"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "scripts/release_smoke.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:audit_problems",
+                    "name": "audit_problems",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 481,
+                    "endLine": 492,
+                    "content": "def audit_problems(events, port):     problems = []     for event in events:         if event[\"event\"] == \"socket.connect\":             address = event[\"address\"]             if not (isinstance(address, list) and address[:2] == [\"127.0.0.1\", port]):                 problems.append(f\"E_SERVICE: connection to {address} (only the loopback fixture is allowed)\")         elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:             problems.append(f\"E_SERVICE: imported service/model module {event['module']}\")     if not any(event[\"event\"] == \"import\" for event in events):         problems.append(\"E_SERVICE: audit hook recorded nothing; isolation is unproven\")     return problems"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scripts/release_smoke.py:audit_problems",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

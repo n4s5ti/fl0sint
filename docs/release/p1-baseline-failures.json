@@ -1,0 +1,15 @@
+{
+  "_provenance": {
+    "resolved": {
+      "core": "test_live_fixture_exercises_expected_acceptance_surface: the fixture is committed in-repo (fe483d05, merged via PR #2).",
+      "enrichers": "namechk TestScan x3: the tests are independent of optional naminter (DEF-130, 0dc4797a, PR #4).",
+      "api": "test_events_auth x3: DEF-135 (19e1855f). test_sqlite_migrations x4: DEF-136 merge revision b2ae9121c94c (e63b481e). Both are in PR #4."
+    },
+    "verified": "release_smoke.py suites at main 1877bd4b merged into work/def-48-smoke-harness: 0 failures in all four packages.",
+    "policy": "Entries are removed only when the suites report them as baseline_resolved. New failures are never added here to make a release pass."
+  },
+  "types": [],
+  "core": [],
+  "enrichers": [],
+  "api": []
+}

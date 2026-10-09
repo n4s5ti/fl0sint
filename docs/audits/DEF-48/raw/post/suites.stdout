@@ -1,0 +1,16 @@
+PASS types: 54 passed in 0.35s
+PASS core: 1 failed, 1035 passed, 2 warnings in 23.77s
+  baseline debt (still failing) tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface
+PASS enrichers: 3 failed, 242 passed, 2 warnings in 35.46s
+  baseline debt (still failing) tests/enrichers/test_namechk.py::TestScan::test_hunt_exception_returns_empty
+  baseline debt (still failing) tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_no_matches
+  baseline debt (still failing) tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_returns_found_accounts
+PASS api: 7 failed, 8 passed, 1 skipped, 8 warnings in 12.76s
+  baseline debt (still failing) tests/test_events_auth.py::test_log_stream_rejects_token_query_param
+  baseline debt (still failing) tests/test_events_auth.py::test_log_stream_requires_auth_header
+  baseline debt (still failing) tests/test_events_auth.py::test_status_stream_requires_auth_header
+  baseline debt (still failing) tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database
+  baseline debt (still failing) tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models
+  baseline debt (still failing) tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only
+  baseline debt (still failing) tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head
+suites=0

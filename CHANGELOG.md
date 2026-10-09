@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **DEF-48 (S08) P1 release smoke harness**: `scripts/release_smoke.py run|verify|suites`.
+  - `run` packages the committed tree, installs it into a clean venv and drives the
+    installed `*-standalone-scraper` against the loopback fixture corpus. It checks:
+    - spans against the retained bytes;
+    - lineage;
+    - empty pages vs errors;
+    - service and model isolation;
+    - byte limits and SIGINT cancellation;
+    - offline replay, plus negative controls.
+    It also records package digests and resource use.
+  - `suites` keeps the baseline failures listed in `docs/release/p1-baseline-failures.json`
+    visible.
+  - The P1 gate list, including the deferred browser, graph and learning gates, is in
+    `docs/release/p1-release-checklist.md`.
 - **DEF-90 (S09) audit-packet validator**: `scripts/audit_packet.py validate|changed`, a
   stdlib-only development checker for `docs/audits/<ISSUE>/packet.json`. It checks artifact
   digests, base/head/index freshness, pip3r semantic status (exit 0 is not treated as PASS),

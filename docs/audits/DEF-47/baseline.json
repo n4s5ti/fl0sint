@@ -1,0 +1,22 @@
+{
+  "issue": "DEF-47",
+  "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+  "worktree": "/home/n4s5ti/Documents/dev/fl0sint-def47-standalone",
+  "isolation": {
+    "gitfile": "gitdir: /home/n4s5ti/Documents/dev/fl0sint/.git/worktrees/fl0sint-def47-standalone",
+    "verified": true
+  },
+  "baseline_tests": {
+    "core": "1 failed, 1035 passed; known missing /tmp/def45-live-fixture.html",
+    "enrichers": "185 passed"
+  },
+  "baseline_impact": {
+    "index_generation": "sha256:9df0080672d4365f21ae2f5058046c18c72c05fea74f48daecbb67b623363868",
+    "drift_total": 0,
+    "website_to_text_upstream": "LOW/complete, 1 direct edge",
+    "website_to_text_downstream": "CRITICAL/complete",
+    "website_to_links_upstream": "UNKNOWN/partial: no-call-edges",
+    "doctor_hunt": "BLOCKED: this non-Pip3r repository has no CLI probe target"
+  },
+  "legacy_disclosure": "Baseline pytest emits pre-existing PostgreSQL logger authentication noise. DEF-47 neither repaired nor relies on PostgreSQL, Redis, or Celery."
+}

@@ -1,0 +1,193 @@
+{
+    "symbol": "render_markdown_report",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+        "name": "render_markdown_report",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+        "nodeType": "Function",
+        "startLine": 198,
+        "endLine": 241,
+        "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\""
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+            "name": "render_markdown_report",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 198,
+            "endLine": 241,
+            "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\""
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+            "name": "_write_bundle",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 244,
+            "endLine": 266,
+            "content": "def _write_bundle(payload: dict[str, Any], output_dir: Path) -> ScrapeBundle:     output_dir.mkdir(parents=True, exist_ok=True)     json_path = output_dir / \"bundle.json\"     jsonl_path = output_dir / \"outcomes.jsonl\"     report_path = output_dir / \"report.md\"     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")     jsonl_path.write_text(         \"\".join(             json.dumps(                 {                     \"schema_version\": payload[\"schema_version\"],                     \"operation_id\": payload[\"operation_id\"],                     \"outcome\": outcome,                 },                 sort_keys=True,             )             + \"\\n\"             for outcome in payload[\"outcomes\"]         ),         encoding=\"utf-8\",     )     report_path.write_text(render_markdown_report(payload), encoding=\"utf-8\")     return ScrapeBundle(payload, json_path, jsonl_path, report_path)"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "name": "scrape_websites",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 269,
+            "endLine": 311,
+            "content": "async def scrape_websites(     inputs: str | Mapping[str, str],     *,     output_dir: str | Path,     options: ScrapeOptions | None = None, ) -> ScrapeBundle:     \"\"\"Acquire one URL or a keyed URL batch and persist matching evidence artifacts.     Validation completes before this function creates or admits the underlying fetch operation.     The function deliberately supplies no graph, model, planner, PostgreSQL, Redis, or Celery service.     \"\"\"     resolved_options = options or ScrapeOptions()     resolved_options.validate()     normalized_inputs = _normalize_inputs(inputs)     destination = Path(output_dir)     operation_id = f\"standalone-website-to-text-{uuid.uuid4().hex}\"     scanner = WebsiteTextExtractor(         params={             \"max_concurrency\": resolved_options.max_concurrency,             \"request_timeout\": resolved_options.request_timeout,             \"max_response_bytes\": resolved_options.max_response_bytes,             \"max_redirects\": resolved_options.max_redirects,             \"max_retries\": resolved_options.max_retries,         },         artifact_store=FilesystemArtifactStore(destination / \"source-artifacts\"),         retention_authority=_authority(operation_id),     )     occurrences = await scanner.scan(         [Website(url=url) for _, url in normalized_inputs], operation_id=operation_id     )     payload = {         \"schema_version\": SCHEMA_VERSION,         \"operation_id\": operation_id,         \"scope\": resolved_options.scope,         \"extraction\": resolved_options.extraction,         \"options\": _jsonable(resolved_options),         \"outcomes\": [             _outcome_record(key, occurrence)             for (key, _), occurrence in zip(normalized_inputs, occurrences)         ],     }     return _write_bundle(payload, destination)"
+        },
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:main",
+            "name": "main",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 330,
+            "endLine": 373,
+            "content": "def main(argv: Sequence[str] | None = None) -> int:     \"\"\"Run the thin CLI and return documented complete/partial/invocation status.\"\"\"     args = _parser().parse_args(argv)     try:         inputs: str | Mapping[str, str]         if args.batch is None:             inputs = args.url         else:             loaded = json.loads(args.batch.read_text(encoding=\"utf-8\"))             if not isinstance(loaded, dict):                 raise InvocationError(\"batch JSON must be an object mapping keys to URLs\")             inputs = loaded         bundle = asyncio.run(             scrape_websites(                 inputs,                 output_dir=args.output_dir,                 options=ScrapeOptions(                     scope=args.scope,                     extraction=args.extraction,                     max_concurrency=args.max_concurrency,                     request_timeout=args.request_timeout,                     max_response_bytes=args.max_response_bytes,                     max_redirects=args.max_redirects,                     max_retries=args.max_retries,                 ),             )         )     except (InvocationError, OSError, json.JSONDecodeError) as error:         print(f\"invocation failure: {error}\", file=sys.stderr)         return EXIT_INVOCATION_FAILURE     print(         json.dumps(             {                 \"operation_id\": bundle.operation_id,                 \"bundle\": str(bundle.json_path),                 \"jsonl\": str(bundle.jsonl_path),                 \"report\": str(bundle.report_path),                 \"exit_code\": bundle.exit_code,             },             sort_keys=True,         )     )     return bundle.exit_code"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:main",
+            "to": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+                    "name": "render_markdown_report",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 241,
+                    "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\""
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+                    "name": "_write_bundle",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 244,
+                    "endLine": 266,
+                    "content": "def _write_bundle(payload: dict[str, Any], output_dir: Path) -> ScrapeBundle:     output_dir.mkdir(parents=True, exist_ok=True)     json_path = output_dir / \"bundle.json\"     jsonl_path = output_dir / \"outcomes.jsonl\"     report_path = output_dir / \"report.md\"     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")     jsonl_path.write_text(         \"\".join(             json.dumps(                 {                     \"schema_version\": payload[\"schema_version\"],                     \"operation_id\": payload[\"operation_id\"],                     \"outcome\": outcome,                 },                 sort_keys=True,             )             + \"\\n\"             for outcome in payload[\"outcomes\"]         ),         encoding=\"utf-8\",     )     report_path.write_text(render_markdown_report(payload), encoding=\"utf-8\")     return ScrapeBundle(payload, json_path, jsonl_path, report_path)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+                    "name": "scrape_websites",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 269,
+                    "endLine": 311,
+                    "content": "async def scrape_websites(     inputs: str | Mapping[str, str],     *,     output_dir: str | Path,     options: ScrapeOptions | None = None, ) -> ScrapeBundle:     \"\"\"Acquire one URL or a keyed URL batch and persist matching evidence artifacts.     Validation completes before this function creates or admits the underlying fetch operation.     The function deliberately supplies no graph, model, planner, PostgreSQL, Redis, or Celery service.     \"\"\"     resolved_options = options or ScrapeOptions()     resolved_options.validate()     normalized_inputs = _normalize_inputs(inputs)     destination = Path(output_dir)     operation_id = f\"standalone-website-to-text-{uuid.uuid4().hex}\"     scanner = WebsiteTextExtractor(         params={             \"max_concurrency\": resolved_options.max_concurrency,             \"request_timeout\": resolved_options.request_timeout,             \"max_response_bytes\": resolved_options.max_response_bytes,             \"max_redirects\": resolved_options.max_redirects,             \"max_retries\": resolved_options.max_retries,         },         artifact_store=FilesystemArtifactStore(destination / \"source-artifacts\"),         retention_authority=_authority(operation_id),     )     occurrences = await scanner.scan(         [Website(url=url) for _, url in normalized_inputs], operation_id=operation_id     )     payload = {         \"schema_version\": SCHEMA_VERSION,         \"operation_id\": operation_id,         \"scope\": resolved_options.scope,         \"extraction\": resolved_options.extraction,         \"options\": _jsonable(resolved_options),         \"outcomes\": [             _outcome_record(key, occurrence)             for (key, _), occurrence in zip(normalized_inputs, occurrences)         ],     }     return _write_bundle(payload, destination)"
+                },
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:main",
+                    "name": "main",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 330,
+                    "endLine": 373,
+                    "content": "def main(argv: Sequence[str] | None = None) -> int:     \"\"\"Run the thin CLI and return documented complete/partial/invocation status.\"\"\"     args = _parser().parse_args(argv)     try:         inputs: str | Mapping[str, str]         if args.batch is None:             inputs = args.url         else:             loaded = json.loads(args.batch.read_text(encoding=\"utf-8\"))             if not isinstance(loaded, dict):                 raise InvocationError(\"batch JSON must be an object mapping keys to URLs\")             inputs = loaded         bundle = asyncio.run(             scrape_websites(                 inputs,                 output_dir=args.output_dir,                 options=ScrapeOptions(                     scope=args.scope,                     extraction=args.extraction,                     max_concurrency=args.max_concurrency,                     request_timeout=args.request_timeout,                     max_response_bytes=args.max_response_bytes,                     max_redirects=args.max_redirects,                     max_retries=args.max_retries,                 ),             )         )     except (InvocationError, OSError, json.JSONDecodeError) as error:         print(f\"invocation failure: {error}\", file=sys.stderr)         return EXIT_INVOCATION_FAILURE     print(         json.dumps(             {                 \"operation_id\": bundle.operation_id,                 \"bundle\": str(bundle.json_path),                 \"jsonl\": str(bundle.jsonl_path),                 \"report\": str(bundle.report_path),                 \"exit_code\": bundle.exit_code,             },             sort_keys=True,         )     )     return bundle.exit_code"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-enrichers",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:_write_bundle",
+                    "name": "_write_bundle",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 244,
+                    "endLine": 266,
+                    "content": "def _write_bundle(payload: dict[str, Any], output_dir: Path) -> ScrapeBundle:     output_dir.mkdir(parents=True, exist_ok=True)     json_path = output_dir / \"bundle.json\"     jsonl_path = output_dir / \"outcomes.jsonl\"     report_path = output_dir / \"report.md\"     json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")     jsonl_path.write_text(         \"\".join(             json.dumps(                 {                     \"schema_version\": payload[\"schema_version\"],                     \"operation_id\": payload[\"operation_id\"],                     \"outcome\": outcome,                 },                 sort_keys=True,             )             + \"\\n\"             for outcome in payload[\"outcomes\"]         ),         encoding=\"utf-8\",     )     report_path.write_text(render_markdown_report(payload), encoding=\"utf-8\")     return ScrapeBundle(payload, json_path, jsonl_path, report_path)"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+                    "name": "scrape_websites",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 269,
+                    "endLine": 311,
+                    "content": "async def scrape_websites(     inputs: str | Mapping[str, str],     *,     output_dir: str | Path,     options: ScrapeOptions | None = None, ) -> ScrapeBundle:     \"\"\"Acquire one URL or a keyed URL batch and persist matching evidence artifacts.     Validation completes before this function creates or admits the underlying fetch operation.     The function deliberately supplies no graph, model, planner, PostgreSQL, Redis, or Celery service.     \"\"\"     resolved_options = options or ScrapeOptions()     resolved_options.validate()     normalized_inputs = _normalize_inputs(inputs)     destination = Path(output_dir)     operation_id = f\"standalone-website-to-text-{uuid.uuid4().hex}\"     scanner = WebsiteTextExtractor(         params={             \"max_concurrency\": resolved_options.max_concurrency,             \"request_timeout\": resolved_options.request_timeout,             \"max_response_bytes\": resolved_options.max_response_bytes,             \"max_redirects\": resolved_options.max_redirects,             \"max_retries\": resolved_options.max_retries,         },         artifact_store=FilesystemArtifactStore(destination / \"source-artifacts\"),         retention_authority=_authority(operation_id),     )     occurrences = await scanner.scan(         [Website(url=url) for _, url in normalized_inputs], operation_id=operation_id     )     payload = {         \"schema_version\": SCHEMA_VERSION,         \"operation_id\": operation_id,         \"scope\": resolved_options.scope,         \"extraction\": resolved_options.extraction,         \"options\": _jsonable(resolved_options),         \"outcomes\": [             _outcome_record(key, occurrence)             for (key, _), occurrence in zip(normalized_inputs, occurrences)         ],     }     return _write_bundle(payload, destination)"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:main",
+                    "name": "main",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 330,
+                    "endLine": 373,
+                    "content": "def main(argv: Sequence[str] | None = None) -> int:     \"\"\"Run the thin CLI and return documented complete/partial/invocation status.\"\"\"     args = _parser().parse_args(argv)     try:         inputs: str | Mapping[str, str]         if args.batch is None:             inputs = args.url         else:             loaded = json.loads(args.batch.read_text(encoding=\"utf-8\"))             if not isinstance(loaded, dict):                 raise InvocationError(\"batch JSON must be an object mapping keys to URLs\")             inputs = loaded         bundle = asyncio.run(             scrape_websites(                 inputs,                 output_dir=args.output_dir,                 options=ScrapeOptions(                     scope=args.scope,                     extraction=args.extraction,                     max_concurrency=args.max_concurrency,                     request_timeout=args.request_timeout,                     max_response_bytes=args.max_response_bytes,                     max_redirects=args.max_redirects,                     max_retries=args.max_retries,                 ),             )         )     except (InvocationError, OSError, json.JSONDecodeError) as error:         print(f\"invocation failure: {error}\", file=sys.stderr)         return EXIT_INVOCATION_FAILURE     print(         json.dumps(             {                 \"operation_id\": bundle.operation_id,                 \"bundle\": str(bundle.json_path),                 \"jsonl\": str(bundle.jsonl_path),                 \"report\": str(bundle.report_path),                 \"exit_code\": bundle.exit_code,             },             sort_keys=True,         )     )     return bundle.exit_code"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "render_markdown_report",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 3,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

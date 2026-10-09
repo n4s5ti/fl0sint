@@ -1,0 +1,8 @@
+{
+  "schema": "release-smoke/1",
+  "mode": "verify",
+  "output_dir": "/home/n4s5ti/.cache/fl0sint-audit/def48/run/batch",
+  "problems": [],
+  "report_rerendered": true,
+  "valid": true
+}

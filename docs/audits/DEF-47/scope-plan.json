@@ -1,0 +1,33 @@
+{
+  "issue": "DEF-47",
+  "baseline": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+  "branch": "work/def-47-standalone",
+  "worktree": "/home/n4s5ti/Documents/dev/fl0sint-def47-standalone",
+  "intent": "Expose a source-preserving standalone website scraper as one callable library operation and a thin CLI over it, with versioned machine artifacts and a Markdown report derived from the same bundle.",
+  "planned_paths": [
+    "flowsint-enrichers/pyproject.toml",
+    "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+    "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+    "flowsint-enrichers/src/flowsint_enrichers/__init__.py",
+    "flowsint-enrichers/tests/enrichers/test_standalone.py",
+    "flowsint-enrichers/README.md",
+    "docs/developers/acquisition-contract.md",
+    "docs/audits/DEF-47/**"
+  ],
+  "planned_symbols": [
+    "ScrapeInput",
+    "ScrapeOptions",
+    "ScrapeBundle",
+    "scrape_websites",
+    "main"
+  ],
+  "implementation_shape": [
+    "Reuse WebsiteToText.scan() with a no-op graph sink and explicit filesystem artifact runtime; do not call legacy execute() or a graph/runtime service.",
+    "Validate input keys, URLs, scope, extraction and resource values before calling WebsiteToText.scan(), so invalid invocation admits no fetch operation.",
+    "Serialize one versioned bundle to JSON and JSONL, then render Markdown exclusively from that bundle.",
+    "Map all-success to exit 0, a completed mixed batch to exit 2, and invocation/validation failure to exit 64."
+  ],
+  "non_goals": [
+    "UI", "HTTP service", "MCP wrapper", "accepted-contact claims", "legacy PostgreSQL/Redis/Celery repair", "live-site collection"
+  ]
+}

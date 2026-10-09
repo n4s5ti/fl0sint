@@ -1,0 +1,214 @@
+{
+    "symbol": "scripts/release_smoke.py:verify_bundle",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Function:scripts/release_smoke.py:verify_bundle",
+        "name": "verify_bundle",
+        "filePath": "scripts/release_smoke.py",
+        "nodeType": "Function",
+        "startLine": 101,
+        "endLine": 265,
+        "content": "def verify_bundle(output_dir, render=None):     \"\"\"Return a list of problems found in a standalone output directory.     Only local files are read. ``render`` optionally re-renders report.md from the     machine bundle (the packaged ``render_markdown_report``) for an exact comparison.     \"\"\"     out = Path(output_dir)     problems = []     def bad(code, message):         problems.append(f\"{code}: {message}\")     try:         bundle = json.loads((out / \"bundle.json\").read_text(encoding=\"utf-8\"))     except (OSError, json.JSONDecodeError) as error:         return [f\"E_BUNDLE: bundle.json unreadable ({error})\"]     if bundle.get(\"schema_version\") != BUNDLE_SCHEMA:         bad(\"E_BUNDLE\", f\"schema_version {bundle.get('schema_version')!r}\")     operation = bundle.get(\"operation_id\")     outcomes = bundle.get(\"outcomes\")     if not isinstance(operation, str) or not isinstance(outcomes, list) or not outcomes:         return problems + [\"E_BUNDLE: missing operation_id or outcomes\"]     try:         lines = [json.loads(line) for line in (out / \"outcomes.jsonl\").read_text(encoding=\"utf-8\").splitlines()]     except (OSError, json.JSONDecodeError) as error:         lines = None         bad(\"E_JSONL\", f\"outcomes.jsonl unreadable ({error})\")     expected_lines = [         {\"schema_version\": bundle.get(\"schema_version\"), \"operation_id\": operation, \"outcome\": o}         for o in outcomes     ]     if lines is not None and lines != expected_lines:         bad(\"E_JSONL\", \"outcomes.jsonl does not equal the bundle outcomes\")     try:         report = (out / \"report.md\").read_text(encoding=\"utf-8\")     except OSError as error:         report = \"\"         bad(\"E_REPORT\", f\"report.md unreadable ({error})\")     if f\"`{operation}`\" not in report:         bad(\"E_REPORT\", \"report.md does not carry the bundle operation id\")     if render is not None and report != render(bundle):         bad(\"E_REPORT\", \"report.md differs from a fresh render of bundle.json\")     keys = [o.get(\"key\") for o in outcomes]     if len(set(keys)) != len(keys):         bad(\"E_LINEAGE\", \"duplicate outcome keys\")     store = out / \"source-artifacts\"     for index, outcome in enumerate(outcomes):         where = f\"outcomes[{index}] ({outcome.get('key')})\"         occurrence = f\"input-{index}\"         status = outcome.get(\"status\")         if status not in TERMINAL:             bad(\"E_OUTCOME\", f\"{where}: status {status!r}\")             continue         if f\"## {outcome.get('key')} — {status}\" not in report:             bad(\"E_REPORT\", f\"{where}: no report section for this outcome\")         if outcome.get(\"disposition\") != \"unreviewed\":             bad(\"E_OUTCOME\", f\"{where}: disposition must stay unreviewed\")         observed = (outcome.get(\"links\") or []) + (outcome.get(\"candidates\") or []) + (outcome.get(\"observations\") or [])         if status != \"success\":             # An error is never an empty success: it keeps a diagnostic and no content.             if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} without a diagnostic code\")             if outcome.get(\"text\") or observed:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries extracted content\")             if outcome.get(\"source_reference\") is not None:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries an unvalidated source reference\")             continue         if outcome.get(\"diagnostic\") is not None:             bad(\"E_ERROR_EMPTY\", f\"{where}: success carries a diagnostic\")         reference = outcome.get(\"source_reference\")         if not reference or not reference.get(\"source_proof\") or not reference.get(\"artifact\"):             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: success without source proof\")             continue         artifact = reference[\"artifact\"]         digest = artifact.get(\"content_digest\", \"\")         snapshot = artifact.get(\"snapshot_id\", \"\")         # Both become path components; reject anything that is not a plain hex id.         if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)                 and isinstance(snapshot, str) and HEX_ID.fullmatch(snapshot)):             bad(\"E_SOURCE_DIGEST\", f\"{where}: malformed content_digest/snapshot_id\")             continue         body_path = store / \"objects\" / digest[:2] / f\"{digest}.body\"         try:             body = body_path.read_bytes()         except OSError:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: retained body {body_path.relative_to(out)} is missing\")             continue         if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):             bad(\"E_SOURCE_DIGEST\", f\"{where}: retained body does not match its digest/length\")             continue         proof = _decode_proof(reference[\"source_proof\"])         if proof is None:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: source proof cannot be decoded\")             continue         context = proof.get(\"context\") or {}         expec ... [truncated]"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/release_smoke.py:verify_bundle",
+            "name": "verify_bundle",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 101,
+            "endLine": 265,
+            "content": "def verify_bundle(output_dir, render=None):     \"\"\"Return a list of problems found in a standalone output directory.     Only local files are read. ``render`` optionally re-renders report.md from the     machine bundle (the packaged ``render_markdown_report``) for an exact comparison.     \"\"\"     out = Path(output_dir)     problems = []     def bad(code, message):         problems.append(f\"{code}: {message}\")     try:         bundle = json.loads((out / \"bundle.json\").read_text(encoding=\"utf-8\"))     except (OSError, json.JSONDecodeError) as error:         return [f\"E_BUNDLE: bundle.json unreadable ({error})\"]     if bundle.get(\"schema_version\") != BUNDLE_SCHEMA:         bad(\"E_BUNDLE\", f\"schema_version {bundle.get('schema_version')!r}\")     operation = bundle.get(\"operation_id\")     outcomes = bundle.get(\"outcomes\")     if not isinstance(operation, str) or not isinstance(outcomes, list) or not outcomes:         return problems + [\"E_BUNDLE: missing operation_id or outcomes\"]     try:         lines = [json.loads(line) for line in (out / \"outcomes.jsonl\").read_text(encoding=\"utf-8\").splitlines()]     except (OSError, json.JSONDecodeError) as error:         lines = None         bad(\"E_JSONL\", f\"outcomes.jsonl unreadable ({error})\")     expected_lines = [         {\"schema_version\": bundle.get(\"schema_version\"), \"operation_id\": operation, \"outcome\": o}         for o in outcomes     ]     if lines is not None and lines != expected_lines:         bad(\"E_JSONL\", \"outcomes.jsonl does not equal the bundle outcomes\")     try:         report = (out / \"report.md\").read_text(encoding=\"utf-8\")     except OSError as error:         report = \"\"         bad(\"E_REPORT\", f\"report.md unreadable ({error})\")     if f\"`{operation}`\" not in report:         bad(\"E_REPORT\", \"report.md does not carry the bundle operation id\")     if render is not None and report != render(bundle):         bad(\"E_REPORT\", \"report.md differs from a fresh render of bundle.json\")     keys = [o.get(\"key\") for o in outcomes]     if len(set(keys)) != len(keys):         bad(\"E_LINEAGE\", \"duplicate outcome keys\")     store = out / \"source-artifacts\"     for index, outcome in enumerate(outcomes):         where = f\"outcomes[{index}] ({outcome.get('key')})\"         occurrence = f\"input-{index}\"         status = outcome.get(\"status\")         if status not in TERMINAL:             bad(\"E_OUTCOME\", f\"{where}: status {status!r}\")             continue         if f\"## {outcome.get('key')} — {status}\" not in report:             bad(\"E_REPORT\", f\"{where}: no report section for this outcome\")         if outcome.get(\"disposition\") != \"unreviewed\":             bad(\"E_OUTCOME\", f\"{where}: disposition must stay unreviewed\")         observed = (outcome.get(\"links\") or []) + (outcome.get(\"candidates\") or []) + (outcome.get(\"observations\") or [])         if status != \"success\":             # An error is never an empty success: it keeps a diagnostic and no content.             if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} without a diagnostic code\")             if outcome.get(\"text\") or observed:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries extracted content\")             if outcome.get(\"source_reference\") is not None:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries an unvalidated source reference\")             continue         if outcome.get(\"diagnostic\") is not None:             bad(\"E_ERROR_EMPTY\", f\"{where}: success carries a diagnostic\")         reference = outcome.get(\"source_reference\")         if not reference or not reference.get(\"source_proof\") or not reference.get(\"artifact\"):             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: success without source proof\")             continue         artifact = reference[\"artifact\"]         digest = artifact.get(\"content_digest\", \"\")         snapshot = artifact.get(\"snapshot_id\", \"\")         # Both become path components; reject anything that is not a plain hex id.         if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)                 and isinstance(snapshot, str) and HEX_ID.fullmatch(snapshot)):             bad(\"E_SOURCE_DIGEST\", f\"{where}: malformed content_digest/snapshot_id\")             continue         body_path = store / \"objects\" / digest[:2] / f\"{digest}.body\"         try:             body = body_path.read_bytes()         except OSError:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: retained body {body_path.relative_to(out)} is missing\")             continue         if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):             bad(\"E_SOURCE_DIGEST\", f\"{where}: retained body does not match its digest/length\")             continue         proof = _decode_proof(reference[\"source_proof\"])         if proof is None:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: source proof cannot be decoded\")             continue         context = proof.get(\"context\") or {}         expec ... [truncated]"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:sha256",
+            "name": "sha256",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 83,
+            "endLine": 84,
+            "content": "def sha256(data):     return hashlib.sha256(data).hexdigest()"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_decode_proof",
+            "name": "_decode_proof",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 87,
+            "endLine": 94,
+            "content": "def _decode_proof(token):     try:         prefix, body = token.split(\".\", 1)[0], token.split(\".\")[1]         if prefix != \"sp1\":             return None         return json.loads(base64.urlsafe_b64decode(body + \"=\" * (-len(body) % 4)))     except (ValueError, IndexError, binascii.Error, json.JSONDecodeError):         return None"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_collapse",
+            "name": "_collapse",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 97,
+            "endLine": 98,
+            "content": "def _collapse(text):     return re.sub(r\"\\s+\", \" \", text).strip()"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:bad",
+            "name": "bad",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 110,
+            "endLine": 111,
+            "content": "    def bad(code, message):         problems.append(f\"{code}: {message}\")"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:sha256",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:_decode_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:_collapse",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:bad",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "scripts/release_smoke.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:verify_bundle",
+                    "name": "verify_bundle",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 101,
+                    "endLine": 265,
+                    "content": "def verify_bundle(output_dir, render=None):     \"\"\"Return a list of problems found in a standalone output directory.     Only local files are read. ``render`` optionally re-renders report.md from the     machine bundle (the packaged ``render_markdown_report``) for an exact comparison.     \"\"\"     out = Path(output_dir)     problems = []     def bad(code, message):         problems.append(f\"{code}: {message}\")     try:         bundle = json.loads((out / \"bundle.json\").read_text(encoding=\"utf-8\"))     except (OSError, json.JSONDecodeError) as error:         return [f\"E_BUNDLE: bundle.json unreadable ({error})\"]     if bundle.get(\"schema_version\") != BUNDLE_SCHEMA:         bad(\"E_BUNDLE\", f\"schema_version {bundle.get('schema_version')!r}\")     operation = bundle.get(\"operation_id\")     outcomes = bundle.get(\"outcomes\")     if not isinstance(operation, str) or not isinstance(outcomes, list) or not outcomes:         return problems + [\"E_BUNDLE: missing operation_id or outcomes\"]     try:         lines = [json.loads(line) for line in (out / \"outcomes.jsonl\").read_text(encoding=\"utf-8\").splitlines()]     except (OSError, json.JSONDecodeError) as error:         lines = None         bad(\"E_JSONL\", f\"outcomes.jsonl unreadable ({error})\")     expected_lines = [         {\"schema_version\": bundle.get(\"schema_version\"), \"operation_id\": operation, \"outcome\": o}         for o in outcomes     ]     if lines is not None and lines != expected_lines:         bad(\"E_JSONL\", \"outcomes.jsonl does not equal the bundle outcomes\")     try:         report = (out / \"report.md\").read_text(encoding=\"utf-8\")     except OSError as error:         report = \"\"         bad(\"E_REPORT\", f\"report.md unreadable ({error})\")     if f\"`{operation}`\" not in report:         bad(\"E_REPORT\", \"report.md does not carry the bundle operation id\")     if render is not None and report != render(bundle):         bad(\"E_REPORT\", \"report.md differs from a fresh render of bundle.json\")     keys = [o.get(\"key\") for o in outcomes]     if len(set(keys)) != len(keys):         bad(\"E_LINEAGE\", \"duplicate outcome keys\")     store = out / \"source-artifacts\"     for index, outcome in enumerate(outcomes):         where = f\"outcomes[{index}] ({outcome.get('key')})\"         occurrence = f\"input-{index}\"         status = outcome.get(\"status\")         if status not in TERMINAL:             bad(\"E_OUTCOME\", f\"{where}: status {status!r}\")             continue         if f\"## {outcome.get('key')} — {status}\" not in report:             bad(\"E_REPORT\", f\"{where}: no report section for this outcome\")         if outcome.get(\"disposition\") != \"unreviewed\":             bad(\"E_OUTCOME\", f\"{where}: disposition must stay unreviewed\")         observed = (outcome.get(\"links\") or []) + (outcome.get(\"candidates\") or []) + (outcome.get(\"observations\") or [])         if status != \"success\":             # An error is never an empty success: it keeps a diagnostic and no content.             if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} without a diagnostic code\")             if outcome.get(\"text\") or observed:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries extracted content\")             if outcome.get(\"source_reference\") is not None:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries an unvalidated source reference\")             continue         if outcome.get(\"diagnostic\") is not None:             bad(\"E_ERROR_EMPTY\", f\"{where}: success carries a diagnostic\")         reference = outcome.get(\"source_reference\")         if not reference or not reference.get(\"source_proof\") or not reference.get(\"artifact\"):             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: success without source proof\")             continue         artifact = reference[\"artifact\"]         digest = artifact.get(\"content_digest\", \"\")         snapshot = artifact.get(\"snapshot_id\", \"\")         # Both become path components; reject anything that is not a plain hex id.         if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)                 and isinstance(snapshot, str) and HEX_ID.fullmatch(snapshot)):             bad(\"E_SOURCE_DIGEST\", f\"{where}: malformed content_digest/snapshot_id\")             continue         body_path = store / \"objects\" / digest[:2] / f\"{digest}.body\"         try:             body = body_path.read_bytes()         except OSError:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: retained body {body_path.relative_to(out)} is missing\")             continue         if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):             bad(\"E_SOURCE_DIGEST\", f\"{where}: retained body does not match its digest/length\")             continue         proof = _decode_proof(reference[\"source_proof\"])         if proof is None:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: source proof cannot be decoded\")             continue         context = proof.get(\"context\") or {}         expec ... [truncated]"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:sha256",
+                    "name": "sha256",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 83,
+                    "endLine": 84,
+                    "content": "def sha256(data):     return hashlib.sha256(data).hexdigest()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_decode_proof",
+                    "name": "_decode_proof",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 87,
+                    "endLine": 94,
+                    "content": "def _decode_proof(token):     try:         prefix, body = token.split(\".\", 1)[0], token.split(\".\")[1]         if prefix != \"sp1\":             return None         return json.loads(base64.urlsafe_b64decode(body + \"=\" * (-len(body) % 4)))     except (ValueError, IndexError, binascii.Error, json.JSONDecodeError):         return None"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_collapse",
+                    "name": "_collapse",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 97,
+                    "endLine": 98,
+                    "content": "def _collapse(text):     return re.sub(r\"\\s+\", \" \", text).strip()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:bad",
+                    "name": "bad",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 110,
+                    "endLine": 111,
+                    "content": "    def bad(code, message):         problems.append(f\"{code}: {message}\")"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "scripts",
+            "direct": true,
+            "symbolCount": 4
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:sha256",
+                    "name": "sha256",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 83,
+                    "endLine": 84,
+                    "content": "def sha256(data):     return hashlib.sha256(data).hexdigest()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_decode_proof",
+                    "name": "_decode_proof",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 87,
+                    "endLine": 94,
+                    "content": "def _decode_proof(token):     try:         prefix, body = token.split(\".\", 1)[0], token.split(\".\")[1]         if prefix != \"sp1\":             return None         return json.loads(base64.urlsafe_b64decode(body + \"=\" * (-len(body) % 4)))     except (ValueError, IndexError, binascii.Error, json.JSONDecodeError):         return None"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_collapse",
+                    "name": "_collapse",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 97,
+                    "endLine": 98,
+                    "content": "def _collapse(text):     return re.sub(r\"\\s+\", \" \", text).strip()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:bad",
+                    "name": "bad",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 110,
+                    "endLine": 111,
+                    "content": "    def bad(code, message):         problems.append(f\"{code}: {message}\")"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scripts/release_smoke.py:verify_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 5,
+        "totalEdges": 4,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 4,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

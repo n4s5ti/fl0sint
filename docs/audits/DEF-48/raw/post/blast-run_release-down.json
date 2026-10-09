@@ -1,0 +1,562 @@
+{
+    "symbol": "scripts/release_smoke.py:run_release",
+    "repo": "fl0sint-def48-smoke",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Function:scripts/release_smoke.py:run_release",
+        "name": "run_release",
+        "filePath": "scripts/release_smoke.py",
+        "nodeType": "Function",
+        "startLine": 522,
+        "endLine": 597,
+        "content": "def run_release(args):     work = Path(args.work_dir or tempfile.mkdtemp(prefix=\"release-smoke-\"))     if work.exists() and any(work.iterdir()):         raise SystemExit(f\"error: work directory {work} is not empty\")     run = Run(work)     work.mkdir(parents=True, exist_ok=True)     package, venv, entry = build_and_install(run, args.revision)     print(f\"packaged {package['revision']} -> {entry} ({package['python']})\")     render = _render_with(venv / \"bin/python\")     fixtures = _load_fixtures()     manifest, bodies = fixtures.load_manifest()     with fixtures.fixture_server(manifest, bodies) as base_url:         port = int(base_url.rsplit(\":\", 1)[1])         routes = {s[\"id\"]: base_url + s[\"route\"] for s in manifest[\"sources\"]}         code, stdout, stderr, single, events_single = run_cli(run, entry, \"single\", [\"--url\", routes[\"named\"]])         problems = ([] if code == 0 else [f\"E_EXIT: {code} != 0 ({stderr[-300:]})\"]) + verify_bundle(single, render)         run.case(\"S1\", \"single page through the packaged entrypoint\", problems, exit_code=code, stdout=stdout.strip())         batch_file = work / \"batch.json\"         batch_file.write_text(json.dumps({k: routes[s] for k, (s, _, _) in BATCH.items()}), encoding=\"utf-8\")         code, stdout, stderr, batch, events_batch = run_cli(             run, entry, \"batch\", [\"--batch\", str(batch_file), \"--max-concurrency\", \"2\"])         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2 for a mixed batch\"]         problems += verify_bundle(batch, render) + check_expectations(batch, manifest, base_url)         run.case(\"S2\", \"mixed batch: spans, lineage, empty vs error, fixture fidelity\", problems,                  exit_code=code, stdout=stdout.strip())         run.case(\"S3\", \"no graph/service/model import or non-loopback connection\",                  audit_problems(events_single, port) + audit_problems(events_batch, port),                  modules_loaded=len({e[\"module\"] for e in events_single + events_batch if e[\"event\"] == \"import\"}))         code, _, _, limited, _ = run_cli(run, entry, \"limit\", [\"--url\", routes[\"static\"], \"--max-response-bytes\", \"100\"])         outcome = json.loads((limited / \"bundle.json\").read_text())[\"outcomes\"][0] if (limited / \"bundle.json\").exists() else {}         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2\"]         if (outcome.get(\"diagnostic\") or {}).get(\"code\") != \"body_too_large\":             problems.append(f\"E_LIMIT: response cap not enforced: {outcome.get('status')}/{outcome.get('diagnostic')}\")         run.case(\"S4\", \"response byte limit is enforced as an explicit failure\",                  problems + verify_bundle(limited, render), exit_code=code)         code, _, _, cancelled, _ = run_cli(run, entry, \"cancel\", [\"--url\", routes[\"slow\"]], cancel_after_connect=True)         outcome = json.loads((cancelled / \"bundle.json\").read_text())[\"outcomes\"][0] if (cancelled / \"bundle.json\").exists() else {}         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2 after SIGINT\"]         if outcome.get(\"status\") != \"hold\" or (outcome.get(\"diagnostic\") or {}).get(\"code\") != \"cancelled\":             problems.append(f\"E_CANCEL: cancelled run recorded {outcome.get('status')}/{outcome.get('diagnostic')}\")         if not (outcome.get(\"resources\") or {}).get(\"requests\"):             problems.append(\"E_CANCEL: consumed request budget was not retained\")         run.case(\"S5\", \"SIGINT mid-fetch is recorded as a held, cancelled outcome\",                  problems + verify_bundle(cancelled, render), exit_code=code)         code, _, stderr, invalid, _ = run_cli(run, entry, \"invalid\", [\"--url\", routes[\"static\"], \"--scope\", \"web\"])         problems = [] if code == 64 else [f\"E_EXIT: {code} != 64\"]         if invalid.exists():             problems.append(\"E_ADMISSION: invalid invocation created output before admission\")         run.case(\"S6\", \"invalid scope is rejected before admission\", problems, exit_code=code)     # The fixture server is stopped: replay must work from local files alone.     connects = []     sys.addaudithook(lambda event, a: connects.append(a[1]) if event == \"socket.connect\" else None)     replay = {name: verify_bundle(work / name, render) for name in (\"single\", \"batch\", \"limit\", \"cancel\")}     run.case(\"S7\", \"offline replay of every bundle with the server stopped\",              [f\"{name}: {p}\" for name, items in replay.items() for p in items]              + [f\"E_REPLAY_NETWORK: connection to {address}\" for address in connects])     controls = negative_controls(run, work / \"batch\")     run.case(\"S8\", \"harness rejects broken lineage and missing source proof\",              [f\"E_VACUOUS: {name} passed verification\" for name, items in controls.items() if not items],              rejections={name: items[:3] for name, items in controls.items()})     report = {         \"schema\": REPORT_SCHEMA, \"mode\": \"run\", \"package\": package, \"work_dir\": str(work),         \"cases\": run.cases, \"measurements\": run.measurements,         \" ... [truncated]"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/release_smoke.py:run_release",
+            "name": "run_release",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 522,
+            "endLine": 597,
+            "content": "def run_release(args):     work = Path(args.work_dir or tempfile.mkdtemp(prefix=\"release-smoke-\"))     if work.exists() and any(work.iterdir()):         raise SystemExit(f\"error: work directory {work} is not empty\")     run = Run(work)     work.mkdir(parents=True, exist_ok=True)     package, venv, entry = build_and_install(run, args.revision)     print(f\"packaged {package['revision']} -> {entry} ({package['python']})\")     render = _render_with(venv / \"bin/python\")     fixtures = _load_fixtures()     manifest, bodies = fixtures.load_manifest()     with fixtures.fixture_server(manifest, bodies) as base_url:         port = int(base_url.rsplit(\":\", 1)[1])         routes = {s[\"id\"]: base_url + s[\"route\"] for s in manifest[\"sources\"]}         code, stdout, stderr, single, events_single = run_cli(run, entry, \"single\", [\"--url\", routes[\"named\"]])         problems = ([] if code == 0 else [f\"E_EXIT: {code} != 0 ({stderr[-300:]})\"]) + verify_bundle(single, render)         run.case(\"S1\", \"single page through the packaged entrypoint\", problems, exit_code=code, stdout=stdout.strip())         batch_file = work / \"batch.json\"         batch_file.write_text(json.dumps({k: routes[s] for k, (s, _, _) in BATCH.items()}), encoding=\"utf-8\")         code, stdout, stderr, batch, events_batch = run_cli(             run, entry, \"batch\", [\"--batch\", str(batch_file), \"--max-concurrency\", \"2\"])         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2 for a mixed batch\"]         problems += verify_bundle(batch, render) + check_expectations(batch, manifest, base_url)         run.case(\"S2\", \"mixed batch: spans, lineage, empty vs error, fixture fidelity\", problems,                  exit_code=code, stdout=stdout.strip())         run.case(\"S3\", \"no graph/service/model import or non-loopback connection\",                  audit_problems(events_single, port) + audit_problems(events_batch, port),                  modules_loaded=len({e[\"module\"] for e in events_single + events_batch if e[\"event\"] == \"import\"}))         code, _, _, limited, _ = run_cli(run, entry, \"limit\", [\"--url\", routes[\"static\"], \"--max-response-bytes\", \"100\"])         outcome = json.loads((limited / \"bundle.json\").read_text())[\"outcomes\"][0] if (limited / \"bundle.json\").exists() else {}         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2\"]         if (outcome.get(\"diagnostic\") or {}).get(\"code\") != \"body_too_large\":             problems.append(f\"E_LIMIT: response cap not enforced: {outcome.get('status')}/{outcome.get('diagnostic')}\")         run.case(\"S4\", \"response byte limit is enforced as an explicit failure\",                  problems + verify_bundle(limited, render), exit_code=code)         code, _, _, cancelled, _ = run_cli(run, entry, \"cancel\", [\"--url\", routes[\"slow\"]], cancel_after_connect=True)         outcome = json.loads((cancelled / \"bundle.json\").read_text())[\"outcomes\"][0] if (cancelled / \"bundle.json\").exists() else {}         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2 after SIGINT\"]         if outcome.get(\"status\") != \"hold\" or (outcome.get(\"diagnostic\") or {}).get(\"code\") != \"cancelled\":             problems.append(f\"E_CANCEL: cancelled run recorded {outcome.get('status')}/{outcome.get('diagnostic')}\")         if not (outcome.get(\"resources\") or {}).get(\"requests\"):             problems.append(\"E_CANCEL: consumed request budget was not retained\")         run.case(\"S5\", \"SIGINT mid-fetch is recorded as a held, cancelled outcome\",                  problems + verify_bundle(cancelled, render), exit_code=code)         code, _, stderr, invalid, _ = run_cli(run, entry, \"invalid\", [\"--url\", routes[\"static\"], \"--scope\", \"web\"])         problems = [] if code == 64 else [f\"E_EXIT: {code} != 64\"]         if invalid.exists():             problems.append(\"E_ADMISSION: invalid invocation created output before admission\")         run.case(\"S6\", \"invalid scope is rejected before admission\", problems, exit_code=code)     # The fixture server is stopped: replay must work from local files alone.     connects = []     sys.addaudithook(lambda event, a: connects.append(a[1]) if event == \"socket.connect\" else None)     replay = {name: verify_bundle(work / name, render) for name in (\"single\", \"batch\", \"limit\", \"cancel\")}     run.case(\"S7\", \"offline replay of every bundle with the server stopped\",              [f\"{name}: {p}\" for name, items in replay.items() for p in items]              + [f\"E_REPLAY_NETWORK: connection to {address}\" for address in connects])     controls = negative_controls(run, work / \"batch\")     run.case(\"S8\", \"harness rejects broken lineage and missing source proof\",              [f\"E_VACUOUS: {name} passed verification\" for name, items in controls.items() if not items],              rejections={name: items[:3] for name, items in controls.items()})     report = {         \"schema\": REPORT_SCHEMA, \"mode\": \"run\", \"package\": package, \"work_dir\": str(work),         \"cases\": run.cases, \"measurements\": run.measurements,         \" ... [truncated]"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:sha256",
+            "name": "sha256",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 83,
+            "endLine": 84,
+            "content": "def sha256(data):     return hashlib.sha256(data).hexdigest()"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_decode_proof",
+            "name": "_decode_proof",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 87,
+            "endLine": 94,
+            "content": "def _decode_proof(token):     try:         prefix, body = token.split(\".\", 1)[0], token.split(\".\")[1]         if prefix != \"sp1\":             return None         return json.loads(base64.urlsafe_b64decode(body + \"=\" * (-len(body) % 4)))     except (ValueError, IndexError, binascii.Error, json.JSONDecodeError):         return None"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_collapse",
+            "name": "_collapse",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 97,
+            "endLine": 98,
+            "content": "def _collapse(text):     return re.sub(r\"\\s+\", \" \", text).strip()"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:verify_bundle",
+            "name": "verify_bundle",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 101,
+            "endLine": 265,
+            "content": "def verify_bundle(output_dir, render=None):     \"\"\"Return a list of problems found in a standalone output directory.     Only local files are read. ``render`` optionally re-renders report.md from the     machine bundle (the packaged ``render_markdown_report``) for an exact comparison.     \"\"\"     out = Path(output_dir)     problems = []     def bad(code, message):         problems.append(f\"{code}: {message}\")     try:         bundle = json.loads((out / \"bundle.json\").read_text(encoding=\"utf-8\"))     except (OSError, json.JSONDecodeError) as error:         return [f\"E_BUNDLE: bundle.json unreadable ({error})\"]     if bundle.get(\"schema_version\") != BUNDLE_SCHEMA:         bad(\"E_BUNDLE\", f\"schema_version {bundle.get('schema_version')!r}\")     operation = bundle.get(\"operation_id\")     outcomes = bundle.get(\"outcomes\")     if not isinstance(operation, str) or not isinstance(outcomes, list) or not outcomes:         return problems + [\"E_BUNDLE: missing operation_id or outcomes\"]     try:         lines = [json.loads(line) for line in (out / \"outcomes.jsonl\").read_text(encoding=\"utf-8\").splitlines()]     except (OSError, json.JSONDecodeError) as error:         lines = None         bad(\"E_JSONL\", f\"outcomes.jsonl unreadable ({error})\")     expected_lines = [         {\"schema_version\": bundle.get(\"schema_version\"), \"operation_id\": operation, \"outcome\": o}         for o in outcomes     ]     if lines is not None and lines != expected_lines:         bad(\"E_JSONL\", \"outcomes.jsonl does not equal the bundle outcomes\")     try:         report = (out / \"report.md\").read_text(encoding=\"utf-8\")     except OSError as error:         report = \"\"         bad(\"E_REPORT\", f\"report.md unreadable ({error})\")     if f\"`{operation}`\" not in report:         bad(\"E_REPORT\", \"report.md does not carry the bundle operation id\")     if render is not None and report != render(bundle):         bad(\"E_REPORT\", \"report.md differs from a fresh render of bundle.json\")     keys = [o.get(\"key\") for o in outcomes]     if len(set(keys)) != len(keys):         bad(\"E_LINEAGE\", \"duplicate outcome keys\")     store = out / \"source-artifacts\"     for index, outcome in enumerate(outcomes):         where = f\"outcomes[{index}] ({outcome.get('key')})\"         occurrence = f\"input-{index}\"         status = outcome.get(\"status\")         if status not in TERMINAL:             bad(\"E_OUTCOME\", f\"{where}: status {status!r}\")             continue         if f\"## {outcome.get('key')} — {status}\" not in report:             bad(\"E_REPORT\", f\"{where}: no report section for this outcome\")         if outcome.get(\"disposition\") != \"unreviewed\":             bad(\"E_OUTCOME\", f\"{where}: disposition must stay unreviewed\")         observed = (outcome.get(\"links\") or []) + (outcome.get(\"candidates\") or []) + (outcome.get(\"observations\") or [])         if status != \"success\":             # An error is never an empty success: it keeps a diagnostic and no content.             if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} without a diagnostic code\")             if outcome.get(\"text\") or observed:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries extracted content\")             if outcome.get(\"source_reference\") is not None:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries an unvalidated source reference\")             continue         if outcome.get(\"diagnostic\") is not None:             bad(\"E_ERROR_EMPTY\", f\"{where}: success carries a diagnostic\")         reference = outcome.get(\"source_reference\")         if not reference or not reference.get(\"source_proof\") or not reference.get(\"artifact\"):             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: success without source proof\")             continue         artifact = reference[\"artifact\"]         digest = artifact.get(\"content_digest\", \"\")         snapshot = artifact.get(\"snapshot_id\", \"\")         # Both become path components; reject anything that is not a plain hex id.         if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)                 and isinstance(snapshot, str) and HEX_ID.fullmatch(snapshot)):             bad(\"E_SOURCE_DIGEST\", f\"{where}: malformed content_digest/snapshot_id\")             continue         body_path = store / \"objects\" / digest[:2] / f\"{digest}.body\"         try:             body = body_path.read_bytes()         except OSError:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: retained body {body_path.relative_to(out)} is missing\")             continue         if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):             bad(\"E_SOURCE_DIGEST\", f\"{where}: retained body does not match its digest/length\")             continue         proof = _decode_proof(reference[\"source_proof\"])         if proof is None:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: source proof cannot be decoded\")             continue         context = proof.get(\"context\") or {}         expec ... [truncated]"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:bad",
+            "name": "bad",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 110,
+            "endLine": 111,
+            "content": "    def bad(code, message):         problems.append(f\"{code}: {message}\")"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:check_expectations",
+            "name": "check_expectations",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 268,
+            "endLine": 302,
+            "content": "def check_expectations(output_dir, manifest, base_url):     \"\"\"Compare the batch bundle with the fixture corpus' retained bytes and labels.\"\"\"     bundle = json.loads((Path(output_dir) / \"bundle.json\").read_text(encoding=\"utf-8\"))     sources = {s[\"id\"]: s for s in manifest[\"sources\"]}     problems = []     outcomes = {o[\"key\"]: o for o in bundle[\"outcomes\"]}     if list(outcomes) != list(BATCH):         problems.append(f\"E_LINEAGE: keys {list(outcomes)} != submitted {list(BATCH)}\")     for key, (source_id, status, code) in BATCH.items():         outcome = outcomes.get(key)         if outcome is None:             continue         source = sources[source_id]         if outcome[\"requested_url\"] != base_url + source[\"route\"]:             problems.append(f\"E_LINEAGE: {key} requested {outcome['requested_url']}\")         if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:             problems.append(f\"E_OUTCOME: {key} is {outcome['status']}/{outcome['diagnostic']}, expected {status}/{code}\")         if status != \"success\" or outcome[\"source_reference\"] is None:             continue         final = sources[source[\"response\"][\"location\"].strip(\"/\")] if \"location\" in source[\"response\"] else source         artifact = outcome[\"source_reference\"][\"artifact\"]         if artifact[\"content_digest\"] != final[\"sha256\"]:             problems.append(f\"E_SOURCE_DIGEST: {key} retained bytes differ from fixture {final['id']}\")         if artifact[\"final_url\"] != base_url + final[\"route\"]:             problems.append(f\"E_LINEAGE: {key} final_url {artifact['final_url']}\")     empty, failure = outcomes.get(\"empty\"), outcomes.get(\"failure\")     if empty and (empty[\"text\"] or empty[\"diagnostic\"] is not None or empty[\"source_reference\"] is None):         problems.append(\"E_ERROR_EMPTY: legitimate empty page is not an empty success with source proof\")     if failure and (failure[\"source_reference\"] is not None or failure[\"diagnostic\"] is None):         problems.append(\"E_ERROR_EMPTY: HTTP failure is not an explicit error\")     first, again = outcomes.get(\"static\"), outcomes.get(\"static-again\")     if first and again and first[\"source_reference\"] and again[\"source_reference\"]:         if first[\"source_reference\"][\"artifact\"][\"snapshot_id\"] == again[\"source_reference\"][\"artifact\"][\"snapshot_id\"]:             problems.append(\"E_LINEAGE: duplicate URL occurrences share one snapshot\")     return problems"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_load_fixtures",
+            "name": "_load_fixtures",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 380,
+            "endLine": 384,
+            "content": "def _load_fixtures():     spec = importlib.util.spec_from_file_location(\"acquisition_fixtures\", REPO / \"scripts/acquisition_fixtures.py\")     module = importlib.util.module_from_spec(spec)     spec.loader.exec_module(module)     return module"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_sh",
+            "name": "_sh",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 387,
+            "endLine": 391,
+            "content": "def _sh(command, **kwargs):     proc = subprocess.run(command, capture_output=True, text=True, check=False, **kwargs)     if proc.returncode != 0:         raise RuntimeError(f\"{' '.join(map(str, command))} failed ({proc.returncode}): {proc.stderr[-2000:]}\")     return proc.stdout"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:build_and_install",
+            "name": "build_and_install",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 394,
+            "endLine": 425,
+            "content": "def build_and_install(run, revision):     \"\"\"Package the committed tree (not the working tree) and install it in a fresh venv.\"\"\"     source = run.work / \"source\"     wheels = run.work / \"wheels\"     venv = run.work / \"venv\"     wheels.mkdir(parents=True)     source.mkdir()     tree = _sh([\"git\", \"-C\", str(REPO), \"rev-parse\", f\"{revision}^{{tree}}\"]).strip()     archive = subprocess.run([\"git\", \"-C\", str(REPO), \"archive\", \"--format=tar\", revision],                              capture_output=True, check=True).stdout     subprocess.run([\"tar\", \"-x\", \"-C\", str(source)], input=archive, check=True)     started = time.monotonic()     for package in PACKAGES:         _sh([\"uv\", \"build\", \"--wheel\", \"-q\", \"-o\", str(wheels), str(next(source.glob(f\"*-{package}\")))])     requirements = run.work / \"requirements.txt\"     enrichers = next(source.glob(\"*-enrichers\")).name     _sh([\"uv\", \"export\", \"--frozen\", \"--no-hashes\", \"--no-emit-workspace\", \"--no-dev\",          \"--package\", enrichers, \"-q\", \"-o\", str(requirements)], cwd=source)     _sh([\"uv\", \"venv\", \"-q\", \"--python\", sys.executable if sys.version_info[:2] == (3, 12) else \"3.12\", str(venv)])     _sh([\"uv\", \"pip\", \"install\", \"-q\", \"--python\", str(venv / \"bin/python\"), \"--find-links\", str(wheels),          \"-r\", str(requirements), *map(str, sorted(wheels.glob(\"*.whl\")))])     entry = next((venv / \"bin\").glob(\"*-standalone-scraper\"))     run.measurements[\"build_install_seconds\"] = round(time.monotonic() - started, 2)     return {         \"revision\": _sh([\"git\", \"-C\", str(REPO), \"rev-parse\", revision]).strip(),         \"source_tree\": tree,         \"wheels\": {w.name: sha256(w.read_bytes()) for w in sorted(wheels.glob(\"*.whl\"))},         \"lock_export_sha256\": sha256(requirements.read_bytes()),         \"uv_lock_sha256\": sha256((source / \"uv.lock\").read_bytes()),         \"entrypoint\": entry.name,         \"python\": _sh([str(venv / \"bin/python\"), \"--version\"]).strip(),     }, venv, entry"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:_render_with",
+            "name": "_render_with",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 428,
+            "endLine": 438,
+            "content": "def _render_with(python):     \"\"\"Return a callable rendering a bundle with the renderer installed for ``python``.\"\"\"     python = Path(python)     package = next(python.parent.parent.glob(\"lib/python3*/site-packages/*_enrichers\")).name     code = (f\"import json,sys; from {package}.standalone import render_markdown_report as r;\"             \"sys.stdout.write(r(json.load(sys.stdin)))\")     def render(bundle):         return subprocess.run([str(python), \"-c\", code], input=json.dumps(bundle),                               capture_output=True, text=True, check=True).stdout     return render"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:run_cli",
+            "name": "run_cli",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 441,
+            "endLine": 478,
+            "content": "def run_cli(run, entry, name, arguments, cancel_after_connect=False):     \"\"\"Run the packaged entrypoint with a minimal environment and an audit hook.\"\"\"     hook = run.work / \"hook\"     hook.mkdir(exist_ok=True)     (hook / \"sitecustomize.py\").write_text(SITECUSTOMIZE, encoding=\"utf-8\")     audit = run.work / f\"{name}.audit.jsonl\"     output = run.work / name     env = {\"PATH\": \"/usr/bin:/bin\", \"HOME\": str(run.work), \"PYTHONPATH\": str(hook),            \"RELEASE_SMOKE_AUDIT_LOG\": str(audit)}     started = time.monotonic()     out_log, err_log = run.work / f\"{name}.stdout\", run.work / f\"{name}.stderr\"     with open(out_log, \"w\") as stdout_file, open(err_log, \"w\") as stderr_file:         proc = subprocess.Popen([str(entry), *arguments, \"--output-dir\", str(output)], env=env,                                 stdout=stdout_file, stderr=stderr_file)         if cancel_after_connect:             deadline = time.monotonic() + 20             # waitid(WNOWAIT) observes exit without reaping, so wait4 below still owns the child.             while time.monotonic() < deadline and os.waitid(                 os.P_PID, proc.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT             ) is None:                 if audit.exists() and '\"socket.connect\"' in audit.read_text(encoding=\"utf-8\"):                     time.sleep(0.1)                     proc.send_signal(signal.SIGINT)                     break                 time.sleep(0.02)         # wait4 gives this process' own rusage (RUSAGE_CHILDREN would mix in the build).         _, wait_status, usage = os.wait4(proc.pid, 0)         proc.returncode = os.waitstatus_to_exitcode(wait_status)     stdout, stderr = out_log.read_text(), err_log.read_text()     events = [json.loads(line) for line in audit.read_text(encoding=\"utf-8\").splitlines()] if audit.exists() else []     run.measurements[name] = {         \"wall_seconds\": round(time.monotonic() - started, 3),         \"user_cpu_seconds\": round(usage.ru_utime, 3),         \"system_cpu_seconds\": round(usage.ru_stime, 3),         \"peak_rss_kib\": next((e[\"kib\"] for e in events if e[\"event\"] == \"peak_rss\"), None),         \"output_bytes\": sum(p.stat().st_size for p in output.rglob(\"*\") if p.is_file()) if output.exists() else 0,     }     return proc.returncode, stdout, stderr, output, events"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:audit_problems",
+            "name": "audit_problems",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 481,
+            "endLine": 492,
+            "content": "def audit_problems(events, port):     problems = []     for event in events:         if event[\"event\"] == \"socket.connect\":             address = event[\"address\"]             if not (isinstance(address, list) and address[:2] == [\"127.0.0.1\", port]):                 problems.append(f\"E_SERVICE: connection to {address} (only the loopback fixture is allowed)\")         elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:             problems.append(f\"E_SERVICE: imported service/model module {event['module']}\")     if not any(event[\"event\"] == \"import\" for event in events):         problems.append(\"E_SERVICE: audit hook recorded nothing; isolation is unproven\")     return problems"
+        },
+        {
+            "id": "Function:scripts/release_smoke.py:negative_controls",
+            "name": "negative_controls",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Function",
+            "startLine": 495,
+            "endLine": 519,
+            "content": "def negative_controls(run, sample):     \"\"\"The verifier must reject a broken copy of a good bundle (proves it is not vacuous).\"\"\"     results = {}     for name in (\"broken-lineage\", \"missing-source-proof\", \"missing-source-body\"):         copy = run.work / f\"negative-{name}\"         shutil.copytree(sample, copy)         bundle = json.loads((copy / \"bundle.json\").read_text(encoding=\"utf-8\"))         target = next(o for o in bundle[\"outcomes\"] if o[\"status\"] == \"success\" and o[\"links\"])         if name == \"broken-lineage\":             for item in target[\"links\"] + target[\"observations\"]:                 item[\"occurrence_id\"] = \"input-999\"         elif name == \"missing-source-proof\":             target[\"source_reference\"] = None         if name != \"missing-source-body\":             (copy / \"bundle.json\").write_text(json.dumps(bundle, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")             with open(copy / \"outcomes.jsonl\", \"w\", encoding=\"utf-8\") as handle:                 for outcome in bundle[\"outcomes\"]:                     handle.write(json.dumps({\"schema_version\": bundle[\"schema_version\"],                                              \"operation_id\": bundle[\"operation_id\"], \"outcome\": outcome},                                             sort_keys=True) + \"\\n\")         else:             digest = target[\"source_reference\"][\"artifact\"][\"content_digest\"]             (copy / \"source-artifacts/objects\" / digest[:2] / f\"{digest}.body\").unlink()         results[name] = verify_bundle(copy)     return results"
+        },
+        {
+            "id": "Method:scripts/release_smoke.py:Run.case",
+            "name": "case",
+            "filePath": "scripts/release_smoke.py",
+            "nodeType": "Method",
+            "startLine": 372,
+            "endLine": 377,
+            "content": "    def case(self, ident, title, problems, **detail):         status = \"PASS\" if not problems else \"FAIL\"         self.cases.append({\"id\": ident, \"title\": title, \"status\": status, \"problems\": problems, **detail})         print(f\"{status} {ident} {title}\")         for problem in problems:             print(f\"  {problem}\")"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:verify_bundle",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:check_expectations",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:_load_fixtures",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:build_and_install",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:_render_with",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:run_cli",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:audit_problems",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Function:scripts/release_smoke.py:negative_controls",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:run_release",
+            "to": "Method:scripts/release_smoke.py:Run.case",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:build_and_install",
+            "to": "Function:scripts/release_smoke.py:sha256",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:sha256",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:_decode_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:_collapse",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:negative_controls",
+            "to": "Function:scripts/release_smoke.py:verify_bundle",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:verify_bundle",
+            "to": "Function:scripts/release_smoke.py:bad",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/release_smoke.py:build_and_install",
+            "to": "Function:scripts/release_smoke.py:_sh",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "scripts/release_smoke.py",
+            "count": 15,
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:run_release",
+                    "name": "run_release",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 522,
+                    "endLine": 597,
+                    "content": "def run_release(args):     work = Path(args.work_dir or tempfile.mkdtemp(prefix=\"release-smoke-\"))     if work.exists() and any(work.iterdir()):         raise SystemExit(f\"error: work directory {work} is not empty\")     run = Run(work)     work.mkdir(parents=True, exist_ok=True)     package, venv, entry = build_and_install(run, args.revision)     print(f\"packaged {package['revision']} -> {entry} ({package['python']})\")     render = _render_with(venv / \"bin/python\")     fixtures = _load_fixtures()     manifest, bodies = fixtures.load_manifest()     with fixtures.fixture_server(manifest, bodies) as base_url:         port = int(base_url.rsplit(\":\", 1)[1])         routes = {s[\"id\"]: base_url + s[\"route\"] for s in manifest[\"sources\"]}         code, stdout, stderr, single, events_single = run_cli(run, entry, \"single\", [\"--url\", routes[\"named\"]])         problems = ([] if code == 0 else [f\"E_EXIT: {code} != 0 ({stderr[-300:]})\"]) + verify_bundle(single, render)         run.case(\"S1\", \"single page through the packaged entrypoint\", problems, exit_code=code, stdout=stdout.strip())         batch_file = work / \"batch.json\"         batch_file.write_text(json.dumps({k: routes[s] for k, (s, _, _) in BATCH.items()}), encoding=\"utf-8\")         code, stdout, stderr, batch, events_batch = run_cli(             run, entry, \"batch\", [\"--batch\", str(batch_file), \"--max-concurrency\", \"2\"])         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2 for a mixed batch\"]         problems += verify_bundle(batch, render) + check_expectations(batch, manifest, base_url)         run.case(\"S2\", \"mixed batch: spans, lineage, empty vs error, fixture fidelity\", problems,                  exit_code=code, stdout=stdout.strip())         run.case(\"S3\", \"no graph/service/model import or non-loopback connection\",                  audit_problems(events_single, port) + audit_problems(events_batch, port),                  modules_loaded=len({e[\"module\"] for e in events_single + events_batch if e[\"event\"] == \"import\"}))         code, _, _, limited, _ = run_cli(run, entry, \"limit\", [\"--url\", routes[\"static\"], \"--max-response-bytes\", \"100\"])         outcome = json.loads((limited / \"bundle.json\").read_text())[\"outcomes\"][0] if (limited / \"bundle.json\").exists() else {}         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2\"]         if (outcome.get(\"diagnostic\") or {}).get(\"code\") != \"body_too_large\":             problems.append(f\"E_LIMIT: response cap not enforced: {outcome.get('status')}/{outcome.get('diagnostic')}\")         run.case(\"S4\", \"response byte limit is enforced as an explicit failure\",                  problems + verify_bundle(limited, render), exit_code=code)         code, _, _, cancelled, _ = run_cli(run, entry, \"cancel\", [\"--url\", routes[\"slow\"]], cancel_after_connect=True)         outcome = json.loads((cancelled / \"bundle.json\").read_text())[\"outcomes\"][0] if (cancelled / \"bundle.json\").exists() else {}         problems = [] if code == 2 else [f\"E_EXIT: {code} != 2 after SIGINT\"]         if outcome.get(\"status\") != \"hold\" or (outcome.get(\"diagnostic\") or {}).get(\"code\") != \"cancelled\":             problems.append(f\"E_CANCEL: cancelled run recorded {outcome.get('status')}/{outcome.get('diagnostic')}\")         if not (outcome.get(\"resources\") or {}).get(\"requests\"):             problems.append(\"E_CANCEL: consumed request budget was not retained\")         run.case(\"S5\", \"SIGINT mid-fetch is recorded as a held, cancelled outcome\",                  problems + verify_bundle(cancelled, render), exit_code=code)         code, _, stderr, invalid, _ = run_cli(run, entry, \"invalid\", [\"--url\", routes[\"static\"], \"--scope\", \"web\"])         problems = [] if code == 64 else [f\"E_EXIT: {code} != 64\"]         if invalid.exists():             problems.append(\"E_ADMISSION: invalid invocation created output before admission\")         run.case(\"S6\", \"invalid scope is rejected before admission\", problems, exit_code=code)     # The fixture server is stopped: replay must work from local files alone.     connects = []     sys.addaudithook(lambda event, a: connects.append(a[1]) if event == \"socket.connect\" else None)     replay = {name: verify_bundle(work / name, render) for name in (\"single\", \"batch\", \"limit\", \"cancel\")}     run.case(\"S7\", \"offline replay of every bundle with the server stopped\",              [f\"{name}: {p}\" for name, items in replay.items() for p in items]              + [f\"E_REPLAY_NETWORK: connection to {address}\" for address in connects])     controls = negative_controls(run, work / \"batch\")     run.case(\"S8\", \"harness rejects broken lineage and missing source proof\",              [f\"E_VACUOUS: {name} passed verification\" for name, items in controls.items() if not items],              rejections={name: items[:3] for name, items in controls.items()})     report = {         \"schema\": REPORT_SCHEMA, \"mode\": \"run\", \"package\": package, \"work_dir\": str(work),         \"cases\": run.cases, \"measurements\": run.measurements,         \" ... [truncated]"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:sha256",
+                    "name": "sha256",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 83,
+                    "endLine": 84,
+                    "content": "def sha256(data):     return hashlib.sha256(data).hexdigest()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_decode_proof",
+                    "name": "_decode_proof",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 87,
+                    "endLine": 94,
+                    "content": "def _decode_proof(token):     try:         prefix, body = token.split(\".\", 1)[0], token.split(\".\")[1]         if prefix != \"sp1\":             return None         return json.loads(base64.urlsafe_b64decode(body + \"=\" * (-len(body) % 4)))     except (ValueError, IndexError, binascii.Error, json.JSONDecodeError):         return None"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_collapse",
+                    "name": "_collapse",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 97,
+                    "endLine": 98,
+                    "content": "def _collapse(text):     return re.sub(r\"\\s+\", \" \", text).strip()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:verify_bundle",
+                    "name": "verify_bundle",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 101,
+                    "endLine": 265,
+                    "content": "def verify_bundle(output_dir, render=None):     \"\"\"Return a list of problems found in a standalone output directory.     Only local files are read. ``render`` optionally re-renders report.md from the     machine bundle (the packaged ``render_markdown_report``) for an exact comparison.     \"\"\"     out = Path(output_dir)     problems = []     def bad(code, message):         problems.append(f\"{code}: {message}\")     try:         bundle = json.loads((out / \"bundle.json\").read_text(encoding=\"utf-8\"))     except (OSError, json.JSONDecodeError) as error:         return [f\"E_BUNDLE: bundle.json unreadable ({error})\"]     if bundle.get(\"schema_version\") != BUNDLE_SCHEMA:         bad(\"E_BUNDLE\", f\"schema_version {bundle.get('schema_version')!r}\")     operation = bundle.get(\"operation_id\")     outcomes = bundle.get(\"outcomes\")     if not isinstance(operation, str) or not isinstance(outcomes, list) or not outcomes:         return problems + [\"E_BUNDLE: missing operation_id or outcomes\"]     try:         lines = [json.loads(line) for line in (out / \"outcomes.jsonl\").read_text(encoding=\"utf-8\").splitlines()]     except (OSError, json.JSONDecodeError) as error:         lines = None         bad(\"E_JSONL\", f\"outcomes.jsonl unreadable ({error})\")     expected_lines = [         {\"schema_version\": bundle.get(\"schema_version\"), \"operation_id\": operation, \"outcome\": o}         for o in outcomes     ]     if lines is not None and lines != expected_lines:         bad(\"E_JSONL\", \"outcomes.jsonl does not equal the bundle outcomes\")     try:         report = (out / \"report.md\").read_text(encoding=\"utf-8\")     except OSError as error:         report = \"\"         bad(\"E_REPORT\", f\"report.md unreadable ({error})\")     if f\"`{operation}`\" not in report:         bad(\"E_REPORT\", \"report.md does not carry the bundle operation id\")     if render is not None and report != render(bundle):         bad(\"E_REPORT\", \"report.md differs from a fresh render of bundle.json\")     keys = [o.get(\"key\") for o in outcomes]     if len(set(keys)) != len(keys):         bad(\"E_LINEAGE\", \"duplicate outcome keys\")     store = out / \"source-artifacts\"     for index, outcome in enumerate(outcomes):         where = f\"outcomes[{index}] ({outcome.get('key')})\"         occurrence = f\"input-{index}\"         status = outcome.get(\"status\")         if status not in TERMINAL:             bad(\"E_OUTCOME\", f\"{where}: status {status!r}\")             continue         if f\"## {outcome.get('key')} — {status}\" not in report:             bad(\"E_REPORT\", f\"{where}: no report section for this outcome\")         if outcome.get(\"disposition\") != \"unreviewed\":             bad(\"E_OUTCOME\", f\"{where}: disposition must stay unreviewed\")         observed = (outcome.get(\"links\") or []) + (outcome.get(\"candidates\") or []) + (outcome.get(\"observations\") or [])         if status != \"success\":             # An error is never an empty success: it keeps a diagnostic and no content.             if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} without a diagnostic code\")             if outcome.get(\"text\") or observed:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries extracted content\")             if outcome.get(\"source_reference\") is not None:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries an unvalidated source reference\")             continue         if outcome.get(\"diagnostic\") is not None:             bad(\"E_ERROR_EMPTY\", f\"{where}: success carries a diagnostic\")         reference = outcome.get(\"source_reference\")         if not reference or not reference.get(\"source_proof\") or not reference.get(\"artifact\"):             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: success without source proof\")             continue         artifact = reference[\"artifact\"]         digest = artifact.get(\"content_digest\", \"\")         snapshot = artifact.get(\"snapshot_id\", \"\")         # Both become path components; reject anything that is not a plain hex id.         if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)                 and isinstance(snapshot, str) and HEX_ID.fullmatch(snapshot)):             bad(\"E_SOURCE_DIGEST\", f\"{where}: malformed content_digest/snapshot_id\")             continue         body_path = store / \"objects\" / digest[:2] / f\"{digest}.body\"         try:             body = body_path.read_bytes()         except OSError:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: retained body {body_path.relative_to(out)} is missing\")             continue         if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):             bad(\"E_SOURCE_DIGEST\", f\"{where}: retained body does not match its digest/length\")             continue         proof = _decode_proof(reference[\"source_proof\"])         if proof is None:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: source proof cannot be decoded\")             continue         context = proof.get(\"context\") or {}         expec ... [truncated]"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:bad",
+                    "name": "bad",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 110,
+                    "endLine": 111,
+                    "content": "    def bad(code, message):         problems.append(f\"{code}: {message}\")"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:check_expectations",
+                    "name": "check_expectations",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 268,
+                    "endLine": 302,
+                    "content": "def check_expectations(output_dir, manifest, base_url):     \"\"\"Compare the batch bundle with the fixture corpus' retained bytes and labels.\"\"\"     bundle = json.loads((Path(output_dir) / \"bundle.json\").read_text(encoding=\"utf-8\"))     sources = {s[\"id\"]: s for s in manifest[\"sources\"]}     problems = []     outcomes = {o[\"key\"]: o for o in bundle[\"outcomes\"]}     if list(outcomes) != list(BATCH):         problems.append(f\"E_LINEAGE: keys {list(outcomes)} != submitted {list(BATCH)}\")     for key, (source_id, status, code) in BATCH.items():         outcome = outcomes.get(key)         if outcome is None:             continue         source = sources[source_id]         if outcome[\"requested_url\"] != base_url + source[\"route\"]:             problems.append(f\"E_LINEAGE: {key} requested {outcome['requested_url']}\")         if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:             problems.append(f\"E_OUTCOME: {key} is {outcome['status']}/{outcome['diagnostic']}, expected {status}/{code}\")         if status != \"success\" or outcome[\"source_reference\"] is None:             continue         final = sources[source[\"response\"][\"location\"].strip(\"/\")] if \"location\" in source[\"response\"] else source         artifact = outcome[\"source_reference\"][\"artifact\"]         if artifact[\"content_digest\"] != final[\"sha256\"]:             problems.append(f\"E_SOURCE_DIGEST: {key} retained bytes differ from fixture {final['id']}\")         if artifact[\"final_url\"] != base_url + final[\"route\"]:             problems.append(f\"E_LINEAGE: {key} final_url {artifact['final_url']}\")     empty, failure = outcomes.get(\"empty\"), outcomes.get(\"failure\")     if empty and (empty[\"text\"] or empty[\"diagnostic\"] is not None or empty[\"source_reference\"] is None):         problems.append(\"E_ERROR_EMPTY: legitimate empty page is not an empty success with source proof\")     if failure and (failure[\"source_reference\"] is not None or failure[\"diagnostic\"] is None):         problems.append(\"E_ERROR_EMPTY: HTTP failure is not an explicit error\")     first, again = outcomes.get(\"static\"), outcomes.get(\"static-again\")     if first and again and first[\"source_reference\"] and again[\"source_reference\"]:         if first[\"source_reference\"][\"artifact\"][\"snapshot_id\"] == again[\"source_reference\"][\"artifact\"][\"snapshot_id\"]:             problems.append(\"E_LINEAGE: duplicate URL occurrences share one snapshot\")     return problems"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_load_fixtures",
+                    "name": "_load_fixtures",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 380,
+                    "endLine": 384,
+                    "content": "def _load_fixtures():     spec = importlib.util.spec_from_file_location(\"acquisition_fixtures\", REPO / \"scripts/acquisition_fixtures.py\")     module = importlib.util.module_from_spec(spec)     spec.loader.exec_module(module)     return module"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_sh",
+                    "name": "_sh",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 387,
+                    "endLine": 391,
+                    "content": "def _sh(command, **kwargs):     proc = subprocess.run(command, capture_output=True, text=True, check=False, **kwargs)     if proc.returncode != 0:         raise RuntimeError(f\"{' '.join(map(str, command))} failed ({proc.returncode}): {proc.stderr[-2000:]}\")     return proc.stdout"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:build_and_install",
+                    "name": "build_and_install",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 394,
+                    "endLine": 425,
+                    "content": "def build_and_install(run, revision):     \"\"\"Package the committed tree (not the working tree) and install it in a fresh venv.\"\"\"     source = run.work / \"source\"     wheels = run.work / \"wheels\"     venv = run.work / \"venv\"     wheels.mkdir(parents=True)     source.mkdir()     tree = _sh([\"git\", \"-C\", str(REPO), \"rev-parse\", f\"{revision}^{{tree}}\"]).strip()     archive = subprocess.run([\"git\", \"-C\", str(REPO), \"archive\", \"--format=tar\", revision],                              capture_output=True, check=True).stdout     subprocess.run([\"tar\", \"-x\", \"-C\", str(source)], input=archive, check=True)     started = time.monotonic()     for package in PACKAGES:         _sh([\"uv\", \"build\", \"--wheel\", \"-q\", \"-o\", str(wheels), str(next(source.glob(f\"*-{package}\")))])     requirements = run.work / \"requirements.txt\"     enrichers = next(source.glob(\"*-enrichers\")).name     _sh([\"uv\", \"export\", \"--frozen\", \"--no-hashes\", \"--no-emit-workspace\", \"--no-dev\",          \"--package\", enrichers, \"-q\", \"-o\", str(requirements)], cwd=source)     _sh([\"uv\", \"venv\", \"-q\", \"--python\", sys.executable if sys.version_info[:2] == (3, 12) else \"3.12\", str(venv)])     _sh([\"uv\", \"pip\", \"install\", \"-q\", \"--python\", str(venv / \"bin/python\"), \"--find-links\", str(wheels),          \"-r\", str(requirements), *map(str, sorted(wheels.glob(\"*.whl\")))])     entry = next((venv / \"bin\").glob(\"*-standalone-scraper\"))     run.measurements[\"build_install_seconds\"] = round(time.monotonic() - started, 2)     return {         \"revision\": _sh([\"git\", \"-C\", str(REPO), \"rev-parse\", revision]).strip(),         \"source_tree\": tree,         \"wheels\": {w.name: sha256(w.read_bytes()) for w in sorted(wheels.glob(\"*.whl\"))},         \"lock_export_sha256\": sha256(requirements.read_bytes()),         \"uv_lock_sha256\": sha256((source / \"uv.lock\").read_bytes()),         \"entrypoint\": entry.name,         \"python\": _sh([str(venv / \"bin/python\"), \"--version\"]).strip(),     }, venv, entry"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_render_with",
+                    "name": "_render_with",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 428,
+                    "endLine": 438,
+                    "content": "def _render_with(python):     \"\"\"Return a callable rendering a bundle with the renderer installed for ``python``.\"\"\"     python = Path(python)     package = next(python.parent.parent.glob(\"lib/python3*/site-packages/*_enrichers\")).name     code = (f\"import json,sys; from {package}.standalone import render_markdown_report as r;\"             \"sys.stdout.write(r(json.load(sys.stdin)))\")     def render(bundle):         return subprocess.run([str(python), \"-c\", code], input=json.dumps(bundle),                               capture_output=True, text=True, check=True).stdout     return render"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:run_cli",
+                    "name": "run_cli",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 441,
+                    "endLine": 478,
+                    "content": "def run_cli(run, entry, name, arguments, cancel_after_connect=False):     \"\"\"Run the packaged entrypoint with a minimal environment and an audit hook.\"\"\"     hook = run.work / \"hook\"     hook.mkdir(exist_ok=True)     (hook / \"sitecustomize.py\").write_text(SITECUSTOMIZE, encoding=\"utf-8\")     audit = run.work / f\"{name}.audit.jsonl\"     output = run.work / name     env = {\"PATH\": \"/usr/bin:/bin\", \"HOME\": str(run.work), \"PYTHONPATH\": str(hook),            \"RELEASE_SMOKE_AUDIT_LOG\": str(audit)}     started = time.monotonic()     out_log, err_log = run.work / f\"{name}.stdout\", run.work / f\"{name}.stderr\"     with open(out_log, \"w\") as stdout_file, open(err_log, \"w\") as stderr_file:         proc = subprocess.Popen([str(entry), *arguments, \"--output-dir\", str(output)], env=env,                                 stdout=stdout_file, stderr=stderr_file)         if cancel_after_connect:             deadline = time.monotonic() + 20             # waitid(WNOWAIT) observes exit without reaping, so wait4 below still owns the child.             while time.monotonic() < deadline and os.waitid(                 os.P_PID, proc.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT             ) is None:                 if audit.exists() and '\"socket.connect\"' in audit.read_text(encoding=\"utf-8\"):                     time.sleep(0.1)                     proc.send_signal(signal.SIGINT)                     break                 time.sleep(0.02)         # wait4 gives this process' own rusage (RUSAGE_CHILDREN would mix in the build).         _, wait_status, usage = os.wait4(proc.pid, 0)         proc.returncode = os.waitstatus_to_exitcode(wait_status)     stdout, stderr = out_log.read_text(), err_log.read_text()     events = [json.loads(line) for line in audit.read_text(encoding=\"utf-8\").splitlines()] if audit.exists() else []     run.measurements[name] = {         \"wall_seconds\": round(time.monotonic() - started, 3),         \"user_cpu_seconds\": round(usage.ru_utime, 3),         \"system_cpu_seconds\": round(usage.ru_stime, 3),         \"peak_rss_kib\": next((e[\"kib\"] for e in events if e[\"event\"] == \"peak_rss\"), None),         \"output_bytes\": sum(p.stat().st_size for p in output.rglob(\"*\") if p.is_file()) if output.exists() else 0,     }     return proc.returncode, stdout, stderr, output, events"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:audit_problems",
+                    "name": "audit_problems",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 481,
+                    "endLine": 492,
+                    "content": "def audit_problems(events, port):     problems = []     for event in events:         if event[\"event\"] == \"socket.connect\":             address = event[\"address\"]             if not (isinstance(address, list) and address[:2] == [\"127.0.0.1\", port]):                 problems.append(f\"E_SERVICE: connection to {address} (only the loopback fixture is allowed)\")         elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:             problems.append(f\"E_SERVICE: imported service/model module {event['module']}\")     if not any(event[\"event\"] == \"import\" for event in events):         problems.append(\"E_SERVICE: audit hook recorded nothing; isolation is unproven\")     return problems"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:negative_controls",
+                    "name": "negative_controls",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 495,
+                    "endLine": 519,
+                    "content": "def negative_controls(run, sample):     \"\"\"The verifier must reject a broken copy of a good bundle (proves it is not vacuous).\"\"\"     results = {}     for name in (\"broken-lineage\", \"missing-source-proof\", \"missing-source-body\"):         copy = run.work / f\"negative-{name}\"         shutil.copytree(sample, copy)         bundle = json.loads((copy / \"bundle.json\").read_text(encoding=\"utf-8\"))         target = next(o for o in bundle[\"outcomes\"] if o[\"status\"] == \"success\" and o[\"links\"])         if name == \"broken-lineage\":             for item in target[\"links\"] + target[\"observations\"]:                 item[\"occurrence_id\"] = \"input-999\"         elif name == \"missing-source-proof\":             target[\"source_reference\"] = None         if name != \"missing-source-body\":             (copy / \"bundle.json\").write_text(json.dumps(bundle, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")             with open(copy / \"outcomes.jsonl\", \"w\", encoding=\"utf-8\") as handle:                 for outcome in bundle[\"outcomes\"]:                     handle.write(json.dumps({\"schema_version\": bundle[\"schema_version\"],                                              \"operation_id\": bundle[\"operation_id\"], \"outcome\": outcome},                                             sort_keys=True) + \"\\n\")         else:             digest = target[\"source_reference\"][\"artifact\"][\"content_digest\"]             (copy / \"source-artifacts/objects\" / digest[:2] / f\"{digest}.body\").unlink()         results[name] = verify_bundle(copy)     return results"
+                },
+                {
+                    "id": "Method:scripts/release_smoke.py:Run.case",
+                    "name": "case",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Method",
+                    "startLine": 372,
+                    "endLine": 377,
+                    "content": "    def case(self, ident, title, problems, **detail):         status = \"PASS\" if not problems else \"FAIL\"         self.cases.append({\"id\": ident, \"title\": title, \"status\": status, \"problems\": problems, **detail})         print(f\"{status} {ident} {title}\")         for problem in problems:             print(f\"  {problem}\")"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "scripts",
+            "direct": true,
+            "symbolCount": 14
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:verify_bundle",
+                    "name": "verify_bundle",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 101,
+                    "endLine": 265,
+                    "content": "def verify_bundle(output_dir, render=None):     \"\"\"Return a list of problems found in a standalone output directory.     Only local files are read. ``render`` optionally re-renders report.md from the     machine bundle (the packaged ``render_markdown_report``) for an exact comparison.     \"\"\"     out = Path(output_dir)     problems = []     def bad(code, message):         problems.append(f\"{code}: {message}\")     try:         bundle = json.loads((out / \"bundle.json\").read_text(encoding=\"utf-8\"))     except (OSError, json.JSONDecodeError) as error:         return [f\"E_BUNDLE: bundle.json unreadable ({error})\"]     if bundle.get(\"schema_version\") != BUNDLE_SCHEMA:         bad(\"E_BUNDLE\", f\"schema_version {bundle.get('schema_version')!r}\")     operation = bundle.get(\"operation_id\")     outcomes = bundle.get(\"outcomes\")     if not isinstance(operation, str) or not isinstance(outcomes, list) or not outcomes:         return problems + [\"E_BUNDLE: missing operation_id or outcomes\"]     try:         lines = [json.loads(line) for line in (out / \"outcomes.jsonl\").read_text(encoding=\"utf-8\").splitlines()]     except (OSError, json.JSONDecodeError) as error:         lines = None         bad(\"E_JSONL\", f\"outcomes.jsonl unreadable ({error})\")     expected_lines = [         {\"schema_version\": bundle.get(\"schema_version\"), \"operation_id\": operation, \"outcome\": o}         for o in outcomes     ]     if lines is not None and lines != expected_lines:         bad(\"E_JSONL\", \"outcomes.jsonl does not equal the bundle outcomes\")     try:         report = (out / \"report.md\").read_text(encoding=\"utf-8\")     except OSError as error:         report = \"\"         bad(\"E_REPORT\", f\"report.md unreadable ({error})\")     if f\"`{operation}`\" not in report:         bad(\"E_REPORT\", \"report.md does not carry the bundle operation id\")     if render is not None and report != render(bundle):         bad(\"E_REPORT\", \"report.md differs from a fresh render of bundle.json\")     keys = [o.get(\"key\") for o in outcomes]     if len(set(keys)) != len(keys):         bad(\"E_LINEAGE\", \"duplicate outcome keys\")     store = out / \"source-artifacts\"     for index, outcome in enumerate(outcomes):         where = f\"outcomes[{index}] ({outcome.get('key')})\"         occurrence = f\"input-{index}\"         status = outcome.get(\"status\")         if status not in TERMINAL:             bad(\"E_OUTCOME\", f\"{where}: status {status!r}\")             continue         if f\"## {outcome.get('key')} — {status}\" not in report:             bad(\"E_REPORT\", f\"{where}: no report section for this outcome\")         if outcome.get(\"disposition\") != \"unreviewed\":             bad(\"E_OUTCOME\", f\"{where}: disposition must stay unreviewed\")         observed = (outcome.get(\"links\") or []) + (outcome.get(\"candidates\") or []) + (outcome.get(\"observations\") or [])         if status != \"success\":             # An error is never an empty success: it keeps a diagnostic and no content.             if not (outcome.get(\"diagnostic\") or {}).get(\"code\"):                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} without a diagnostic code\")             if outcome.get(\"text\") or observed:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries extracted content\")             if outcome.get(\"source_reference\") is not None:                 bad(\"E_ERROR_EMPTY\", f\"{where}: {status} carries an unvalidated source reference\")             continue         if outcome.get(\"diagnostic\") is not None:             bad(\"E_ERROR_EMPTY\", f\"{where}: success carries a diagnostic\")         reference = outcome.get(\"source_reference\")         if not reference or not reference.get(\"source_proof\") or not reference.get(\"artifact\"):             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: success without source proof\")             continue         artifact = reference[\"artifact\"]         digest = artifact.get(\"content_digest\", \"\")         snapshot = artifact.get(\"snapshot_id\", \"\")         # Both become path components; reject anything that is not a plain hex id.         if not (isinstance(digest, str) and SHA256_HEX.fullmatch(digest)                 and isinstance(snapshot, str) and HEX_ID.fullmatch(snapshot)):             bad(\"E_SOURCE_DIGEST\", f\"{where}: malformed content_digest/snapshot_id\")             continue         body_path = store / \"objects\" / digest[:2] / f\"{digest}.body\"         try:             body = body_path.read_bytes()         except OSError:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: retained body {body_path.relative_to(out)} is missing\")             continue         if sha256(body) != digest or len(body) != artifact.get(\"byte_length\"):             bad(\"E_SOURCE_DIGEST\", f\"{where}: retained body does not match its digest/length\")             continue         proof = _decode_proof(reference[\"source_proof\"])         if proof is None:             bad(\"E_SOURCE_PROOF_MISSING\", f\"{where}: source proof cannot be decoded\")             continue         context = proof.get(\"context\") or {}         expec ... [truncated]"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:check_expectations",
+                    "name": "check_expectations",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 268,
+                    "endLine": 302,
+                    "content": "def check_expectations(output_dir, manifest, base_url):     \"\"\"Compare the batch bundle with the fixture corpus' retained bytes and labels.\"\"\"     bundle = json.loads((Path(output_dir) / \"bundle.json\").read_text(encoding=\"utf-8\"))     sources = {s[\"id\"]: s for s in manifest[\"sources\"]}     problems = []     outcomes = {o[\"key\"]: o for o in bundle[\"outcomes\"]}     if list(outcomes) != list(BATCH):         problems.append(f\"E_LINEAGE: keys {list(outcomes)} != submitted {list(BATCH)}\")     for key, (source_id, status, code) in BATCH.items():         outcome = outcomes.get(key)         if outcome is None:             continue         source = sources[source_id]         if outcome[\"requested_url\"] != base_url + source[\"route\"]:             problems.append(f\"E_LINEAGE: {key} requested {outcome['requested_url']}\")         if outcome[\"status\"] != status or (outcome[\"diagnostic\"] or {}).get(\"code\") != code:             problems.append(f\"E_OUTCOME: {key} is {outcome['status']}/{outcome['diagnostic']}, expected {status}/{code}\")         if status != \"success\" or outcome[\"source_reference\"] is None:             continue         final = sources[source[\"response\"][\"location\"].strip(\"/\")] if \"location\" in source[\"response\"] else source         artifact = outcome[\"source_reference\"][\"artifact\"]         if artifact[\"content_digest\"] != final[\"sha256\"]:             problems.append(f\"E_SOURCE_DIGEST: {key} retained bytes differ from fixture {final['id']}\")         if artifact[\"final_url\"] != base_url + final[\"route\"]:             problems.append(f\"E_LINEAGE: {key} final_url {artifact['final_url']}\")     empty, failure = outcomes.get(\"empty\"), outcomes.get(\"failure\")     if empty and (empty[\"text\"] or empty[\"diagnostic\"] is not None or empty[\"source_reference\"] is None):         problems.append(\"E_ERROR_EMPTY: legitimate empty page is not an empty success with source proof\")     if failure and (failure[\"source_reference\"] is not None or failure[\"diagnostic\"] is None):         problems.append(\"E_ERROR_EMPTY: HTTP failure is not an explicit error\")     first, again = outcomes.get(\"static\"), outcomes.get(\"static-again\")     if first and again and first[\"source_reference\"] and again[\"source_reference\"]:         if first[\"source_reference\"][\"artifact\"][\"snapshot_id\"] == again[\"source_reference\"][\"artifact\"][\"snapshot_id\"]:             problems.append(\"E_LINEAGE: duplicate URL occurrences share one snapshot\")     return problems"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_load_fixtures",
+                    "name": "_load_fixtures",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 380,
+                    "endLine": 384,
+                    "content": "def _load_fixtures():     spec = importlib.util.spec_from_file_location(\"acquisition_fixtures\", REPO / \"scripts/acquisition_fixtures.py\")     module = importlib.util.module_from_spec(spec)     spec.loader.exec_module(module)     return module"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:build_and_install",
+                    "name": "build_and_install",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 394,
+                    "endLine": 425,
+                    "content": "def build_and_install(run, revision):     \"\"\"Package the committed tree (not the working tree) and install it in a fresh venv.\"\"\"     source = run.work / \"source\"     wheels = run.work / \"wheels\"     venv = run.work / \"venv\"     wheels.mkdir(parents=True)     source.mkdir()     tree = _sh([\"git\", \"-C\", str(REPO), \"rev-parse\", f\"{revision}^{{tree}}\"]).strip()     archive = subprocess.run([\"git\", \"-C\", str(REPO), \"archive\", \"--format=tar\", revision],                              capture_output=True, check=True).stdout     subprocess.run([\"tar\", \"-x\", \"-C\", str(source)], input=archive, check=True)     started = time.monotonic()     for package in PACKAGES:         _sh([\"uv\", \"build\", \"--wheel\", \"-q\", \"-o\", str(wheels), str(next(source.glob(f\"*-{package}\")))])     requirements = run.work / \"requirements.txt\"     enrichers = next(source.glob(\"*-enrichers\")).name     _sh([\"uv\", \"export\", \"--frozen\", \"--no-hashes\", \"--no-emit-workspace\", \"--no-dev\",          \"--package\", enrichers, \"-q\", \"-o\", str(requirements)], cwd=source)     _sh([\"uv\", \"venv\", \"-q\", \"--python\", sys.executable if sys.version_info[:2] == (3, 12) else \"3.12\", str(venv)])     _sh([\"uv\", \"pip\", \"install\", \"-q\", \"--python\", str(venv / \"bin/python\"), \"--find-links\", str(wheels),          \"-r\", str(requirements), *map(str, sorted(wheels.glob(\"*.whl\")))])     entry = next((venv / \"bin\").glob(\"*-standalone-scraper\"))     run.measurements[\"build_install_seconds\"] = round(time.monotonic() - started, 2)     return {         \"revision\": _sh([\"git\", \"-C\", str(REPO), \"rev-parse\", revision]).strip(),         \"source_tree\": tree,         \"wheels\": {w.name: sha256(w.read_bytes()) for w in sorted(wheels.glob(\"*.whl\"))},         \"lock_export_sha256\": sha256(requirements.read_bytes()),         \"uv_lock_sha256\": sha256((source / \"uv.lock\").read_bytes()),         \"entrypoint\": entry.name,         \"python\": _sh([str(venv / \"bin/python\"), \"--version\"]).strip(),     }, venv, entry"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_render_with",
+                    "name": "_render_with",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 428,
+                    "endLine": 438,
+                    "content": "def _render_with(python):     \"\"\"Return a callable rendering a bundle with the renderer installed for ``python``.\"\"\"     python = Path(python)     package = next(python.parent.parent.glob(\"lib/python3*/site-packages/*_enrichers\")).name     code = (f\"import json,sys; from {package}.standalone import render_markdown_report as r;\"             \"sys.stdout.write(r(json.load(sys.stdin)))\")     def render(bundle):         return subprocess.run([str(python), \"-c\", code], input=json.dumps(bundle),                               capture_output=True, text=True, check=True).stdout     return render"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:run_cli",
+                    "name": "run_cli",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 441,
+                    "endLine": 478,
+                    "content": "def run_cli(run, entry, name, arguments, cancel_after_connect=False):     \"\"\"Run the packaged entrypoint with a minimal environment and an audit hook.\"\"\"     hook = run.work / \"hook\"     hook.mkdir(exist_ok=True)     (hook / \"sitecustomize.py\").write_text(SITECUSTOMIZE, encoding=\"utf-8\")     audit = run.work / f\"{name}.audit.jsonl\"     output = run.work / name     env = {\"PATH\": \"/usr/bin:/bin\", \"HOME\": str(run.work), \"PYTHONPATH\": str(hook),            \"RELEASE_SMOKE_AUDIT_LOG\": str(audit)}     started = time.monotonic()     out_log, err_log = run.work / f\"{name}.stdout\", run.work / f\"{name}.stderr\"     with open(out_log, \"w\") as stdout_file, open(err_log, \"w\") as stderr_file:         proc = subprocess.Popen([str(entry), *arguments, \"--output-dir\", str(output)], env=env,                                 stdout=stdout_file, stderr=stderr_file)         if cancel_after_connect:             deadline = time.monotonic() + 20             # waitid(WNOWAIT) observes exit without reaping, so wait4 below still owns the child.             while time.monotonic() < deadline and os.waitid(                 os.P_PID, proc.pid, os.WEXITED | os.WNOHANG | os.WNOWAIT             ) is None:                 if audit.exists() and '\"socket.connect\"' in audit.read_text(encoding=\"utf-8\"):                     time.sleep(0.1)                     proc.send_signal(signal.SIGINT)                     break                 time.sleep(0.02)         # wait4 gives this process' own rusage (RUSAGE_CHILDREN would mix in the build).         _, wait_status, usage = os.wait4(proc.pid, 0)         proc.returncode = os.waitstatus_to_exitcode(wait_status)     stdout, stderr = out_log.read_text(), err_log.read_text()     events = [json.loads(line) for line in audit.read_text(encoding=\"utf-8\").splitlines()] if audit.exists() else []     run.measurements[name] = {         \"wall_seconds\": round(time.monotonic() - started, 3),         \"user_cpu_seconds\": round(usage.ru_utime, 3),         \"system_cpu_seconds\": round(usage.ru_stime, 3),         \"peak_rss_kib\": next((e[\"kib\"] for e in events if e[\"event\"] == \"peak_rss\"), None),         \"output_bytes\": sum(p.stat().st_size for p in output.rglob(\"*\") if p.is_file()) if output.exists() else 0,     }     return proc.returncode, stdout, stderr, output, events"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:audit_problems",
+                    "name": "audit_problems",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 481,
+                    "endLine": 492,
+                    "content": "def audit_problems(events, port):     problems = []     for event in events:         if event[\"event\"] == \"socket.connect\":             address = event[\"address\"]             if not (isinstance(address, list) and address[:2] == [\"127.0.0.1\", port]):                 problems.append(f\"E_SERVICE: connection to {address} (only the loopback fixture is allowed)\")         elif event[\"event\"] == \"import\" and event[\"module\"] in FORBIDDEN_MODULES:             problems.append(f\"E_SERVICE: imported service/model module {event['module']}\")     if not any(event[\"event\"] == \"import\" for event in events):         problems.append(\"E_SERVICE: audit hook recorded nothing; isolation is unproven\")     return problems"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:negative_controls",
+                    "name": "negative_controls",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 495,
+                    "endLine": 519,
+                    "content": "def negative_controls(run, sample):     \"\"\"The verifier must reject a broken copy of a good bundle (proves it is not vacuous).\"\"\"     results = {}     for name in (\"broken-lineage\", \"missing-source-proof\", \"missing-source-body\"):         copy = run.work / f\"negative-{name}\"         shutil.copytree(sample, copy)         bundle = json.loads((copy / \"bundle.json\").read_text(encoding=\"utf-8\"))         target = next(o for o in bundle[\"outcomes\"] if o[\"status\"] == \"success\" and o[\"links\"])         if name == \"broken-lineage\":             for item in target[\"links\"] + target[\"observations\"]:                 item[\"occurrence_id\"] = \"input-999\"         elif name == \"missing-source-proof\":             target[\"source_reference\"] = None         if name != \"missing-source-body\":             (copy / \"bundle.json\").write_text(json.dumps(bundle, indent=2, sort_keys=True) + \"\\n\", encoding=\"utf-8\")             with open(copy / \"outcomes.jsonl\", \"w\", encoding=\"utf-8\") as handle:                 for outcome in bundle[\"outcomes\"]:                     handle.write(json.dumps({\"schema_version\": bundle[\"schema_version\"],                                              \"operation_id\": bundle[\"operation_id\"], \"outcome\": outcome},                                             sort_keys=True) + \"\\n\")         else:             digest = target[\"source_reference\"][\"artifact\"][\"content_digest\"]             (copy / \"source-artifacts/objects\" / digest[:2] / f\"{digest}.body\").unlink()         results[name] = verify_bundle(copy)     return results"
+                },
+                {
+                    "id": "Method:scripts/release_smoke.py:Run.case",
+                    "name": "case",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Method",
+                    "startLine": 372,
+                    "endLine": 377,
+                    "content": "    def case(self, ident, title, problems, **detail):         status = \"PASS\" if not problems else \"FAIL\"         self.cases.append({\"id\": ident, \"title\": title, \"status\": status, \"problems\": problems, **detail})         print(f\"{status} {ident} {title}\")         for problem in problems:             print(f\"  {problem}\")"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:scripts/release_smoke.py:sha256",
+                    "name": "sha256",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 83,
+                    "endLine": 84,
+                    "content": "def sha256(data):     return hashlib.sha256(data).hexdigest()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_decode_proof",
+                    "name": "_decode_proof",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 87,
+                    "endLine": 94,
+                    "content": "def _decode_proof(token):     try:         prefix, body = token.split(\".\", 1)[0], token.split(\".\")[1]         if prefix != \"sp1\":             return None         return json.loads(base64.urlsafe_b64decode(body + \"=\" * (-len(body) % 4)))     except (ValueError, IndexError, binascii.Error, json.JSONDecodeError):         return None"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_collapse",
+                    "name": "_collapse",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 97,
+                    "endLine": 98,
+                    "content": "def _collapse(text):     return re.sub(r\"\\s+\", \" \", text).strip()"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:bad",
+                    "name": "bad",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 110,
+                    "endLine": 111,
+                    "content": "    def bad(code, message):         problems.append(f\"{code}: {message}\")"
+                },
+                {
+                    "id": "Function:scripts/release_smoke.py:_sh",
+                    "name": "_sh",
+                    "filePath": "scripts/release_smoke.py",
+                    "nodeType": "Function",
+                    "startLine": 387,
+                    "endLine": 391,
+                    "content": "def _sh(command, **kwargs):     proc = subprocess.run(command, capture_output=True, text=True, check=False, **kwargs)     if proc.returncode != 0:         raise RuntimeError(f\"{' '.join(map(str, command))} failed ({proc.returncode}): {proc.stderr[-2000:]}\")     return proc.stdout"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke",
+        "repo": "fl0sint-def48-smoke",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def48-smoke/.gitnexus/lbug",
+        "symbol": "scripts/release_smoke.py:run_release",
+        "rootSymbols": 1,
+        "totalSymbols": 15,
+        "totalEdges": 16,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 9,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

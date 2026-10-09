@@ -28,6 +28,8 @@ dependencies = [
     "dnspython>=2.4,<3.0",
 ]
 
+ [project.scripts]
+ flowsint-standalone-scraper = "flowsint_enrichers.standalone:main"
 [project.optional-dependencies]
 gpu = [
     "cupy-cuda13x>=14.1.1",

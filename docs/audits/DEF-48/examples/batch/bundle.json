@@ -1,0 +1,1031 @@
+{
+  "extraction": "observed-readable-text",
+  "operation_id": "standalone-website-to-text-f3cfdee2866a4954aa03988cc3c3fd2e",
+  "options": {
+    "extraction": "observed-readable-text",
+    "max_concurrency": 2,
+    "max_redirects": 3,
+    "max_response_bytes": 1048576,
+    "max_retries": 0,
+    "request_timeout": 10,
+    "scope": "local-web-fetch"
+  },
+  "outcomes": [
+    {
+      "candidates": [],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "196c32e045357876e45368079bec17e538c312ef7ef38881e602f97599c9fa67",
+      "key": "static",
+      "links": [
+        {
+          "anchor_text": "Lum\u00e9 Lantern contact directory",
+          "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+          "company_name": null,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "context_span": {
+            "end_byte": 272,
+            "start_byte": 110
+          },
+          "execution_state": "not_executable",
+          "input_ref": "c5173c7446125e302d208c564e001c1a237d743adedd731e347b8c4fd3c49784",
+          "kind": "observed_link",
+          "observation_id": "observation-18205d90e9100050eeef7a06461a2d6a",
+          "occurrence_id": "input-0",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 228,
+            "start_byte": 222
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "7d3b6144f11825643e77ff2332153fc8",
+          "source_url": "http://127.0.0.1:37071/static",
+          "value": "http://127.0.0.1:37071/named"
+        }
+      ],
+      "observations": [
+        {
+          "anchor_text": "Lum\u00e9 Lantern contact directory",
+          "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+          "company_name": null,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "context_span": {
+            "end_byte": 272,
+            "start_byte": 110
+          },
+          "execution_state": "not_executable",
+          "input_ref": "c5173c7446125e302d208c564e001c1a237d743adedd731e347b8c4fd3c49784",
+          "kind": "observed_link",
+          "observation_id": "observation-18205d90e9100050eeef7a06461a2d6a",
+          "occurrence_id": "input-0",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 228,
+            "start_byte": 222
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "7d3b6144f11825643e77ff2332153fc8",
+          "source_url": "http://127.0.0.1:37071/static",
+          "value": "http://127.0.0.1:37071/named"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:37071/static",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 288,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+          "byte_length": 288,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:37071/static",
+          "locator": "sha256:5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "origin": "http://127.0.0.1:37071",
+          "requested_url": "http://127.0.0.1:37071/static",
+          "retrieved_at": "2026-10-09T21:28:08.830691Z",
+          "snapshot_id": "7d3b6144f11825643e77ff2332153fc8",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJjNTE3M2M3NDQ2MTI1ZTMwMmQyMDhjNTY0ZTAwMWMxYTIzN2Q3NDNhZGVkZDczMWUzNDdiOGM0ZmQzYzQ5Nzg0IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0wIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9zdGF0aWMiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxL3N0YXRpYyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguODMwNjkxWiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZDk0MmE2MTJkZWRjZjA5YzA4OTA1YTMxNmFhNWVlMzMxODMxNDgzNTU3NDFiYWE3YWI4NmY4ZTJkZTU4MWVhOSIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LWYzY2ZkZWUyODY2YTQ5NTRhYTAzOTg4Y2MzYzNmZDJlIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguNjg2NTg5WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIyOjI4OjA4LjY4Mjk1NVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtN2QzYjYxNDRmMTE4MjU2NDNlNzdmZjIzMzIxNTNmYzgiLCJzbmFwc2hvdF9pZCI6IjdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiY29udGVudF9kaWdlc3QiOiI1ZTMzZWRlZDRhMmI5NjE5NDIwYjdmMzlkNDkyMzlkNzc4ODlhYjliODcyN2NjMmNjYzBiZmIwNWI0M2M4NmZhIiwiYnl0ZV9sZW5ndGgiOjI4OCwibG9jYXRvciI6InNoYTI1Njo1ZTMzZWRlZDRhMmI5NjE5NDIwYjdmMzlkNDkyMzlkNzc4ODlhYjliODcyN2NjMmNjYzBiZmIwNWI0M2M4NmZhIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMToyODowOC44MzA2OTFaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxL3N0YXRpYyIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvc3RhdGljIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4OCwibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6MTEwLCJieXRlX2VuZCI6MTIwLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6MTIwLCJieXRlX2VuZCI6MTMzLCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjMzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6MTMzLCJieXRlX2VuZCI6MTQxLCJub3JtYWxpemVkX3N0YXJ0IjozMywibm9ybWFsaXplZF9lbmQiOjM0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6MTQxLCJieXRlX2VuZCI6MjA5LCJub3JtYWxpemVkX3N0YXJ0IjozNCwibm9ybWFsaXplZF9lbmQiOjk2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6MjA5LCJieXRlX2VuZCI6MjMwLCJub3JtYWxpemVkX3N0YXJ0Ijo5Niwibm9ybWFsaXplZF9lbmQiOjk3LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4LTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTdkM2I2MTQ0ZjExODI1NjQzZTc3ZmYyMzMyMTUzZmM4IiwiYnl0ZV9zdGFydCI6MjMwLCJieXRlX2VuZCI6MjYxLCJub3JtYWxpemVkX3N0YXJ0Ijo5Nywibm9ybWFsaXplZF9lbmQiOjEyNywicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-0"
+          },
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-1"
+          },
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-2"
+          },
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 141,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-3"
+          },
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 209,
+            "byte_start": 141,
+            "normalized_end": 96,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-4"
+          },
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 230,
+            "byte_start": 209,
+            "normalized_end": 97,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 96,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-5"
+          },
+          {
+            "artifact_id": "artifact-7d3b6144f11825643e77ff2332153fc8",
+            "byte_end": 261,
+            "byte_start": 230,
+            "normalized_end": 127,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 97,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-7d3b6144f11825643e77ff2332153fc8-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern archive Lum\u00e9 Lantern Lum\u00e9 Lantern publishes caf\u00e9 lighting notes \u2014 r\u00e9sum\u00e9 available. Lum\u00e9 Lantern contact directory"
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "3cfc5cc4ce94b7995968a50c5e5863ac891077efe27e9562f93856c5444eca9f",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-8421915d98a7f9d3a7817e283951d11e",
+          "occurrence_id": "input-1",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "4520e94cd310976d8e3faf43932f0d5f",
+          "source_url": "http://127.0.0.1:37071/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "979ff729e2fa861c489d4afeaa5b395aa0ccb9e018ee1123818a7824de646725",
+      "key": "named",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "3cfc5cc4ce94b7995968a50c5e5863ac891077efe27e9562f93856c5444eca9f",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-8421915d98a7f9d3a7817e283951d11e",
+          "occurrence_id": "input-1",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "4520e94cd310976d8e3faf43932f0d5f",
+          "source_url": "http://127.0.0.1:37071/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:37071/named",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:37071/named",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:37071",
+          "requested_url": "http://127.0.0.1:37071/named",
+          "retrieved_at": "2026-10-09T21:28:08.852426Z",
+          "snapshot_id": "4520e94cd310976d8e3faf43932f0d5f",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiIzY2ZjNWNjNGNlOTRiNzk5NTk2OGE1MGM1ZTU4NjNhYzg5MTA3N2VmZTI3ZTk1NjJmOTM4NTZjNTQ0NGVjYTlmIiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0xIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9uYW1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvbmFtZWQiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIxOjI4OjA4Ljg1MjQyNloiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImQ5NDJhNjEyZGVkY2YwOWMwODkwNWEzMTZhYTVlZTMzMTgzMTQ4MzU1NzQxYmFhN2FiODZmOGUyZGU1ODFlYTkiLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIxOjI4OjA4LjY4NjU4OVoiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMjoyODowOC42ODI5NTVaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ1MjBlOTRjZDMxMDk3NmQ4ZTNmYWY0MzkzMmYwZDVmIiwic25hcHNob3RfaWQiOiI0NTIwZTk0Y2QzMTA5NzZkOGUzZmFmNDM5MzJmMGQ1ZiIsImNvbnRlbnRfZGlnZXN0IjoiZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsImJ5dGVfbGVuZ3RoIjozODEsImxvY2F0b3IiOiJzaGEyNTY6ZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MSIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguODUyNDI2WiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9uYW1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvbmFtZWQifSwic3BhbnMiOlt7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYtMCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYiLCJieXRlX3N0YXJ0Ijo2NywiYnl0ZV9lbmQiOjg4LCJub3JtYWxpemVkX3N0YXJ0IjowLCJub3JtYWxpemVkX2VuZCI6MjAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYtMSIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYiLCJieXRlX3N0YXJ0IjoxMTAsImJ5dGVfZW5kIjoxMjAsIm5vcm1hbGl6ZWRfc3RhcnQiOjIwLCJub3JtYWxpemVkX2VuZCI6MjEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYtMiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYiLCJieXRlX3N0YXJ0IjoxMjAsImJ5dGVfZW5kIjoxMzMsIm5vcm1hbGl6ZWRfc3RhcnQiOjIxLCJub3JtYWxpemVkX2VuZCI6MzMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYtMyIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYiLCJieXRlX3N0YXJ0IjoxMzMsImJ5dGVfZW5kIjoxNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjMzLCJub3JtYWxpemVkX2VuZCI6MzQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYtNCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYiLCJieXRlX3N0YXJ0IjoxNTQsImJ5dGVfZW5kIjoyNjMsIm5vcm1hbGl6ZWRfc3RhcnQiOjM0LCJub3JtYWxpemVkX2VuZCI6MTQxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ1MjBlOTRjZDMxMDk3NmQ4ZTNmYWY0MzkzMmYwZDVmLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ1MjBlOTRjZDMxMDk3NmQ4ZTNmYWY0MzkzMmYwZDVmIiwiYnl0ZV9zdGFydCI6MjYzLCJieXRlX2VuZCI6MjcwLCJub3JtYWxpemVkX3N0YXJ0IjoxNDEsIm5vcm1hbGl6ZWRfZW5kIjoxNDIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYtNiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDUyMGU5NGNkMzEwOTc2ZDhlM2ZhZjQzOTMyZjBkNWYiLCJieXRlX3N0YXJ0IjoyNzAsImJ5dGVfZW5kIjozNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjE0Miwibm9ybWFsaXplZF9lbmQiOjIyNiwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-0"
+          },
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-1"
+          },
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-2"
+          },
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-3"
+          },
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-4"
+          },
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-5"
+          },
+          {
+            "artifact_id": "artifact-4520e94cd310976d8e3faf43932f0d5f",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4520e94cd310976d8e3faf43932f0d5f-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+          "company_name": null,
+          "content_digest": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "context_span": {
+            "end_byte": 305,
+            "start_byte": 181
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "08b4f8656735107176bfcce2806db59bebd33a456bba7917d21b65968a89614d",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-4bc0d62b101f66a184da8214a60d37b3",
+          "occurrence_id": "input-2",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 265,
+            "start_byte": 237
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "4ac81b681f3f71617b542dc3901f253b",
+          "source_url": "http://127.0.0.1:37071/malformed",
+          "value": "oren.fenn@amber-loom.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "31124a597163550b6a57d2f1764bd1a03e74566538295e4c2d1591a046cffed4",
+      "key": "malformed",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+          "company_name": null,
+          "content_digest": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "context_span": {
+            "end_byte": 305,
+            "start_byte": 181
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "08b4f8656735107176bfcce2806db59bebd33a456bba7917d21b65968a89614d",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-4bc0d62b101f66a184da8214a60d37b3",
+          "occurrence_id": "input-2",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 265,
+            "start_byte": 237
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "4ac81b681f3f71617b542dc3901f253b",
+          "source_url": "http://127.0.0.1:37071/malformed",
+          "value": "oren.fenn@amber-loom.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:37071/malformed",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 305,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+          "byte_length": 305,
+          "content_digest": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:37071/malformed",
+          "locator": "sha256:8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "origin": "http://127.0.0.1:37071",
+          "requested_url": "http://127.0.0.1:37071/malformed",
+          "retrieved_at": "2026-10-09T21:28:08.863265Z",
+          "snapshot_id": "4ac81b681f3f71617b542dc3901f253b",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiIwOGI0Zjg2NTY3MzUxMDcxNzZiZmNjZTI4MDZkYjU5YmViZDMzYTQ1NmJiYTc5MTdkMjFiNjU5NjhhODk2MTRkIiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0yIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9tYWxmb3JtZWQiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxL21hbGZvcm1lZCIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguODYzMjY1WiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZDk0MmE2MTJkZWRjZjA5YzA4OTA1YTMxNmFhNWVlMzMxODMxNDgzNTU3NDFiYWE3YWI4NmY4ZTJkZTU4MWVhOSIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LWYzY2ZkZWUyODY2YTQ5NTRhYTAzOTg4Y2MzYzNmZDJlIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguNjg2NTg5WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIyOjI4OjA4LjY4Mjk1NVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNGFjODFiNjgxZjNmNzE2MTdiNTQyZGMzOTAxZjI1M2IiLCJzbmFwc2hvdF9pZCI6IjRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiY29udGVudF9kaWdlc3QiOiI4YzFhZTE4MWFlMWRlMDQ4ZDRkMDY4Y2E4MTQ4NDQ0M2ZmOTk5NGQ2ZjNjNzU2N2Y1Njg1YjQ2NWEwZDFkODg5IiwiYnl0ZV9sZW5ndGgiOjMwNSwibG9jYXRvciI6InNoYTI1Njo4YzFhZTE4MWFlMWRlMDQ4ZDRkMDY4Y2E4MTQ4NDQ0M2ZmOTk5NGQ2ZjNjNzU2N2Y1Njg1YjQ2NWEwZDFkODg5Iiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMToyODowOC44NjMyNjVaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxL21hbGZvcm1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvbWFsZm9ybWVkIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4Nywibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6MTA5LCJieXRlX2VuZCI6MTEyLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6MTEyLCJieXRlX2VuZCI6MTU4LCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjY0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6MTU4LCJieXRlX2VuZCI6MTcxLCJub3JtYWxpemVkX3N0YXJ0Ijo2NCwibm9ybWFsaXplZF9lbmQiOjY1LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6MTcxLCJieXRlX2VuZCI6MTgxLCJub3JtYWxpemVkX3N0YXJ0Ijo2NSwibm9ybWFsaXplZF9lbmQiOjc1LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6MTgxLCJieXRlX2VuZCI6MTg0LCJub3JtYWxpemVkX3N0YXJ0Ijo3NSwibm9ybWFsaXplZF9lbmQiOjc2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6MTg0LCJieXRlX2VuZCI6MjY2LCJub3JtYWxpemVkX3N0YXJ0Ijo3Niwibm9ybWFsaXplZF9lbmQiOjE1OCwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9LHsicHJvb2ZfZm9ybWF0X3ZlcnNpb24iOiIxLjAiLCJzcGFuX2lkIjoic3Bhbi00YWM4MWI2ODFmM2Y3MTYxN2I1NDJkYzM5MDFmMjUzYi03IiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC00YWM4MWI2ODFmM2Y3MTYxN2I1NDJkYzM5MDFmMjUzYiIsImJ5dGVfc3RhcnQiOjI2NiwiYnl0ZV9lbmQiOjI3NCwibm9ybWFsaXplZF9zdGFydCI6MTU4LCJub3JtYWxpemVkX2VuZCI6MTU5LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiLTgiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTRhYzgxYjY4MWYzZjcxNjE3YjU0MmRjMzkwMWYyNTNiIiwiYnl0ZV9zdGFydCI6Mjc0LCJieXRlX2VuZCI6MzA1LCJub3JtYWxpemVkX3N0YXJ0IjoxNTksIm5vcm1hbGl6ZWRfZW5kIjoxODksInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifV19",
+        "spans": [
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 87,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-0"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 112,
+            "byte_start": 109,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-1"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 158,
+            "byte_start": 112,
+            "normalized_end": 64,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-2"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 171,
+            "byte_start": 158,
+            "normalized_end": 65,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 64,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-3"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 181,
+            "byte_start": 171,
+            "normalized_end": 75,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 65,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-4"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 184,
+            "byte_start": 181,
+            "normalized_end": 76,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 75,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-5"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 266,
+            "byte_start": 184,
+            "normalized_end": 158,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 76,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-6"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 274,
+            "byte_start": 266,
+            "normalized_end": 159,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 158,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-7"
+          },
+          {
+            "artifact_id": "artifact-4ac81b681f3f71617b542dc3901f253b",
+            "byte_end": 305,
+            "byte_start": 274,
+            "normalized_end": 189,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 159,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4ac81b681f3f71617b542dc3901f253b-8"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Amber Loom directory Fictional directory \u2014 unclosed tags follow. Amber Loom Oren Fenn works for Amber Loom. Contact Oren Fenn at oren.fenn@amber-loom.example. Directory effective 2026-09-01"
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "9f7aa2b1d011a9b84d4b44da710e7bef6198aba1d2d3a8b35c4bac0102cb03b7",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-1e54f280b8a6dfb46665c75010ac82bf",
+          "occurrence_id": "input-3",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "a844558669733d633e38cbbd44bb468a",
+          "source_url": "http://127.0.0.1:37071/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "efda4aa2c5c7c08b4f540c466a939a23a1d228181972ec01a759afda5de91eb8",
+      "key": "redirect",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "9f7aa2b1d011a9b84d4b44da710e7bef6198aba1d2d3a8b35c4bac0102cb03b7",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-1e54f280b8a6dfb46665c75010ac82bf",
+          "occurrence_id": "input-3",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "a844558669733d633e38cbbd44bb468a",
+          "source_url": "http://127.0.0.1:37071/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:37071/redirect",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 2
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:37071/named",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:37071",
+          "requested_url": "http://127.0.0.1:37071/redirect",
+          "retrieved_at": "2026-10-09T21:28:08.873035Z",
+          "snapshot_id": "a844558669733d633e38cbbd44bb468a",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiI5ZjdhYTJiMWQwMTFhOWI4NGQ0YjQ0ZGE3MTBlN2JlZjYxOThhYmExZDJkM2E4YjM1YzRiYWMwMTAyY2IwM2I3IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0zIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9yZWRpcmVjdCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvbmFtZWQiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIxOjI4OjA4Ljg3MzAzNVoiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImQ5NDJhNjEyZGVkY2YwOWMwODkwNWEzMTZhYTVlZTMzMTgzMTQ4MzU1NzQxYmFhN2FiODZmOGUyZGU1ODFlYTkiLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIxOjI4OjA4LjY4NjU4OVoiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMjoyODowOC42ODI5NTVaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWE4NDQ1NTg2Njk3MzNkNjMzZTM4Y2JiZDQ0YmI0NjhhIiwic25hcHNob3RfaWQiOiJhODQ0NTU4NjY5NzMzZDYzM2UzOGNiYmQ0NGJiNDY4YSIsImNvbnRlbnRfZGlnZXN0IjoiZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsImJ5dGVfbGVuZ3RoIjozODEsImxvY2F0b3IiOiJzaGEyNTY6ZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MSIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguODczMDM1WiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9yZWRpcmVjdCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvbmFtZWQifSwic3BhbnMiOlt7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEtMCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEiLCJieXRlX3N0YXJ0Ijo2NywiYnl0ZV9lbmQiOjg4LCJub3JtYWxpemVkX3N0YXJ0IjowLCJub3JtYWxpemVkX2VuZCI6MjAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEtMSIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEiLCJieXRlX3N0YXJ0IjoxMTAsImJ5dGVfZW5kIjoxMjAsIm5vcm1hbGl6ZWRfc3RhcnQiOjIwLCJub3JtYWxpemVkX2VuZCI6MjEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEtMiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEiLCJieXRlX3N0YXJ0IjoxMjAsImJ5dGVfZW5kIjoxMzMsIm5vcm1hbGl6ZWRfc3RhcnQiOjIxLCJub3JtYWxpemVkX2VuZCI6MzMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEtMyIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEiLCJieXRlX3N0YXJ0IjoxMzMsImJ5dGVfZW5kIjoxNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjMzLCJub3JtYWxpemVkX2VuZCI6MzQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEtNCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEiLCJieXRlX3N0YXJ0IjoxNTQsImJ5dGVfZW5kIjoyNjMsIm5vcm1hbGl6ZWRfc3RhcnQiOjM0LCJub3JtYWxpemVkX2VuZCI6MTQxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWE4NDQ1NTg2Njk3MzNkNjMzZTM4Y2JiZDQ0YmI0NjhhLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWE4NDQ1NTg2Njk3MzNkNjMzZTM4Y2JiZDQ0YmI0NjhhIiwiYnl0ZV9zdGFydCI6MjYzLCJieXRlX2VuZCI6MjcwLCJub3JtYWxpemVkX3N0YXJ0IjoxNDEsIm5vcm1hbGl6ZWRfZW5kIjoxNDIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEtNiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYTg0NDU1ODY2OTczM2Q2MzNlMzhjYmJkNDRiYjQ2OGEiLCJieXRlX3N0YXJ0IjoyNzAsImJ5dGVfZW5kIjozNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjE0Miwibm9ybWFsaXplZF9lbmQiOjIyNiwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-0"
+          },
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-1"
+          },
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-2"
+          },
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-3"
+          },
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-4"
+          },
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-5"
+          },
+          {
+            "artifact_id": "artifact-a844558669733d633e38cbbd44bb468a",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-a844558669733d633e38cbbd44bb468a-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "23b42e7b68463d4c30e081b217cfa97faba6f402df17c0998ef04acd3fdaad4e",
+      "key": "empty",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:37071/empty",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 103,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-9cc8151dc2a9e7b53bf56a49dea8d925",
+          "byte_length": 103,
+          "content_digest": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:37071/empty",
+          "locator": "sha256:ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+          "origin": "http://127.0.0.1:37071",
+          "requested_url": "http://127.0.0.1:37071/empty",
+          "retrieved_at": "2026-10-09T21:28:08.882627Z",
+          "snapshot_id": "9cc8151dc2a9e7b53bf56a49dea8d925",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiIyMDk1MGM3ZmVkMTM0YTI3NmZkZDIxZjkwZmM1MGY5ZTc5ODBhOTczZmVmZWNlYTU0Y2NhNmZkYTg5ODZhY2ZmIiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC00IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9lbXB0eSIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvZW1wdHkiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIxOjI4OjA4Ljg4MjYyN1oiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImQ5NDJhNjEyZGVkY2YwOWMwODkwNWEzMTZhYTVlZTMzMTgzMTQ4MzU1NzQxYmFhN2FiODZmOGUyZGU1ODFlYTkiLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIxOjI4OjA4LjY4NjU4OVoiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMjoyODowOC42ODI5NTVaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTljYzgxNTFkYzJhOWU3YjUzYmY1NmE0OWRlYThkOTI1Iiwic25hcHNob3RfaWQiOiI5Y2M4MTUxZGMyYTllN2I1M2JmNTZhNDlkZWE4ZDkyNSIsImNvbnRlbnRfZGlnZXN0IjoiZWMwMjI3ZjNmNTgxNGE2OWM3NjMzMWRmZWNjZDgzMTVmMjA1ZTE4ZjQ5ZDUwY2RhYzdlZjEzZTMwNmE4MDA2YyIsImJ5dGVfbGVuZ3RoIjoxMDMsImxvY2F0b3IiOiJzaGEyNTY6ZWMwMjI3ZjNmNTgxNGE2OWM3NjMzMWRmZWNjZDgzMTVmMjA1ZTE4ZjQ5ZDUwY2RhYzdlZjEzZTMwNmE4MDA2YyIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MSIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguODgyNjI3WiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9lbXB0eSIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvZW1wdHkifSwic3BhbnMiOltdfQ",
+        "spans": []
+      },
+      "status": "success",
+      "text": []
+    },
+    {
+      "candidates": [],
+      "diagnostic": {
+        "code": "http_error",
+        "retryable": false,
+        "safe_message": "The server returned an unsuccessful HTTP status."
+      },
+      "disposition": "unreviewed",
+      "fetch_status": "http_error",
+      "input_ref": "6a6b541c9ac96e935bb3ea024fa13def0a0b68f751d93023803b280bcc02c023",
+      "key": "failure",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:37071/failure",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 0,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": null,
+      "status": "failure",
+      "text": []
+    },
+    {
+      "candidates": [],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "196c32e045357876e45368079bec17e538c312ef7ef38881e602f97599c9fa67",
+      "key": "static-again",
+      "links": [
+        {
+          "anchor_text": "Lum\u00e9 Lantern contact directory",
+          "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+          "company_name": null,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "context_span": {
+            "end_byte": 272,
+            "start_byte": 110
+          },
+          "execution_state": "not_executable",
+          "input_ref": "c5173c7446125e302d208c564e001c1a237d743adedd731e347b8c4fd3c49784",
+          "kind": "observed_link",
+          "observation_id": "observation-ee3dcbbed31df9546da7bff4e3380cbc",
+          "occurrence_id": "input-6",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 228,
+            "start_byte": 222
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "4423f496e9fc68d6c80dc9e3ec9b165b",
+          "source_url": "http://127.0.0.1:37071/static",
+          "value": "http://127.0.0.1:37071/named"
+        }
+      ],
+      "observations": [
+        {
+          "anchor_text": "Lum\u00e9 Lantern contact directory",
+          "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+          "company_name": null,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "context_span": {
+            "end_byte": 272,
+            "start_byte": 110
+          },
+          "execution_state": "not_executable",
+          "input_ref": "c5173c7446125e302d208c564e001c1a237d743adedd731e347b8c4fd3c49784",
+          "kind": "observed_link",
+          "observation_id": "observation-ee3dcbbed31df9546da7bff4e3380cbc",
+          "occurrence_id": "input-6",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 228,
+            "start_byte": 222
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "4423f496e9fc68d6c80dc9e3ec9b165b",
+          "source_url": "http://127.0.0.1:37071/static",
+          "value": "http://127.0.0.1:37071/named"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:37071/static",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 288,
+        "concurrency": null,
+        "elapsed_seconds": 0.21841312200012908,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+          "byte_length": 288,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:37071/static",
+          "locator": "sha256:5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "origin": "http://127.0.0.1:37071",
+          "requested_url": "http://127.0.0.1:37071/static",
+          "retrieved_at": "2026-10-09T21:28:08.893173Z",
+          "snapshot_id": "4423f496e9fc68d6c80dc9e3ec9b165b",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJjNTE3M2M3NDQ2MTI1ZTMwMmQyMDhjNTY0ZTAwMWMxYTIzN2Q3NDNhZGVkZDczMWUzNDdiOGM0ZmQzYzQ5Nzg0IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC1mM2NmZGVlMjg2NmE0OTU0YWEwMzk4OGNjM2MzZmQyZSIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC02IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNzA3MS9zdGF0aWMiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxL3N0YXRpYyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguODkzMTczWiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZDk0MmE2MTJkZWRjZjA5YzA4OTA1YTMxNmFhNWVlMzMxODMxNDgzNTU3NDFiYWE3YWI4NmY4ZTJkZTU4MWVhOSIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LWYzY2ZkZWUyODY2YTQ5NTRhYTAzOTg4Y2MzYzNmZDJlIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjE6Mjg6MDguNjg2NTg5WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIyOjI4OjA4LjY4Mjk1NVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDQyM2Y0OTZlOWZjNjhkNmM4MGRjOWUzZWM5YjE2NWIiLCJzbmFwc2hvdF9pZCI6IjQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiY29udGVudF9kaWdlc3QiOiI1ZTMzZWRlZDRhMmI5NjE5NDIwYjdmMzlkNDkyMzlkNzc4ODlhYjliODcyN2NjMmNjYzBiZmIwNWI0M2M4NmZhIiwiYnl0ZV9sZW5ndGgiOjI4OCwibG9jYXRvciI6InNoYTI1Njo1ZTMzZWRlZDRhMmI5NjE5NDIwYjdmMzlkNDkyMzlkNzc4ODlhYjliODcyN2NjMmNjYzBiZmIwNWI0M2M4NmZhIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMToyODowOC44OTMxNzNaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM3MDcxL3N0YXRpYyIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzcwNzEvc3RhdGljIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4OCwibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6MTEwLCJieXRlX2VuZCI6MTIwLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6MTIwLCJieXRlX2VuZCI6MTMzLCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjMzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6MTMzLCJieXRlX2VuZCI6MTQxLCJub3JtYWxpemVkX3N0YXJ0IjozMywibm9ybWFsaXplZF9lbmQiOjM0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6MTQxLCJieXRlX2VuZCI6MjA5LCJub3JtYWxpemVkX3N0YXJ0IjozNCwibm9ybWFsaXplZF9lbmQiOjk2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6MjA5LCJieXRlX2VuZCI6MjMwLCJub3JtYWxpemVkX3N0YXJ0Ijo5Niwibm9ybWFsaXplZF9lbmQiOjk3LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViLTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0MjNmNDk2ZTlmYzY4ZDZjODBkYzllM2VjOWIxNjViIiwiYnl0ZV9zdGFydCI6MjMwLCJieXRlX2VuZCI6MjYxLCJub3JtYWxpemVkX3N0YXJ0Ijo5Nywibm9ybWFsaXplZF9lbmQiOjEyNywicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-0"
+          },
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-1"
+          },
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-2"
+          },
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 141,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-3"
+          },
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 209,
+            "byte_start": 141,
+            "normalized_end": 96,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-4"
+          },
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 230,
+            "byte_start": 209,
+            "normalized_end": 97,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 96,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-5"
+          },
+          {
+            "artifact_id": "artifact-4423f496e9fc68d6c80dc9e3ec9b165b",
+            "byte_end": 261,
+            "byte_start": 230,
+            "normalized_end": 127,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 97,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-4423f496e9fc68d6c80dc9e3ec9b165b-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern archive Lum\u00e9 Lantern Lum\u00e9 Lantern publishes caf\u00e9 lighting notes \u2014 r\u00e9sum\u00e9 available. Lum\u00e9 Lantern contact directory"
+      ]
+    }
+  ],
+  "schema_version": "standalone-scraper/1.0",
+  "scope": "local-web-fetch"
+}

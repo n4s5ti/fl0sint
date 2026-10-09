@@ -1,0 +1,78 @@
+{
+  "schema": "release-smoke/1",
+  "mode": "suites",
+  "runs": {
+    "types": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-types",
+      "exit_code": 0,
+      "summary": "54 passed in 0.84s",
+      "wall_seconds": 3.27
+    },
+    "core": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-core",
+      "exit_code": 1,
+      "summary": "ERROR:root:Failed to batch insert logs: (psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"n4s5ti\" does not exist",
+      "wall_seconds": 42.72
+    },
+    "enrichers": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-enrichers",
+      "exit_code": 1,
+      "summary": "3 failed, 217 passed, 2 warnings in 38.09s",
+      "wall_seconds": 41.23
+    },
+    "api": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-api",
+      "exit_code": 1,
+      "summary": "7 failed, 8 passed, 1 skipped, 8 warnings in 30.25s",
+      "wall_seconds": 34.83
+    }
+  },
+  "comparison": {
+    "types": {
+      "new_failures": [],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "PASS"
+    },
+    "core": {
+      "new_failures": [
+        "tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface"
+      ],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "FAIL"
+    },
+    "enrichers": {
+      "new_failures": [
+        "celery.app.trace:trace.py:309 Task emit_event[038a7e5c-12be-4177-abf1-79d8ce175e58] raised unexpected: ConnectionError('Error 111 connecting to 127.0.0.1:6379. Connection refused.')",
+        "celery.app.trace:trace.py:309 Task emit_event[84d4b588-87a3-4734-bc6b-bf4a179ce9b2] raised unexpected: ConnectionError('Error 111 connecting to 127.0.0.1:6379. Connection refused.')",
+        "celery.app.trace:trace.py:309 Task emit_event[8b31039f-5aa0-413d-9207-f9f217f5a20e] raised unexpected: ConnectionError('Error 111 connecting to 127.0.0.1:6379. Connection refused.')",
+        "tests/enrichers/test_namechk.py::TestScan::test_hunt_exception_returns_empty",
+        "tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_no_matches",
+        "tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_returns_found_accounts"
+      ],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "FAIL"
+    },
+    "api": {
+      "new_failures": [
+        "tests/test_events_auth.py::test_log_stream_rejects_token_query_param",
+        "tests/test_events_auth.py::test_log_stream_requires_auth_header",
+        "tests/test_events_auth.py::test_status_stream_requires_auth_header",
+        "tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database",
+        "tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models",
+        "tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only",
+        "tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head"
+      ],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "FAIL"
+    }
+  },
+  "valid": false
+}

@@ -1,0 +1,10 @@
+packaged 3cfc9d61b8d3c4fc56dec835004735cf270f3ef3 -> /home/n4s5ti/.cache/fl0sint-audit/def48/run/venv/bin/flowsint-standalone-scraper (Python 3.12.13)
+PASS S1 single page through the packaged entrypoint
+PASS S2 mixed batch: spans, lineage, empty vs error, fixture fidelity
+PASS S3 no graph/service/model import or non-loopback connection
+PASS S4 response byte limit is enforced as an explicit failure
+PASS S5 SIGINT mid-fetch is recorded as a held, cancelled outcome
+PASS S6 invalid scope is rejected before admission
+PASS S7 offline replay of every bundle with the server stopped
+PASS S8 harness rejects broken lineage and missing source proof
+smoke=0
