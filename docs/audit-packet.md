@@ -73,7 +73,7 @@ satisfy the requirements.
 
 ```text
 INVALID docs/audits/DEF-90 at <HEAD>
-  error E_STALE_HEAD: HEAD changed source after head_commit: scripts/audit_packet.py
+  error E_STALE_HEAD: source changed after head_commit before the packet was published (<packet-rev12>): scripts/audit_packet.py
   limitation result hunt-post: UNKNOWN
   limitation case G1: NOT_APPLICABLE
   human review required: <pkg>-enrichers/tests/fixtures/acquisition/manifest.json
