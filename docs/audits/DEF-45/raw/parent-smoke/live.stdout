@@ -1,0 +1,726 @@
+{
+  "status": "success",
+  "state": "available",
+  "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiIwOWI2YmM2OWE1ZmIzZmQ1Y2NjMzVjOTNhNzY2N2ZhOWNiYTY5NjI3NGQzZmNmNTJiY2I4NjRhZWE5YTE4NGFmIiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJvYnNlcnZlZC1leHRyYWN0aW9uLTJhZDY4NThmOTJkYjQ3NTA4YzU1MDE3NDcwOWM5MTkwIiwib2NjdXJyZW5jZV9pZCI6ImlucHV0LTAiLCJjYWxsZXJfaWQiOiJ3ZWJzaXRlLXRvLXRleHQiLCJzY29wZSI6ImxvY2FsLXdlYi1mZXRjaCIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozMzcxNSIsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjMzNzE1L3NlZWQiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjMzNzE1L3Blb3BsZS90ZWFtLmh0bWw_ZWRpdGlvbj0yMDI2IiwicmV0cmlldmVkX2F0IjoiMjAyNi0wOS0yOFQwNjo1ODoxOC44MzMzNjRaIiwiZXZlbnRfYXQiOm51bGx9LCJkZWNpc2lvbiI6eyJpc3N1ZXJfaWQiOiJmaXh0dXJlLW93bmVyIiwicmV2aWV3ZXJfaWQiOiJmaXh0dXJlLXJldmlld2VyIiwicG9saWN5X2lkIjoiZml4dHVyZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiNzI0ZGU5NGU1NmViYmExODQzYzgxZjM2YTY2MjE0YjkxMjM1YjUyYWVmNjhmZjE3ZDNkNTYxNzVmZjVjYjIxNCIsIm9wZXJhdGlvbl9pZCI6Im9ic2VydmVkLWV4dHJhY3Rpb24tMmFkNjg1OGY5MmRiNDc1MDhjNTUwMTc0NzA5YzkxOTAiLCJjYWxsZXJfaWQiOiJ3ZWJzaXRlLXRvLXRleHQiLCJzY29wZSI6ImxvY2FsLXdlYi1mZXRjaCIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwiaXNzdWVkX2F0IjoiMjAyNi0wOS0yOFQwNjo1ODoxOC42MTg0MjhaIiwiZXhwaXJlc19hdCI6IjIwMjYtMDktMjhUMDc6NTg6MTguMTgwMzc0WiIsInJldGFpbl9ib2R5Ijp0cnVlLCJyZXRhaW5fbm9ybWFsaXplZF90ZXh0Ijp0cnVlfSwiYXJ0aWZhY3QiOnsiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC04NDk5N2IzNDVlMTdjMTY4NjFmNzUyNGFmNDUyNDBkNSIsInNuYXBzaG90X2lkIjoiODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUiLCJjb250ZW50X2RpZ2VzdCI6ImFjNzU2Y2UxNDgwYWRlMThlZDc0NWFkYjQ2N2IxNjk4NjFiNjE2YWVlNTAxZGU2ODMxMmNiMTMxOWM3Njg0M2UiLCJieXRlX2xlbmd0aCI6MTA3NCwibG9jYXRvciI6InNoYTI1NjphYzc1NmNlMTQ4MGFkZTE4ZWQ3NDVhZGI0NjdiMTY5ODYxYjYxNmFlZTUwMWRlNjgzMTJjYjEzMTljNzY4NDNlIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjMzNzE1IiwicmV0cmlldmVkX2F0IjoiMjAyNi0wOS0yOFQwNjo1ODoxOC44MzMzNjRaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjMzNzE1L3NlZWQiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjMzNzE1L3Blb3BsZS90ZWFtLmh0bWw_ZWRpdGlvbj0yMDI2In0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MzQsImJ5dGVfZW5kIjo1OSwibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjI1LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MTM3LCJieXRlX2VuZCI6MTQxLCJub3JtYWxpemVkX3N0YXJ0IjoyNSwibm9ybWFsaXplZF9lbmQiOjI2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MTQxLCJieXRlX2VuZCI6MTY5LCJub3JtYWxpemVkX3N0YXJ0IjoyNiwibm9ybWFsaXplZF9lbmQiOjUyLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MTc1LCJieXRlX2VuZCI6MjAzLCJub3JtYWxpemVkX3N0YXJ0Ijo1Miwibm9ybWFsaXplZF9lbmQiOjUzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MjAzLCJieXRlX2VuZCI6MjE0LCJub3JtYWxpemVkX3N0YXJ0Ijo1Mywibm9ybWFsaXplZF9lbmQiOjY0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MjE0LCJieXRlX2VuZCI6MjIyLCJub3JtYWxpemVkX3N0YXJ0Ijo2NCwibm9ybWFsaXplZF9lbmQiOjY1LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MjIyLCJieXRlX2VuZCI6MjM3LCJub3JtYWxpemVkX3N0YXJ0Ijo2NSwibm9ybWFsaXplZF9lbmQiOjc5LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTciLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MjM3LCJieXRlX2VuZCI6MjczLCJub3JtYWxpemVkX3N0YXJ0Ijo3OSwibm9ybWFsaXplZF9lbmQiOjgwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTgiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MjczLCJieXRlX2VuZCI6MjkxLCJub3JtYWxpemVkX3N0YXJ0Ijo4MCwibm9ybWFsaXplZF9lbmQiOjk4LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTkiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6Mjk2LCJieXRlX2VuZCI6MzIzLCJub3JtYWxpemVkX3N0YXJ0Ijo5OCwibm9ybWFsaXplZF9lbmQiOjk5LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1LTEwIiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC04NDk5N2IzNDVlMTdjMTY4NjFmNzUyNGFmNDUyNDBkNSIsImJ5dGVfc3RhcnQiOjMyMywiYnl0ZV9lbmQiOjMzOCwibm9ybWFsaXplZF9zdGFydCI6OTksIm5vcm1hbGl6ZWRfZW5kIjoxMTQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6MzU3LCJieXRlX2VuZCI6Mzg1LCJub3JtYWxpemVkX3N0YXJ0IjoxMTQsIm5vcm1hbGl6ZWRfZW5kIjoxMTUsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6Mzg1LCJieXRlX2VuZCI6Mzk1LCJub3JtYWxpemVkX3N0YXJ0IjoxMTUsIm5vcm1hbGl6ZWRfZW5kIjoxMjUsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6Mzk1LCJieXRlX2VuZCI6NDAzLCJub3JtYWxpemVkX3N0YXJ0IjoxMjUsIm5vcm1hbGl6ZWRfZW5kIjoxMjYsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NDAzLCJieXRlX2VuZCI6NDIxLCJub3JtYWxpemVkX3N0YXJ0IjoxMjYsIm5vcm1hbGl6ZWRfZW5kIjoxNDMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NDIxLCJieXRlX2VuZCI6NDU2LCJub3JtYWxpemVkX3N0YXJ0IjoxNDMsIm5vcm1hbGl6ZWRfZW5kIjoxNDQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NDU2LCJieXRlX2VuZCI6NDczLCJub3JtYWxpemVkX3N0YXJ0IjoxNDQsIm5vcm1hbGl6ZWRfZW5kIjoxNjEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTciLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NDkyLCJieXRlX2VuZCI6NTA0LCJub3JtYWxpemVkX3N0YXJ0IjoxNjEsIm5vcm1hbGl6ZWRfZW5kIjoxNjIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTgiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NTA0LCJieXRlX2VuZCI6NTE4LCJub3JtYWxpemVkX3N0YXJ0IjoxNjIsIm5vcm1hbGl6ZWRfZW5kIjoxNzYsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMTkiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NTE4LCJieXRlX2VuZCI6NTI2LCJub3JtYWxpemVkX3N0YXJ0IjoxNzYsIm5vcm1hbGl6ZWRfZW5kIjoxNzcsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NTI2LCJieXRlX2VuZCI6NTg4LCJub3JtYWxpemVkX3N0YXJ0IjoxNzcsIm5vcm1hbGl6ZWRfZW5kIjoyMzksInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjAyLCJieXRlX2VuZCI6NjE5LCJub3JtYWxpemVkX3N0YXJ0IjoyMzksIm5vcm1hbGl6ZWRfZW5kIjoyNDAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjE5LCJieXRlX2VuZCI6NjI1LCJub3JtYWxpemVkX3N0YXJ0IjoyNDAsIm5vcm1hbGl6ZWRfZW5kIjoyNDQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjE5LCJieXRlX2VuZCI6NjI1LCJub3JtYWxpemVkX3N0YXJ0IjoyNDQsIm5vcm1hbGl6ZWRfZW5kIjoyNDUsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjI1LCJieXRlX2VuZCI6NjMwLCJub3JtYWxpemVkX3N0YXJ0IjoyNDUsIm5vcm1hbGl6ZWRfZW5kIjoyNDYsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjMwLCJieXRlX2VuZCI6Njc1LCJub3JtYWxpemVkX3N0YXJ0IjoyNDYsIm5vcm1hbGl6ZWRfZW5kIjoyNDcsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjMwLCJieXRlX2VuZCI6Njc1LCJub3JtYWxpemVkX3N0YXJ0IjoyNDcsIm5vcm1hbGl6ZWRfZW5kIjoyOTEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjciLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NjgwLCJieXRlX2VuZCI6NzE1LCJub3JtYWxpemVkX3N0YXJ0IjoyOTEsIm5vcm1hbGl6ZWRfZW5kIjoyOTIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjgiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NzE1LCJieXRlX2VuZCI6NzM1LCJub3JtYWxpemVkX3N0YXJ0IjoyOTIsIm5vcm1hbGl6ZWRfZW5kIjozMTIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMjkiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NzM1LCJieXRlX2VuZCI6NzY5LCJub3JtYWxpemVkX3N0YXJ0IjozMTIsIm5vcm1hbGl6ZWRfZW5kIjozMTMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NzY5LCJieXRlX2VuZCI6NzkwLCJub3JtYWxpemVkX3N0YXJ0IjozMTMsIm5vcm1hbGl6ZWRfZW5kIjozMzQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6NzkwLCJieXRlX2VuZCI6ODQwLCJub3JtYWxpemVkX3N0YXJ0IjozMzQsIm5vcm1hbGl6ZWRfZW5kIjozMzUsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6ODQwLCJieXRlX2VuZCI6ODYyLCJub3JtYWxpemVkX3N0YXJ0IjozMzUsIm5vcm1hbGl6ZWRfZW5kIjozNTcsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6ODczLCJieXRlX2VuZCI6OTM4LCJub3JtYWxpemVkX3N0YXJ0IjozNTcsIm5vcm1hbGl6ZWRfZW5kIjozNTgsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6OTM4LCJieXRlX2VuZCI6OTUwLCJub3JtYWxpemVkX3N0YXJ0IjozNTgsIm5vcm1hbGl6ZWRfZW5kIjozNzAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6OTg4LCJieXRlX2VuZCI6OTk2LCJub3JtYWxpemVkX3N0YXJ0IjozNzAsIm5vcm1hbGl6ZWRfZW5kIjozNzEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tODQ5OTdiMzQ1ZTE3YzE2ODYxZjc1MjRhZjQ1MjQwZDUtMzYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTg0OTk3YjM0NWUxN2MxNjg2MWY3NTI0YWY0NTI0MGQ1IiwiYnl0ZV9zdGFydCI6OTk2LCJieXRlX2VuZCI6MTA1Miwibm9ybWFsaXplZF9zdGFydCI6MzcxLCJub3JtYWxpemVkX2VuZCI6NDI3LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In1dfQ",
+  "metadata": {
+    "format_version": "observed-extraction/1.0",
+    "payload": {
+      "extractor_version": "observed-html/1",
+      "policy": {
+        "max_body_bytes": 8388608,
+        "max_observations": 1000,
+        "max_value_bytes": 8192,
+        "max_context_bytes": 1048576,
+        "max_diagnostics": 16,
+        "allow_relative_hrefs": true,
+        "allow_external_links": true
+      },
+      "readable_text": "Controlled team directory Dr Ada Example \u2014 Executive Ada Example Research lead. ada@directory.test +1 202 555 0101 Bo Example Engineering lead. bo@directory.test General office Office: info@directory.test. Press desk: press@directory.test. Caf\u00e9 & source proof. Duplicate: ada@directory.test. First directory page Second directory page External observed lead Your message Malformed but readable contact: malformed@directory.test",
+      "observations": [
+        {
+          "observation_id": "observation-dd71ae7f555733e8fa3692e41203fd42",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "ada@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 273,
+            "end_byte": 291
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 291
+          },
+          "anchor_text": null,
+          "person_name": "Ada Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-6dec5ad95ca355117755ee809b00ae0c",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "ada@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 246,
+            "end_byte": 271
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 271
+          },
+          "anchor_text": "ada@directory.test",
+          "person_name": "Ada Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-3c1b57f6b643c081010541a23055a160",
+          "occurrence_id": "input-0",
+          "kind": "observed_phone_contact",
+          "value": "+1 202 555 0101",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 323,
+            "end_byte": 338
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 338
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-125d326f61ca0562fbfdb5c5a5be9438",
+          "occurrence_id": "input-0",
+          "kind": "observed_phone_contact",
+          "value": "+12025550101",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 305,
+            "end_byte": 321
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 321
+          },
+          "anchor_text": "+1 202 555 0101",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-2a2e051651fcc903a3e77a9302b97fae",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "bo@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 456,
+            "end_byte": 473
+          },
+          "context_span": {
+            "start_byte": 381,
+            "end_byte": 473
+          },
+          "anchor_text": null,
+          "person_name": "Bo Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-c7d6c87162625add961767add421e0d3",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "bo@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 430,
+            "end_byte": 454
+          },
+          "context_span": {
+            "start_byte": 381,
+            "end_byte": 454
+          },
+          "anchor_text": "bo@directory.test",
+          "person_name": "Bo Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-d38ec495abc3c60305a248da34362d56",
+          "occurrence_id": "input-0",
+          "kind": "observed_general_inbox",
+          "value": "info@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 534,
+            "end_byte": 553
+          },
+          "context_span": {
+            "start_byte": 523,
+            "end_byte": 592
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-6d952de11d6bf41b52632ba64341c09f",
+          "occurrence_id": "input-0",
+          "kind": "observed_role_inbox",
+          "value": "press@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 567,
+            "end_byte": 587
+          },
+          "context_span": {
+            "start_byte": 523,
+            "end_byte": 592
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-e1dc7f360873c85c589be1fedead9192",
+          "occurrence_id": "input-0",
+          "kind": "observed_unknown_contact",
+          "value": "ada@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 656,
+            "end_byte": 674
+          },
+          "context_span": {
+            "start_byte": 602,
+            "end_byte": 679
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-1a55245affeacd92bd96d9c8711e1d4b",
+          "occurrence_id": "input-0",
+          "kind": "observed_link",
+          "value": "http://127.0.0.1:33715/directory?page=1",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 694,
+            "end_byte": 713
+          },
+          "context_span": null,
+          "anchor_text": "First directory page",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-d6849dfe063b4f7da0ade8c5f41aeda6",
+          "occurrence_id": "input-0",
+          "kind": "observed_link",
+          "value": "http://127.0.0.1:33715/directory?page=2",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 748,
+            "end_byte": 767
+          },
+          "context_span": null,
+          "anchor_text": "Second directory page",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-bc17f29c4b86d50fbf3b3f159e9f627a",
+          "occurrence_id": "input-0",
+          "kind": "observed_link",
+          "value": "https://outside.test/team?view=full",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 803,
+            "end_byte": 838
+          },
+          "context_span": null,
+          "anchor_text": "External observed lead",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-f14a6feb3717cfb06cbba10eec89b7ed",
+          "occurrence_id": "input-0",
+          "kind": "observed_form_candidate",
+          "value": "http://127.0.0.1:33715/contact?department=research",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 887,
+            "end_byte": 915
+          },
+          "context_span": null,
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-5df19c7c803b9e9a606507fd2d8ed0f0",
+          "occurrence_id": "input-0",
+          "kind": "observed_unknown_contact",
+          "value": "malformed@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 1028,
+            "end_byte": 1052
+          },
+          "context_span": {
+            "start_byte": 993,
+            "end_byte": 1058
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        }
+      ],
+      "diagnostics": [],
+      "was_truncated": false,
+      "observations_skipped": 0,
+      "total_observations_found": 14
+    }
+  },
+  "observations": {
+    "readable_text": "Controlled team directory Dr Ada Example \u2014 Executive Ada Example Research lead. ada@directory.test +1 202 555 0101 Bo Example Engineering lead. bo@directory.test General office Office: info@directory.test. Press desk: press@directory.test. Caf\u00e9 & source proof. Duplicate: ada@directory.test. First directory page Second directory page External observed lead Your message Malformed but readable contact: malformed@directory.test",
+    "observations": [
+      {
+        "observation_id": "observation-dd71ae7f555733e8fa3692e41203fd42",
+        "occurrence_id": "input-0",
+        "kind": "observed_person_associated",
+        "value": "ada@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 273,
+          "end_byte": 291
+        },
+        "context_span": {
+          "start_byte": 199,
+          "end_byte": 291
+        },
+        "anchor_text": null,
+        "person_name": "Ada Example",
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-6dec5ad95ca355117755ee809b00ae0c",
+        "occurrence_id": "input-0",
+        "kind": "observed_person_associated",
+        "value": "ada@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 246,
+          "end_byte": 271
+        },
+        "context_span": {
+          "start_byte": 199,
+          "end_byte": 271
+        },
+        "anchor_text": "ada@directory.test",
+        "person_name": "Ada Example",
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-3c1b57f6b643c081010541a23055a160",
+        "occurrence_id": "input-0",
+        "kind": "observed_phone_contact",
+        "value": "+1 202 555 0101",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 323,
+          "end_byte": 338
+        },
+        "context_span": {
+          "start_byte": 199,
+          "end_byte": 338
+        },
+        "anchor_text": null,
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-125d326f61ca0562fbfdb5c5a5be9438",
+        "occurrence_id": "input-0",
+        "kind": "observed_phone_contact",
+        "value": "+12025550101",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 305,
+          "end_byte": 321
+        },
+        "context_span": {
+          "start_byte": 199,
+          "end_byte": 321
+        },
+        "anchor_text": "+1 202 555 0101",
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-2a2e051651fcc903a3e77a9302b97fae",
+        "occurrence_id": "input-0",
+        "kind": "observed_person_associated",
+        "value": "bo@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 456,
+          "end_byte": 473
+        },
+        "context_span": {
+          "start_byte": 381,
+          "end_byte": 473
+        },
+        "anchor_text": null,
+        "person_name": "Bo Example",
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-c7d6c87162625add961767add421e0d3",
+        "occurrence_id": "input-0",
+        "kind": "observed_person_associated",
+        "value": "bo@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 430,
+          "end_byte": 454
+        },
+        "context_span": {
+          "start_byte": 381,
+          "end_byte": 454
+        },
+        "anchor_text": "bo@directory.test",
+        "person_name": "Bo Example",
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-d38ec495abc3c60305a248da34362d56",
+        "occurrence_id": "input-0",
+        "kind": "observed_general_inbox",
+        "value": "info@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 534,
+          "end_byte": 553
+        },
+        "context_span": {
+          "start_byte": 523,
+          "end_byte": 592
+        },
+        "anchor_text": null,
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-6d952de11d6bf41b52632ba64341c09f",
+        "occurrence_id": "input-0",
+        "kind": "observed_role_inbox",
+        "value": "press@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 567,
+          "end_byte": 587
+        },
+        "context_span": {
+          "start_byte": 523,
+          "end_byte": 592
+        },
+        "anchor_text": null,
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-e1dc7f360873c85c589be1fedead9192",
+        "occurrence_id": "input-0",
+        "kind": "observed_unknown_contact",
+        "value": "ada@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 656,
+          "end_byte": 674
+        },
+        "context_span": {
+          "start_byte": 602,
+          "end_byte": 679
+        },
+        "anchor_text": null,
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-1a55245affeacd92bd96d9c8711e1d4b",
+        "occurrence_id": "input-0",
+        "kind": "observed_link",
+        "value": "http://127.0.0.1:33715/directory?page=1",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 694,
+          "end_byte": 713
+        },
+        "context_span": null,
+        "anchor_text": "First directory page",
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-d6849dfe063b4f7da0ade8c5f41aeda6",
+        "occurrence_id": "input-0",
+        "kind": "observed_link",
+        "value": "http://127.0.0.1:33715/directory?page=2",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 748,
+          "end_byte": 767
+        },
+        "context_span": null,
+        "anchor_text": "Second directory page",
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-bc17f29c4b86d50fbf3b3f159e9f627a",
+        "occurrence_id": "input-0",
+        "kind": "observed_link",
+        "value": "https://outside.test/team?view=full",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 803,
+          "end_byte": 838
+        },
+        "context_span": null,
+        "anchor_text": "External observed lead",
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-f14a6feb3717cfb06cbba10eec89b7ed",
+        "occurrence_id": "input-0",
+        "kind": "observed_form_candidate",
+        "value": "http://127.0.0.1:33715/contact?department=research",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 887,
+          "end_byte": 915
+        },
+        "context_span": null,
+        "anchor_text": null,
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      },
+      {
+        "observation_id": "observation-5df19c7c803b9e9a606507fd2d8ed0f0",
+        "occurrence_id": "input-0",
+        "kind": "observed_unknown_contact",
+        "value": "malformed@directory.test",
+        "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+        "snapshot_id": "84997b345e17c16861f7524af45240d5",
+        "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+        "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+        "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+        "raw_span": {
+          "start_byte": 1028,
+          "end_byte": 1052
+        },
+        "context_span": {
+          "start_byte": 993,
+          "end_byte": 1058
+        },
+        "anchor_text": null,
+        "person_name": null,
+        "role_name": null,
+        "company_name": null,
+        "review_state": "unreviewed",
+        "execution_state": "not_executable"
+      }
+    ],
+    "diagnostics": [],
+    "was_truncated": false,
+    "observations_skipped": 0,
+    "total_observations_found": 14
+  },
+  "actual_resources": {
+    "requests": 2,
+    "pages": null,
+    "bytes": 1074,
+    "elapsed_seconds": 0.23375706300066668,
+    "model_calls": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "browser_actions": null,
+    "concurrency": null,
+    "fanout": null,
+    "money_usd": null
+  },
+  "diagnostic": null
+}

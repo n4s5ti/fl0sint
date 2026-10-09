@@ -1,0 +1,84 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def90-packet",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 2706,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "hunt": {
+        "findings": [],
+        "counts": {
+            "total": 0,
+            "critical": 0,
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "info": 0
+        },
+        "durationMs": 1950,
+        "coverage": {
+            "commandsDiscovered": 0,
+            "commandsProbed": 0,
+            "jsonContractsExercised": 1,
+            "delegatedSurfacesCaptured": 0,
+            "spawns": 3,
+            "discoveryCap": null,
+            "commands": [
+                {
+                    "symbol": "audit_packet.py",
+                    "wrapperHelp": {
+                        "examined": true
+                    },
+                    "delegatedHelp": {
+                        "examined": false,
+                        "reason": "no_passthrough_advertised"
+                    },
+                    "jsonProbe": {
+                        "examined": true
+                    }
+                }
+            ],
+            "target": {
+                "command": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/scripts/audit_packet.py",
+                "argv": []
+            }
+        }
+    }
+}

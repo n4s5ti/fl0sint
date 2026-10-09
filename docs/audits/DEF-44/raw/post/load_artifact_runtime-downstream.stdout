@@ -1,0 +1,115 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+        "name": "load_artifact_runtime",
+        "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+        "nodeType": "Function",
+        "startLine": 100,
+        "endLine": 151,
+        "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "name": "load_artifact_runtime",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 100,
+            "endLine": 151,
+            "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+            "name": "_policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 94,
+            "endLine": 97,
+            "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+                    "name": "load_artifact_runtime",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 100,
+                    "endLine": 151,
+                    "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+                    "name": "_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 94,
+                    "endLine": 97,
+                    "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+                    "name": "_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 94,
+                    "endLine": 97,
+                    "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

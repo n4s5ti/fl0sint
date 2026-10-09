@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/test_template_egress.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-api",
+  "rc": 0,
+  "seconds": 7.283225059509277
+}

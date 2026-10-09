@@ -1,0 +1,7 @@
+{
+  "text": "{'pytest_exit': 1, 'tests': 1035, 'failures': 1, 'errors': 0, 'skipped': 0, 'failed_cases': [('tests.acquisition.test_observed_extraction', 'test_live_fixture_exercises_expected_acceptance_surface')]}\n\n\nWall time: 34.18 seconds",
+  "details": {
+    "timeoutSeconds": 660,
+    "wallTimeMs": 34177.30495900009
+  }
+}

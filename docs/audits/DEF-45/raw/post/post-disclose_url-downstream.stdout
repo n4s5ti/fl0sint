@@ -1,0 +1,115 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+        "name": "disclose_url",
+        "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+        "nodeType": "Function",
+        "startLine": 28,
+        "endLine": 38,
+        "content": "def disclose_url(url: str) -> str:     \"\"\"Return a report-safe URL, dropping an ambiguous credential-like query.\"\"\"     parts = urlsplit(url)     host = f\"[{parts.hostname}]\" if parts.hostname and \":\" in parts.hostname else parts.hostname     port = f\":{parts.port}\" if parts.port is not None else \"\"     try:         pairs = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=False)         query = urlencode(pairs) if all(_query_name_supported(name) for name, _ in pairs) else \"\"     except (UnicodeError, ValueError):         query = \"\"     return urlunsplit((parts.scheme, f\"{host or ''}{port}\", parts.path or \"/\", query, \"\"))"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+            "name": "disclose_url",
+            "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+            "nodeType": "Function",
+            "startLine": 28,
+            "endLine": 38,
+            "content": "def disclose_url(url: str) -> str:     \"\"\"Return a report-safe URL, dropping an ambiguous credential-like query.\"\"\"     parts = urlsplit(url)     host = f\"[{parts.hostname}]\" if parts.hostname and \":\" in parts.hostname else parts.hostname     port = f\":{parts.port}\" if parts.port is not None else \"\"     try:         pairs = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=False)         query = urlencode(pairs) if all(_query_name_supported(name) for name, _ in pairs) else \"\"     except (UnicodeError, ValueError):         query = \"\"     return urlunsplit((parts.scheme, f\"{host or ''}{port}\", parts.path or \"/\", query, \"\"))"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:_query_name_supported",
+            "name": "_query_name_supported",
+            "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+            "nodeType": "Function",
+            "startLine": 16,
+            "endLine": 25,
+            "content": "def _query_name_supported(name: str) -> bool:     normalized = name.casefold()     pieces = tuple(piece for piece in re.split(r\"[^a-z0-9]+|(?<=[a-z])(?=[A-Z])\", normalized) if piece)     if normalized in _BENIGN_QUERY_NAMES:         return True     return not any(         piece in _CREDENTIAL_WORDS         or any(piece.startswith(word) or piece.endswith(word) for word in _CREDENTIAL_WORDS)         for piece in pieces     )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+            "to": "Function:flowsint-core/src/flowsint_execution/url_policy.py:_query_name_supported",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+                    "name": "disclose_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+                    "nodeType": "Function",
+                    "startLine": 28,
+                    "endLine": 38,
+                    "content": "def disclose_url(url: str) -> str:     \"\"\"Return a report-safe URL, dropping an ambiguous credential-like query.\"\"\"     parts = urlsplit(url)     host = f\"[{parts.hostname}]\" if parts.hostname and \":\" in parts.hostname else parts.hostname     port = f\":{parts.port}\" if parts.port is not None else \"\"     try:         pairs = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=False)         query = urlencode(pairs) if all(_query_name_supported(name) for name, _ in pairs) else \"\"     except (UnicodeError, ValueError):         query = \"\"     return urlunsplit((parts.scheme, f\"{host or ''}{port}\", parts.path or \"/\", query, \"\"))"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:_query_name_supported",
+                    "name": "_query_name_supported",
+                    "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+                    "nodeType": "Function",
+                    "startLine": 16,
+                    "endLine": 25,
+                    "content": "def _query_name_supported(name: str) -> bool:     normalized = name.casefold()     pieces = tuple(piece for piece in re.split(r\"[^a-z0-9]+|(?<=[a-z])(?=[A-Z])\", normalized) if piece)     if normalized in _BENIGN_QUERY_NAMES:         return True     return not any(         piece in _CREDENTIAL_WORDS         or any(piece.startswith(word) or piece.endswith(word) for word in _CREDENTIAL_WORDS)         for piece in pieces     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:_query_name_supported",
+                    "name": "_query_name_supported",
+                    "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+                    "nodeType": "Function",
+                    "startLine": 16,
+                    "endLine": 25,
+                    "content": "def _query_name_supported(name: str) -> bool:     normalized = name.casefold()     pieces = tuple(piece for piece in re.split(r\"[^a-z0-9]+|(?<=[a-z])(?=[A-Z])\", normalized) if piece)     if normalized in _BENIGN_QUERY_NAMES:         return True     return not any(         piece in _CREDENTIAL_WORDS         or any(piece.startswith(word) or piece.endswith(word) for word in _CREDENTIAL_WORDS)         for piece in pieces     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

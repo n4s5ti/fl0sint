@@ -1,0 +1,16 @@
+{
+  "verdict": "REVIEW",
+  "base": "b0c82d8db2b2480bc2b2aa91a02ba0fdb74111fd",
+  "pre_edit_commit": "d81cadff",
+  "implementation_commits": [
+    "0882e3a2",
+    "a0eb7c3e",
+    "8fdfedb5"
+  ],
+  "host_tests": {
+    "core": 990,
+    "enrichers": 179,
+    "api_template": 2
+  },
+  "unresolved_introduced_findings": []
+}

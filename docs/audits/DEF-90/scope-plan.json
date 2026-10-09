@@ -1,0 +1,49 @@
+{
+  "issue": "DEF-90",
+  "title": "[S09] Enforce audit-packet validity locally and in the existing CI workflow",
+  "recorded": "before any worktree edit; after isolated base index, drift, blast and hunt",
+  "base_commit": "a59bdadff13e95147b5b7056d4f73dd30122887d",
+  "base_tree": "c9dcb2ce1cd9ef77e08b13105d8e50b2fe454c63",
+  "branch": "work/def-90-packet-validator",
+  "worktree": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+  "base_selection": "Latest accepted (done) work branch head DEF-46 a59bdadf. DEF-47 is in review and not accepted; its branch is not used as the base.",
+  "prerequisites": {"DEF-39": "done", "DEF-41": "done"},
+  "discovered_conventions": {
+    "ci": ".github/workflows/tests.yml runs `make test` on pull_request and push to main; no audit-packet job exists.",
+    "tests": "Makefile `test` runs pytest per package (types, core, enrichers, api). DEF-40 precedent: stdlib dev script under scripts/ with its tests in the enrichers package test tree, loaded by importlib from file; no root test framework.",
+    "packets": "Existing docs/audits/DEF-* packets are free-form (no shared manifest). They are pre-schema legacy packets and are not retrofitted.",
+    "fixture_labels": "Expected labels live in <pkg>-enrichers/tests/fixtures/acquisition/manifest.json (DEF-40)."
+  },
+  "planned_paths": [
+    "scripts/audit_packet.py",
+    "<pkg>-enrichers/tests/enrichers/test_audit_packet.py",
+    ".github/workflows/tests.yml",
+    "docs/audit-packet.md",
+    "CHANGELOG.md",
+    "docs/audits/DEF-90/"
+  ],
+  "planned_symbols": {
+    "new": ["scripts/audit_packet.py: validate_packet, validate_changed, main and private helpers"],
+    "modified_existing": []
+  },
+  "blast_envelope": {
+    "graph_targets": [
+      "audit_packet (expected unresolved before edit: proves no existing symbol/consumer)",
+      "scripts/acquisition_fixtures.py:load_manifest up/down (existing fixture-label reader; must remain unchanged and unimported by the validator)"
+    ],
+    "not_graph_covered": [".github/workflows/tests.yml triggers/jobs (YAML)", "Makefile test target", "pytest discovery of tests/enrichers/*.py"],
+    "manual_trace": "CI workflow triggers pull_request + push(main); the existing `test` job runs `make test` which runs enrichers pytest, so the validator tests run in CI through the existing job. A new job in the same workflow runs the validator command on the change scope.",
+    "runtime_isolation": "No package under */src may import scripts/audit_packet.py; enforced by a subprocess audit-hook test exercising the enabled WebsiteToLinks capture path."
+  },
+  "required_fixtures": [
+    "F1 missing pre-edit report rejected",
+    "F2 valid JSON with stale HEAD/index metadata rejected",
+    "F3 unknown/degraded semantic result with exit 0 not accepted as PASS",
+    "F4 untracked/new file outside scope plan flagged",
+    "F5 required failing/skipped case not hidden by green aggregate",
+    "F6 disabled graph/model features do not require irrelevant checks",
+    "F7 complete coherent packet passes; review status separate",
+    "F8 scraper runtime executes without importing/invoking the validator"
+  ],
+  "out_of_scope": ["retrofitting legacy packets", "Linear automation", "auto-approval of review or labels", "deployment", "DEF-47 acceptance"]
+}

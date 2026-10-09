@@ -1,0 +1,193 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+        "name": "parse_observed_extraction_metadata",
+        "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+        "nodeType": "Function",
+        "startLine": 266,
+        "endLine": 300,
+        "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "name": "parse_observed_extraction_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 266,
+            "endLine": 300,
+            "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "name": "_exact",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 242,
+            "endLine": 244,
+            "content": "def _exact(value: dict, expected: set[str], label: str) -> None:     if type(value) is not dict or set(value) != expected:         raise ValueError(f\"invalid {label} fields\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+            "name": "_parse_span",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 247,
+            "endLine": 253,
+            "content": "def _parse_span(value: object, *, optional: bool) -> RawSpan | None:     if value is None and optional:         return None     if type(value) is not dict:         raise ValueError(\"invalid span\")     _exact(value, {\"start_byte\", \"end_byte\"}, \"span\")     return RawSpan(value[\"start_byte\"], value[\"end_byte\"])"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "name": "extraction_policy_from_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 256,
+            "endLine": 263,
+            "content": "def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     policy = metadata.payload.get(\"policy\")     if type(policy) is not dict:         raise ValueError(\"invalid extraction policy\")     _exact(policy, set(ExtractionPolicy.__dataclass_fields__), \"extraction policy\")     return ExtractionPolicy(**policy)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+                    "name": "parse_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 266,
+                    "endLine": 300,
+                    "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+                    "name": "_exact",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 242,
+                    "endLine": 244,
+                    "content": "def _exact(value: dict, expected: set[str], label: str) -> None:     if type(value) is not dict or set(value) != expected:         raise ValueError(f\"invalid {label} fields\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+                    "name": "_parse_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 247,
+                    "endLine": 253,
+                    "content": "def _parse_span(value: object, *, optional: bool) -> RawSpan | None:     if value is None and optional:         return None     if type(value) is not dict:         raise ValueError(\"invalid span\")     _exact(value, {\"start_byte\", \"end_byte\"}, \"span\")     return RawSpan(value[\"start_byte\"], value[\"end_byte\"])"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+                    "name": "extraction_policy_from_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 256,
+                    "endLine": 263,
+                    "content": "def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     policy = metadata.payload.get(\"policy\")     if type(policy) is not dict:         raise ValueError(\"invalid extraction policy\")     _exact(policy, set(ExtractionPolicy.__dataclass_fields__), \"extraction policy\")     return ExtractionPolicy(**policy)"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 3
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+                    "name": "_exact",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 242,
+                    "endLine": 244,
+                    "content": "def _exact(value: dict, expected: set[str], label: str) -> None:     if type(value) is not dict or set(value) != expected:         raise ValueError(f\"invalid {label} fields\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+                    "name": "_parse_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 247,
+                    "endLine": 253,
+                    "content": "def _parse_span(value: object, *, optional: bool) -> RawSpan | None:     if value is None and optional:         return None     if type(value) is not dict:         raise ValueError(\"invalid span\")     _exact(value, {\"start_byte\", \"end_byte\"}, \"span\")     return RawSpan(value[\"start_byte\"], value[\"end_byte\"])"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+                    "name": "extraction_policy_from_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 256,
+                    "endLine": 263,
+                    "content": "def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     policy = metadata.payload.get(\"policy\")     if type(policy) is not dict:         raise ValueError(\"invalid extraction policy\")     _exact(policy, set(ExtractionPolicy.__dataclass_fields__), \"extraction policy\")     return ExtractionPolicy(**policy)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+        "rootSymbols": 1,
+        "totalSymbols": 4,
+        "totalEdges": 5,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 3,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

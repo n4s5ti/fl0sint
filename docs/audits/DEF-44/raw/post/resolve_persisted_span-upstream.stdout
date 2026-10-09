@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+        "name": "resolve_persisted_span",
+        "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+        "nodeType": "Function",
+        "startLine": 210,
+        "endLine": 247,
+        "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+            "name": "resolve_persisted_span",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 210,
+            "endLine": 247,
+            "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+                    "name": "resolve_persisted_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 210,
+                    "endLine": 247,
+                    "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

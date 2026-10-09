@@ -40,3 +40,38 @@ jobs:
           # connections (redis.from_url, create_engine) are lazy.
           AUTH_SECRET: ci-only-dummy-secret
           REDIS_URL: redis://127.0.0.1:6379/0
+
+  # Development evidence gate (DEF-90): validates docs/audits/<ISSUE>/packet.json
+  # for packets touched by this change. Stdlib only; never approves review or
+  # labels and never updates Linear. Its own tests run in the `test` job.
+  audit-packets:
+    name: Audit packet validity
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          # The commit under review (not the synthetic PR merge commit), with
+          # history so base/head ancestry and staleness can be checked.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Validate audit packets changed by this push or pull request
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "$BASE_SHA" ] || [ "$BASE_SHA" = "0000000000000000000000000000000000000000" ]; then
+            BASE_SHA="$(git rev-parse HEAD^)"
+          fi
+          python3 scripts/audit_packet.py --report "$RUNNER_TEMP/audit-packet-report.json" changed --base "$BASE_SHA"
+
+      - name: Publish audit packet report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-packet-report
+          path: ${{ runner.temp }}/audit-packet-report.json
+          if-no-files-found: warn

@@ -1,0 +1,5 @@
+{
+  "command": "env NO_PROXY=127.0.0.1,localhost,.localhost no_proxy=127.0.0.1,localhost,.localhost UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest tests/enrichers/test_website_to_links_capture.py -q",
+  "exit_code": 0,
+  "result": "4 passed"
+}

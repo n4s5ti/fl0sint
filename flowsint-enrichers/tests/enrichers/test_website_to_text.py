@@ -6,6 +6,9 @@ import subprocess
 import sys
 import threading
 import time
+import hashlib
+import json
+from datetime import datetime, timedelta, timezone
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -13,7 +16,15 @@ import pytest
 import httpx
 
 import flowsint_enrichers.website.to_text as website_module
-from flowsint_enrichers.website.to_text import WebsiteTextOccurrence, WebsiteToText
+import flowsint_execution.fetch as fetch_module
+from flowsint_execution.artifacts import ArtifactState, FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifact_runtime import (
+    decode_source_proof, resolve_persisted_source_proof, resolve_persisted_span,
+)
+from flowsint_execution.extraction_runtime import resolve_and_extract_observations
+from flowsint_execution.observed_extraction import parse_observed_extraction_metadata
+from flowsint_enrichers import ENRICHER_REGISTRY
+from flowsint_enrichers.website.to_text import WebsiteFetchError, WebsiteTextOccurrence, WebsiteToText
 from flowsint_execution.fetch import execute_fetch as real_execute_fetch
 from flowsint_execution.fetch import FetchResult
 from flowsint_execution.models import OutcomeStatus
@@ -61,7 +72,7 @@ def _patch_transport(monkeypatch, handler):
             operation, transport=httpx.MockTransport(handler)
         )
 
-    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    monkeypatch.setattr(fetch_module, "execute_fetch", execute)
 
 
 @pytest.mark.asyncio
@@ -118,7 +129,7 @@ def _loopback_pages():
 
 
 @pytest.fixture
-def make_enricher(monkeypatch):
+def make_enricher(monkeypatch, tmp_path):
     monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
     monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
 
@@ -129,10 +140,117 @@ def make_enricher(monkeypatch):
             params_schema=[],
             params=params,
             graph_service=graph,
+            artifact_store=FilesystemArtifactStore(tmp_path / f"store-{len(list(tmp_path.iterdir()))}"),
+            retention_authority=RetentionAuthority(
+                issuer_id="test-deployment",
+                reviewer_id="test-reviewer",
+                policy_id="website-test-policy",
+                policy_digest=hashlib.sha256(b"reviewed website test policy").hexdigest(),
+                caller_id="website-to-text",
+                scope="local-web-fetch",
+                source_family="http",
+                expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+            ),
         )
         return enricher, graph
 
     return make
+
+
+def _runtime_config(tmp_path, caller="website-to-text", scope="local-web-fetch"):
+    now = datetime.now(timezone.utc)
+    policy = {
+        "issuer_id": "deployment-owner", "reviewer_id": "operator-reviewer",
+        "policy_id": "website-runtime-v1", "caller_id": caller, "scope": scope,
+        "source_family": "http", "issued_at": (now - timedelta(hours=1)).isoformat(),
+        "expires_at": (now + timedelta(hours=1)).isoformat(),
+        "retain_normalized_text": True,
+    }
+    canonical = json.dumps(policy, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+    policy["content_digest"] = hashlib.sha256(canonical.encode()).hexdigest()
+    path = tmp_path / "runtime.json"
+    path.write_text(json.dumps({"format_version": "1.0", "store_root": str(tmp_path / "runtime-store"), "policies": [policy]}))
+    return path
+
+
+@pytest.mark.asyncio
+async def test_registry_runtime_config_emits_retrievable_structured_proof(tmp_path, monkeypatch):
+    config = _runtime_config(tmp_path)
+    monkeypatch.setenv("FLOWSINT_ARTIFACT_RUNTIME_CONFIG", str(config))
+    monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
+    monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
+    _patch_transport(monkeypatch, lambda _request: httpx.Response(200, text="retained registry text"))
+    enricher = ENRICHER_REGISTRY.get_enricher(
+        "website_to_text", "runtime-sketch", "runtime-scan",
+        params={}, graph_service=_RecordingGraph(),
+    )
+    result = await enricher.execute_structured([Website(url="https://runtime.example/path?secret=hidden")])
+    outcome = result.outcomes[0]
+    assert outcome.status is OutcomeStatus.SUCCESS
+    reference = outcome.evidence[0].artifact_reference
+    proof = decode_source_proof(reference)
+    assert proof.context.occurrence_id == "input-0"
+    observation_result = parse_observed_extraction_metadata(outcome.metadata[0])
+    assert observation_result.observations == ()
+    assert len(proof.input_ref) == 64
+    resolved = resolve_persisted_source_proof(
+        reference, caller_id="website-to-text", scope="local-web-fetch",
+        source_family="http", operation_id=proof.context.operation_id,
+        occurrence_id=proof.context.occurrence_id, config_path=config,
+    )
+    assert resolved.state is ArtifactState.AVAILABLE
+    assert resolved.body == b"retained registry text"
+    span = resolve_persisted_span(
+        reference, proof.spans[0].span_id,
+        caller_id="website-to-text", scope="local-web-fetch",
+        source_family="http", operation_id=proof.context.operation_id,
+        occurrence_id=proof.context.occurrence_id, config_path=config,
+    )
+    assert span.state is ArtifactState.AVAILABLE
+    assert span.text == outcome.outputs[0].text[
+        proof.spans[0].normalized_start:proof.spans[0].normalized_end
+    ]
+    serialized = result.model_dump_json()
+    assert "hidden" not in serialized
+    assert str(tmp_path / "runtime-store") not in serialized
+
+
+@pytest.mark.asyncio
+async def test_live_and_saved_paths_share_observation_result(tmp_path, monkeypatch):
+    config = _runtime_config(tmp_path)
+    monkeypatch.setenv("FLOWSINT_ARTIFACT_RUNTIME_CONFIG", str(config))
+    monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
+    monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
+    body = '<a href="?page=2">next</a><p>info@example.test</p>'
+    _patch_transport(monkeypatch, lambda _request: httpx.Response(200, text=body))
+    enricher = WebsiteToText(sketch_id="parity", params_schema=[], params={}, graph_service=_RecordingGraph())
+    live = await enricher.execute_structured([Website(url="https://runtime.example/final?view=full")])
+    outcome = live.outcomes[0]
+    metadata = outcome.metadata[0]
+    proof_value = outcome.evidence[0].artifact_reference
+    proof = decode_source_proof(proof_value)
+    state, saved = await resolve_and_extract_observations(
+        proof_value, caller_id="website-to-text", scope="local-web-fetch", source_family="http",
+        operation_id=proof.context.operation_id, occurrence_id=proof.context.occurrence_id, config_path=config,
+    )
+    assert state is ArtifactState.AVAILABLE and saved is not None
+    assert metadata.format_version == "observed-extraction/1.0"
+    assert parse_observed_extraction_metadata(metadata) == saved
+    assert [item["observation_id"] for item in metadata.payload["observations"]] == [item.observation_id for item in saved.observations]
+    assert all(item["execution_state"] == "not_executable" for item in metadata.payload["observations"])
+
+
+@pytest.mark.asyncio
+async def test_missing_reviewed_retention_holds_structured_and_legacy_raises(monkeypatch):
+    monkeypatch.setattr("flowsint_enrichers.website.to_text.Logger", _SilentLogger)
+    monkeypatch.setattr("flowsint_core.core.enricher_base.Logger", _SilentLogger)
+    _patch_transport(monkeypatch, lambda _request: httpx.Response(200, text="consumed body"))
+    enricher = WebsiteToText(sketch_id="hold-test", params_schema=[], params={}, graph_service=_RecordingGraph())
+    structured = await enricher.execute_structured([Website(url="https://held.example")])
+    assert structured.outcomes[0].status is OutcomeStatus.HOLD
+    assert structured.outcomes[0].outputs == ()
+    with pytest.raises(WebsiteFetchError, match="retention_policy_unavailable"):
+        await enricher.execute([Website(url="https://held-again.example")])
 
 
 @pytest.mark.asyncio
@@ -279,7 +397,7 @@ async def test_occurrence_reconstruction_rejects_missing_result(
             actual_resources=fetched.actual_resources,
         )
 
-    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    monkeypatch.setattr(fetch_module, "execute_fetch", execute)
     first = Website(url="https://first.example")
     second = Website(url="https://second.example")
     occurrences = await enricher._scan_occurrences([first, second])
@@ -333,7 +451,7 @@ async def test_occurrence_reconstruction_rejects_unbound_results(
             actual_resources=fetched.actual_resources,
         )
 
-    monkeypatch.setattr(website_module, "execute_fetch", execute)
+    monkeypatch.setattr(fetch_module, "execute_fetch", execute)
     occurrences = await enricher._scan_occurrences(
         [Website(url="https://first.example"), Website(url="https://second.example")]
     )

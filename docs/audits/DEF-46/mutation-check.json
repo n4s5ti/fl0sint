@@ -1,0 +1,47 @@
+{
+  "issue": "DEF-46",
+  "method": "manual mutation proof with byte-for-byte restoration",
+  "source_backups": [
+    {
+      "path": "flowsint-core/src/flowsint_core/core/graph/capture_repository.py",
+      "backup": "/tmp/def46-capture_repository.py.bak",
+      "md5_before_and_after": "5f4ca4edf7e07d471d407b15ed65f50c",
+      "cmp_after_restore": "PASS"
+    },
+    {
+      "path": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+      "backup": "/tmp/def46-to_links.py.bak",
+      "md5_before_and_after": "894637f813debdff6bbc1193d2110536",
+      "cmp_after_restore": "PASS"
+    }
+  ],
+  "mutations": [
+    {
+      "id": "M1-batch-threshold",
+      "change": "Changed local capture auto-flush comparison from >= to >.",
+      "test": "flowsint-core/tests/test_capture_repository.py::test_batch_keeps_each_candidate_and_records_local_flush_boundaries",
+      "result": "KILLED: test failed under mutation",
+      "raw": "raw/mutation/batch-threshold-killed.stdout"
+    },
+    {
+      "id": "M2-candidate-classification",
+      "change": "Changed candidate operation classification from candidate_graph_mutation to capture_batch_flush.",
+      "test": "flowsint-core/tests/test_capture_repository.py::test_create_candidate_is_unreviewed_and_has_no_graph_element_id",
+      "result": "KILLED: test failed under mutation",
+      "raw": "raw/mutation/candidate-classification-killed.stdout"
+    },
+    {
+      "id": "M3-live-fallback",
+      "change": "Changed WebsiteToLinks default from capture_only=True to capture_only=False.",
+      "test": "flowsint-enrichers/tests/enrichers/test_website_to_links_capture.py::test_enabled_crawler_does_not_construct_neo4j_without_credentials",
+      "result": "KILLED: test failed under mutation when the actual enabled constructor reached the forbidden live path",
+      "raw": "raw/mutation/live-fallback-killed.stdout"
+    }
+  ],
+  "restoration": {
+    "command": "cp -f <backup> <source>; cmp -s <backup> <source>; md5sum <backup> <source>",
+    "result": "All three defects were killed; both mutated files were restored byte-for-byte before the full-suite runs.",
+    "raw": "raw/mutation/restore-checks.txt"
+  },
+  "post_restore_execution": "The head core and enricher suite runs occurred after restoration; see raw/head-core-pytest-summary.json and raw/head-enrichers-pytest-summary.json."
+}

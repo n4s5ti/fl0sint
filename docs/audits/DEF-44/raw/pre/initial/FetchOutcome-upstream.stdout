@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+        "name": "FetchOutcome",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Class",
+        "startLine": 168,
+        "endLine": 186,
+        "content": "class FetchOutcome(_Frozen):     occurrence_id: str     input_ref: Digest     status: FetchStatus     requested_origin: str     final_origin: str | None = None     text: str | None = None     body: bytes | None = None     diagnostic: RedactedDiagnostic | None = None     actual_resources: Resources     @model_validator(mode=\"after\")     def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+            "name": "FetchOutcome",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Class",
+            "startLine": 168,
+            "endLine": 186,
+            "content": "class FetchOutcome(_Frozen):     occurrence_id: str     input_ref: Digest     status: FetchStatus     requested_origin: str     final_origin: str | None = None     text: str | None = None     body: bytes | None = None     diagnostic: RedactedDiagnostic | None = None     actual_resources: Resources     @model_validator(mode=\"after\")     def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+                    "name": "FetchOutcome",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Class",
+                    "startLine": 168,
+                    "endLine": 186,
+                    "content": "class FetchOutcome(_Frozen):     occurrence_id: str     input_ref: Digest     status: FetchStatus     requested_origin: str     final_origin: str | None = None     text: str | None = None     body: bytes | None = None     diagnostic: RedactedDiagnostic | None = None     actual_resources: Resources     @model_validator(mode=\"after\")     def coherent(self):         if self.status is FetchStatus.SUCCESS:             if self.text is None or self.body is None or self.diagnostic is not None:                 raise ValueError(\"successful fetch requires body and decoded text\")         elif self.text is not None or self.body is not None or self.diagnostic is None:             raise ValueError(\"failed fetch requires diagnostic and no body\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:FetchOutcome",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

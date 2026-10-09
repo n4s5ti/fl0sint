@@ -1,0 +1,265 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "upstream",
+    "risk": "MEDIUM",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+        "name": "resolve_source",
+        "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+        "nodeType": "Function",
+        "startLine": 328,
+        "endLine": 365,
+        "content": "def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, artifact: ArtifactReference, *,                    authority: RetentionAuthority | None = None, now: datetime | None = None) -> ResolveResult:     current = now or datetime.now(timezone.utc)     if decision is None: return ResolveResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     policy = _current_policy(decision, authority, current)     if policy: return ResolveResult(*policy)     mismatch = _bound(context, decision, current)     if mismatch: return ResolveResult(ArtifactState.REVIEW, mismatch)     try: body, metadata = store.read(artifact.content_digest, artifact.snapshot_id, expected_length=artifact.byte_length)     except (FileNotFoundError, OSError, ValueError, TypeError, json.JSONDecodeError): return ResolveResult(ArtifactState.REVIEW, \"artifact_missing\")     try:         issued, expiry = datetime.fromisoformat(metadata[\"issued_at\"]), datetime.fromisoformat(metadata[\"expires_at\"])         if not _aware(issued) or not _aware(expiry): raise ValueError     except (KeyError, TypeError, ValueError): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if current >= expiry: return ResolveResult(ArtifactState.REVIEW, \"artifact_expired\")     expected = {\"snapshot_id\": artifact.snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id, \"caller_id\": context.caller_id,         \"scope\": context.scope, \"source_family\": context.source_family, \"origin\": context.origin,         \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": artifact.retrieved_at.isoformat(), \"event_at\": artifact.event_at.isoformat() if artifact.event_at else None,         \"policy_digest\": decision.policy_digest, \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id,         \"reviewer_id\": decision.reviewer_id, \"issued_at\": decision.issued_at.isoformat(),         \"expires_at\": decision.expires_at.isoformat(), \"retain_body\": decision.retain_body,         \"retain_normalized_text\": decision.retain_normalized_text, \"content_digest\": artifact.content_digest,         \"byte_length\": artifact.byte_length}     if any(metadata.get(k) != v for k, v in expected.items()): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if artifact.origin != context.origin or artifact.requested_url != context.requested_url or artifact.final_url != context.final_url:         return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if len(body) != artifact.byte_length or hashlib.sha256(body).hexdigest() != artifact.content_digest:         return ResolveResult(ArtifactState.REVIEW, \"digest_mismatch\")     try: fresh = normalize_html(body)     except ValueError: return ResolveResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     stored = metadata.get(\"normalized\")     wanted = ({\"text\": fresh.text, \"spans\": [asdict(s) for s in fresh.spans], \"source_digest\": fresh.source_digest}               if decision.retain_normalized_text else None)     if stored is not None and stored != wanted: return ResolveResult(ArtifactState.REVIEW, \"normalized_metadata_mismatch\")     return ResolveResult(ArtifactState.AVAILABLE, \"resolved\", body)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "name": "resolve_source",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 328,
+            "endLine": 365,
+            "content": "def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, artifact: ArtifactReference, *,                    authority: RetentionAuthority | None = None, now: datetime | None = None) -> ResolveResult:     current = now or datetime.now(timezone.utc)     if decision is None: return ResolveResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     policy = _current_policy(decision, authority, current)     if policy: return ResolveResult(*policy)     mismatch = _bound(context, decision, current)     if mismatch: return ResolveResult(ArtifactState.REVIEW, mismatch)     try: body, metadata = store.read(artifact.content_digest, artifact.snapshot_id, expected_length=artifact.byte_length)     except (FileNotFoundError, OSError, ValueError, TypeError, json.JSONDecodeError): return ResolveResult(ArtifactState.REVIEW, \"artifact_missing\")     try:         issued, expiry = datetime.fromisoformat(metadata[\"issued_at\"]), datetime.fromisoformat(metadata[\"expires_at\"])         if not _aware(issued) or not _aware(expiry): raise ValueError     except (KeyError, TypeError, ValueError): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if current >= expiry: return ResolveResult(ArtifactState.REVIEW, \"artifact_expired\")     expected = {\"snapshot_id\": artifact.snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id, \"caller_id\": context.caller_id,         \"scope\": context.scope, \"source_family\": context.source_family, \"origin\": context.origin,         \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": artifact.retrieved_at.isoformat(), \"event_at\": artifact.event_at.isoformat() if artifact.event_at else None,         \"policy_digest\": decision.policy_digest, \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id,         \"reviewer_id\": decision.reviewer_id, \"issued_at\": decision.issued_at.isoformat(),         \"expires_at\": decision.expires_at.isoformat(), \"retain_body\": decision.retain_body,         \"retain_normalized_text\": decision.retain_normalized_text, \"content_digest\": artifact.content_digest,         \"byte_length\": artifact.byte_length}     if any(metadata.get(k) != v for k, v in expected.items()): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if artifact.origin != context.origin or artifact.requested_url != context.requested_url or artifact.final_url != context.final_url:         return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if len(body) != artifact.byte_length or hashlib.sha256(body).hexdigest() != artifact.content_digest:         return ResolveResult(ArtifactState.REVIEW, \"digest_mismatch\")     try: fresh = normalize_html(body)     except ValueError: return ResolveResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     stored = metadata.get(\"normalized\")     wanted = ({\"text\": fresh.text, \"spans\": [asdict(s) for s in fresh.spans], \"source_digest\": fresh.source_digest}               if decision.retain_normalized_text else None)     if stored is not None and stored != wanted: return ResolveResult(ArtifactState.REVIEW, \"normalized_metadata_mismatch\")     return ResolveResult(ArtifactState.AVAILABLE, \"resolved\", body)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "name": "resolve_persisted_source_proof",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 187,
+            "endLine": 221,
+            "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+            "name": "resolve_persisted_span",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 224,
+            "endLine": 261,
+            "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "name": "resolve_persisted_observation",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 264,
+            "endLine": 314,
+            "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+            "name": "resolve_span",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 367,
+            "endLine": 389,
+            "content": "def resolve_span(store: FilesystemArtifactStore, context: ArtifactContext,                  decision: RetentionDecision | None, artifact: ArtifactReference, span: SourceProofSpanReference, *,                  authority: RetentionAuthority | None = None, now: datetime | None = None) -> SpanResolveResult:     resolved = resolve_source(store, context, decision, artifact, authority=authority, now=now)     if resolved.state is not ArtifactState.AVAILABLE or resolved.body is None:         return SpanResolveResult(resolved.state, resolved.reason)     if decision is None or not decision.retain_normalized_text:         return SpanResolveResult(ArtifactState.REVIEW, \"normalized_retention_prohibited\")     fresh = normalize_html(resolved.body)     for index, mapped in enumerate(fresh.spans):         if (getattr(span, \"span_id\", None) == f\"span-{artifact.snapshot_id}-{index}\"             and getattr(span, \"artifact_id\", None) == artifact.artifact_id             and getattr(span, \"field_pointer\", None) is None             and getattr(span, \"byte_start\", None) == mapped.raw_start             and getattr(span, \"byte_end\", None) == mapped.raw_end             and getattr(span, \"normalized_start\", None) == mapped.normalized_start             and getattr(span, \"normalized_end\", None) == mapped.normalized_end             and getattr(span, \"raw_offset_unit\", None) == \"byte\"             and getattr(span, \"normalized_offset_unit\", None) == \"unicode_code_point\"             and getattr(span, \"source_encoding\", None) == \"utf-8\"):             return SpanResolveResult(ArtifactState.AVAILABLE, \"resolved\",                 fresh.text[mapped.normalized_start:mapped.normalized_end])     return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:resolve_and_extract_observations",
+            "name": "resolve_and_extract_observations",
+            "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+            "nodeType": "Function",
+            "startLine": 117,
+            "endLine": 188,
+            "content": "async def resolve_and_extract_observations(     source_proof: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | PathLike[str] | None = None,     policy: ExtractionPolicy | None = None,     now: datetime | None = None, ) -> tuple[ArtifactState, ObservedExtractionResult | None]:     \"\"\"     Authorized retained-snapshot observation extraction bridge.     This function validates artifact state, resolves retained bytes, and invokes     the pure extractor. It never mutates the graph and returns unreviewed     observations as immutable value records.     Args:         source_proof: Encoded persisted source proof for the retained artifact.         caller_id: Caller identity expected by the current artifact runtime.         scope: Authorization scope expected by the current artifact runtime.         source_family: Source family expected by the current artifact runtime.         operation_id: Operation ID expected in the persisted proof.         occurrence_id: Occurrence ID expected in the persisted proof.         config_path: Optional artifact-runtime configuration path.         policy: Optional ExtractionPolicy with S03 bounds (None = permissive defaults)         now: Optional timestamp (default: now in UTC)     Returns:         (state, result) tuple where:             - state: ArtifactState (AVAILABLE, HOLD, REVIEW, etc.)             - result: ObservedExtractionResult or None if state is not AVAILABLE     Contract:         - Validate artifact state and current-policy authority         - Resolve retained bytes from store         - Invoke pure extractor on verified body using the proof's final URL,           including any query string         - Return state + result; no graph mutation         - Return None result if state is HOLD or REVIEW     \"\"\"     # Import here to avoid circular dependencies     from .artifacts import ArtifactState     from .artifact_runtime import decode_source_proof, resolve_persisted_source_proof     from .observed_extraction import extract_observations     try:         proof = decode_source_proof(source_proof)     except ValueError:         return ArtifactState.REVIEW, None     proof_result = resolve_persisted_source_proof(         source_proof, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if proof_result.state != ArtifactState.AVAILABLE:         return proof_result.state, None     if proof_result.body is None:         return ArtifactState.REVIEW, None     result = await asyncio.to_thread(         extract_observations, proof_result.body,         artifact=proof.artifact, occurrence_id=proof.context.occurrence_id,         input_ref=proof.input_ref, final_url=proof.context.final_url,         policy=policy,     )     return ArtifactState.AVAILABLE, result"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:resolve_and_extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+                    "name": "resolve_source",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 328,
+                    "endLine": 365,
+                    "content": "def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, artifact: ArtifactReference, *,                    authority: RetentionAuthority | None = None, now: datetime | None = None) -> ResolveResult:     current = now or datetime.now(timezone.utc)     if decision is None: return ResolveResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     policy = _current_policy(decision, authority, current)     if policy: return ResolveResult(*policy)     mismatch = _bound(context, decision, current)     if mismatch: return ResolveResult(ArtifactState.REVIEW, mismatch)     try: body, metadata = store.read(artifact.content_digest, artifact.snapshot_id, expected_length=artifact.byte_length)     except (FileNotFoundError, OSError, ValueError, TypeError, json.JSONDecodeError): return ResolveResult(ArtifactState.REVIEW, \"artifact_missing\")     try:         issued, expiry = datetime.fromisoformat(metadata[\"issued_at\"]), datetime.fromisoformat(metadata[\"expires_at\"])         if not _aware(issued) or not _aware(expiry): raise ValueError     except (KeyError, TypeError, ValueError): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if current >= expiry: return ResolveResult(ArtifactState.REVIEW, \"artifact_expired\")     expected = {\"snapshot_id\": artifact.snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id, \"caller_id\": context.caller_id,         \"scope\": context.scope, \"source_family\": context.source_family, \"origin\": context.origin,         \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": artifact.retrieved_at.isoformat(), \"event_at\": artifact.event_at.isoformat() if artifact.event_at else None,         \"policy_digest\": decision.policy_digest, \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id,         \"reviewer_id\": decision.reviewer_id, \"issued_at\": decision.issued_at.isoformat(),         \"expires_at\": decision.expires_at.isoformat(), \"retain_body\": decision.retain_body,         \"retain_normalized_text\": decision.retain_normalized_text, \"content_digest\": artifact.content_digest,         \"byte_length\": artifact.byte_length}     if any(metadata.get(k) != v for k, v in expected.items()): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if artifact.origin != context.origin or artifact.requested_url != context.requested_url or artifact.final_url != context.final_url:         return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if len(body) != artifact.byte_length or hashlib.sha256(body).hexdigest() != artifact.content_digest:         return ResolveResult(ArtifactState.REVIEW, \"digest_mismatch\")     try: fresh = normalize_html(body)     except ValueError: return ResolveResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     stored = metadata.get(\"normalized\")     wanted = ({\"text\": fresh.text, \"spans\": [asdict(s) for s in fresh.spans], \"source_digest\": fresh.source_digest}               if decision.retain_normalized_text else None)     if stored is not None and stored != wanted: return ResolveResult(ArtifactState.REVIEW, \"normalized_metadata_mismatch\")     return ResolveResult(ArtifactState.AVAILABLE, \"resolved\", body)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+                    "name": "resolve_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 367,
+                    "endLine": 389,
+                    "content": "def resolve_span(store: FilesystemArtifactStore, context: ArtifactContext,                  decision: RetentionDecision | None, artifact: ArtifactReference, span: SourceProofSpanReference, *,                  authority: RetentionAuthority | None = None, now: datetime | None = None) -> SpanResolveResult:     resolved = resolve_source(store, context, decision, artifact, authority=authority, now=now)     if resolved.state is not ArtifactState.AVAILABLE or resolved.body is None:         return SpanResolveResult(resolved.state, resolved.reason)     if decision is None or not decision.retain_normalized_text:         return SpanResolveResult(ArtifactState.REVIEW, \"normalized_retention_prohibited\")     fresh = normalize_html(resolved.body)     for index, mapped in enumerate(fresh.spans):         if (getattr(span, \"span_id\", None) == f\"span-{artifact.snapshot_id}-{index}\"             and getattr(span, \"artifact_id\", None) == artifact.artifact_id             and getattr(span, \"field_pointer\", None) is None             and getattr(span, \"byte_start\", None) == mapped.raw_start             and getattr(span, \"byte_end\", None) == mapped.raw_end             and getattr(span, \"normalized_start\", None) == mapped.normalized_start             and getattr(span, \"normalized_end\", None) == mapped.normalized_end             and getattr(span, \"raw_offset_unit\", None) == \"byte\"             and getattr(span, \"normalized_offset_unit\", None) == \"unicode_code_point\"             and getattr(span, \"source_encoding\", None) == \"utf-8\"):             return SpanResolveResult(ArtifactState.AVAILABLE, \"resolved\",                 fresh.text[mapped.normalized_start:mapped.normalized_end])     return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 3,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+                    "name": "resolve_persisted_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 187,
+                    "endLine": 221,
+                    "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+                    "name": "resolve_persisted_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 224,
+                    "endLine": 261,
+                    "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:resolve_and_extract_observations",
+                    "name": "resolve_and_extract_observations",
+                    "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 117,
+                    "endLine": 188,
+                    "content": "async def resolve_and_extract_observations(     source_proof: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | PathLike[str] | None = None,     policy: ExtractionPolicy | None = None,     now: datetime | None = None, ) -> tuple[ArtifactState, ObservedExtractionResult | None]:     \"\"\"     Authorized retained-snapshot observation extraction bridge.     This function validates artifact state, resolves retained bytes, and invokes     the pure extractor. It never mutates the graph and returns unreviewed     observations as immutable value records.     Args:         source_proof: Encoded persisted source proof for the retained artifact.         caller_id: Caller identity expected by the current artifact runtime.         scope: Authorization scope expected by the current artifact runtime.         source_family: Source family expected by the current artifact runtime.         operation_id: Operation ID expected in the persisted proof.         occurrence_id: Occurrence ID expected in the persisted proof.         config_path: Optional artifact-runtime configuration path.         policy: Optional ExtractionPolicy with S03 bounds (None = permissive defaults)         now: Optional timestamp (default: now in UTC)     Returns:         (state, result) tuple where:             - state: ArtifactState (AVAILABLE, HOLD, REVIEW, etc.)             - result: ObservedExtractionResult or None if state is not AVAILABLE     Contract:         - Validate artifact state and current-policy authority         - Resolve retained bytes from store         - Invoke pure extractor on verified body using the proof's final URL,           including any query string         - Return state + result; no graph mutation         - Return None result if state is HOLD or REVIEW     \"\"\"     # Import here to avoid circular dependencies     from .artifacts import ArtifactState     from .artifact_runtime import decode_source_proof, resolve_persisted_source_proof     from .observed_extraction import extract_observations     try:         proof = decode_source_proof(source_proof)     except ValueError:         return ArtifactState.REVIEW, None     proof_result = resolve_persisted_source_proof(         source_proof, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if proof_result.state != ArtifactState.AVAILABLE:         return proof_result.state, None     if proof_result.body is None:         return ArtifactState.REVIEW, None     result = await asyncio.to_thread(         extract_observations, proof_result.body,         artifact=proof.artifact, occurrence_id=proof.context.occurrence_id,         input_ref=proof.input_ref, final_url=proof.context.final_url,         policy=policy,     )     return ArtifactState.AVAILABLE, result"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 5
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+                    "name": "resolve_persisted_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 187,
+                    "endLine": 221,
+                    "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_span",
+                    "name": "resolve_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 367,
+                    "endLine": 389,
+                    "content": "def resolve_span(store: FilesystemArtifactStore, context: ArtifactContext,                  decision: RetentionDecision | None, artifact: ArtifactReference, span: SourceProofSpanReference, *,                  authority: RetentionAuthority | None = None, now: datetime | None = None) -> SpanResolveResult:     resolved = resolve_source(store, context, decision, artifact, authority=authority, now=now)     if resolved.state is not ArtifactState.AVAILABLE or resolved.body is None:         return SpanResolveResult(resolved.state, resolved.reason)     if decision is None or not decision.retain_normalized_text:         return SpanResolveResult(ArtifactState.REVIEW, \"normalized_retention_prohibited\")     fresh = normalize_html(resolved.body)     for index, mapped in enumerate(fresh.spans):         if (getattr(span, \"span_id\", None) == f\"span-{artifact.snapshot_id}-{index}\"             and getattr(span, \"artifact_id\", None) == artifact.artifact_id             and getattr(span, \"field_pointer\", None) is None             and getattr(span, \"byte_start\", None) == mapped.raw_start             and getattr(span, \"byte_end\", None) == mapped.raw_end             and getattr(span, \"normalized_start\", None) == mapped.normalized_start             and getattr(span, \"normalized_end\", None) == mapped.normalized_end             and getattr(span, \"raw_offset_unit\", None) == \"byte\"             and getattr(span, \"normalized_offset_unit\", None) == \"unicode_code_point\"             and getattr(span, \"source_encoding\", None) == \"utf-8\"):             return SpanResolveResult(ArtifactState.AVAILABLE, \"resolved\",                 fresh.text[mapped.normalized_start:mapped.normalized_end])     return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_span",
+                    "name": "resolve_persisted_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 224,
+                    "endLine": 261,
+                    "content": "def resolve_persisted_span(     value: str,     span_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> SpanResolveResult:     try:         proof = decode_source_proof(value)     except ValueError:         return SpanResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or proof.context.occurrence_id != occurrence_id     ):         return SpanResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     matches = tuple(span for span in proof.spans if span.span_id == span_id)     if len(matches) != 1:         return SpanResolveResult(ArtifactState.REVIEW, \"span_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return SpanResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_span(         runtime.store, proof.context, proof.decision, proof.artifact, matches[0],         authority=runtime.authority, now=now,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:resolve_and_extract_observations",
+                    "name": "resolve_and_extract_observations",
+                    "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 117,
+                    "endLine": 188,
+                    "content": "async def resolve_and_extract_observations(     source_proof: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | PathLike[str] | None = None,     policy: ExtractionPolicy | None = None,     now: datetime | None = None, ) -> tuple[ArtifactState, ObservedExtractionResult | None]:     \"\"\"     Authorized retained-snapshot observation extraction bridge.     This function validates artifact state, resolves retained bytes, and invokes     the pure extractor. It never mutates the graph and returns unreviewed     observations as immutable value records.     Args:         source_proof: Encoded persisted source proof for the retained artifact.         caller_id: Caller identity expected by the current artifact runtime.         scope: Authorization scope expected by the current artifact runtime.         source_family: Source family expected by the current artifact runtime.         operation_id: Operation ID expected in the persisted proof.         occurrence_id: Occurrence ID expected in the persisted proof.         config_path: Optional artifact-runtime configuration path.         policy: Optional ExtractionPolicy with S03 bounds (None = permissive defaults)         now: Optional timestamp (default: now in UTC)     Returns:         (state, result) tuple where:             - state: ArtifactState (AVAILABLE, HOLD, REVIEW, etc.)             - result: ObservedExtractionResult or None if state is not AVAILABLE     Contract:         - Validate artifact state and current-policy authority         - Resolve retained bytes from store         - Invoke pure extractor on verified body using the proof's final URL,           including any query string         - Return state + result; no graph mutation         - Return None result if state is HOLD or REVIEW     \"\"\"     # Import here to avoid circular dependencies     from .artifacts import ArtifactState     from .artifact_runtime import decode_source_proof, resolve_persisted_source_proof     from .observed_extraction import extract_observations     try:         proof = decode_source_proof(source_proof)     except ValueError:         return ArtifactState.REVIEW, None     proof_result = resolve_persisted_source_proof(         source_proof, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if proof_result.state != ArtifactState.AVAILABLE:         return proof_result.state, None     if proof_result.body is None:         return ArtifactState.REVIEW, None     result = await asyncio.to_thread(         extract_observations, proof_result.body,         artifact=proof.artifact, occurrence_id=proof.context.occurrence_id,         input_ref=proof.input_ref, final_url=proof.context.final_url,         policy=policy,     )     return ArtifactState.AVAILABLE, result"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+        "rootSymbols": 1,
+        "totalSymbols": 6,
+        "totalEdges": 5,
+        "filesMatched": 3,
+        "truncated": false,
+        "direct": 2,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

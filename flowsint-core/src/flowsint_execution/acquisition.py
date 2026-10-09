@@ -79,6 +79,10 @@ class ContractError(ValueError):
         super().__init__(code + (": " + ", ".join(field_paths) if field_paths else ""))
 
 
+class ArtifactBindingError(ValueError):
+    """Raised when body/digest/URL don't match artifact reference."""
+    pass
+
 def _unique(values, label):
     values = tuple(values)
     if len(values) != len(set(values)):
@@ -204,6 +208,27 @@ class SpanReference(ContractModel):
             raise ValueError(
                 "span requires a nonempty half-open byte range or JSON pointer"
             )
+        return self
+
+
+class SourceProofSpanReference(ContractModel):
+    """Normalized mapping metadata, versioned outside the strict 1.0 bundle wire."""
+
+    proof_format_version: Literal["1.0"] = "1.0"
+    span_id: Identifier
+    artifact_id: Identifier
+    byte_start: Count
+    byte_end: Count
+    normalized_start: Count
+    normalized_end: Count
+    raw_offset_unit: Literal["byte"] = "byte"
+    normalized_offset_unit: Literal["unicode_code_point"] = "unicode_code_point"
+    source_encoding: Literal["utf-8"] = "utf-8"
+
+    @model_validator(mode="after")
+    def check_mapping(self):
+        if self.byte_start >= self.byte_end or self.normalized_start >= self.normalized_end:
+            raise ValueError("source proof ranges must be nonempty")
         return self
 
 
@@ -501,7 +526,6 @@ def _parse(raw, model):
         raise _error(exc) from None
     except (ValueError, TypeError, RecursionError):
         raise ContractError("malformed_contract") from None
-
 
 def parse_request(raw: str | bytes) -> AcquisitionRequest:
     return _parse(raw, AcquisitionRequest)

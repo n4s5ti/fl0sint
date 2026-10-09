@@ -16,6 +16,7 @@ from flowsint_core.core.forensics.fencing import (
 
 
 from .repository import Neo4jGraphRepository
+from .capture_repository import CaptureGraphRepository
 from .repository_protocol import GraphRepositoryProtocol
 from .serializer import GraphSerializer, TypeResolver
 from .types import GraphData, GraphDict, GraphNode
@@ -350,7 +351,7 @@ class GraphService:
         if self._enable_batching:
             self._repository.flush_batch()
 
-    def query(self, cypher: str, parameters: Dict[str, Any] = None) -> list:
+    def query(self, cypher: str, parameters: Optional[Dict[str, Any]] = None) -> list:
         """
         Execute a custom Cypher query.
 
@@ -362,7 +363,7 @@ class GraphService:
             List of result records
         """
         self._require_access("graph_service_query")
-        return self._repository.query(cypher, parameters)
+        return self._repository.query(cypher, parameters or {})
 
     def set_batch_size(self, size: int) -> None:
         """
@@ -392,17 +393,19 @@ def create_graph_service(
     type_resolver: Optional[TypeResolver] = None,
     mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,
     case_reference: str | None = None,
+    capture_only: bool = False,
 ) -> GraphService:
     """
-    Factory function to create a GraphService instance with Neo4j repository.
+    Factory function to create a GraphService instance.
 
-    This is the recommended way to create a GraphService for production use.
-    For testing, inject an InMemoryGraphRepository or mock directly into GraphService.
+    This is the recommended way to create a GraphService.
+    For isolated acquisition without Neo4j, use capture_only=True.
 
     Args:
         sketch_id: Investigation sketch ID
         enable_batching: Enable batch operations
         type_resolver: Optional callable to resolve custom types by name
+        capture_only: If True, use CaptureGraphRepository (no Neo4j connection needed)
 
     Returns:
         Configured GraphService instance
@@ -413,16 +416,19 @@ def create_graph_service(
         case_reference=case_reference,
     )
 
-    # Import Logger here to avoid circular imports
-    from flowsint_core.core.logger import Logger
+    if capture_only:
+        repository = CaptureGraphRepository(sketch_id)
+        logger = None
+    else:
+        from flowsint_core.core.logger import Logger
 
-    # Neo4jGraphRepository uses Neo4jConnection.get_instance() singleton
-    repository = Neo4jGraphRepository()
+        repository = Neo4jGraphRepository()
+        logger = Logger
 
     return GraphService(
         sketch_id=sketch_id,
         repository=repository,
-        logger=Logger,
+        logger=logger,
         enable_batching=enable_batching,
         type_resolver=type_resolver,
         mode=mode,

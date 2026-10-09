@@ -1,5 +1,56 @@
 # Standalone acquisition contract
 
+## Reviewed source retention and resolution
+
+`flowsint_execution.artifacts` is the graph-free source-proof runtime.
+`FilesystemArtifactStore` uses a deployment-selected trusted root, content-addresses
+complete raw bytes by SHA-256, atomically writes objects, records separate immutable
+occurrence snapshots, and verifies length and digest on every read. Serialized locators
+are opaque; the resolver never accepts them as filesystem paths and rejects symlink reads.
+
+Retention authority is runtime-owned. `RetentionAuthority` contains the issuer, reviewer,
+reviewed policy digest, caller, scope, source family, and expiry, and issues an
+operation-bound `RetentionDecision`. Request retention digests and template
+`source_rights` cannot authorize retention. Missing authority or store produces HOLD after
+a successful fetch is consumed, with no output or body retained. Missing or truncated
+bodies, expired policy, missing objects, metadata mismatch, digest mismatch, and unsupported
+UTF-8 mapping produce distinct REVIEW reasons and no bytes. Recovery requires reviewed
+revalidation and a new immutable fetch snapshot; a digest alone is never sufficient.
+
+`execute_fetch_with_source_proof` wraps the existing one-shot `execute_fetch`; it is not a
+second fetcher. WebsiteToText scan, structured, and legacy paths use it. TemplateEnricher
+captures its already bounded response through the same store. Production tasks and the
+template-test API load `FLOWSINT_ARTIFACT_RUNTIME_CONFIG`; constructor injection remains a
+test/local-call seam. WebsiteToText uses caller `website-to-text`, scope
+`local-web-fetch`, source family `http`. A connector uses caller
+`connector:<destination_id>:<endpoint_id>`, scope `enrich.read`, source family `connector`.
+Store roots, headers, secrets, and bodies never enter bundles or reports. The config is an
+operator-owned JSON document with `format_version: "1.0"`, an absolute `store_root`, and
+reviewed `policies`. Each policy declares issuer, reviewer, policy ID, caller, scope,
+source family, issuance/expiry, retention flags, and `content_digest`. The digest is the
+SHA-256 of that policy object without `content_digest`, serialized with sorted keys and
+compact separators. Missing, invalid, expired, ambiguous, or nonmatching policy fails
+closed after fetch. Replacing the current policy prevents older proof resolution.
+
+Raw offsets are zero-based half-open bytes into the exact retained UTF-8 response.
+Normalized offsets are zero-based half-open Unicode code points. Tags and script/style
+content are omitted, entities decoded, node whitespace collapsed and stripped, and one
+space inserted between nonempty text nodes. Ordered segments map every emitted character,
+including cross-node separators. Acquisition bundle `SpanReference` remains strict format
+1.0. Normalized mappings use the separate strict `SourceProofSpanReference` and the
+`source-proof/1.0` persisted proof envelope. Unknown proof versions are rejected.
+
+```sh
+cd flowsint-core
+PYTHONPATH=src ../.venv/bin/python examples/source_proof.py \
+  http://127.0.0.1:8765/fixture /tmp/def44-source-store
+```
+
+The example fetches a controlled fixture through the shared implementation, opens a fresh
+store instance, resolves with explicit current authority, and prints a serialized
+`AcquisitionBundle` plus a body-free resolution summary. A second consumer can pass the
+returned `bundle` string directly to `parse_bundle`.
+
 The value-only `flowsint_execution.acquisition` and `flowsint_execution.models` modules are the service-free Python boundary shipped in the `flowsint-core` wheel. They import only Python's standard library and Pydantic. The sibling `flowsint_execution.fetch` runtime uses the core package's existing `httpx` dependency but requires no database, graph, model, credential, or hosted-authentication service.
 
 `flowsint_execution.models` owns the unchanged `InputOutcome`, `EvidenceEnvelope`, `StructuredExecutionResult`, `OutcomeStatus`, `RedactedDiagnostic`, and `canonical_input_hash` definitions. All repository callers use this namespace. The old `flowsint_core.core.execution` module is removed, not maintained as a compatibility shim. Existing workers serialize JSON, not Python module/class identities.
@@ -14,7 +65,20 @@ Every initial dispatch, redirect, and retry charges one shared operation ledger 
 
 Python cannot forcibly terminate a coroutine that suppresses cancellation. Fetch transports are therefore trusted, cooperative in-process components. If one does not stop within the cleanup budget, `execute_fetch` returns the typed deadline/cancellation result and leaves a supervised background cleanup task to observe its termination and close the client. This is a bounded caller-return guarantee, not a hard-kill guarantee for malicious Python code.
 
-Typed results distinguish success (including decoded empty content), rate limiting, timeout, policy denial, HTTP failure, transport/decode/size failure, and cancellation. Results retain occurrence identity and measured requests, bytes, and elapsed time. Diagnostics are fixed, bounded messages and never include raw URL queries, response bodies, or provider exceptions. Fetch does not retain a source artifact and does not claim extraction or factual acceptance.
+Typed results distinguish success (including decoded empty content), rate limiting, timeout, policy denial, HTTP failure, transport/decode/size failure, and cancellation. Results retain occurrence identity and measured requests, bytes, and elapsed time. Diagnostics are fixed, bounded messages and never include raw URL queries, response bodies, or provider exceptions. Bare `execute_fetch` remains transient; the reviewed `execute_fetch_with_source_proof` wrapper performs authorized capture and does not claim factual acceptance.
+
+Source-proof resolution requires trusted `caller_id`, `scope`, `source_family`, and
+`operation_id`; exact-span resolution also requires the trusted `occurrence_id`.
+These values are supplied server-side from the authorized caller or investigation
+context. Proof metadata and request-controlled scope values never select authority.
+Local Website identities are an explicit trusted-local boundary, not hosted-user
+authentication.
+
+The fetch deadline covers receive, normalization, and capture. Blocking normalization
+and store work runs on a bounded shared worker pool with cooperative checks before
+storage and after normalization. A timeout or caller cancellation returns without
+evidence even if an already-started atomic store commit later finishes; consumed
+resources remain charged and the operation is never retried with a fresh allocation.
 
 WebsiteToText creates its trusted local policy from the origins of explicitly supplied inputs. This is an in-process trust boundary, not hosted authentication. Its allocation defaults are finite, `max_response_bytes` is enforced independently for every input as well as through the pooled allocation, its redirects are same-origin, and its public `scan`, `execute_structured`, and legacy `execute` paths all invoke this same admitted fetch. Before associating any evidence, WebsiteToText requires the returned operation ID, exact occurrence count and ID set, unique occurrence IDs, and every occurrence's admitted `input_ref` to match. Missing, duplicate, unknown, wrong-operation, and wrong-input results fail the whole integration response as `invalid_fetch_result`; there is no positional fallback. A requested legacy QUIC path fails explicitly as `unsafe_transport_disabled`.
 
@@ -82,3 +146,47 @@ assert bundle.candidates[0].disposition == "unreviewed"
 Format `1.0` is the only supported wire format. Missing/unsupported versions and unknown fields are rejected, not silently dropped. Format version is not deployment policy identity: applicable capability and policy content digests identify implementation/configuration separately.
 
 Before downstream adoption, revert the DEF-41 implementation commit as a unit to restore canonical imports and wheel metadata. After adoption, stop the producer and retain existing bundles unchanged; migrate consumers explicitly rather than silently downgrading documents. Never rewrite origin digests, collapse duplicate occurrences, delete evidence, reset consumed resources or mint replacement operation IDs to conceal uncertain outcomes. Rollback does not authorize re-execution.
+# Observed extraction (`observed-extraction/1.0`)
+
+Observed extraction is metadata layered on the unchanged acquisition/1.0 contract. The
+authoritative value types and pure extractor are in
+`flowsint_execution.observed_extraction`. A live WebsiteToText request extracts only
+after the response has been admitted and retained, inside the existing source-proof
+worker and its original elapsed allocation. Saved replay uses
+`extraction_runtime.resolve_and_extract_observations(source_proof, ...)`; caller,
+scope, source family, operation, and occurrence must match the persisted proof and the
+current reviewed runtime policy.
+
+`extraction_runtime.execute_live_observed_extraction(url, config_path=...)` is the
+graph-free live entry point. It uses only the admitted execution fetch, deployment-owned
+runtime authority, retained artifact store, and the same pure extractor as replay. The
+standalone `examples/observed_extraction.py --url URL --runtime-config FILE` command calls
+it directly without loading WebsiteToText, a registry, graph, database, planner, model, or
+hosted-authentication configuration. `--proof` replay also requires `--operation` and
+`--occurrence`.
+
+Raw observation spans are byte offsets into the retained body and are resolved against
+its exact length and SHA-256 digest. They are not normalized `SourceProofSpanReference`
+ranges. `resolve_observation_span(...)` accepts a complete typed `Observation` plus trusted
+expected occurrence and input references, re-extracts with the declared versioned policy,
+and rejects identity, value, context, or span mismatches. The authorized
+`artifact_runtime.resolve_persisted_observation(...)` additionally checks current
+caller/scope/source, operation, occurrence, retention, proof, and typed metadata before
+returning exact value and context bytes. The old arbitrary-range convention is unsupported.
+Links and forms are unreviewed, non-executable metadata. They never create
+Email, Phone, Individual, or graph-edge outputs. Relative references use the retained
+final page URL. Non-sensitive query parameters are retained so fragment-only references
+inherit the correct query. Empty attribute values are omitted because the contract
+requires a nonempty exact raw span; query strings containing credential-like names
+(`token`, `secret`, password aliases, sessions, authorization codes, or signatures,
+including delimiter/case/percent-encoding variants) are removed as a whole by the shared
+conservative disclosure helper. It is not an exhaustive secret detector. Ambiguous
+credential-like query authority fails closed, while `page`, `view`, `edition`, `filter`,
+and `department` retain their meaningful values.
+
+HOLD and REVIEW resolution states produce no observations. A revoked or unavailable
+current policy cannot be bypassed with an older proof. Both the source proof and the
+machine-readable observation result are bounded before a success outcome is returned.
+The strict `observed-extraction/1.0` parser restores the actual Observation, enum, span,
+diagnostic, and result models. Unknown versions and fields are rejected. This metadata
+cannot choose a store path, caller authority, or executable operation.

@@ -1,0 +1,44 @@
+{
+  "authorization_and_compaction": {
+    "authorized": "available",
+    "normalized_bytes": 80000,
+    "proof_bytes": 2310,
+    "proof_limit": 8388608,
+    "span_count": 1,
+    "wrong_occurrence": [
+      "review",
+      "authorization_mismatch"
+    ],
+    "wrong_operation": [
+      "review",
+      "authorization_mismatch"
+    ]
+  },
+  "empty_example": {
+    "candidates": 0,
+    "completion_witness": "controlled_fetch_complete",
+    "serialized_bytes": 2367,
+    "state": "available",
+    "status": "valid_no_result"
+  },
+  "timeout_and_cancellation": {
+    "cancellation": {
+      "artifact": null,
+      "bytes": 15,
+      "reported_elapsed": 0.021171602998947492,
+      "span_count": 0,
+      "status": "cancelled",
+      "store_writes_started": 1,
+      "wall": 0.021689018001779914
+    },
+    "timeout": {
+      "artifact": null,
+      "bytes": 15,
+      "reported_elapsed": 0.0502629189977597,
+      "span_count": 0,
+      "status": "timeout",
+      "store_writes_started": 1,
+      "wall": 0.0509750780001923
+    }
+  }
+}

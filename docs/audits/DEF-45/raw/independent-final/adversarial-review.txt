@@ -1,0 +1,26 @@
+PASS temporal pre-heading contact remains unknown
+PASS later people remain separately bounded
+PASS generic office does not create person
+PASS duplicates retain distinct exact spans
+PASS malformed href emits no executable link
+PASS canonical observation resolves exact bytes
+PASS resolver rejects value/ownership/span tampering
+PASS direct hypothesis constructor is strict
+PASS strict metadata wire roundtrip restores exact result
+PASS metadata rejects generated/accepted/executed promotion
+PASS credential alias redacted: client_secret
+PASS credential alias redacted: clientSecret
+PASS credential alias redacted: auth_token
+PASS credential alias redacted: passwd
+PASS credential alias redacted: pwd
+PASS credential alias redacted: API%5FKEY
+PASS credential alias redacted: x-signature
+PASS credential alias redacted: session_id
+PASS meaningful query retained
+PASS link remains non-executable
+PASS clean CLI has no auth prerequisite
+PASS explicit runtime config controls live hold
+PASS live helper imports no graph/auth/enricher module
+PASS InputOutcome typed metadata survives wire roundtrip
+PASS InputOutcome rejects arbitrary metadata
+ALL ADVERSARIAL CHECKS PASSED

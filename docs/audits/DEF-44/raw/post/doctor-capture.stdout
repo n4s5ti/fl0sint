@@ -1,0 +1,79 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Function",
+            "Union",
+            "Static",
+            "Const",
+            "Annotation",
+            "Interface",
+            "Delegate",
+            "Typedef",
+            "Community",
+            "Macro",
+            "Enum",
+            "CodeElement",
+            "Record",
+            "Trait",
+            "Constructor",
+            "Impl",
+            "Method",
+            "Folder",
+            "Process",
+            "Module",
+            "Struct",
+            "Property",
+            "Class",
+            "Template",
+            "File",
+            "TypeAlias",
+            "Namespace"
+        ],
+        "fileCount": 1864,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "refactor": {
+        "concept": "capture_source",
+        "symbols": [
+            {
+                "name": "capture_source",
+                "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                "safetyScore": 85,
+                "wave": 1,
+                "findings": [
+                    "high_fanout"
+                ],
+                "evidence": {
+                    "symbol": "capture_source",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "structuralCallers": 2,
+                    "visibility": "public",
+                    "limits": []
+                },
+                "recommendation": "safe to modify"
+            }
+        ],
+        "waves": {
+            "safe": 1,
+            "moderate": 0,
+            "careful": 0
+        },
+        "warnings": [],
+        "summary": {
+            "totalSymbols": 1,
+            "totalFlows": 11,
+            "suggestedStart": "Start with wave 1 safe changes.",
+            "durationMs": 276
+        }
+    }
+}

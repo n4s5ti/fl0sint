@@ -1,0 +1,18 @@
+{
+  "mode": "index",
+  "targetPath": "/home/n4s5ti/Documents/dev/fl0sint",
+  "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint/.gitnexus/lbug",
+  "success": true,
+  "warnings": [
+    "No workspace packages with recognised entry files — sidecar will be empty"
+  ],
+  "generation": "sha256:d0a052a6d8e34cc3371b95ed7743d5cd7b2c6263b958aef53c0c863fded96ba6",
+  "planAction": "rebuild",
+  "deltaAdded": 3167,
+  "deltaModified": 17,
+  "deltaDeleted": 0,
+  "deltaRenamed": 1,
+  "deltaUnreadable": 0,
+  "indexLatencyMs": 74285,
+  "filesParsed": 4089
+}

@@ -1,0 +1,45 @@
+{
+  "issue": "DEF-46",
+  "title": "[S06] Isolate acquisition from graph writes with a complete capture sink",
+  "kind": "reconstructed-before-edit baseline",
+  "base_commit": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe",
+  "base_worktree": "/tmp/fl0sint-def46-base-7f6f3c83",
+  "repair_branch": "work/def-46-capture-sink",
+  "reconstruction_note": "The prior DEF-46 delivery committed an unverified partial implementation. This baseline was reconstructed from the accepted parent while repairing that work; it is not represented as a pre-existing review receipt.",
+  "baseline_behavior": {
+    "first_enabled_path": "flowsint_enrichers.website.to_links.WebsiteToLinks -> Enricher.__init__ -> create_graph_service -> Neo4jGraphRepository -> Neo4jConnection",
+    "capture_repository": "absent",
+    "default_acquisition": "required live Neo4j graph-service construction",
+    "observed_before_failure": "With NEO4J_URI_BOLT, NEO4J_USERNAME, and NEO4J_PASSWORD unset, WebsiteToLinks(sketch_id='def46-repro') raised ValueError: Neo4j connection credentials are required during construction."
+  },
+  "baseline_verification": {
+    "core_full_pytest": {
+      "command": "cd flowsint-core && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest",
+      "result": "1027 passed, 2 failed in 124.04s",
+      "failures": [
+        "tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface: missing /tmp/def45-live-fixture.html",
+        "tests/core/test_sqlite_runtime.py::test_sqlite_engine_enables_foreign_keys: subprocess timeout after 30 seconds"
+      ],
+      "classification": "pre-existing baseline failures; retained for head comparison"
+    },
+    "enrichers_full_pytest": {
+      "command": "cd flowsint-enrichers && UV_PROJECT_ENVIRONMENT=/home/n4s5ti/Documents/dev/fl0sint/.venv uv run --no-sync pytest",
+      "result": "exit 0; 180 tests collected",
+      "classification": "baseline pass"
+    },
+    "graphos": {
+      "index": "2593 files parsed; index completed",
+      "drift": "total=0"
+    },
+    "blast": {
+      "target": "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+      "upstream": "UNKNOWN (Python registry/dynamic-edge coverage gap)",
+      "downstream": "CRITICAL"
+    },
+    "doctor_hunt": {
+      "result": "not run as a source hunt: pip3r doctor --hunt requires --hunt-target for a CLI executable",
+      "classification": "tooling limitation / UNKNOWN, not a pass"
+    }
+  },
+  "raw_evidence": "raw/baseline/"
+}

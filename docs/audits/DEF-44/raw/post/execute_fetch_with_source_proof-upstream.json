@@ -1,0 +1,18 @@
+{
+  "command": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "--no-auto-index",
+    "--json",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "upstream",
+    "flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof"
+  ],
+  "rc": 0,
+  "seconds": 1.0541491508483887
+}

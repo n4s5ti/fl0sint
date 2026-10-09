@@ -1,0 +1,424 @@
+{
+    "symbol": "flowsint-types/src/flowsint_types/phone.py:Phone",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+        "name": "Phone",
+        "filePath": "flowsint-types/src/flowsint_types/phone.py",
+        "nodeType": "Class",
+        "startLine": 11,
+        "endLine": 102,
+        "content": "class Phone(FlowsintType):     \"\"\"Represents a phone number with country and carrier information.\"\"\"     number: str = Field(..., description=\"Phone number\", title=\"Phone Number\", json_schema_extra={\"primary\": True})     country: Optional[str] = Field(         None, description=\"Country code (ISO 3166-1 alpha-2)\", title=\"Country Code\"     )     carrier: Optional[str] = Field(         None, description=\"Mobile carrier or service provider\", title=\"Carrier\"     )     @model_validator(mode='before')     @classmethod     def convert_string_to_dict(cls, data: Any) -> Any:         \"\"\"Allow creating Phone from a string directly.\"\"\"         if isinstance(data, str):             return {'number': data}         return data     @field_validator('number')     @classmethod     def validate_phone_number(cls, v: str) -> str:         \"\"\"Validate phone number format using phonenumbers library.         Tries to parse the number in multiple ways:         1. As international format (with + prefix)         2. With common region codes (US, GB, FR, etc.)         \"\"\"         # If it looks like an international number (starts with +), try parsing without region         if v.startswith('+'):             try:                 parsed = phonenumbers.parse(v, None)                 if phonenumbers.is_valid_number(parsed):                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(v, region)                 if phonenumbers.is_valid_number(parsed):                     # Return the number in international format                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 continue         # If all attempts fail, raise an error         raise ValueError(f\"Invalid phone number: {v}. Must be in international format (+...) or a valid format for common regions.\")     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.number         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse a phone number from a raw string.\"\"\"         return cls(number=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains a phone number.\"\"\"         line = line.strip()         if not line:             return False         # 1) Avoid IP v4 / v6         try:             ipaddress.ip_address(line)             return False         except ValueError:             pass         # Try international format first (starts with +)         if line.startswith('+'):             try:                 parsed = phonenumbers.parse(line, None)                 return phonenumbers.is_valid_number(parsed)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(line, region)                 if phonenumbers.is_valid_number(parsed):                     return True             except NumberParseException:                 continue         return False"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "name": "Phone",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Class",
+            "startLine": 11,
+            "endLine": 102,
+            "content": "class Phone(FlowsintType):     \"\"\"Represents a phone number with country and carrier information.\"\"\"     number: str = Field(..., description=\"Phone number\", title=\"Phone Number\", json_schema_extra={\"primary\": True})     country: Optional[str] = Field(         None, description=\"Country code (ISO 3166-1 alpha-2)\", title=\"Country Code\"     )     carrier: Optional[str] = Field(         None, description=\"Mobile carrier or service provider\", title=\"Carrier\"     )     @model_validator(mode='before')     @classmethod     def convert_string_to_dict(cls, data: Any) -> Any:         \"\"\"Allow creating Phone from a string directly.\"\"\"         if isinstance(data, str):             return {'number': data}         return data     @field_validator('number')     @classmethod     def validate_phone_number(cls, v: str) -> str:         \"\"\"Validate phone number format using phonenumbers library.         Tries to parse the number in multiple ways:         1. As international format (with + prefix)         2. With common region codes (US, GB, FR, etc.)         \"\"\"         # If it looks like an international number (starts with +), try parsing without region         if v.startswith('+'):             try:                 parsed = phonenumbers.parse(v, None)                 if phonenumbers.is_valid_number(parsed):                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(v, region)                 if phonenumbers.is_valid_number(parsed):                     # Return the number in international format                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 continue         # If all attempts fail, raise an error         raise ValueError(f\"Invalid phone number: {v}. Must be in international format (+...) or a valid format for common regions.\")     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.number         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse a phone number from a raw string.\"\"\"         return cls(number=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains a phone number.\"\"\"         line = line.strip()         if not line:             return False         # 1) Avoid IP v4 / v6         try:             ipaddress.ip_address(line)             return False         except ValueError:             pass         # Try international format first (starts with +)         if line.startswith('+'):             try:                 parsed = phonenumbers.parse(line, None)                 return phonenumbers.is_valid_number(parsed)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(line, region)                 if phonenumbers.is_valid_number(parsed):                     return True             except NumberParseException:                 continue         return False"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.convert_string_to_dict#1",
+            "name": "convert_string_to_dict",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Method",
+            "startLine": 24,
+            "endLine": 28,
+            "content": "    def convert_string_to_dict(cls, data: Any) -> Any:         \"\"\"Allow creating Phone from a string directly.\"\"\"         if isinstance(data, str):             return {'number': data}         return data"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.validate_phone_number#1",
+            "name": "validate_phone_number",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Method",
+            "startLine": 32,
+            "endLine": 60,
+            "content": "    def validate_phone_number(cls, v: str) -> str:         \"\"\"Validate phone number format using phonenumbers library.         Tries to parse the number in multiple ways:         1. As international format (with + prefix)         2. With common region codes (US, GB, FR, etc.)         \"\"\"         # If it looks like an international number (starts with +), try parsing without region         if v.startswith('+'):             try:                 parsed = phonenumbers.parse(v, None)                 if phonenumbers.is_valid_number(parsed):                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(v, region)                 if phonenumbers.is_valid_number(parsed):                     # Return the number in international format                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 continue         # If all attempts fail, raise an error         raise ValueError(f\"Invalid phone number: {v}. Must be in international format (+...) or a valid format for common regions.\")"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.compute_label#0",
+            "name": "compute_label",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Method",
+            "startLine": 63,
+            "endLine": 65,
+            "content": "    def compute_label(self) -> Self:         self.nodeLabel = self.number         return self"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.from_string#1",
+            "name": "from_string",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Method",
+            "startLine": 68,
+            "endLine": 70,
+            "content": "    def from_string(cls, line: str):         \"\"\"Parse a phone number from a raw string.\"\"\"         return cls(number=line.strip())"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.detect#1",
+            "name": "detect",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Method",
+            "startLine": 73,
+            "endLine": 102,
+            "content": "    def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains a phone number.\"\"\"         line = line.strip()         if not line:             return False         # 1) Avoid IP v4 / v6         try:             ipaddress.ip_address(line)             return False         except ValueError:             pass         # Try international format first (starts with +)         if line.startswith('+'):             try:                 parsed = phonenumbers.parse(line, None)                 return phonenumbers.is_valid_number(parsed)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(line, region)                 if phonenumbers.is_valid_number(parsed):                     return True             except NumberParseException:                 continue         return False"
+        },
+        {
+            "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.number",
+            "name": "number",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Property",
+            "startLine": 14,
+            "endLine": 14,
+            "content": "    number: str = Field(..., description=\"Phone number\", title=\"Phone Number\", json_schema_extra={\"primary\": True})"
+        },
+        {
+            "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.country",
+            "name": "country",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Property",
+            "startLine": 15,
+            "endLine": 17,
+            "content": "    country: Optional[str] = Field(         None, description=\"Country code (ISO 3166-1 alpha-2)\", title=\"Country Code\"     )"
+        },
+        {
+            "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.carrier",
+            "name": "carrier",
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "nodeType": "Property",
+            "startLine": 18,
+            "endLine": 20,
+            "content": "    carrier: Optional[str] = Field(         None, description=\"Mobile carrier or service provider\", title=\"Carrier\"     )"
+        },
+        {
+            "id": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+            "name": "nodeLabel",
+            "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+            "nodeType": "Property",
+            "startLine": 21,
+            "endLine": 25,
+            "content": "    nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )"
+        },
+        {
+            "id": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+            "name": "FlowsintType",
+            "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+            "nodeType": "Class",
+            "startLine": 6,
+            "endLine": 28,
+            "content": "class FlowsintType(BaseModel):     \"\"\"Base class for all Flowsint entity types with nodeLabel support.     nodeLabel is optional but computed at definition time.     All classes that inherit from FlowsintType must be decorated with @flowsint_type     to be registered in the global TYPE_REGISTRY and accessed by their class name.     Usage:         from flowsint_types.registry import flowsint_type         @flowsint_type         class Domain(FlowsintType):             domain: str     \"\"\"     nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )     # Allow extra keys to support additional properties from the user     model_config = ConfigDict(extra=\"allow\")"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.number",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.country",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.carrier",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.convert_string_to_dict#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.validate_phone_number#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.compute_label#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.from_string#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+            "to": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.detect#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+            "to": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-types/src/flowsint_types/phone.py",
+            "count": 9,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/phone.py:Phone",
+                    "name": "Phone",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Class",
+                    "startLine": 11,
+                    "endLine": 102,
+                    "content": "class Phone(FlowsintType):     \"\"\"Represents a phone number with country and carrier information.\"\"\"     number: str = Field(..., description=\"Phone number\", title=\"Phone Number\", json_schema_extra={\"primary\": True})     country: Optional[str] = Field(         None, description=\"Country code (ISO 3166-1 alpha-2)\", title=\"Country Code\"     )     carrier: Optional[str] = Field(         None, description=\"Mobile carrier or service provider\", title=\"Carrier\"     )     @model_validator(mode='before')     @classmethod     def convert_string_to_dict(cls, data: Any) -> Any:         \"\"\"Allow creating Phone from a string directly.\"\"\"         if isinstance(data, str):             return {'number': data}         return data     @field_validator('number')     @classmethod     def validate_phone_number(cls, v: str) -> str:         \"\"\"Validate phone number format using phonenumbers library.         Tries to parse the number in multiple ways:         1. As international format (with + prefix)         2. With common region codes (US, GB, FR, etc.)         \"\"\"         # If it looks like an international number (starts with +), try parsing without region         if v.startswith('+'):             try:                 parsed = phonenumbers.parse(v, None)                 if phonenumbers.is_valid_number(parsed):                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(v, region)                 if phonenumbers.is_valid_number(parsed):                     # Return the number in international format                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 continue         # If all attempts fail, raise an error         raise ValueError(f\"Invalid phone number: {v}. Must be in international format (+...) or a valid format for common regions.\")     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.number         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse a phone number from a raw string.\"\"\"         return cls(number=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains a phone number.\"\"\"         line = line.strip()         if not line:             return False         # 1) Avoid IP v4 / v6         try:             ipaddress.ip_address(line)             return False         except ValueError:             pass         # Try international format first (starts with +)         if line.startswith('+'):             try:                 parsed = phonenumbers.parse(line, None)                 return phonenumbers.is_valid_number(parsed)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(line, region)                 if phonenumbers.is_valid_number(parsed):                     return True             except NumberParseException:                 continue         return False"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.convert_string_to_dict#1",
+                    "name": "convert_string_to_dict",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 24,
+                    "endLine": 28,
+                    "content": "    def convert_string_to_dict(cls, data: Any) -> Any:         \"\"\"Allow creating Phone from a string directly.\"\"\"         if isinstance(data, str):             return {'number': data}         return data"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.validate_phone_number#1",
+                    "name": "validate_phone_number",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 32,
+                    "endLine": 60,
+                    "content": "    def validate_phone_number(cls, v: str) -> str:         \"\"\"Validate phone number format using phonenumbers library.         Tries to parse the number in multiple ways:         1. As international format (with + prefix)         2. With common region codes (US, GB, FR, etc.)         \"\"\"         # If it looks like an international number (starts with +), try parsing without region         if v.startswith('+'):             try:                 parsed = phonenumbers.parse(v, None)                 if phonenumbers.is_valid_number(parsed):                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(v, region)                 if phonenumbers.is_valid_number(parsed):                     # Return the number in international format                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 continue         # If all attempts fail, raise an error         raise ValueError(f\"Invalid phone number: {v}. Must be in international format (+...) or a valid format for common regions.\")"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.compute_label#0",
+                    "name": "compute_label",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 63,
+                    "endLine": 65,
+                    "content": "    def compute_label(self) -> Self:         self.nodeLabel = self.number         return self"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.from_string#1",
+                    "name": "from_string",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 68,
+                    "endLine": 70,
+                    "content": "    def from_string(cls, line: str):         \"\"\"Parse a phone number from a raw string.\"\"\"         return cls(number=line.strip())"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.detect#1",
+                    "name": "detect",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 73,
+                    "endLine": 102,
+                    "content": "    def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains a phone number.\"\"\"         line = line.strip()         if not line:             return False         # 1) Avoid IP v4 / v6         try:             ipaddress.ip_address(line)             return False         except ValueError:             pass         # Try international format first (starts with +)         if line.startswith('+'):             try:                 parsed = phonenumbers.parse(line, None)                 return phonenumbers.is_valid_number(parsed)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(line, region)                 if phonenumbers.is_valid_number(parsed):                     return True             except NumberParseException:                 continue         return False"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.number",
+                    "name": "number",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Property",
+                    "startLine": 14,
+                    "endLine": 14,
+                    "content": "    number: str = Field(..., description=\"Phone number\", title=\"Phone Number\", json_schema_extra={\"primary\": True})"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.country",
+                    "name": "country",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Property",
+                    "startLine": 15,
+                    "endLine": 17,
+                    "content": "    country: Optional[str] = Field(         None, description=\"Country code (ISO 3166-1 alpha-2)\", title=\"Country Code\"     )"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.carrier",
+                    "name": "carrier",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Property",
+                    "startLine": 18,
+                    "endLine": 20,
+                    "content": "    carrier: Optional[str] = Field(         None, description=\"Mobile carrier or service provider\", title=\"Carrier\"     )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+                    "name": "nodeLabel",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Property",
+                    "startLine": 21,
+                    "endLine": 25,
+                    "content": "    nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )"
+                },
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+                    "name": "FlowsintType",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Class",
+                    "startLine": 6,
+                    "endLine": 28,
+                    "content": "class FlowsintType(BaseModel):     \"\"\"Base class for all Flowsint entity types with nodeLabel support.     nodeLabel is optional but computed at definition time.     All classes that inherit from FlowsintType must be decorated with @flowsint_type     to be registered in the global TYPE_REGISTRY and accessed by their class name.     Usage:         from flowsint_types.registry import flowsint_type         @flowsint_type         class Domain(FlowsintType):             domain: str     \"\"\"     nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )     # Allow extra keys to support additional properties from the user     model_config = ConfigDict(extra=\"allow\")"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-types",
+            "direct": true,
+            "symbolCount": 10
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.number",
+                    "name": "number",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Property",
+                    "startLine": 14,
+                    "endLine": 14,
+                    "content": "    number: str = Field(..., description=\"Phone number\", title=\"Phone Number\", json_schema_extra={\"primary\": True})"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.country",
+                    "name": "country",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Property",
+                    "startLine": 15,
+                    "endLine": 17,
+                    "content": "    country: Optional[str] = Field(         None, description=\"Country code (ISO 3166-1 alpha-2)\", title=\"Country Code\"     )"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/phone.py:Phone.carrier",
+                    "name": "carrier",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Property",
+                    "startLine": 18,
+                    "endLine": 20,
+                    "content": "    carrier: Optional[str] = Field(         None, description=\"Mobile carrier or service provider\", title=\"Carrier\"     )"
+                },
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+                    "name": "FlowsintType",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Class",
+                    "startLine": 6,
+                    "endLine": 28,
+                    "content": "class FlowsintType(BaseModel):     \"\"\"Base class for all Flowsint entity types with nodeLabel support.     nodeLabel is optional but computed at definition time.     All classes that inherit from FlowsintType must be decorated with @flowsint_type     to be registered in the global TYPE_REGISTRY and accessed by their class name.     Usage:         from flowsint_types.registry import flowsint_type         @flowsint_type         class Domain(FlowsintType):             domain: str     \"\"\"     nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )     # Allow extra keys to support additional properties from the user     model_config = ConfigDict(extra=\"allow\")"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.convert_string_to_dict#1",
+                    "name": "convert_string_to_dict",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 24,
+                    "endLine": 28,
+                    "content": "    def convert_string_to_dict(cls, data: Any) -> Any:         \"\"\"Allow creating Phone from a string directly.\"\"\"         if isinstance(data, str):             return {'number': data}         return data"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.validate_phone_number#1",
+                    "name": "validate_phone_number",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 32,
+                    "endLine": 60,
+                    "content": "    def validate_phone_number(cls, v: str) -> str:         \"\"\"Validate phone number format using phonenumbers library.         Tries to parse the number in multiple ways:         1. As international format (with + prefix)         2. With common region codes (US, GB, FR, etc.)         \"\"\"         # If it looks like an international number (starts with +), try parsing without region         if v.startswith('+'):             try:                 parsed = phonenumbers.parse(v, None)                 if phonenumbers.is_valid_number(parsed):                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(v, region)                 if phonenumbers.is_valid_number(parsed):                     # Return the number in international format                     return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)             except NumberParseException:                 continue         # If all attempts fail, raise an error         raise ValueError(f\"Invalid phone number: {v}. Must be in international format (+...) or a valid format for common regions.\")"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.compute_label#0",
+                    "name": "compute_label",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 63,
+                    "endLine": 65,
+                    "content": "    def compute_label(self) -> Self:         self.nodeLabel = self.number         return self"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.from_string#1",
+                    "name": "from_string",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 68,
+                    "endLine": 70,
+                    "content": "    def from_string(cls, line: str):         \"\"\"Parse a phone number from a raw string.\"\"\"         return cls(number=line.strip())"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/phone.py:Phone.detect#1",
+                    "name": "detect",
+                    "filePath": "flowsint-types/src/flowsint_types/phone.py",
+                    "nodeType": "Method",
+                    "startLine": 73,
+                    "endLine": 102,
+                    "content": "    def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains a phone number.\"\"\"         line = line.strip()         if not line:             return False         # 1) Avoid IP v4 / v6         try:             ipaddress.ip_address(line)             return False         except ValueError:             pass         # Try international format first (starts with +)         if line.startswith('+'):             try:                 parsed = phonenumbers.parse(line, None)                 return phonenumbers.is_valid_number(parsed)             except NumberParseException:                 pass         # Try parsing with common regions         common_regions = ['US', 'GB', 'FR', 'DE', 'ES', 'IT', 'CA', 'AU', 'JP', 'CN']         for region in common_regions:             try:                 parsed = phonenumbers.parse(line, region)                 if phonenumbers.is_valid_number(parsed):                     return True             except NumberParseException:                 continue         return False"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+                    "name": "nodeLabel",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Property",
+                    "startLine": 21,
+                    "endLine": 25,
+                    "content": "    nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-types/src/flowsint_types/phone.py:Phone",
+        "rootSymbols": 1,
+        "totalSymbols": 11,
+        "totalEdges": 10,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 9,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "name": "build_bundle",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Function",
+        "startLine": 556,
+        "endLine": 588,
+        "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+            "name": "build_bundle",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Function",
+            "startLine": 556,
+            "endLine": 588,
+            "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+                    "name": "build_bundle",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Function",
+                    "startLine": 556,
+                    "endLine": 588,
+                    "content": "def build_bundle(     *,     request: AcquisitionRequest,     outcomes: tuple[OccurrenceOutcome, ...],     bundle_id: str,     created_at: datetime,     actual_resources: Resources,     artifacts: tuple[ArtifactReference, ...] = (),     spans: tuple[SpanReference, ...] = (),     evidence_list: tuple[EvidenceReference, ...] = (),     candidates: tuple[CandidateReference, ...] = (), ) -> AcquisitionBundle:     \"\"\"Validate payload and compute its origin digest; never invent provenance.\"\"\"     try:         payload = _BundlePayload(             request=request,             outcomes=outcomes,             bundle_id=bundle_id,             created_at=created_at,             actual_resources=actual_resources,             artifacts=artifacts,             spans=spans,             evidence_list=evidence_list,             candidates=candidates,         )         bundle = AcquisitionBundle(             **payload.model_dump(warnings=\"error\"), origin_digest=_digest(payload)         )         return bundle     except ValidationError as exc:         raise _error(exc) from None     except (ValueError, TypeError, RecursionError):         raise ContractError(\"malformed_contract\") from None"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:build_bundle",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

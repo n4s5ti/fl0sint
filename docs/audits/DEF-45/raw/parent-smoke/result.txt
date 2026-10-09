@@ -1,0 +1,4 @@
+{"status": "PASS", "observations": 14, "resources": {"requests": 2, "pages": null, "bytes": 1074, "elapsed_seconds": 0.23375706300066668, "model_calls": null, "input_tokens": null, "output_tokens": null, "browser_actions": null, "concurrency": null, "fanout": null, "money_usd": null}, "checks": ["flag-only clean live CLI", "saved equality", "all exact raw/context spans", "wrong scope/operation denied", "tampered value denied", "actual final URL", "distinct duplicate spans", "generic and person contexts", "meaningful queries", "non-executable observations"]}
+
+
+Wall time: 2.16 seconds

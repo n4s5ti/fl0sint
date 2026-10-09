@@ -1,0 +1,8 @@
+ImportError while loading conftest '/home/n4s5ti/Documents/dev/fl0sint-def44-source/flowsint-core/tests/conftest.py'.
+tests/conftest.py:11: in <module>
+    from flowsint_core.core.models import Base
+src/flowsint_core/__init__.py:5: in <module>
+    from .core.auth import *
+src/flowsint_core/core/auth.py:13: in <module>
+    raise ValueError(
+E   ValueError: AUTH_SECRET environment variable is not set. Please set it in your .env file.

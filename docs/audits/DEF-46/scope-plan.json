@@ -1,0 +1,43 @@
+{
+  "issue": "DEF-46",
+  "title": "[S06] Isolate acquisition from graph writes with a complete capture sink",
+  "base_commit": "7f6f3c83a4bdcfed4e385fcf566adcd7ee2914fe",
+  "branch": "work/def-46-capture-sink",
+  "checkout": "/home/n4s5ti/Documents/dev/fl0sint",
+  "checkout_note": "The similarly named nested directory is an untracked copy, not the working checkout used for this repair.",
+  "prerequisites": {
+    "DEF-41": "done",
+    "DEF-45": "in review; not accepted and not claimed as accepted here"
+  },
+  "actual_enabled_path": [
+    "Registry construction forwards enricher kwargs to WebsiteToLinks.",
+    "WebsiteToLinks.__init__ selects capture_only only when no graph_service was injected, and rejects an injected non-capture repository.",
+    "Enricher.__init__ calls create_graph_service(..., capture_only=True).",
+    "create_graph_service constructs CaptureGraphRepository without importing Logger or constructing Neo4jGraphRepository.",
+    "WebsiteToLinks.scan runs the real reconspread.Crawler, captures direct callback candidates inside source_context, catches per-source exceptions, and returns unreviewed candidates with source lineage.",
+    "WebsiteToLinks.postprocess performs no publication; Enricher.execute reaches final GraphService.flush(), which is local capture-batch flush only."
+  ],
+  "planned_paths": [
+    "flowsint-core/src/flowsint_core/core/graph/capture_repository.py",
+    "flowsint-core/src/flowsint_core/core/graph/service.py",
+    "flowsint-core/src/flowsint_core/core/enricher_base.py",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_links.py",
+    "flowsint-core/tests/test_capture_repository.py",
+    "flowsint-enrichers/tests/enrichers/test_website_to_links_capture.py",
+    "docs/audits/DEF-46/"
+  ],
+  "required_properties": [
+    "Capture candidates are explicitly disposition=unreviewed and retain input_index/source_url lineage.",
+    "Capture mode has no live-service fallback and no fabricated Neo4j element identifiers.",
+    "Reads, queries, deletes, updates, merges, and relationship lookup fail with explicit NotImplementedError and are captured as unsupported publication intent.",
+    "Batch threshold flush is a local capture event; capture candidates are retained before and after flushing.",
+    "No constructor/import path requires Neo4j credentials or opens a connection in capture mode.",
+    "The four fixtures use WebsiteToLinks' enabled crawler path and a loopback HTTP server, never a simulated crawler."
+  ],
+  "analysis_boundaries": {
+    "blast": "Pip3r provides static coverage only. Dynamic registry/kwargs edges are recorded as UNKNOWN and traced manually above.",
+    "external_io": "Loopback-only test HTTP server; no real-site collection, push, merge, deploy, or live graph write.",
+    "out_of_scope": ["historical graph data", "legacy live-mode behavior outside WebsiteToLinks", "DEF-45 acceptance"]
+  },
+  "review_gate": "Independent reviewer must inspect the repair diff. Any finding fix must be sent to that same reviewer for re-verification before Linear moves to In Review."
+}

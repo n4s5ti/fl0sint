@@ -1,0 +1,685 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+        "name": "execute_fetch",
+        "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+        "nodeType": "Function",
+        "startLine": 345,
+        "endLine": 671,
+        "content": "async def execute_fetch(     operation: AdmittedFetchOperation,     *,     transport: httpx.AsyncBaseTransport | None = None, ) -> FetchResult:     \"\"\"Execute only a sealed operation using verified async HTTP streaming.\"\"\"     operation.validate_seal()     operation.claim_execution()     ledger = _Ledger(operation)     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)     semaphore = asyncio.Semaphore(concurrency)     timeout = operation.allocation.elapsed_seconds or 0.001     client = httpx.AsyncClient(         transport=transport,         verify=True,         trust_env=False,         follow_redirects=False,         timeout=httpx.Timeout(timeout),         headers={\"accept-encoding\": \"identity\"},     )     async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                            ... [truncated]"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "name": "execute_fetch",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 345,
+            "endLine": 671,
+            "content": "async def execute_fetch(     operation: AdmittedFetchOperation,     *,     transport: httpx.AsyncBaseTransport | None = None, ) -> FetchResult:     \"\"\"Execute only a sealed operation using verified async HTTP streaming.\"\"\"     operation.validate_seal()     operation.claim_execution()     ledger = _Ledger(operation)     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)     semaphore = asyncio.Semaphore(concurrency)     timeout = operation.allocation.elapsed_seconds or 0.001     client = httpx.AsyncClient(         transport=transport,         verify=True,         trust_env=False,         follow_redirects=False,         timeout=httpx.Timeout(timeout),         headers={\"accept-encoding\": \"identity\"},     )     async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                            ... [truncated]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "name": "_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 36,
+            "endLine": 55,
+            "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 66,
+            "endLine": 67,
+            "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "name": "_operation_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 195,
+            "endLine": 207,
+            "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+            "name": "_diagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 293,
+            "endLine": 298,
+            "content": "def _diagnostic(     code: str, message: str, *, retryable: bool = False ) -> RedactedDiagnostic:     return RedactedDiagnostic(         code=code, safe_message=message[:512], retryable=retryable     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "name": "one",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 367,
+            "endLine": 584,
+            "content": "    async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                             \"rate_limited\",                             \"The server rate limited the request.\",                             True,                         )                     if (                         response.status_code in _RETRYABLE                         and retries < operation.parameters.max_retries                     ):                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     if response.status_code < 200 or response.status_code >= 300:                         return failed(           ... [truncated]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:failed",
+            "name": "failed",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 370,
+            "endLine": 378,
+            "content": "        def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:finish_cleanup",
+            "name": "finish_cleanup",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 595,
+            "endLine": 598,
+            "content": "    async def finish_cleanup(pending: set[asyncio.Task]) -> None:         if pending:             await asyncio.wait(pending)         await client.aclose()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+            "name": "bounded_cleanup",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 600,
+            "endLine": 604,
+            "content": "    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:         cleanup = asyncio.create_task(finish_cleanup(pending))         done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)         if not done:             cleanup.add_done_callback(consume_background_result)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "name": "terminal_outcomes",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 606,
+            "endLine": 629,
+            "content": "    def terminal_outcomes(         pending_at_boundary: set[asyncio.Task],         status: FetchStatus,         code: str,         message: str,     ):         outcomes = []         for item, task in zip(operation.inputs, tasks):             if task not in pending_at_boundary:                 outcomes.append(task.result())                 continue             outcomes.append(                 FetchOutcome(                     occurrence_id=item.occurrence_id,                     input_ref=item.input_ref,                     status=status,                     requested_origin=_origin(item.url),                     diagnostic=_diagnostic(                         code, message, retryable=status is FetchStatus.TIMEOUT                     ),                     actual_resources=ledger.occurrence_resources(item.occurrence_id),                 )             )         return outcomes"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_single_chunk",
+            "name": "_single_chunk",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 674,
+            "endLine": 677,
+            "content": "async def _single_chunk(content: bytes):     \"\"\"Adapt already-buffered injected transports without changing live streaming.\"\"\"     if content:         yield content"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+            "name": "claim",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 119,
+            "endLine": 124,
+            "content": "    def claim(self) -> bool:         with self._lock:             if self._claimed:                 return False             self._claimed = True             return True"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "name": "validate_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 139,
+            "endLine": 151,
+            "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "name": "claim_execution",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 153,
+            "endLine": 155,
+            "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_request#1",
+            "name": "charge_request",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 314,
+            "endLine": 320,
+            "content": "    async def charge_request(self, occurrence_id: str) -> bool:         async with self.lock:             if self.requests >= self.request_limit:                 return False             self.requests += 1             self.by_occurrence[occurrence_id][\"requests\"] += 1             return True"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_bytes#3",
+            "name": "charge_bytes",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 322,
+            "endLine": 329,
+            "content": "    async def charge_bytes(         self, occurrence_id: str, count: int, per_input_limit: int     ) -> bool:         async with self.lock:             occurrence = self.by_occurrence[occurrence_id]             self.bytes += count             occurrence[\"bytes\"] += count             return self.bytes <= self.byte_limit and occurrence[\"bytes\"] <= per_input_limit"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+            "name": "resources",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 331,
+            "endLine": 336,
+            "content": "    def resources(self, *, requests=0, bytes_=0) -> Resources:         return Resources(             requests=requests,             bytes=bytes_,             elapsed_seconds=max(0.0, time.monotonic() - self.started),         )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+            "name": "occurrence_resources",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 338,
+            "endLine": 342,
+            "content": "    def occurrence_resources(self, occurrence_id: str) -> Resources:         consumed = self.by_occurrence[occurrence_id]         return self.resources(             requests=consumed[\"requests\"], bytes_=consumed[\"bytes\"]         )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_request#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_bytes#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:failed",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:finish_cleanup",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_single_chunk",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:failed",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:failed",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 18,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+                    "name": "execute_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 345,
+                    "endLine": 671,
+                    "content": "async def execute_fetch(     operation: AdmittedFetchOperation,     *,     transport: httpx.AsyncBaseTransport | None = None, ) -> FetchResult:     \"\"\"Execute only a sealed operation using verified async HTTP streaming.\"\"\"     operation.validate_seal()     operation.claim_execution()     ledger = _Ledger(operation)     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)     semaphore = asyncio.Semaphore(concurrency)     timeout = operation.allocation.elapsed_seconds or 0.001     client = httpx.AsyncClient(         transport=transport,         verify=True,         trust_env=False,         follow_redirects=False,         timeout=httpx.Timeout(timeout),         headers={\"accept-encoding\": \"identity\"},     )     async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                            ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 36,
+                    "endLine": 55,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 66,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 293,
+                    "endLine": 298,
+                    "content": "def _diagnostic(     code: str, message: str, *, retryable: bool = False ) -> RedactedDiagnostic:     return RedactedDiagnostic(         code=code, safe_message=message[:512], retryable=retryable     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+                    "name": "one",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 367,
+                    "endLine": 584,
+                    "content": "    async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                             \"rate_limited\",                             \"The server rate limited the request.\",                             True,                         )                     if (                         response.status_code in _RETRYABLE                         and retries < operation.parameters.max_retries                     ):                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     if response.status_code < 200 or response.status_code >= 300:                         return failed(           ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:failed",
+                    "name": "failed",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 370,
+                    "endLine": 378,
+                    "content": "        def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:finish_cleanup",
+                    "name": "finish_cleanup",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 595,
+                    "endLine": 598,
+                    "content": "    async def finish_cleanup(pending: set[asyncio.Task]) -> None:         if pending:             await asyncio.wait(pending)         await client.aclose()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+                    "name": "bounded_cleanup",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 600,
+                    "endLine": 604,
+                    "content": "    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:         cleanup = asyncio.create_task(finish_cleanup(pending))         done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)         if not done:             cleanup.add_done_callback(consume_background_result)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+                    "name": "terminal_outcomes",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 606,
+                    "endLine": 629,
+                    "content": "    def terminal_outcomes(         pending_at_boundary: set[asyncio.Task],         status: FetchStatus,         code: str,         message: str,     ):         outcomes = []         for item, task in zip(operation.inputs, tasks):             if task not in pending_at_boundary:                 outcomes.append(task.result())                 continue             outcomes.append(                 FetchOutcome(                     occurrence_id=item.occurrence_id,                     input_ref=item.input_ref,                     status=status,                     requested_origin=_origin(item.url),                     diagnostic=_diagnostic(                         code, message, retryable=status is FetchStatus.TIMEOUT                     ),                     actual_resources=ledger.occurrence_resources(item.occurrence_id),                 )             )         return outcomes"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_single_chunk",
+                    "name": "_single_chunk",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 674,
+                    "endLine": 677,
+                    "content": "async def _single_chunk(content: bytes):     \"\"\"Adapt already-buffered injected transports without changing live streaming.\"\"\"     if content:         yield content"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+                    "name": "claim",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 119,
+                    "endLine": 124,
+                    "content": "    def claim(self) -> bool:         with self._lock:             if self._claimed:                 return False             self._claimed = True             return True"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+                    "name": "validate_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 139,
+                    "endLine": 151,
+                    "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+                    "name": "claim_execution",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 153,
+                    "endLine": 155,
+                    "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_request#1",
+                    "name": "charge_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 314,
+                    "endLine": 320,
+                    "content": "    async def charge_request(self, occurrence_id: str) -> bool:         async with self.lock:             if self.requests >= self.request_limit:                 return False             self.requests += 1             self.by_occurrence[occurrence_id][\"requests\"] += 1             return True"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_bytes#3",
+                    "name": "charge_bytes",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 322,
+                    "endLine": 329,
+                    "content": "    async def charge_bytes(         self, occurrence_id: str, count: int, per_input_limit: int     ) -> bool:         async with self.lock:             occurrence = self.by_occurrence[occurrence_id]             self.bytes += count             occurrence[\"bytes\"] += count             return self.bytes <= self.byte_limit and occurrence[\"bytes\"] <= per_input_limit"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+                    "name": "resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 331,
+                    "endLine": 336,
+                    "content": "    def resources(self, *, requests=0, bytes_=0) -> Resources:         return Resources(             requests=requests,             bytes=bytes_,             elapsed_seconds=max(0.0, time.monotonic() - self.started),         )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+                    "name": "occurrence_resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 338,
+                    "endLine": 342,
+                    "content": "    def occurrence_resources(self, occurrence_id: str) -> Resources:         consumed = self.by_occurrence[occurrence_id]         return self.resources(             requests=consumed[\"requests\"], bytes_=consumed[\"bytes\"]         )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 17
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+                    "name": "validate_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 139,
+                    "endLine": 151,
+                    "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+                    "name": "claim_execution",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 153,
+                    "endLine": 155,
+                    "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+                    "name": "resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 331,
+                    "endLine": 336,
+                    "content": "    def resources(self, *, requests=0, bytes_=0) -> Resources:         return Resources(             requests=requests,             bytes=bytes_,             elapsed_seconds=max(0.0, time.monotonic() - self.started),         )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+                    "name": "one",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 367,
+                    "endLine": 584,
+                    "content": "    async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                             \"rate_limited\",                             \"The server rate limited the request.\",                             True,                         )                     if (                         response.status_code in _RETRYABLE                         and retries < operation.parameters.max_retries                     ):                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     if response.status_code < 200 or response.status_code >= 300:                         return failed(           ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+                    "name": "bounded_cleanup",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 600,
+                    "endLine": 604,
+                    "content": "    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:         cleanup = asyncio.create_task(finish_cleanup(pending))         done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)         if not done:             cleanup.add_done_callback(consume_background_result)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+                    "name": "terminal_outcomes",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 606,
+                    "endLine": 629,
+                    "content": "    def terminal_outcomes(         pending_at_boundary: set[asyncio.Task],         status: FetchStatus,         code: str,         message: str,     ):         outcomes = []         for item, task in zip(operation.inputs, tasks):             if task not in pending_at_boundary:                 outcomes.append(task.result())                 continue             outcomes.append(                 FetchOutcome(                     occurrence_id=item.occurrence_id,                     input_ref=item.input_ref,                     status=status,                     requested_origin=_origin(item.url),                     diagnostic=_diagnostic(                         code, message, retryable=status is FetchStatus.TIMEOUT                     ),                     actual_resources=ledger.occurrence_resources(item.occurrence_id),                 )             )         return outcomes"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_ExecutionClaim.claim#0",
+                    "name": "claim",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 119,
+                    "endLine": 124,
+                    "content": "    def claim(self) -> bool:         with self._lock:             if self._claimed:                 return False             self._claimed = True             return True"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_request#1",
+                    "name": "charge_request",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 314,
+                    "endLine": 320,
+                    "content": "    async def charge_request(self, occurrence_id: str) -> bool:         async with self.lock:             if self.requests >= self.request_limit:                 return False             self.requests += 1             self.by_occurrence[occurrence_id][\"requests\"] += 1             return True"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.charge_bytes#3",
+                    "name": "charge_bytes",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 322,
+                    "endLine": 329,
+                    "content": "    async def charge_bytes(         self, occurrence_id: str, count: int, per_input_limit: int     ) -> bool:         async with self.lock:             occurrence = self.by_occurrence[occurrence_id]             self.bytes += count             occurrence[\"bytes\"] += count             return self.bytes <= self.byte_limit and occurrence[\"bytes\"] <= per_input_limit"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.occurrence_resources#1",
+                    "name": "occurrence_resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 338,
+                    "endLine": 342,
+                    "content": "    def occurrence_resources(self, occurrence_id: str) -> Resources:         consumed = self.by_occurrence[occurrence_id]         return self.resources(             requests=consumed[\"requests\"], bytes_=consumed[\"bytes\"]         )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 36,
+                    "endLine": 55,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 195,
+                    "endLine": 207,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 293,
+                    "endLine": 298,
+                    "content": "def _diagnostic(     code: str, message: str, *, retryable: bool = False ) -> RedactedDiagnostic:     return RedactedDiagnostic(         code=code, safe_message=message[:512], retryable=retryable     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:failed",
+                    "name": "failed",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 370,
+                    "endLine": 378,
+                    "content": "        def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:finish_cleanup",
+                    "name": "finish_cleanup",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 595,
+                    "endLine": 598,
+                    "content": "    async def finish_cleanup(pending: set[asyncio.Task]) -> None:         if pending:             await asyncio.wait(pending)         await client.aclose()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_single_chunk",
+                    "name": "_single_chunk",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 674,
+                    "endLine": 677,
+                    "content": "async def _single_chunk(content: bytes):     \"\"\"Adapt already-buffered injected transports without changing live streaming.\"\"\"     if content:         yield content"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 66,
+                    "endLine": 67,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+        "rootSymbols": 1,
+        "totalSymbols": 18,
+        "totalEdges": 22,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 6,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

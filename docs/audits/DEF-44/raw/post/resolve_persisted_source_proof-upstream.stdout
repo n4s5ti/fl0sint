@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+        "name": "resolve_persisted_source_proof",
+        "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+        "nodeType": "Function",
+        "startLine": 173,
+        "endLine": 207,
+        "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "name": "resolve_persisted_source_proof",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 173,
+            "endLine": 207,
+            "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+                    "name": "resolve_persisted_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 173,
+                    "endLine": 207,
+                    "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

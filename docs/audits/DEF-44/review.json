@@ -1,0 +1,82 @@
+{
+  "verdict": "PASS",
+  "final_reviewed_source": "8fdfedb5",
+  "identity": "separate Codex CLI process; same model vendor",
+  "archive_integrity": {
+    "matching_regular_files": 1995,
+    "mismatches": [],
+    "method": "SHA256 every regular archive file against git show commit:path"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F2",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F3",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F4",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F5",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F6",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F7",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F8",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F9",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F10",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F11",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F12",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    },
+    {
+      "id": "F13",
+      "status": "resolved",
+      "evidence": "review/def44-independent-closure-review.md"
+    }
+  ],
+  "limits": [
+    "Reviewer cannot bind sockets; host full suites and real HTTP smokes cover that gap",
+    "Trusted local policy runtime; no hosted auth grant",
+    "Already-started atomic write may finish after cancellation without late evidence"
+  ]
+}

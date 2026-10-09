@@ -1,0 +1,11 @@
+Working directory:
+/home/n4s5ti/Documents/dev/fl0sint-def44-source
+
+Runtime command (no loopback sockets; all HTTP exercised with httpx.MockTransport):
+env PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def44-source/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def44-source/flowsint-enrichers/src FLOWSINT_ARTIFACT_RUNTIME_CONFIG= /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python /tmp/def44-boundary-evidence/independent-verifier.py | tee /tmp/def44-boundary-evidence/independent-verifier.out
+
+Integrity command:
+sha256sum /tmp/def44-boundary-evidence/independent-verifier.py /tmp/def44-boundary-evidence/independent-verifier.out
+
+Exit status: 0
+

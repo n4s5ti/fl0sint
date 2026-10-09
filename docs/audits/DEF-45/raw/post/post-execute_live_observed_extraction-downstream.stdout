@@ -1,0 +1,1033 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+        "name": "execute_live_observed_extraction",
+        "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+        "nodeType": "Function",
+        "startLine": 43,
+        "endLine": 114,
+        "content": "async def execute_live_observed_extraction(     url: str, *, config_path: str | PathLike[str] | None,     caller_id: str = \"website-to-text\", scope: str = \"local-web-fetch\", ) -> LiveObservedExtraction:     \"\"\"Fetch, retain, and extract one controlled URL without graph/auth services.\"\"\"     from .acquisition import AcquisitionRequest, InputOccurrence, Resources     from .artifact_runtime import (PersistedSourceProof, encode_source_proof,                                    load_artifact_runtime)     from .artifacts import ArtifactContext, ArtifactState     from .fetch import (FetchParameters, FetchStatus, TrustedFetchPolicy,                         admit_fetch, execute_fetch_with_source_proof)     from .models import canonical_input_hash     from .observed_extraction import serialize_observed_extraction_metadata     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=\"http\", config_path=config_path,     )     empty = Resources(requests=0, bytes=0, elapsed_seconds=0.0, concurrency=0)     if runtime is None:         return LiveObservedExtraction(\"hold\", ArtifactState.HOLD.value, None, None, None,                                       empty, \"current_policy_unavailable\")     origin = _origin(url)     capability = hashlib.sha256(b\"flowsint.website-to-text.fetch.v1\").hexdigest()     endpoint = hashlib.sha256(json.dumps(         {\"allowed_origins\": [origin], \"redirects\": \"same-origin-only\"},         sort_keys=True, separators=(\",\", \":\"),     ).encode()).hexdigest()     operation_id = f\"observed-extraction-{uuid.uuid4().hex}\"     input_ref = canonical_input_hash(url)     request = AcquisitionRequest(         operation_id=operation_id, caller_id=caller_id, scope=scope,         capability_digest=capability, endpoint_policy_digest=endpoint,         inputs=(InputOccurrence(occurrence_id=\"input-0\", input_ref=input_ref,                                 type_tag=\"http_url\", value=url),),         allocation=Resources(requests=4, bytes=4 * 1024 * 1024,                              elapsed_seconds=10.0, concurrency=1),     )     operation = admit_fetch(request, TrustedFetchPolicy(         caller_id=caller_id, scope=scope, capability_digest=capability,         endpoint_policy_digest=endpoint, allowed_origins=(origin,),     ), FetchParameters(max_redirects=3, max_retries=0,                        max_bytes_per_input=1024 * 1024))     decision = runtime.decision(operation_id)     fetched = await execute_fetch_with_source_proof(         operation, artifact_store=runtime.store, retention_decision=decision,     )     item = fetched.outcomes[0]     if item.fetch_status is not FetchStatus.SUCCESS:         return LiveObservedExtraction(item.fetch_status.value, item.capture.state.value,                                       None, None, None, fetched.actual_resources,                                       item.diagnostic)     if item.capture.state is not ArtifactState.AVAILABLE or item.capture.artifact is None:         return LiveObservedExtraction(\"hold\" if item.capture.state is ArtifactState.HOLD else \"review\",                                       item.capture.state.value, None, None, None,                                       fetched.actual_resources, item.capture.reason)     artifact = item.capture.artifact     context = ArtifactContext(         operation_id=operation_id, occurrence_id=item.occurrence_id,         caller_id=caller_id, scope=scope, source_family=\"http\", origin=artifact.origin,         requested_url=artifact.requested_url, final_url=artifact.final_url,         retrieved_at=artifact.retrieved_at, event_at=artifact.event_at,     )     proof = encode_source_proof(PersistedSourceProof(         format_version=\"source-proof/1.0\", input_ref=input_ref, context=context,         decision=decision, artifact=artifact, spans=item.spans,     ))     if item.observations is None:         return LiveObservedExtraction(\"review\", ArtifactState.REVIEW.value, proof, None, None,                                       fetched.actual_resources, \"observation_result_unavailable\")     metadata = serialize_observed_extraction_metadata(item.observations)     return LiveObservedExtraction(\"success\", ArtifactState.AVAILABLE.value, proof, metadata,                                   item.observations, fetched.actual_resources, None)"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "name": "execute_live_observed_extraction",
+            "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+            "nodeType": "Function",
+            "startLine": 43,
+            "endLine": 114,
+            "content": "async def execute_live_observed_extraction(     url: str, *, config_path: str | PathLike[str] | None,     caller_id: str = \"website-to-text\", scope: str = \"local-web-fetch\", ) -> LiveObservedExtraction:     \"\"\"Fetch, retain, and extract one controlled URL without graph/auth services.\"\"\"     from .acquisition import AcquisitionRequest, InputOccurrence, Resources     from .artifact_runtime import (PersistedSourceProof, encode_source_proof,                                    load_artifact_runtime)     from .artifacts import ArtifactContext, ArtifactState     from .fetch import (FetchParameters, FetchStatus, TrustedFetchPolicy,                         admit_fetch, execute_fetch_with_source_proof)     from .models import canonical_input_hash     from .observed_extraction import serialize_observed_extraction_metadata     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=\"http\", config_path=config_path,     )     empty = Resources(requests=0, bytes=0, elapsed_seconds=0.0, concurrency=0)     if runtime is None:         return LiveObservedExtraction(\"hold\", ArtifactState.HOLD.value, None, None, None,                                       empty, \"current_policy_unavailable\")     origin = _origin(url)     capability = hashlib.sha256(b\"flowsint.website-to-text.fetch.v1\").hexdigest()     endpoint = hashlib.sha256(json.dumps(         {\"allowed_origins\": [origin], \"redirects\": \"same-origin-only\"},         sort_keys=True, separators=(\",\", \":\"),     ).encode()).hexdigest()     operation_id = f\"observed-extraction-{uuid.uuid4().hex}\"     input_ref = canonical_input_hash(url)     request = AcquisitionRequest(         operation_id=operation_id, caller_id=caller_id, scope=scope,         capability_digest=capability, endpoint_policy_digest=endpoint,         inputs=(InputOccurrence(occurrence_id=\"input-0\", input_ref=input_ref,                                 type_tag=\"http_url\", value=url),),         allocation=Resources(requests=4, bytes=4 * 1024 * 1024,                              elapsed_seconds=10.0, concurrency=1),     )     operation = admit_fetch(request, TrustedFetchPolicy(         caller_id=caller_id, scope=scope, capability_digest=capability,         endpoint_policy_digest=endpoint, allowed_origins=(origin,),     ), FetchParameters(max_redirects=3, max_retries=0,                        max_bytes_per_input=1024 * 1024))     decision = runtime.decision(operation_id)     fetched = await execute_fetch_with_source_proof(         operation, artifact_store=runtime.store, retention_decision=decision,     )     item = fetched.outcomes[0]     if item.fetch_status is not FetchStatus.SUCCESS:         return LiveObservedExtraction(item.fetch_status.value, item.capture.state.value,                                       None, None, None, fetched.actual_resources,                                       item.diagnostic)     if item.capture.state is not ArtifactState.AVAILABLE or item.capture.artifact is None:         return LiveObservedExtraction(\"hold\" if item.capture.state is ArtifactState.HOLD else \"review\",                                       item.capture.state.value, None, None, None,                                       fetched.actual_resources, item.capture.reason)     artifact = item.capture.artifact     context = ArtifactContext(         operation_id=operation_id, occurrence_id=item.occurrence_id,         caller_id=caller_id, scope=scope, source_family=\"http\", origin=artifact.origin,         requested_url=artifact.requested_url, final_url=artifact.final_url,         retrieved_at=artifact.retrieved_at, event_at=artifact.event_at,     )     proof = encode_source_proof(PersistedSourceProof(         format_version=\"source-proof/1.0\", input_ref=input_ref, context=context,         decision=decision, artifact=artifact, spans=item.spans,     ))     if item.observations is None:         return LiveObservedExtraction(\"review\", ArtifactState.REVIEW.value, proof, None, None,                                       fetched.actual_resources, \"observation_result_unavailable\")     metadata = serialize_observed_extraction_metadata(item.observations)     return LiveObservedExtraction(\"success\", ArtifactState.AVAILABLE.value, proof, metadata,                                   item.observations, fetched.actual_resources, None)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+            "name": "_policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 108,
+            "endLine": 111,
+            "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "name": "load_artifact_runtime",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 114,
+            "endLine": 165,
+            "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:encode_source_proof",
+            "name": "encode_source_proof",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 168,
+            "endLine": 173,
+            "content": "def encode_source_proof(proof: PersistedSourceProof) -> str:     raw = proof.model_dump_json(warnings=\"error\").encode(\"utf-8\")     encoded = \"sp1.\" + base64.urlsafe_b64encode(raw).rstrip(b\"=\").decode(\"ascii\")     if len(encoded) > 8 * 1024 * 1024:         raise ValueError(\"source_proof_too_large\")     return encoded"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:_origin",
+            "name": "_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+            "nodeType": "Function",
+            "startLine": 35,
+            "endLine": 40,
+            "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     port = parts.port if parts.port is not None else (443 if parts.scheme == \"https\" else 80)     host = parts.hostname or \"\"     host = f\"[{host.lower()}]\" if \":\" in host else host.lower()     return f\"{parts.scheme}://{host}:{port}\""
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "name": "_origin",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 54,
+            "endLine": 73,
+            "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+            "name": "_canonical",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 76,
+            "endLine": 81,
+            "content": "def _canonical(value: object) -> bytes:     if isinstance(value, BaseModel):         value = value.model_dump(mode=\"json\", exclude_none=False)     return json.dumps(         value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True, allow_nan=False     ).encode(\"utf-8\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "name": "_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 84,
+            "endLine": 85,
+            "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "name": "_operation_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 235,
+            "endLine": 247,
+            "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+            "name": "_positive_allocation",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 250,
+            "endLine": 257,
+            "content": "def _positive_allocation(allocation: Resources) -> None:     required = (\"requests\", \"bytes\", \"elapsed_seconds\", \"concurrency\")     for name in required:         value = getattr(allocation, name)         if value is None or isinstance(value, bool) or value <= 0:             raise ValueError(f\"fetch allocation requires finite positive {name}\")         if isinstance(value, float) and not math.isfinite(value):             raise ValueError(f\"fetch allocation requires finite positive {name}\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "name": "admit_fetch",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 260,
+            "endLine": 330,
+            "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+            "name": "_diagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 333,
+            "endLine": 338,
+            "content": "def _diagnostic(     code: str, message: str, *, retryable: bool = False ) -> RedactedDiagnostic:     return RedactedDiagnostic(         code=code, safe_message=message[:512], retryable=retryable     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "name": "execute_fetch",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 385,
+            "endLine": 713,
+            "content": "async def execute_fetch(     operation: AdmittedFetchOperation,     *,     transport: httpx.AsyncBaseTransport | None = None, ) -> FetchResult:     \"\"\"Execute only a sealed operation using verified async HTTP streaming.\"\"\"     operation.validate_seal()     operation.claim_execution()     ledger = _Ledger(operation)     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)     semaphore = asyncio.Semaphore(concurrency)     timeout = operation.allocation.elapsed_seconds or 0.001     client = httpx.AsyncClient(         transport=transport,         verify=True,         trust_env=False,         follow_redirects=False,         timeout=httpx.Timeout(timeout),         headers={\"accept-encoding\": \"identity\"},     )     async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                            ... [truncated]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "name": "one",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 407,
+            "endLine": 626,
+            "content": "    async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                             \"rate_limited\",                             \"The server rate limited the request.\",                             True,                         )                     if (                         response.status_code in _RETRYABLE                         and retries < operation.parameters.max_retries                     ):                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     if response.status_code < 200 or response.status_code >= 300:                         return failed(           ... [truncated]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+            "name": "bounded_cleanup",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 642,
+            "endLine": 646,
+            "content": "    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:         cleanup = asyncio.create_task(finish_cleanup(pending))         done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)         if not done:             cleanup.add_done_callback(consume_background_result)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "name": "terminal_outcomes",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 648,
+            "endLine": 671,
+            "content": "    def terminal_outcomes(         pending_at_boundary: set[asyncio.Task],         status: FetchStatus,         code: str,         message: str,     ):         outcomes = []         for item, task in zip(operation.inputs, tasks):             if task not in pending_at_boundary:                 outcomes.append(task.result())                 continue             outcomes.append(                 FetchOutcome(                     occurrence_id=item.occurrence_id,                     input_ref=item.input_ref,                     status=status,                     requested_origin=_origin(item.url),                     diagnostic=_diagnostic(                         code, message, retryable=status is FetchStatus.TIMEOUT                     ),                     actual_resources=ledger.occurrence_resources(item.occurrence_id),                 )             )         return outcomes"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+            "name": "execute_fetch_with_source_proof",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 716,
+            "endLine": 877,
+            "content": "async def execute_fetch_with_source_proof(     operation: AdmittedFetchOperation,     *,     artifact_store: FilesystemArtifactStore | None,     retention_decision: RetentionDecision | None,     transport: httpx.AsyncBaseTransport | None = None, ) -> SourceProofResult:     \"\"\"Run the sole fetch implementation and capture before raw bodies leave it.\"\"\"     started = time.monotonic()     fetched = (         await execute_fetch(operation)         if transport is None         else await execute_fetch(operation, transport=transport)     )     admitted = {item.occurrence_id: item for item in operation.inputs}     returned_ids = [item.occurrence_id for item in fetched.outcomes]     result_is_bound = (         fetched.operation_id == operation.operation_id         and len(fetched.outcomes) == len(operation.inputs)         and len(returned_ids) == len(set(returned_ids))         and set(returned_ids) == set(admitted)         and all(             item.input_ref == admitted[item.occurrence_id].input_ref             for item in fetched.outcomes             if item.occurrence_id in admitted         )     )     if not result_is_bound:         existing = {item.occurrence_id: item for item in fetched.outcomes}         return SourceProofResult(             operation.operation_id,             tuple(                 SourceProofOutcome(                     item.occurrence_id,                     item.input_ref,                     FetchStatus.TOOL_ERROR,                     CaptureResult(ArtifactState.REVIEW, \"unbound_fetch_result\"),                     None,                     RedactedDiagnostic(                         code=\"invalid_fetch_result\",                         safe_message=\"The fetch result did not match the admitted operation.\",                         retryable=False,                     ),                     existing[item.occurrence_id].actual_resources                     if item.occurrence_id in existing                     else Resources(requests=0, bytes=0, elapsed_seconds=0.0),                 )                 for item in operation.inputs             ),             fetched.actual_resources,         )     deadline = started + (operation.allocation.elapsed_seconds or 0.0)     stop = threading.Event()     def expired() -> bool:         return stop.is_set() or time.monotonic() >= deadline     def process() -> tuple[SourceProofOutcome, ...]:         outcomes = []         for item in fetched.outcomes:             if item.status is not FetchStatus.SUCCESS:                 outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, \"fetch_failed\"), None, item.diagnostic, item.actual_resources))                 continue             source = admitted[item.occurrence_id]             if expired():                 raise TimeoutError             context = ArtifactContext(                 operation_id=operation.operation_id, occurrence_id=item.occurrence_id,                 caller_id=operation.policy.caller_id, scope=operation.policy.scope,                 source_family=\"http\", origin=item.final_origin or item.requested_origin,                 requested_url=item.requested_url or _redacted_location(source.url),                 final_url=item.final_url or _redacted_location(source.url),                 retrieved_at=datetime.now(timezone.utc),             )             try:                 normalized = normalize_html(item.body or b\"\")             except ValueError:                 capture = CaptureResult(ArtifactState.REVIEW, \"unsupported_source_encoding\")                 normalized = None             else:                 if expired():                     raise TimeoutError                 if retention_decision is None:                     capture = CaptureResult(ArtifactState.HOLD, \"retention_policy_unavailable\")                 elif artifact_store is None:                     capture = CaptureResult(ArtifactState.HOLD, \"artifact_store_unavailable\")                 else:                     capture = capture_source(artifact_store, context, retention_decision,                                              item.body, normalized=normalized, cancelled=expired)                 if expired():                     raise TimeoutError                 if capture.state is not ArtifactState.AVAILABLE:                     normalized = None             spans = ()             observations = None             if capture.artifact is not None and normalized is not None:                 spans = tuple(SourceProofSpanReference(                     span_id=f\"span-{capture.artifact.snapshot_id}-{index}\", artifact_id=capture.artifact.artifact_id,                     byte_start=span.raw_start, byte_end=span.raw_end,                     normalized_start=span.normalized_start, normalized_end=span.normalized_end,                     raw_offset_unit=\"byte\", normalized_offset_unit=\"unicode_code_point\", source_encoding=\"utf-8\",                 ) for index, span in enumerate(normalized.spans)) ... [truncated]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:resources",
+            "name": "resources",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 833,
+            "endLine": 835,
+            "content": "    def resources(elapsed: float, original: Resources) -> Resources:         return Resources(requests=original.requests, bytes=original.bytes,                          elapsed_seconds=elapsed, concurrency=original.concurrency)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_process",
+            "name": "bounded_process",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Function",
+            "startLine": 837,
+            "endLine": 847,
+            "content": "    async def bounded_process() -> tuple[SourceProofOutcome, ...]:         remaining = max(0.0, deadline - time.monotonic())         if remaining <= 0:             raise TimeoutError         worker = _SOURCE_PROOF_WORKERS.submit(process)         while not worker.done():             if time.monotonic() >= deadline:                 worker.cancel()                 raise TimeoutError             await asyncio.sleep(min(0.005, max(0.0, deadline - time.monotonic())))         return worker.result()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "name": "_canonicalize_input",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 106,
+            "endLine": 146,
+            "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "name": "canonical_input_hash",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 149,
+            "endLine": 159,
+            "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+            "name": "_span_payload",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 198,
+            "endLine": 199,
+            "content": "def _span_payload(span: RawSpan | None) -> dict[str, int] | None:     return None if span is None else {\"start_byte\": span.start_byte, \"end_byte\": span.end_byte}"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+            "name": "serialize_observed_extraction_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 202,
+            "endLine": 239,
+            "content": "def serialize_observed_extraction_metadata(     result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None, ) -> PersistedMetadata:     if type(result) is not ObservedExtractionResult:         raise TypeError(\"result must be ObservedExtractionResult\")     selected = policy or ExtractionPolicy()     payload = {         \"extractor_version\": _EXTRACTOR_VERSION,         \"policy\": {name: getattr(selected, name) for name in selected.__dataclass_fields__},         \"readable_text\": result.readable_text,         \"observations\": [{             \"observation_id\": item.observation_id,             \"occurrence_id\": item.occurrence_id,             \"kind\": item.kind.value,             \"value\": item.value,             \"artifact_id\": item.artifact_id,             \"snapshot_id\": item.snapshot_id,             \"content_digest\": item.content_digest,             \"input_ref\": item.input_ref,             \"source_url\": item.source_url,             \"raw_span\": _span_payload(item.raw_span),             \"context_span\": _span_payload(item.context_span),             \"anchor_text\": item.anchor_text,             \"person_name\": item.person_name,             \"role_name\": item.role_name,             \"company_name\": item.company_name,             \"review_state\": item.review_state.value,             \"execution_state\": item.execution_state.value,         } for item in result.observations],         \"diagnostics\": [item.model_dump(mode=\"json\") for item in result.diagnostics],         \"was_truncated\": result.was_truncated,         \"observations_skipped\": result.observations_skipped,         \"total_observations_found\": result.total_observations_found,     }     metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)     if len(metadata.model_dump_json(warnings=\"error\").encode(\"utf-8\")) > 8 * 1024 * 1024:         raise ValueError(\"observation_result_too_large\")     return metadata"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifact_runtime.py:ArtifactRuntime.decision#2",
+            "name": "decision",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Method",
+            "startLine": 93,
+            "endLine": 94,
+            "content": "    def decision(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:         return self.authority.issue(operation_id, now=now)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:RetentionAuthority.issue#2",
+            "name": "issue",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 79,
+            "endLine": 87,
+            "content": "    def issue(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:         return RetentionDecision(             issuer_id=self.issuer_id, reviewer_id=self.reviewer_id,             policy_id=self.policy_id, policy_digest=self.policy_digest,             operation_id=operation_id, caller_id=self.caller_id, scope=self.scope,             source_family=self.source_family, issued_at=now or datetime.now(timezone.utc),             expires_at=self.expires_at, retain_body=self.retain_body,             retain_normalized_text=self.retain_normalized_text,         )"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "name": "validate_seal",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 157,
+            "endLine": 169,
+            "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "name": "claim_execution",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 171,
+            "endLine": 173,
+            "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+            "name": "resources",
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "nodeType": "Method",
+            "startLine": 371,
+            "endLine": 376,
+            "content": "    def resources(self, *, requests=0, bytes_=0) -> Resources:         return Resources(             requests=requests,             bytes=bytes_,             elapsed_seconds=max(0.0, time.monotonic() - self.started),         )"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifact_runtime.py:ArtifactRuntime.decision#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:encode_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Method:flowsint-core/src/flowsint_execution/artifact_runtime.py:ArtifactRuntime.decision#2",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:RetentionAuthority.issue#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:resources",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_process",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+            "to": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+                    "name": "execute_live_observed_extraction",
+                    "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 43,
+                    "endLine": 114,
+                    "content": "async def execute_live_observed_extraction(     url: str, *, config_path: str | PathLike[str] | None,     caller_id: str = \"website-to-text\", scope: str = \"local-web-fetch\", ) -> LiveObservedExtraction:     \"\"\"Fetch, retain, and extract one controlled URL without graph/auth services.\"\"\"     from .acquisition import AcquisitionRequest, InputOccurrence, Resources     from .artifact_runtime import (PersistedSourceProof, encode_source_proof,                                    load_artifact_runtime)     from .artifacts import ArtifactContext, ArtifactState     from .fetch import (FetchParameters, FetchStatus, TrustedFetchPolicy,                         admit_fetch, execute_fetch_with_source_proof)     from .models import canonical_input_hash     from .observed_extraction import serialize_observed_extraction_metadata     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=\"http\", config_path=config_path,     )     empty = Resources(requests=0, bytes=0, elapsed_seconds=0.0, concurrency=0)     if runtime is None:         return LiveObservedExtraction(\"hold\", ArtifactState.HOLD.value, None, None, None,                                       empty, \"current_policy_unavailable\")     origin = _origin(url)     capability = hashlib.sha256(b\"flowsint.website-to-text.fetch.v1\").hexdigest()     endpoint = hashlib.sha256(json.dumps(         {\"allowed_origins\": [origin], \"redirects\": \"same-origin-only\"},         sort_keys=True, separators=(\",\", \":\"),     ).encode()).hexdigest()     operation_id = f\"observed-extraction-{uuid.uuid4().hex}\"     input_ref = canonical_input_hash(url)     request = AcquisitionRequest(         operation_id=operation_id, caller_id=caller_id, scope=scope,         capability_digest=capability, endpoint_policy_digest=endpoint,         inputs=(InputOccurrence(occurrence_id=\"input-0\", input_ref=input_ref,                                 type_tag=\"http_url\", value=url),),         allocation=Resources(requests=4, bytes=4 * 1024 * 1024,                              elapsed_seconds=10.0, concurrency=1),     )     operation = admit_fetch(request, TrustedFetchPolicy(         caller_id=caller_id, scope=scope, capability_digest=capability,         endpoint_policy_digest=endpoint, allowed_origins=(origin,),     ), FetchParameters(max_redirects=3, max_retries=0,                        max_bytes_per_input=1024 * 1024))     decision = runtime.decision(operation_id)     fetched = await execute_fetch_with_source_proof(         operation, artifact_store=runtime.store, retention_decision=decision,     )     item = fetched.outcomes[0]     if item.fetch_status is not FetchStatus.SUCCESS:         return LiveObservedExtraction(item.fetch_status.value, item.capture.state.value,                                       None, None, None, fetched.actual_resources,                                       item.diagnostic)     if item.capture.state is not ArtifactState.AVAILABLE or item.capture.artifact is None:         return LiveObservedExtraction(\"hold\" if item.capture.state is ArtifactState.HOLD else \"review\",                                       item.capture.state.value, None, None, None,                                       fetched.actual_resources, item.capture.reason)     artifact = item.capture.artifact     context = ArtifactContext(         operation_id=operation_id, occurrence_id=item.occurrence_id,         caller_id=caller_id, scope=scope, source_family=\"http\", origin=artifact.origin,         requested_url=artifact.requested_url, final_url=artifact.final_url,         retrieved_at=artifact.retrieved_at, event_at=artifact.event_at,     )     proof = encode_source_proof(PersistedSourceProof(         format_version=\"source-proof/1.0\", input_ref=input_ref, context=context,         decision=decision, artifact=artifact, spans=item.spans,     ))     if item.observations is None:         return LiveObservedExtraction(\"review\", ArtifactState.REVIEW.value, proof, None, None,                                       fetched.actual_resources, \"observation_result_unavailable\")     metadata = serialize_observed_extraction_metadata(item.observations)     return LiveObservedExtraction(\"success\", ArtifactState.AVAILABLE.value, proof, metadata,                                   item.observations, fetched.actual_resources, None)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 35,
+                    "endLine": 40,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     port = parts.port if parts.port is not None else (443 if parts.scheme == \"https\" else 80)     host = parts.hostname or \"\"     host = f\"[{host.lower()}]\" if \":\" in host else host.lower()     return f\"{parts.scheme}://{host}:{port}\""
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 4,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+                    "name": "_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 108,
+                    "endLine": 111,
+                    "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+                    "name": "load_artifact_runtime",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 114,
+                    "endLine": 165,
+                    "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:encode_source_proof",
+                    "name": "encode_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 168,
+                    "endLine": 173,
+                    "content": "def encode_source_proof(proof: PersistedSourceProof) -> str:     raw = proof.model_dump_json(warnings=\"error\").encode(\"utf-8\")     encoded = \"sp1.\" + base64.urlsafe_b64encode(raw).rstrip(b\"=\").decode(\"ascii\")     if len(encoded) > 8 * 1024 * 1024:         raise ValueError(\"source_proof_too_large\")     return encoded"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifact_runtime.py:ArtifactRuntime.decision#2",
+                    "name": "decision",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Method",
+                    "startLine": 93,
+                    "endLine": 94,
+                    "content": "    def decision(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:         return self.authority.issue(operation_id, now=now)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+            "count": 17,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 54,
+                    "endLine": 73,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 76,
+                    "endLine": 81,
+                    "content": "def _canonical(value: object) -> bytes:     if isinstance(value, BaseModel):         value = value.model_dump(mode=\"json\", exclude_none=False)     return json.dumps(         value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True, allow_nan=False     ).encode(\"utf-8\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 84,
+                    "endLine": 85,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 235,
+                    "endLine": 247,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+                    "name": "_positive_allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 250,
+                    "endLine": 257,
+                    "content": "def _positive_allocation(allocation: Resources) -> None:     required = (\"requests\", \"bytes\", \"elapsed_seconds\", \"concurrency\")     for name in required:         value = getattr(allocation, name)         if value is None or isinstance(value, bool) or value <= 0:             raise ValueError(f\"fetch allocation requires finite positive {name}\")         if isinstance(value, float) and not math.isfinite(value):             raise ValueError(f\"fetch allocation requires finite positive {name}\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+                    "name": "admit_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 260,
+                    "endLine": 330,
+                    "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 333,
+                    "endLine": 338,
+                    "content": "def _diagnostic(     code: str, message: str, *, retryable: bool = False ) -> RedactedDiagnostic:     return RedactedDiagnostic(         code=code, safe_message=message[:512], retryable=retryable     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+                    "name": "execute_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 385,
+                    "endLine": 713,
+                    "content": "async def execute_fetch(     operation: AdmittedFetchOperation,     *,     transport: httpx.AsyncBaseTransport | None = None, ) -> FetchResult:     \"\"\"Execute only a sealed operation using verified async HTTP streaming.\"\"\"     operation.validate_seal()     operation.claim_execution()     ledger = _Ledger(operation)     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)     semaphore = asyncio.Semaphore(concurrency)     timeout = operation.allocation.elapsed_seconds or 0.001     client = httpx.AsyncClient(         transport=transport,         verify=True,         trust_env=False,         follow_redirects=False,         timeout=httpx.Timeout(timeout),         headers={\"accept-encoding\": \"identity\"},     )     async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                            ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+                    "name": "one",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 407,
+                    "endLine": 626,
+                    "content": "    async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                             \"rate_limited\",                             \"The server rate limited the request.\",                             True,                         )                     if (                         response.status_code in _RETRYABLE                         and retries < operation.parameters.max_retries                     ):                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     if response.status_code < 200 or response.status_code >= 300:                         return failed(           ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+                    "name": "bounded_cleanup",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 642,
+                    "endLine": 646,
+                    "content": "    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:         cleanup = asyncio.create_task(finish_cleanup(pending))         done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)         if not done:             cleanup.add_done_callback(consume_background_result)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+                    "name": "terminal_outcomes",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 648,
+                    "endLine": 671,
+                    "content": "    def terminal_outcomes(         pending_at_boundary: set[asyncio.Task],         status: FetchStatus,         code: str,         message: str,     ):         outcomes = []         for item, task in zip(operation.inputs, tasks):             if task not in pending_at_boundary:                 outcomes.append(task.result())                 continue             outcomes.append(                 FetchOutcome(                     occurrence_id=item.occurrence_id,                     input_ref=item.input_ref,                     status=status,                     requested_origin=_origin(item.url),                     diagnostic=_diagnostic(                         code, message, retryable=status is FetchStatus.TIMEOUT                     ),                     actual_resources=ledger.occurrence_resources(item.occurrence_id),                 )             )         return outcomes"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+                    "name": "execute_fetch_with_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 716,
+                    "endLine": 877,
+                    "content": "async def execute_fetch_with_source_proof(     operation: AdmittedFetchOperation,     *,     artifact_store: FilesystemArtifactStore | None,     retention_decision: RetentionDecision | None,     transport: httpx.AsyncBaseTransport | None = None, ) -> SourceProofResult:     \"\"\"Run the sole fetch implementation and capture before raw bodies leave it.\"\"\"     started = time.monotonic()     fetched = (         await execute_fetch(operation)         if transport is None         else await execute_fetch(operation, transport=transport)     )     admitted = {item.occurrence_id: item for item in operation.inputs}     returned_ids = [item.occurrence_id for item in fetched.outcomes]     result_is_bound = (         fetched.operation_id == operation.operation_id         and len(fetched.outcomes) == len(operation.inputs)         and len(returned_ids) == len(set(returned_ids))         and set(returned_ids) == set(admitted)         and all(             item.input_ref == admitted[item.occurrence_id].input_ref             for item in fetched.outcomes             if item.occurrence_id in admitted         )     )     if not result_is_bound:         existing = {item.occurrence_id: item for item in fetched.outcomes}         return SourceProofResult(             operation.operation_id,             tuple(                 SourceProofOutcome(                     item.occurrence_id,                     item.input_ref,                     FetchStatus.TOOL_ERROR,                     CaptureResult(ArtifactState.REVIEW, \"unbound_fetch_result\"),                     None,                     RedactedDiagnostic(                         code=\"invalid_fetch_result\",                         safe_message=\"The fetch result did not match the admitted operation.\",                         retryable=False,                     ),                     existing[item.occurrence_id].actual_resources                     if item.occurrence_id in existing                     else Resources(requests=0, bytes=0, elapsed_seconds=0.0),                 )                 for item in operation.inputs             ),             fetched.actual_resources,         )     deadline = started + (operation.allocation.elapsed_seconds or 0.0)     stop = threading.Event()     def expired() -> bool:         return stop.is_set() or time.monotonic() >= deadline     def process() -> tuple[SourceProofOutcome, ...]:         outcomes = []         for item in fetched.outcomes:             if item.status is not FetchStatus.SUCCESS:                 outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, \"fetch_failed\"), None, item.diagnostic, item.actual_resources))                 continue             source = admitted[item.occurrence_id]             if expired():                 raise TimeoutError             context = ArtifactContext(                 operation_id=operation.operation_id, occurrence_id=item.occurrence_id,                 caller_id=operation.policy.caller_id, scope=operation.policy.scope,                 source_family=\"http\", origin=item.final_origin or item.requested_origin,                 requested_url=item.requested_url or _redacted_location(source.url),                 final_url=item.final_url or _redacted_location(source.url),                 retrieved_at=datetime.now(timezone.utc),             )             try:                 normalized = normalize_html(item.body or b\"\")             except ValueError:                 capture = CaptureResult(ArtifactState.REVIEW, \"unsupported_source_encoding\")                 normalized = None             else:                 if expired():                     raise TimeoutError                 if retention_decision is None:                     capture = CaptureResult(ArtifactState.HOLD, \"retention_policy_unavailable\")                 elif artifact_store is None:                     capture = CaptureResult(ArtifactState.HOLD, \"artifact_store_unavailable\")                 else:                     capture = capture_source(artifact_store, context, retention_decision,                                              item.body, normalized=normalized, cancelled=expired)                 if expired():                     raise TimeoutError                 if capture.state is not ArtifactState.AVAILABLE:                     normalized = None             spans = ()             observations = None             if capture.artifact is not None and normalized is not None:                 spans = tuple(SourceProofSpanReference(                     span_id=f\"span-{capture.artifact.snapshot_id}-{index}\", artifact_id=capture.artifact.artifact_id,                     byte_start=span.raw_start, byte_end=span.raw_end,                     normalized_start=span.normalized_start, normalized_end=span.normalized_end,                     raw_offset_unit=\"byte\", normalized_offset_unit=\"unicode_code_point\", source_encoding=\"utf-8\",                 ) for index, span in enumerate(normalized.spans)) ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:resources",
+                    "name": "resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 833,
+                    "endLine": 835,
+                    "content": "    def resources(elapsed: float, original: Resources) -> Resources:         return Resources(requests=original.requests, bytes=original.bytes,                          elapsed_seconds=elapsed, concurrency=original.concurrency)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_process",
+                    "name": "bounded_process",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 837,
+                    "endLine": 847,
+                    "content": "    async def bounded_process() -> tuple[SourceProofOutcome, ...]:         remaining = max(0.0, deadline - time.monotonic())         if remaining <= 0:             raise TimeoutError         worker = _SOURCE_PROOF_WORKERS.submit(process)         while not worker.done():             if time.monotonic() >= deadline:                 worker.cancel()                 raise TimeoutError             await asyncio.sleep(min(0.005, max(0.0, deadline - time.monotonic())))         return worker.result()"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+                    "name": "validate_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 157,
+                    "endLine": 169,
+                    "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+                    "name": "claim_execution",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 171,
+                    "endLine": 173,
+                    "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+                    "name": "resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 371,
+                    "endLine": 376,
+                    "content": "    def resources(self, *, requests=0, bytes_=0) -> Resources:         return Resources(             requests=requests,             bytes=bytes_,             elapsed_seconds=max(0.0, time.monotonic() - self.started),         )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                    "name": "_canonicalize_input",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 106,
+                    "endLine": 146,
+                    "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 149,
+                    "endLine": 159,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+                    "name": "_span_payload",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 199,
+                    "content": "def _span_payload(span: RawSpan | None) -> dict[str, int] | None:     return None if span is None else {\"start_byte\": span.start_byte, \"end_byte\": span.end_byte}"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+                    "name": "serialize_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 202,
+                    "endLine": 239,
+                    "content": "def serialize_observed_extraction_metadata(     result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None, ) -> PersistedMetadata:     if type(result) is not ObservedExtractionResult:         raise TypeError(\"result must be ObservedExtractionResult\")     selected = policy or ExtractionPolicy()     payload = {         \"extractor_version\": _EXTRACTOR_VERSION,         \"policy\": {name: getattr(selected, name) for name in selected.__dataclass_fields__},         \"readable_text\": result.readable_text,         \"observations\": [{             \"observation_id\": item.observation_id,             \"occurrence_id\": item.occurrence_id,             \"kind\": item.kind.value,             \"value\": item.value,             \"artifact_id\": item.artifact_id,             \"snapshot_id\": item.snapshot_id,             \"content_digest\": item.content_digest,             \"input_ref\": item.input_ref,             \"source_url\": item.source_url,             \"raw_span\": _span_payload(item.raw_span),             \"context_span\": _span_payload(item.context_span),             \"anchor_text\": item.anchor_text,             \"person_name\": item.person_name,             \"role_name\": item.role_name,             \"company_name\": item.company_name,             \"review_state\": item.review_state.value,             \"execution_state\": item.execution_state.value,         } for item in result.observations],         \"diagnostics\": [item.model_dump(mode=\"json\") for item in result.diagnostics],         \"was_truncated\": result.was_truncated,         \"observations_skipped\": result.observations_skipped,         \"total_observations_found\": result.total_observations_found,     }     metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)     if len(metadata.model_dump_json(warnings=\"error\").encode(\"utf-8\")) > 8 * 1024 * 1024:         raise ValueError(\"observation_result_too_large\")     return metadata"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:RetentionAuthority.issue#2",
+                    "name": "issue",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 79,
+                    "endLine": 87,
+                    "content": "    def issue(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:         return RetentionDecision(             issuer_id=self.issuer_id, reviewer_id=self.reviewer_id,             policy_id=self.policy_id, policy_digest=self.policy_digest,             operation_id=operation_id, caller_id=self.caller_id, scope=self.scope,             source_family=self.source_family, issued_at=now or datetime.now(timezone.utc),             expires_at=self.expires_at, retain_body=self.retain_body,             retain_normalized_text=self.retain_normalized_text,         )"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 27
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifact_runtime.py:ArtifactRuntime.decision#2",
+                    "name": "decision",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Method",
+                    "startLine": 93,
+                    "endLine": 94,
+                    "content": "    def decision(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:         return self.authority.issue(operation_id, now=now)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+                    "name": "load_artifact_runtime",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 114,
+                    "endLine": 165,
+                    "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:encode_source_proof",
+                    "name": "encode_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 168,
+                    "endLine": 173,
+                    "content": "def encode_source_proof(proof: PersistedSourceProof) -> str:     raw = proof.model_dump_json(warnings=\"error\").encode(\"utf-8\")     encoded = \"sp1.\" + base64.urlsafe_b64encode(raw).rstrip(b\"=\").decode(\"ascii\")     if len(encoded) > 8 * 1024 * 1024:         raise ValueError(\"source_proof_too_large\")     return encoded"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/extraction_runtime.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/extraction_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 35,
+                    "endLine": 40,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     port = parts.port if parts.port is not None else (443 if parts.scheme == \"https\" else 80)     host = parts.hostname or \"\"     host = f\"[{host.lower()}]\" if \":\" in host else host.lower()     return f\"{parts.scheme}://{host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:admit_fetch",
+                    "name": "admit_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 260,
+                    "endLine": 330,
+                    "content": "def admit_fetch(     request: AcquisitionRequest,     policy: TrustedFetchPolicy,     parameters: FetchParameters, ) -> AdmittedFetchOperation:     \"\"\"Validate untrusted values and bind an immutable executable operation.\"\"\"     # Revalidation defeats model_construct and mutable nested-input bypasses.     request = AcquisitionRequest.model_validate(         request.model_dump(mode=\"python\", exclude_none=False), strict=True     )     policy = TrustedFetchPolicy.model_validate(         policy.model_dump(mode=\"python\"), strict=True     )     parameters = FetchParameters.model_validate(         parameters.model_dump(mode=\"python\"), strict=True     )     if (         request.caller_id != policy.caller_id         or request.scope != policy.scope         or request.capability_digest != policy.capability_digest         or request.endpoint_policy_digest != policy.endpoint_policy_digest     ):         raise ValueError(\"request does not match trusted fetch policy\")     _positive_allocation(request.allocation)     if len(request.inputs) > request.allocation.requests:         raise ValueError(\"allocation cannot dispatch every input once\")     allowed = set(policy.allowed_origins)     inputs: list[AdmittedInput] = []     for item in request.inputs:         if item.type_tag != \"http_url\" or type(item.value) is not str:             raise ValueError(\"fetch input must be an http_url string\")         if item.input_ref != canonical_input_hash(item.value):             raise ValueError(\"fetch input reference mismatch\")         origin = _origin(item.value)         if origin not in allowed:             raise ValueError(\"fetch input origin is outside trusted policy\")         inputs.append(             AdmittedInput(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 url=item.value,             )         )     request_digest = _digest(request)     policy_digest = _digest(policy)     parameter_digest = _digest(parameters)     admitted_inputs = tuple(inputs)     seal = _operation_seal(         request.operation_id,         admitted_inputs,         request.allocation,         policy,         parameters,         request_digest,         policy_digest,         parameter_digest,     )     return AdmittedFetchOperation(         operation_id=request.operation_id,         inputs=admitted_inputs,         allocation=request.allocation,         policy=policy,         parameters=parameters,         request_digest=request_digest,         policy_digest=policy_digest,         parameter_digest=parameter_digest,         operation_seal=seal,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch_with_source_proof",
+                    "name": "execute_fetch_with_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 716,
+                    "endLine": 877,
+                    "content": "async def execute_fetch_with_source_proof(     operation: AdmittedFetchOperation,     *,     artifact_store: FilesystemArtifactStore | None,     retention_decision: RetentionDecision | None,     transport: httpx.AsyncBaseTransport | None = None, ) -> SourceProofResult:     \"\"\"Run the sole fetch implementation and capture before raw bodies leave it.\"\"\"     started = time.monotonic()     fetched = (         await execute_fetch(operation)         if transport is None         else await execute_fetch(operation, transport=transport)     )     admitted = {item.occurrence_id: item for item in operation.inputs}     returned_ids = [item.occurrence_id for item in fetched.outcomes]     result_is_bound = (         fetched.operation_id == operation.operation_id         and len(fetched.outcomes) == len(operation.inputs)         and len(returned_ids) == len(set(returned_ids))         and set(returned_ids) == set(admitted)         and all(             item.input_ref == admitted[item.occurrence_id].input_ref             for item in fetched.outcomes             if item.occurrence_id in admitted         )     )     if not result_is_bound:         existing = {item.occurrence_id: item for item in fetched.outcomes}         return SourceProofResult(             operation.operation_id,             tuple(                 SourceProofOutcome(                     item.occurrence_id,                     item.input_ref,                     FetchStatus.TOOL_ERROR,                     CaptureResult(ArtifactState.REVIEW, \"unbound_fetch_result\"),                     None,                     RedactedDiagnostic(                         code=\"invalid_fetch_result\",                         safe_message=\"The fetch result did not match the admitted operation.\",                         retryable=False,                     ),                     existing[item.occurrence_id].actual_resources                     if item.occurrence_id in existing                     else Resources(requests=0, bytes=0, elapsed_seconds=0.0),                 )                 for item in operation.inputs             ),             fetched.actual_resources,         )     deadline = started + (operation.allocation.elapsed_seconds or 0.0)     stop = threading.Event()     def expired() -> bool:         return stop.is_set() or time.monotonic() >= deadline     def process() -> tuple[SourceProofOutcome, ...]:         outcomes = []         for item in fetched.outcomes:             if item.status is not FetchStatus.SUCCESS:                 outcomes.append(SourceProofOutcome(item.occurrence_id, item.input_ref, item.status, CaptureResult(ArtifactState.REVIEW, \"fetch_failed\"), None, item.diagnostic, item.actual_resources))                 continue             source = admitted[item.occurrence_id]             if expired():                 raise TimeoutError             context = ArtifactContext(                 operation_id=operation.operation_id, occurrence_id=item.occurrence_id,                 caller_id=operation.policy.caller_id, scope=operation.policy.scope,                 source_family=\"http\", origin=item.final_origin or item.requested_origin,                 requested_url=item.requested_url or _redacted_location(source.url),                 final_url=item.final_url or _redacted_location(source.url),                 retrieved_at=datetime.now(timezone.utc),             )             try:                 normalized = normalize_html(item.body or b\"\")             except ValueError:                 capture = CaptureResult(ArtifactState.REVIEW, \"unsupported_source_encoding\")                 normalized = None             else:                 if expired():                     raise TimeoutError                 if retention_decision is None:                     capture = CaptureResult(ArtifactState.HOLD, \"retention_policy_unavailable\")                 elif artifact_store is None:                     capture = CaptureResult(ArtifactState.HOLD, \"artifact_store_unavailable\")                 else:                     capture = capture_source(artifact_store, context, retention_decision,                                              item.body, normalized=normalized, cancelled=expired)                 if expired():                     raise TimeoutError                 if capture.state is not ArtifactState.AVAILABLE:                     normalized = None             spans = ()             observations = None             if capture.artifact is not None and normalized is not None:                 spans = tuple(SourceProofSpanReference(                     span_id=f\"span-{capture.artifact.snapshot_id}-{index}\", artifact_id=capture.artifact.artifact_id,                     byte_start=span.raw_start, byte_end=span.raw_end,                     normalized_start=span.normalized_start, normalized_end=span.normalized_end,                     raw_offset_unit=\"byte\", normalized_offset_unit=\"unicode_code_point\", source_encoding=\"utf-8\",                 ) for index, span in enumerate(normalized.spans)) ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 149,
+                    "endLine": 159,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+                    "name": "serialize_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 202,
+                    "endLine": 239,
+                    "content": "def serialize_observed_extraction_metadata(     result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None, ) -> PersistedMetadata:     if type(result) is not ObservedExtractionResult:         raise TypeError(\"result must be ObservedExtractionResult\")     selected = policy or ExtractionPolicy()     payload = {         \"extractor_version\": _EXTRACTOR_VERSION,         \"policy\": {name: getattr(selected, name) for name in selected.__dataclass_fields__},         \"readable_text\": result.readable_text,         \"observations\": [{             \"observation_id\": item.observation_id,             \"occurrence_id\": item.occurrence_id,             \"kind\": item.kind.value,             \"value\": item.value,             \"artifact_id\": item.artifact_id,             \"snapshot_id\": item.snapshot_id,             \"content_digest\": item.content_digest,             \"input_ref\": item.input_ref,             \"source_url\": item.source_url,             \"raw_span\": _span_payload(item.raw_span),             \"context_span\": _span_payload(item.context_span),             \"anchor_text\": item.anchor_text,             \"person_name\": item.person_name,             \"role_name\": item.role_name,             \"company_name\": item.company_name,             \"review_state\": item.review_state.value,             \"execution_state\": item.execution_state.value,         } for item in result.observations],         \"diagnostics\": [item.model_dump(mode=\"json\") for item in result.diagnostics],         \"was_truncated\": result.was_truncated,         \"observations_skipped\": result.observations_skipped,         \"total_observations_found\": result.total_observations_found,     }     metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)     if len(metadata.model_dump_json(warnings=\"error\").encode(\"utf-8\")) > 8 * 1024 * 1024:         raise ValueError(\"observation_result_too_large\")     return metadata"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:RetentionAuthority.issue#2",
+                    "name": "issue",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 79,
+                    "endLine": 87,
+                    "content": "    def issue(self, operation_id: str, *, now: datetime | None = None) -> RetentionDecision:         return RetentionDecision(             issuer_id=self.issuer_id, reviewer_id=self.reviewer_id,             policy_id=self.policy_id, policy_digest=self.policy_digest,             operation_id=operation_id, caller_id=self.caller_id, scope=self.scope,             source_family=self.source_family, issued_at=now or datetime.now(timezone.utc),             expires_at=self.expires_at, retain_body=self.retain_body,             retain_normalized_text=self.retain_normalized_text,         )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+                    "name": "_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 108,
+                    "endLine": 111,
+                    "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_origin",
+                    "name": "_origin",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 54,
+                    "endLine": 73,
+                    "content": "def _origin(url: str) -> str:     parts = urlsplit(url)     if (         parts.scheme not in (\"http\", \"https\")         or not parts.hostname         or parts.username is not None         or parts.password is not None         or any(character.isspace() for character in url)     ):         raise ValueError(\"expected HTTP(S) URL without credentials\")     try:         parsed_port = parts.port         port = parsed_port if parsed_port is not None else (443 if parts.scheme == \"https\" else 80)         if port == 0:             raise ValueError(\"invalid URL port\")     except ValueError as error:         raise ValueError(\"invalid URL port\") from error     host = parts.hostname.lower()     rendered_host = f\"[{host}]\" if \":\" in host else host     return f\"{parts.scheme}://{rendered_host}:{port}\""
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_digest",
+                    "name": "_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 84,
+                    "endLine": 85,
+                    "content": "def _digest(value: object) -> str:     return hashlib.sha256(_canonical(value)).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_operation_seal",
+                    "name": "_operation_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 235,
+                    "endLine": 247,
+                    "content": "def _operation_seal(     operation_id, inputs, allocation, policy, parameters, *digests ) -> str:     return _digest(         {             \"operation_id\": operation_id,             \"inputs\": [item.model_dump(mode=\"json\") for item in inputs],             \"allocation\": allocation.model_dump(mode=\"json\", exclude_none=False),             \"policy\": policy.model_dump(mode=\"json\"),             \"parameters\": parameters.model_dump(mode=\"json\"),             \"digests\": digests,         }     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_positive_allocation",
+                    "name": "_positive_allocation",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 250,
+                    "endLine": 257,
+                    "content": "def _positive_allocation(allocation: Resources) -> None:     required = (\"requests\", \"bytes\", \"elapsed_seconds\", \"concurrency\")     for name in required:         value = getattr(allocation, name)         if value is None or isinstance(value, bool) or value <= 0:             raise ValueError(f\"fetch allocation requires finite positive {name}\")         if isinstance(value, float) and not math.isfinite(value):             raise ValueError(f\"fetch allocation requires finite positive {name}\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_diagnostic",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 333,
+                    "endLine": 338,
+                    "content": "def _diagnostic(     code: str, message: str, *, retryable: bool = False ) -> RedactedDiagnostic:     return RedactedDiagnostic(         code=code, safe_message=message[:512], retryable=retryable     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:execute_fetch",
+                    "name": "execute_fetch",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 385,
+                    "endLine": 713,
+                    "content": "async def execute_fetch(     operation: AdmittedFetchOperation,     *,     transport: httpx.AsyncBaseTransport | None = None, ) -> FetchResult:     \"\"\"Execute only a sealed operation using verified async HTTP streaming.\"\"\"     operation.validate_seal()     operation.claim_execution()     ledger = _Ledger(operation)     concurrency = min(operation.allocation.concurrency or 1, len(operation.inputs) or 1)     semaphore = asyncio.Semaphore(concurrency)     timeout = operation.allocation.elapsed_seconds or 0.001     client = httpx.AsyncClient(         transport=transport,         verify=True,         trust_env=False,         follow_redirects=False,         timeout=httpx.Timeout(timeout),         headers={\"accept-encoding\": \"identity\"},     )     async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                            ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:resources",
+                    "name": "resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 833,
+                    "endLine": 835,
+                    "content": "    def resources(elapsed: float, original: Resources) -> Resources:         return Resources(requests=original.requests, bytes=original.bytes,                          elapsed_seconds=elapsed, concurrency=original.concurrency)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_process",
+                    "name": "bounded_process",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 837,
+                    "endLine": 847,
+                    "content": "    async def bounded_process() -> tuple[SourceProofOutcome, ...]:         remaining = max(0.0, deadline - time.monotonic())         if remaining <= 0:             raise TimeoutError         worker = _SOURCE_PROOF_WORKERS.submit(process)         while not worker.done():             if time.monotonic() >= deadline:                 worker.cancel()                 raise TimeoutError             await asyncio.sleep(min(0.005, max(0.0, deadline - time.monotonic())))         return worker.result()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                    "name": "_canonicalize_input",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 106,
+                    "endLine": 146,
+                    "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+                    "name": "_span_payload",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 199,
+                    "content": "def _span_payload(span: RawSpan | None) -> dict[str, int] | None:     return None if span is None else {\"start_byte\": span.start_byte, \"end_byte\": span.end_byte}"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.validate_seal#0",
+                    "name": "validate_seal",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 157,
+                    "endLine": 169,
+                    "content": "    def validate_seal(self) -> None:         expected = _operation_seal(             self.operation_id,             self.inputs,             self.allocation,             self.policy,             self.parameters,             self.request_digest,             self.policy_digest,             self.parameter_digest,         )         if expected != self.operation_seal:             raise ValueError(\"admitted operation seal mismatch\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:AdmittedFetchOperation.claim_execution#0",
+                    "name": "claim_execution",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 171,
+                    "endLine": 173,
+                    "content": "    def claim_execution(self) -> None:         if not self._execution_claim.claim():             raise ValueError(\"admitted operation has already been claimed for execution\")"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/fetch.py:_Ledger.resources#2",
+                    "name": "resources",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Method",
+                    "startLine": 371,
+                    "endLine": 376,
+                    "content": "    def resources(self, *, requests=0, bytes_=0) -> Resources:         return Resources(             requests=requests,             bytes=bytes_,             elapsed_seconds=max(0.0, time.monotonic() - self.started),         )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:_canonical",
+                    "name": "_canonical",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 76,
+                    "endLine": 81,
+                    "content": "def _canonical(value: object) -> bytes:     if isinstance(value, BaseModel):         value = value.model_dump(mode=\"json\", exclude_none=False)     return json.dumps(         value, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True, allow_nan=False     ).encode(\"utf-8\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:one",
+                    "name": "one",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 407,
+                    "endLine": 626,
+                    "content": "    async def one(item: AdmittedInput) -> FetchOutcome:         requested_origin = _origin(item.url)         def failed(status: FetchStatus, code: str, message: str, retryable=False):             return FetchOutcome(                 occurrence_id=item.occurrence_id,                 input_ref=item.input_ref,                 status=status,                 requested_origin=requested_origin,                 diagnostic=_diagnostic(code, message, retryable=retryable),                 actual_resources=ledger.occurrence_resources(item.occurrence_id),             )         url = item.url         redirects = retries = 0         async with semaphore:             while True:                 if not await ledger.charge_request(item.occurrence_id):                     return failed(                         FetchStatus.TOOL_ERROR,                         \"request_budget_exhausted\",                         \"The request allocation was exhausted.\",                     )                 try:                     request = client.build_request(\"GET\", url)                     response = await client.send(request, stream=True)                 except asyncio.CancelledError:                     if asyncio.current_task().cancelling():                         raise                     return failed(                         FetchStatus.CANCELLED,                         \"cancelled\",                         \"The transport cancelled this occurrence.\",                     )                 except httpx.TimeoutException:                     return failed(                         FetchStatus.TIMEOUT,                         \"timeout\",                         \"The HTTP operation timed out.\",                         True,                     )                 except httpx.HTTPError:                     if retries < operation.parameters.max_retries:                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     return failed(                         FetchStatus.TOOL_ERROR,                         \"transport_error\",                         \"The HTTP transport failed.\",                         True,                     )                 try:                     if response.status_code in _REDIRECTS:                         location = response.headers.get(\"location\")                         if not location:                             return failed(                                 FetchStatus.HTTP_ERROR,                                 \"invalid_redirect\",                                 \"The redirect had no destination.\",                             )                         destination = urljoin(url, location)                         try:                             destination_origin = _origin(destination)                         except ValueError:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if destination_origin != requested_origin:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_denied\",                                 \"The redirect destination was denied before dispatch.\",                             )                         if redirects >= operation.parameters.max_redirects:                             return failed(                                 FetchStatus.POLICY_DENIED,                                 \"redirect_limit\",                                 \"The redirect limit was reached before dispatch.\",                             )                         redirects += 1                         url = destination                         continue                     if response.status_code == 429:                         return failed(                             FetchStatus.RATE_LIMITED,                             \"rate_limited\",                             \"The server rate limited the request.\",                             True,                         )                     if (                         response.status_code in _RETRYABLE                         and retries < operation.parameters.max_retries                     ):                         retries += 1                         if operation.parameters.retry_backoff_seconds:                             await asyncio.sleep(                                 operation.parameters.retry_backoff_seconds                             )                         continue                     if response.status_code < 200 or response.status_code >= 300:                         return failed(           ... [truncated]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:bounded_cleanup",
+                    "name": "bounded_cleanup",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 642,
+                    "endLine": 646,
+                    "content": "    async def bounded_cleanup(pending: set[asyncio.Task]) -> None:         cleanup = asyncio.create_task(finish_cleanup(pending))         done, _ = await asyncio.wait({cleanup}, timeout=cleanup_budget)         if not done:             cleanup.add_done_callback(consume_background_result)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/fetch.py:terminal_outcomes",
+                    "name": "terminal_outcomes",
+                    "filePath": "flowsint-core/src/flowsint_execution/fetch.py",
+                    "nodeType": "Function",
+                    "startLine": 648,
+                    "endLine": 671,
+                    "content": "    def terminal_outcomes(         pending_at_boundary: set[asyncio.Task],         status: FetchStatus,         code: str,         message: str,     ):         outcomes = []         for item, task in zip(operation.inputs, tasks):             if task not in pending_at_boundary:                 outcomes.append(task.result())                 continue             outcomes.append(                 FetchOutcome(                     occurrence_id=item.occurrence_id,                     input_ref=item.input_ref,                     status=status,                     requested_origin=_origin(item.url),                     diagnostic=_diagnostic(                         code, message, retryable=status is FetchStatus.TIMEOUT                     ),                     actual_resources=ledger.occurrence_resources(item.occurrence_id),                 )             )         return outcomes"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/extraction_runtime.py:execute_live_observed_extraction",
+        "rootSymbols": 1,
+        "totalSymbols": 28,
+        "totalEdges": 30,
+        "filesMatched": 6,
+        "truncated": false,
+        "direct": 8,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

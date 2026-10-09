@@ -1,0 +1,19 @@
+{
+  "post_baseline": "20cc25967c726f1bdda48f9aee8985018e02b349",
+  "configuration_sha256": {
+    "pyproject.toml": "2cecd6e43aafe31ca26103751b4c4e5673f34bb3de26663d18107c43e98ae1e3",
+    "flowsint-api/pyproject.toml": "739c57d7c385bc368493a2d663374b98a75832436e0f164c6d9cfd125c5c31ba",
+    "flowsint-core/pyproject.toml": "fcf0a918462e8c614406226e072526649d045377aac8684737d417be897df8fd",
+    "flowsint-enrichers/pyproject.toml": "ba4d8c71c16d6026aa55ff95f4592933290b9783c37cd2aff7b77eee7ef28c4b",
+    "flowsint-mcp-server/pyproject.toml": "cee01c535ce1baab21a1d435c84908ef6e6620da59b46f310230fe4919fefb92",
+    "flowsint-types/pyproject.toml": "31708ecfa57c49e5e3ea4dcc607fb65727c87210991b840934f06443b7a68423"
+  },
+  "extraction_source_sha256": {
+    "flowsint-core/src/flowsint_execution/observed_extraction.py": "54fe25489419234a76b9493bc9ca4da73b069c1dfd2dcf4eb62d914433bb4be8",
+    "flowsint-core/src/flowsint_execution/artifact_runtime.py": "6cb88dd14062943e5860208e599a2c0a22734d6dc7dacfe389999abe4a0a1714",
+    "flowsint-core/src/flowsint_execution/extraction_runtime.py": "88e63ece8a428baed38cfd122f51da26d912793b6efd37e7261a9af1b92b5759",
+    "flowsint-core/src/flowsint_execution/url_policy.py": "eb3a79cbf643dd529232e921addc8a4db26bc8f33c906d764904d9e25798198e",
+    "flowsint-core/src/flowsint_execution/models.py": "90722c34f56a3938581151e191db395130e2640aac7121f43dcd7c2a96644a5b"
+  },
+  "kind": "post-edit fresh graph and extraction analysis"
+}

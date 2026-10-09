@@ -1,0 +1,901 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+        "name": "resolve_persisted_observation",
+        "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+        "nodeType": "Function",
+        "startLine": 264,
+        "endLine": 314,
+        "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "name": "resolve_persisted_observation",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 264,
+            "endLine": 314,
+            "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+            "name": "_policy_digest",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 108,
+            "endLine": 111,
+            "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "name": "load_artifact_runtime",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 114,
+            "endLine": 165,
+            "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:decode_source_proof",
+            "name": "decode_source_proof",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 176,
+            "endLine": 184,
+            "content": "def decode_source_proof(value: str) -> PersistedSourceProof:     if not isinstance(value, str) or not value.startswith(\"sp1.\"):         raise ValueError(\"unsupported_source_proof_version\")     encoded = value[4:]     try:         raw = base64.b64decode(encoded + \"=\" * (-len(encoded) % 4), altchars=b\"-_\", validate=True)         return PersistedSourceProof.model_validate_json(raw, strict=True)     except Exception as error:         raise ValueError(\"invalid_source_proof\") from error"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "name": "resolve_persisted_source_proof",
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "nodeType": "Function",
+            "startLine": 187,
+            "endLine": 221,
+            "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+            "name": "_aware",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 135,
+            "endLine": 136,
+            "content": "def _aware(value: datetime) -> bool:     return value.tzinfo is not None and value.utcoffset() is not None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+            "name": "_bound",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 138,
+            "endLine": 148,
+            "content": "def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:     if not _aware(now) or not _aware(decision.issued_at) or not _aware(decision.expires_at):         return \"malformed_policy_time\"     if now < decision.issued_at:         return \"policy_not_yet_valid\"     if now >= decision.expires_at:         return \"policy_expired\"     if (context.operation_id != decision.operation_id or context.caller_id != decision.caller_id             or context.scope != decision.scope or context.source_family != decision.source_family):         return \"authorization_mismatch\"     return None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_current_policy",
+            "name": "_current_policy",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 150,
+            "endLine": 162,
+            "content": "def _current_policy(decision: RetentionDecision, authority: RetentionAuthority | None,                     now: datetime) -> tuple[ArtifactState, str] | None:     if authority is None:         return ArtifactState.HOLD, \"current_policy_unavailable\"     if not _aware(authority.expires_at):         return ArtifactState.REVIEW, \"malformed_current_policy\"     if now >= authority.expires_at:         return ArtifactState.REVIEW, \"current_policy_expired\"     fields = (\"issuer_id\", \"reviewer_id\", \"policy_id\", \"policy_digest\", \"caller_id\", \"scope\",               \"source_family\", \"expires_at\", \"retain_body\", \"retain_normalized_text\")     if any(getattr(decision, name) != getattr(authority, name) for name in fields):         return ArtifactState.REVIEW, \"current_policy_mismatch\"     return None"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "name": "resolve_source",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 328,
+            "endLine": 365,
+            "content": "def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, artifact: ArtifactReference, *,                    authority: RetentionAuthority | None = None, now: datetime | None = None) -> ResolveResult:     current = now or datetime.now(timezone.utc)     if decision is None: return ResolveResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     policy = _current_policy(decision, authority, current)     if policy: return ResolveResult(*policy)     mismatch = _bound(context, decision, current)     if mismatch: return ResolveResult(ArtifactState.REVIEW, mismatch)     try: body, metadata = store.read(artifact.content_digest, artifact.snapshot_id, expected_length=artifact.byte_length)     except (FileNotFoundError, OSError, ValueError, TypeError, json.JSONDecodeError): return ResolveResult(ArtifactState.REVIEW, \"artifact_missing\")     try:         issued, expiry = datetime.fromisoformat(metadata[\"issued_at\"]), datetime.fromisoformat(metadata[\"expires_at\"])         if not _aware(issued) or not _aware(expiry): raise ValueError     except (KeyError, TypeError, ValueError): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if current >= expiry: return ResolveResult(ArtifactState.REVIEW, \"artifact_expired\")     expected = {\"snapshot_id\": artifact.snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id, \"caller_id\": context.caller_id,         \"scope\": context.scope, \"source_family\": context.source_family, \"origin\": context.origin,         \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": artifact.retrieved_at.isoformat(), \"event_at\": artifact.event_at.isoformat() if artifact.event_at else None,         \"policy_digest\": decision.policy_digest, \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id,         \"reviewer_id\": decision.reviewer_id, \"issued_at\": decision.issued_at.isoformat(),         \"expires_at\": decision.expires_at.isoformat(), \"retain_body\": decision.retain_body,         \"retain_normalized_text\": decision.retain_normalized_text, \"content_digest\": artifact.content_digest,         \"byte_length\": artifact.byte_length}     if any(metadata.get(k) != v for k, v in expected.items()): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if artifact.origin != context.origin or artifact.requested_url != context.requested_url or artifact.final_url != context.final_url:         return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if len(body) != artifact.byte_length or hashlib.sha256(body).hexdigest() != artifact.content_digest:         return ResolveResult(ArtifactState.REVIEW, \"digest_mismatch\")     try: fresh = normalize_html(body)     except ValueError: return ResolveResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     stored = metadata.get(\"normalized\")     wanted = ({\"text\": fresh.text, \"spans\": [asdict(s) for s in fresh.spans], \"source_digest\": fresh.source_digest}               if decision.retain_normalized_text else None)     if stored is not None and stored != wanted: return ResolveResult(ArtifactState.REVIEW, \"normalized_metadata_mismatch\")     return ResolveResult(ArtifactState.AVAILABLE, \"resolved\", body)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "name": "normalize_html",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Function",
+            "startLine": 419,
+            "endLine": 453,
+            "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "name": "_exact",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 242,
+            "endLine": 244,
+            "content": "def _exact(value: dict, expected: set[str], label: str) -> None:     if type(value) is not dict or set(value) != expected:         raise ValueError(f\"invalid {label} fields\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+            "name": "_parse_span",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 247,
+            "endLine": 253,
+            "content": "def _parse_span(value: object, *, optional: bool) -> RawSpan | None:     if value is None and optional:         return None     if type(value) is not dict:         raise ValueError(\"invalid span\")     _exact(value, {\"start_byte\", \"end_byte\"}, \"span\")     return RawSpan(value[\"start_byte\"], value[\"end_byte\"])"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "name": "extraction_policy_from_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 256,
+            "endLine": 263,
+            "content": "def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     policy = metadata.payload.get(\"policy\")     if type(policy) is not dict:         raise ValueError(\"invalid extraction policy\")     _exact(policy, set(ExtractionPolicy.__dataclass_fields__), \"extraction policy\")     return ExtractionPolicy(**policy)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "name": "parse_observed_extraction_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 266,
+            "endLine": 300,
+            "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_verify_artifact",
+            "name": "_verify_artifact",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 303,
+            "endLine": 309,
+            "content": "def _verify_artifact(body: bytes, artifact: ArtifactReference) -> None:     if not isinstance(body, bytes):         raise TypeError(\"body must be bytes\")     if len(body) != artifact.byte_length:         raise ArtifactBindingError(\"artifact byte length mismatch\")     if hashlib.sha256(body).hexdigest() != artifact.content_digest:         raise ArtifactBindingError(\"artifact digest mismatch\")"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+            "name": "resolve_observation_span",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 320,
+            "endLine": 352,
+            "content": "def resolve_observation_span(body: bytes, artifact: ArtifactReference,                              observation: Observation, *,                              expected_occurrence_id: str,                              expected_input_ref: str,                              policy: ExtractionPolicy | None = None) -> ResolvedObservation:     _verify_artifact(body, artifact)     if type(observation) is not Observation:         raise TypeError(\"observation must be Observation\")     if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:         raise ArtifactBindingError(\"observation ownership mismatch\")     if (observation.artifact_id != artifact.artifact_id             or observation.snapshot_id != artifact.snapshot_id             or observation.content_digest != artifact.content_digest             or observation.source_url != artifact.final_url):         raise ArtifactBindingError(\"observation artifact binding mismatch\")     canonical = extract_observations(         body, artifact=artifact, occurrence_id=expected_occurrence_id,         input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,     )     matches = tuple(item for item in canonical.observations                     if item.observation_id == observation.observation_id)     if len(matches) != 1 or matches[0] != observation:         raise ArtifactBindingError(\"observation does not match canonical extraction\")     span = observation.raw_span     raw = body[span.start_byte:span.end_byte]     try:         text = raw.decode(\"utf-8\")         context_raw = None if observation.context_span is None else body[             observation.context_span.start_byte:observation.context_span.end_byte]         context_text = None if context_raw is None else context_raw.decode(\"utf-8\")         return ResolvedObservation(raw, text, context_raw, context_text)     except UnicodeDecodeError as exc:         raise ValueError(\"observation span is not valid UTF-8\") from exc"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_safe_http_url",
+            "name": "_safe_http_url",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 581,
+            "endLine": 596,
+            "content": "def _safe_http_url(value: str, base: str | None, *, allow_relative: bool) -> str | None:     if not value or any(character.isspace() for character in value):         return None     try:         parsed = urlsplit(value)     except ValueError:         return None     if parsed.scheme:         if parsed.scheme.lower() not in {\"http\", \"https\"}:             return None         if not parsed.hostname or parsed.username is not None or parsed.password is not None:             return None         return value     if not allow_relative or value.startswith(\"//\"):         return None     return urljoin(base, value) if base else value"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_byte_map",
+            "name": "_byte_map",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 599,
+            "endLine": 605,
+            "content": "def _byte_map(source: str) -> list[int]:     offsets = [0]     total = 0     for character in source:         total += len(character.encode(\"utf-8\"))         offsets.append(total)     return offsets"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_observation_id",
+            "name": "_observation_id",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 608,
+            "endLine": 612,
+            "content": "def _observation_id(artifact: ArtifactReference, occurrence_id: str,                     kind: ObservationKind, span: RawSpan) -> str:     key = \"\\0\".join((artifact.snapshot_id, artifact.content_digest, occurrence_id,                      kind.value, str(span.start_byte), str(span.end_byte))).encode()     return \"observation-\" + hashlib.sha256(key).hexdigest()[:32]"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_diagnostic",
+            "name": "_diagnostic",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 615,
+            "endLine": 616,
+            "content": "def _diagnostic(code: str, message: str) -> RedactedDiagnostic:     return RedactedDiagnostic(code=code, safe_message=message, retryable=False)"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "name": "extract_observations",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 619,
+            "endLine": 695,
+            "content": "def extract_observations(body: bytes, *, artifact: ArtifactReference, occurrence_id: str,                          input_ref: str, final_url: str,                          policy: ExtractionPolicy | None = None,                          cancelled: Callable[[], bool] | None = None) -> ObservedExtractionResult:     selected = policy or ExtractionPolicy()     _verify_artifact(body, artifact)     if _safe_http_url(final_url, None, allow_relative=False) != final_url:         raise ValueError(\"final_url must be an HTTP(S) URL without credentials\")     if artifact.final_url is not None and final_url != artifact.final_url:         raise ArtifactBindingError(\"source final URL does not match artifact final URL\")     if len(body) > selected.max_body_bytes:         raise ValueError(\"retained body exceeds extraction body limit\")     if cancelled is not None and cancelled():         return ObservedExtractionResult(\"\", (), (_diagnostic(\"extraction_cancelled\", \"Extraction was cancelled.\"),), False, 0, 0)     try:         source = body.decode(\"utf-8\")     except UnicodeDecodeError:         return ObservedExtractionResult(\"\", (), (_diagnostic(\"decode_error\", \"Retained source is not valid UTF-8.\"),), False, 0, 0)     line_starts = [0]     for match in re.finditer(\"\\n\", source):         line_starts.append(match.end())     parser = _SourceParser(source, line_starts)     parser.feed(source)     parser.close()     parser.close_open_frames()     if cancelled is not None and cancelled():         return ObservedExtractionResult(\" \".join(parser.readable_parts), (),             (_diagnostic(\"extraction_cancelled\", \"Extraction was cancelled.\"),), False, 0, 0)     byte_offsets = _byte_map(source)     observations: list[Observation] = []     context_used = 0     total = len(parser.candidates)     for candidate in parser.candidates:         value = candidate.value         if candidate.kind in {ObservationKind.LINK, ObservationKind.FORM_CANDIDATE}:             resolved = _safe_http_url(value, final_url, allow_relative=selected.allow_relative_hrefs)             if resolved is None:                 continue             if not selected.allow_external_links and urlsplit(resolved).hostname != urlsplit(final_url).hostname:                 continue             value = resolved             value = disclose_url(value)         if len(value.encode(\"utf-8\")) > selected.max_value_bytes:             continue         raw_span = RawSpan(byte_offsets[candidate.start_char], byte_offsets[candidate.end_char])         context_span = None         person_name = None         if candidate.context is not None:             context_start = candidate.context_start_char             context_end = candidate.context_end_char             if context_start is None or context_end is None:                 context_start = candidate.context.start_char                 context_end = candidate.context.end_char or len(source)             proposed = RawSpan(byte_offsets[context_start], byte_offsets[context_end])             cost = proposed.end_byte - proposed.start_byte             if context_used + cost > selected.max_context_bytes:                 continue             context_used += cost             context_span = proposed             if candidate.kind is ObservationKind.PERSON_ASSOCIATED:                 person_name = candidate.person_name         if len(observations) >= selected.max_observations:             continue         observations.append(Observation(             observation_id=_observation_id(artifact, occurrence_id, candidate.kind, raw_span),             occurrence_id=occurrence_id, kind=candidate.kind, value=value,             artifact_id=artifact.artifact_id, snapshot_id=artifact.snapshot_id,             content_digest=artifact.content_digest, input_ref=input_ref,             source_url=final_url, raw_span=raw_span, context_span=context_span,             anchor_text=candidate.anchor_text, person_name=person_name,         ))     skipped = total - len(observations)     return ObservedExtractionResult(         readable_text=\" \".join(parser.readable_parts), observations=tuple(observations),         diagnostics=(), was_truncated=skipped > 0, observations_skipped=skipped,         total_observations_found=total,     )"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+            "name": "disclose_url",
+            "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+            "nodeType": "Function",
+            "startLine": 28,
+            "endLine": 38,
+            "content": "def disclose_url(url: str) -> str:     \"\"\"Return a report-safe URL, dropping an ambiguous credential-like query.\"\"\"     parts = urlsplit(url)     host = f\"[{parts.hostname}]\" if parts.hostname and \":\" in parts.hostname else parts.hostname     port = f\":{parts.port}\" if parts.port is not None else \"\"     try:         pairs = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=False)         query = urlencode(pairs) if all(_query_name_supported(name) for name, _ in pairs) else \"\"     except (UnicodeError, ValueError):         query = \"\"     return urlunsplit((parts.scheme, f\"{host or ''}{port}\", parts.path or \"/\", query, \"\"))"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.read#3",
+            "name": "read",
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "nodeType": "Method",
+            "startLine": 250,
+            "endLine": 271,
+            "content": "    def read(self, digest: str, snapshot_id: str, *, expected_length: int | None = None) -> tuple[bytes, dict[str, Any]]:         if not re.fullmatch(_DIGEST, digest) or not re.fullmatch(r\"[a-f0-9]{32}\", snapshot_id): raise FileNotFoundError         if expected_length is None or not 0 <= expected_length <= _MAX_ARTIFACT_BYTES: raise ValueError(\"invalid length\")         root_fd = self._root_fd()         try:             records_fd = self._dir(root_fd, \"records\")             try:                 fd = os.open(f\"{snapshot_id}.json\", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=records_fd)                 try: metadata = json.loads(self._read_bounded(fd, _MAX_METADATA_BYTES))                 finally: os.close(fd)             finally: os.close(records_fd)             objects_fd = self._dir(root_fd, \"objects\")             try:                 prefix_fd = self._dir(objects_fd, digest[:2])                 try:                     fd = os.open(f\"{digest}.body\", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=prefix_fd)                     try: body = self._read_bounded(fd, expected_length)                     finally: os.close(fd)                 finally: os.close(prefix_fd)             finally: os.close(objects_fd)             return body, metadata         finally: os.close(root_fd)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_execution/observed_extraction.py:_SourceParser.close_open_frames#0",
+            "name": "close_open_frames",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Method",
+            "startLine": 541,
+            "endLine": 544,
+            "content": "    def close_open_frames(self) -> None:         for frame in self.stack:             frame.end_char = len(self.source)         self.stack.clear()"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:decode_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:decode_source_proof",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_verify_artifact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "to": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.read#3",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Method:flowsint-core/src/flowsint_execution/observed_extraction.py:_SourceParser.close_open_frames#0",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_current_policy",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+            "to": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_verify_artifact",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_safe_http_url",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_byte_map",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_observation_id",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_diagnostic",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+            "to": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+                    "name": "resolve_persisted_observation",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 264,
+                    "endLine": 314,
+                    "content": "def resolve_persisted_observation(     value: str,     metadata: object,     observation_id: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ObservationResolveResult:     \"\"\"Resolve one canonical persisted observation under current retention authority.\"\"\"     from .models import PersistedMetadata     from .observed_extraction import (         extraction_policy_from_metadata, parse_observed_extraction_metadata,         resolve_observation_span,     )     source = resolve_persisted_source_proof(         value, caller_id=caller_id, scope=scope, source_family=source_family,         operation_id=operation_id, occurrence_id=occurrence_id,         config_path=config_path, now=now,     )     if source.state is not ArtifactState.AVAILABLE or source.body is None:         return ObservationResolveResult(source.state, source.reason)     try:         proof = decode_source_proof(value)         if type(metadata) is not PersistedMetadata:             raise ValueError(\"metadata type mismatch\")         result = parse_observed_extraction_metadata(metadata)         matches = tuple(item for item in result.observations                         if item.observation_id == observation_id)         if len(matches) != 1:             raise ValueError(\"observation id mismatch\")         observation = matches[0]         if (observation.occurrence_id != proof.context.occurrence_id                 or observation.input_ref != proof.input_ref):             raise ValueError(\"observation proof ownership mismatch\")         resolved = resolve_observation_span(             source.body, proof.artifact, observation,             expected_occurrence_id=occurrence_id, expected_input_ref=proof.input_ref,             policy=extraction_policy_from_metadata(metadata),         )     except (TypeError, ValueError, ArtifactBindingError):         return ObservationResolveResult(ArtifactState.REVIEW, \"observation_metadata_invalid\")     return ObservationResolveResult(         ArtifactState.AVAILABLE, \"resolved\", observation, resolved.raw, resolved.text,         resolved.context_raw, resolved.context_text,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+                    "name": "_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 108,
+                    "endLine": 111,
+                    "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+                    "name": "load_artifact_runtime",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 114,
+                    "endLine": 165,
+                    "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:decode_source_proof",
+                    "name": "decode_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 176,
+                    "endLine": 184,
+                    "content": "def decode_source_proof(value: str) -> PersistedSourceProof:     if not isinstance(value, str) or not value.startswith(\"sp1.\"):         raise ValueError(\"unsupported_source_proof_version\")     encoded = value[4:]     try:         raw = base64.b64decode(encoded + \"=\" * (-len(encoded) % 4), altchars=b\"-_\", validate=True)         return PersistedSourceProof.model_validate_json(raw, strict=True)     except Exception as error:         raise ValueError(\"invalid_source_proof\") from error"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+                    "name": "resolve_persisted_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 187,
+                    "endLine": 221,
+                    "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+            "count": 6,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+                    "name": "_aware",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 135,
+                    "endLine": 136,
+                    "content": "def _aware(value: datetime) -> bool:     return value.tzinfo is not None and value.utcoffset() is not None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+                    "name": "_bound",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 138,
+                    "endLine": 148,
+                    "content": "def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:     if not _aware(now) or not _aware(decision.issued_at) or not _aware(decision.expires_at):         return \"malformed_policy_time\"     if now < decision.issued_at:         return \"policy_not_yet_valid\"     if now >= decision.expires_at:         return \"policy_expired\"     if (context.operation_id != decision.operation_id or context.caller_id != decision.caller_id             or context.scope != decision.scope or context.source_family != decision.source_family):         return \"authorization_mismatch\"     return None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_current_policy",
+                    "name": "_current_policy",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 150,
+                    "endLine": 162,
+                    "content": "def _current_policy(decision: RetentionDecision, authority: RetentionAuthority | None,                     now: datetime) -> tuple[ArtifactState, str] | None:     if authority is None:         return ArtifactState.HOLD, \"current_policy_unavailable\"     if not _aware(authority.expires_at):         return ArtifactState.REVIEW, \"malformed_current_policy\"     if now >= authority.expires_at:         return ArtifactState.REVIEW, \"current_policy_expired\"     fields = (\"issuer_id\", \"reviewer_id\", \"policy_id\", \"policy_digest\", \"caller_id\", \"scope\",               \"source_family\", \"expires_at\", \"retain_body\", \"retain_normalized_text\")     if any(getattr(decision, name) != getattr(authority, name) for name in fields):         return ArtifactState.REVIEW, \"current_policy_mismatch\"     return None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+                    "name": "resolve_source",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 328,
+                    "endLine": 365,
+                    "content": "def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, artifact: ArtifactReference, *,                    authority: RetentionAuthority | None = None, now: datetime | None = None) -> ResolveResult:     current = now or datetime.now(timezone.utc)     if decision is None: return ResolveResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     policy = _current_policy(decision, authority, current)     if policy: return ResolveResult(*policy)     mismatch = _bound(context, decision, current)     if mismatch: return ResolveResult(ArtifactState.REVIEW, mismatch)     try: body, metadata = store.read(artifact.content_digest, artifact.snapshot_id, expected_length=artifact.byte_length)     except (FileNotFoundError, OSError, ValueError, TypeError, json.JSONDecodeError): return ResolveResult(ArtifactState.REVIEW, \"artifact_missing\")     try:         issued, expiry = datetime.fromisoformat(metadata[\"issued_at\"]), datetime.fromisoformat(metadata[\"expires_at\"])         if not _aware(issued) or not _aware(expiry): raise ValueError     except (KeyError, TypeError, ValueError): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if current >= expiry: return ResolveResult(ArtifactState.REVIEW, \"artifact_expired\")     expected = {\"snapshot_id\": artifact.snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id, \"caller_id\": context.caller_id,         \"scope\": context.scope, \"source_family\": context.source_family, \"origin\": context.origin,         \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": artifact.retrieved_at.isoformat(), \"event_at\": artifact.event_at.isoformat() if artifact.event_at else None,         \"policy_digest\": decision.policy_digest, \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id,         \"reviewer_id\": decision.reviewer_id, \"issued_at\": decision.issued_at.isoformat(),         \"expires_at\": decision.expires_at.isoformat(), \"retain_body\": decision.retain_body,         \"retain_normalized_text\": decision.retain_normalized_text, \"content_digest\": artifact.content_digest,         \"byte_length\": artifact.byte_length}     if any(metadata.get(k) != v for k, v in expected.items()): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if artifact.origin != context.origin or artifact.requested_url != context.requested_url or artifact.final_url != context.final_url:         return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if len(body) != artifact.byte_length or hashlib.sha256(body).hexdigest() != artifact.content_digest:         return ResolveResult(ArtifactState.REVIEW, \"digest_mismatch\")     try: fresh = normalize_html(body)     except ValueError: return ResolveResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     stored = metadata.get(\"normalized\")     wanted = ({\"text\": fresh.text, \"spans\": [asdict(s) for s in fresh.spans], \"source_digest\": fresh.source_digest}               if decision.retain_normalized_text else None)     if stored is not None and stored != wanted: return ResolveResult(ArtifactState.REVIEW, \"normalized_metadata_mismatch\")     return ResolveResult(ArtifactState.AVAILABLE, \"resolved\", body)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+                    "name": "normalize_html",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 453,
+                    "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.read#3",
+                    "name": "read",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 250,
+                    "endLine": 271,
+                    "content": "    def read(self, digest: str, snapshot_id: str, *, expected_length: int | None = None) -> tuple[bytes, dict[str, Any]]:         if not re.fullmatch(_DIGEST, digest) or not re.fullmatch(r\"[a-f0-9]{32}\", snapshot_id): raise FileNotFoundError         if expected_length is None or not 0 <= expected_length <= _MAX_ARTIFACT_BYTES: raise ValueError(\"invalid length\")         root_fd = self._root_fd()         try:             records_fd = self._dir(root_fd, \"records\")             try:                 fd = os.open(f\"{snapshot_id}.json\", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=records_fd)                 try: metadata = json.loads(self._read_bounded(fd, _MAX_METADATA_BYTES))                 finally: os.close(fd)             finally: os.close(records_fd)             objects_fd = self._dir(root_fd, \"objects\")             try:                 prefix_fd = self._dir(objects_fd, digest[:2])                 try:                     fd = os.open(f\"{digest}.body\", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=prefix_fd)                     try: body = self._read_bounded(fd, expected_length)                     finally: os.close(fd)                 finally: os.close(prefix_fd)             finally: os.close(objects_fd)             return body, metadata         finally: os.close(root_fd)"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "count": 12,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+                    "name": "_exact",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 242,
+                    "endLine": 244,
+                    "content": "def _exact(value: dict, expected: set[str], label: str) -> None:     if type(value) is not dict or set(value) != expected:         raise ValueError(f\"invalid {label} fields\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+                    "name": "_parse_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 247,
+                    "endLine": 253,
+                    "content": "def _parse_span(value: object, *, optional: bool) -> RawSpan | None:     if value is None and optional:         return None     if type(value) is not dict:         raise ValueError(\"invalid span\")     _exact(value, {\"start_byte\", \"end_byte\"}, \"span\")     return RawSpan(value[\"start_byte\"], value[\"end_byte\"])"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+                    "name": "extraction_policy_from_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 256,
+                    "endLine": 263,
+                    "content": "def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     policy = metadata.payload.get(\"policy\")     if type(policy) is not dict:         raise ValueError(\"invalid extraction policy\")     _exact(policy, set(ExtractionPolicy.__dataclass_fields__), \"extraction policy\")     return ExtractionPolicy(**policy)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+                    "name": "parse_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 266,
+                    "endLine": 300,
+                    "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_verify_artifact",
+                    "name": "_verify_artifact",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 303,
+                    "endLine": 309,
+                    "content": "def _verify_artifact(body: bytes, artifact: ArtifactReference) -> None:     if not isinstance(body, bytes):         raise TypeError(\"body must be bytes\")     if len(body) != artifact.byte_length:         raise ArtifactBindingError(\"artifact byte length mismatch\")     if hashlib.sha256(body).hexdigest() != artifact.content_digest:         raise ArtifactBindingError(\"artifact digest mismatch\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+                    "name": "resolve_observation_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 320,
+                    "endLine": 352,
+                    "content": "def resolve_observation_span(body: bytes, artifact: ArtifactReference,                              observation: Observation, *,                              expected_occurrence_id: str,                              expected_input_ref: str,                              policy: ExtractionPolicy | None = None) -> ResolvedObservation:     _verify_artifact(body, artifact)     if type(observation) is not Observation:         raise TypeError(\"observation must be Observation\")     if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:         raise ArtifactBindingError(\"observation ownership mismatch\")     if (observation.artifact_id != artifact.artifact_id             or observation.snapshot_id != artifact.snapshot_id             or observation.content_digest != artifact.content_digest             or observation.source_url != artifact.final_url):         raise ArtifactBindingError(\"observation artifact binding mismatch\")     canonical = extract_observations(         body, artifact=artifact, occurrence_id=expected_occurrence_id,         input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,     )     matches = tuple(item for item in canonical.observations                     if item.observation_id == observation.observation_id)     if len(matches) != 1 or matches[0] != observation:         raise ArtifactBindingError(\"observation does not match canonical extraction\")     span = observation.raw_span     raw = body[span.start_byte:span.end_byte]     try:         text = raw.decode(\"utf-8\")         context_raw = None if observation.context_span is None else body[             observation.context_span.start_byte:observation.context_span.end_byte]         context_text = None if context_raw is None else context_raw.decode(\"utf-8\")         return ResolvedObservation(raw, text, context_raw, context_text)     except UnicodeDecodeError as exc:         raise ValueError(\"observation span is not valid UTF-8\") from exc"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_safe_http_url",
+                    "name": "_safe_http_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 581,
+                    "endLine": 596,
+                    "content": "def _safe_http_url(value: str, base: str | None, *, allow_relative: bool) -> str | None:     if not value or any(character.isspace() for character in value):         return None     try:         parsed = urlsplit(value)     except ValueError:         return None     if parsed.scheme:         if parsed.scheme.lower() not in {\"http\", \"https\"}:             return None         if not parsed.hostname or parsed.username is not None or parsed.password is not None:             return None         return value     if not allow_relative or value.startswith(\"//\"):         return None     return urljoin(base, value) if base else value"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_byte_map",
+                    "name": "_byte_map",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 599,
+                    "endLine": 605,
+                    "content": "def _byte_map(source: str) -> list[int]:     offsets = [0]     total = 0     for character in source:         total += len(character.encode(\"utf-8\"))         offsets.append(total)     return offsets"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_observation_id",
+                    "name": "_observation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 608,
+                    "endLine": 612,
+                    "content": "def _observation_id(artifact: ArtifactReference, occurrence_id: str,                     kind: ObservationKind, span: RawSpan) -> str:     key = \"\\0\".join((artifact.snapshot_id, artifact.content_digest, occurrence_id,                      kind.value, str(span.start_byte), str(span.end_byte))).encode()     return \"observation-\" + hashlib.sha256(key).hexdigest()[:32]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_diagnostic",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 615,
+                    "endLine": 616,
+                    "content": "def _diagnostic(code: str, message: str) -> RedactedDiagnostic:     return RedactedDiagnostic(code=code, safe_message=message, retryable=False)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+                    "name": "extract_observations",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 619,
+                    "endLine": 695,
+                    "content": "def extract_observations(body: bytes, *, artifact: ArtifactReference, occurrence_id: str,                          input_ref: str, final_url: str,                          policy: ExtractionPolicy | None = None,                          cancelled: Callable[[], bool] | None = None) -> ObservedExtractionResult:     selected = policy or ExtractionPolicy()     _verify_artifact(body, artifact)     if _safe_http_url(final_url, None, allow_relative=False) != final_url:         raise ValueError(\"final_url must be an HTTP(S) URL without credentials\")     if artifact.final_url is not None and final_url != artifact.final_url:         raise ArtifactBindingError(\"source final URL does not match artifact final URL\")     if len(body) > selected.max_body_bytes:         raise ValueError(\"retained body exceeds extraction body limit\")     if cancelled is not None and cancelled():         return ObservedExtractionResult(\"\", (), (_diagnostic(\"extraction_cancelled\", \"Extraction was cancelled.\"),), False, 0, 0)     try:         source = body.decode(\"utf-8\")     except UnicodeDecodeError:         return ObservedExtractionResult(\"\", (), (_diagnostic(\"decode_error\", \"Retained source is not valid UTF-8.\"),), False, 0, 0)     line_starts = [0]     for match in re.finditer(\"\\n\", source):         line_starts.append(match.end())     parser = _SourceParser(source, line_starts)     parser.feed(source)     parser.close()     parser.close_open_frames()     if cancelled is not None and cancelled():         return ObservedExtractionResult(\" \".join(parser.readable_parts), (),             (_diagnostic(\"extraction_cancelled\", \"Extraction was cancelled.\"),), False, 0, 0)     byte_offsets = _byte_map(source)     observations: list[Observation] = []     context_used = 0     total = len(parser.candidates)     for candidate in parser.candidates:         value = candidate.value         if candidate.kind in {ObservationKind.LINK, ObservationKind.FORM_CANDIDATE}:             resolved = _safe_http_url(value, final_url, allow_relative=selected.allow_relative_hrefs)             if resolved is None:                 continue             if not selected.allow_external_links and urlsplit(resolved).hostname != urlsplit(final_url).hostname:                 continue             value = resolved             value = disclose_url(value)         if len(value.encode(\"utf-8\")) > selected.max_value_bytes:             continue         raw_span = RawSpan(byte_offsets[candidate.start_char], byte_offsets[candidate.end_char])         context_span = None         person_name = None         if candidate.context is not None:             context_start = candidate.context_start_char             context_end = candidate.context_end_char             if context_start is None or context_end is None:                 context_start = candidate.context.start_char                 context_end = candidate.context.end_char or len(source)             proposed = RawSpan(byte_offsets[context_start], byte_offsets[context_end])             cost = proposed.end_byte - proposed.start_byte             if context_used + cost > selected.max_context_bytes:                 continue             context_used += cost             context_span = proposed             if candidate.kind is ObservationKind.PERSON_ASSOCIATED:                 person_name = candidate.person_name         if len(observations) >= selected.max_observations:             continue         observations.append(Observation(             observation_id=_observation_id(artifact, occurrence_id, candidate.kind, raw_span),             occurrence_id=occurrence_id, kind=candidate.kind, value=value,             artifact_id=artifact.artifact_id, snapshot_id=artifact.snapshot_id,             content_digest=artifact.content_digest, input_ref=input_ref,             source_url=final_url, raw_span=raw_span, context_span=context_span,             anchor_text=candidate.anchor_text, person_name=person_name,         ))     skipped = total - len(observations)     return ObservedExtractionResult(         readable_text=\" \".join(parser.readable_parts), observations=tuple(observations),         diagnostics=(), was_truncated=skipped > 0, observations_skipped=skipped,         total_observations_found=total,     )"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/observed_extraction.py:_SourceParser.close_open_frames#0",
+                    "name": "close_open_frames",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 541,
+                    "endLine": 544,
+                    "content": "    def close_open_frames(self) -> None:         for frame in self.stack:             frame.end_char = len(self.source)         self.stack.clear()"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+                    "name": "disclose_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+                    "nodeType": "Function",
+                    "startLine": 28,
+                    "endLine": 38,
+                    "content": "def disclose_url(url: str) -> str:     \"\"\"Return a report-safe URL, dropping an ambiguous credential-like query.\"\"\"     parts = urlsplit(url)     host = f\"[{parts.hostname}]\" if parts.hostname and \":\" in parts.hostname else parts.hostname     port = f\":{parts.port}\" if parts.port is not None else \"\"     try:         pairs = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=False)         query = urlencode(pairs) if all(_query_name_supported(name) for name, _ in pairs) else \"\"     except (UnicodeError, ValueError):         query = \"\"     return urlunsplit((parts.scheme, f\"{host or ''}{port}\", parts.path or \"/\", query, \"\"))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 23
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:decode_source_proof",
+                    "name": "decode_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 176,
+                    "endLine": 184,
+                    "content": "def decode_source_proof(value: str) -> PersistedSourceProof:     if not isinstance(value, str) or not value.startswith(\"sp1.\"):         raise ValueError(\"unsupported_source_proof_version\")     encoded = value[4:]     try:         raw = base64.b64decode(encoded + \"=\" * (-len(encoded) % 4), altchars=b\"-_\", validate=True)         return PersistedSourceProof.model_validate_json(raw, strict=True)     except Exception as error:         raise ValueError(\"invalid_source_proof\") from error"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_source_proof",
+                    "name": "resolve_persisted_source_proof",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 187,
+                    "endLine": 221,
+                    "content": "def resolve_persisted_source_proof(     value: str,     *,     caller_id: str,     scope: str,     source_family: str,     operation_id: str,     occurrence_id: str | None = None,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ResolveResult:     \"\"\"Resolve persisted proof using only the current deployment-owned authority.\"\"\"     try:         proof = decode_source_proof(value)     except ValueError:         return ResolveResult(ArtifactState.REVIEW, \"proof_metadata_invalid\")     if (         proof.context.caller_id != caller_id         or proof.context.scope != scope         or proof.context.source_family != source_family         or proof.context.operation_id != operation_id         or proof.decision.operation_id != operation_id         or (occurrence_id is not None and proof.context.occurrence_id != occurrence_id)     ):         return ResolveResult(ArtifactState.REVIEW, \"authorization_mismatch\")     runtime = load_artifact_runtime(         caller_id=caller_id, scope=scope, source_family=source_family,         config_path=config_path, now=now,     )     if runtime is None:         return ResolveResult(ArtifactState.HOLD, \"current_policy_unavailable\")     return resolve_source(         runtime.store, proof.context, proof.decision, proof.artifact,         authority=runtime.authority, now=now,     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extraction_policy_from_metadata",
+                    "name": "extraction_policy_from_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 256,
+                    "endLine": 263,
+                    "content": "def extraction_policy_from_metadata(metadata: PersistedMetadata) -> ExtractionPolicy:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     policy = metadata.payload.get(\"policy\")     if type(policy) is not dict:         raise ValueError(\"invalid extraction policy\")     _exact(policy, set(ExtractionPolicy.__dataclass_fields__), \"extraction policy\")     return ExtractionPolicy(**policy)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:parse_observed_extraction_metadata",
+                    "name": "parse_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 266,
+                    "endLine": 300,
+                    "content": "def parse_observed_extraction_metadata(metadata: PersistedMetadata) -> ObservedExtractionResult:     if type(metadata) is not PersistedMetadata or metadata.format_version != _METADATA_VERSION:         raise ValueError(\"unsupported observation metadata version\")     payload = metadata.payload     expected = {\"extractor_version\", \"policy\", \"readable_text\", \"observations\", \"diagnostics\",                 \"was_truncated\", \"observations_skipped\", \"total_observations_found\"}     _exact(payload, expected, \"observation metadata\")     if payload[\"extractor_version\"] != _EXTRACTOR_VERSION:         raise ValueError(\"unsupported extractor version\")     extraction_policy_from_metadata(metadata)     observation_fields = set(Observation.__dataclass_fields__)     observations = []     if type(payload[\"observations\"]) is not list:         raise ValueError(\"observations must be a list\")     for raw in payload[\"observations\"]:         if type(raw) is not dict:             raise ValueError(\"invalid observation\")         _exact(raw, observation_fields, \"observation\")         observations.append(Observation(             **{**raw, \"kind\": ObservationKind(raw[\"kind\"]),                \"raw_span\": _parse_span(raw[\"raw_span\"], optional=False),                \"context_span\": _parse_span(raw[\"context_span\"], optional=True),                \"review_state\": ReviewState(raw[\"review_state\"]),                \"execution_state\": ExecutionState(raw[\"execution_state\"])},         ))     if type(payload[\"diagnostics\"]) is not list:         raise ValueError(\"diagnostics must be a list\")     diagnostics = tuple(RedactedDiagnostic.model_validate(item, strict=True)                         for item in payload[\"diagnostics\"])     return ObservedExtractionResult(         readable_text=payload[\"readable_text\"], observations=tuple(observations),         diagnostics=diagnostics, was_truncated=payload[\"was_truncated\"],         observations_skipped=payload[\"observations_skipped\"],         total_observations_found=payload[\"total_observations_found\"],     )"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:resolve_observation_span",
+                    "name": "resolve_observation_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 320,
+                    "endLine": 352,
+                    "content": "def resolve_observation_span(body: bytes, artifact: ArtifactReference,                              observation: Observation, *,                              expected_occurrence_id: str,                              expected_input_ref: str,                              policy: ExtractionPolicy | None = None) -> ResolvedObservation:     _verify_artifact(body, artifact)     if type(observation) is not Observation:         raise TypeError(\"observation must be Observation\")     if observation.occurrence_id != expected_occurrence_id or observation.input_ref != expected_input_ref:         raise ArtifactBindingError(\"observation ownership mismatch\")     if (observation.artifact_id != artifact.artifact_id             or observation.snapshot_id != artifact.snapshot_id             or observation.content_digest != artifact.content_digest             or observation.source_url != artifact.final_url):         raise ArtifactBindingError(\"observation artifact binding mismatch\")     canonical = extract_observations(         body, artifact=artifact, occurrence_id=expected_occurrence_id,         input_ref=expected_input_ref, final_url=observation.source_url, policy=policy,     )     matches = tuple(item for item in canonical.observations                     if item.observation_id == observation.observation_id)     if len(matches) != 1 or matches[0] != observation:         raise ArtifactBindingError(\"observation does not match canonical extraction\")     span = observation.raw_span     raw = body[span.start_byte:span.end_byte]     try:         text = raw.decode(\"utf-8\")         context_raw = None if observation.context_span is None else body[             observation.context_span.start_byte:observation.context_span.end_byte]         context_text = None if context_raw is None else context_raw.decode(\"utf-8\")         return ResolvedObservation(raw, text, context_raw, context_text)     except UnicodeDecodeError as exc:         raise ValueError(\"observation span is not valid UTF-8\") from exc"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:load_artifact_runtime",
+                    "name": "load_artifact_runtime",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 114,
+                    "endLine": 165,
+                    "content": "def load_artifact_runtime(     *,     caller_id: str,     scope: str,     source_family: str,     config_path: str | os.PathLike[str] | None = None,     now: datetime | None = None, ) -> ArtifactRuntime | None:     \"\"\"Load the current matching reviewed policy, or fail closed with ``None``.\"\"\"     selected_path = Path(config_path) if config_path is not None else None     if selected_path is None:         configured = os.environ.get(RUNTIME_CONFIG_ENV)         if not configured:             return None         selected_path = Path(configured)     try:         raw_bytes = selected_path.read_bytes()         raw = json.loads(raw_bytes)         config = ArtifactRuntimeConfig.model_validate_json(raw_bytes, strict=True)     except (OSError, ValueError, json.JSONDecodeError):         return None     current = now or datetime.now(timezone.utc)     matches = []     for raw_policy, policy in zip(raw.get(\"policies\", ()), config.policies, strict=True):         if _policy_digest(raw_policy) != policy.content_digest:             continue         if (             policy.caller_id == caller_id             and policy.scope == scope             and policy.source_family == source_family             and policy.issued_at <= current < policy.expires_at         ):             matches.append(policy)     if len(matches) != 1:         return None     policy = matches[0]     authority = RetentionAuthority(         issuer_id=policy.issuer_id,         reviewer_id=policy.reviewer_id,         policy_id=policy.policy_id,         policy_digest=policy.content_digest,         caller_id=policy.caller_id,         scope=policy.scope,         source_family=policy.source_family,         expires_at=policy.expires_at,         retain_normalized_text=policy.retain_normalized_text,     )     try:         store = FilesystemArtifactStore(config.store_root)     except OSError:         return None     return ArtifactRuntime(store=store, authority=authority)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:resolve_source",
+                    "name": "resolve_source",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 328,
+                    "endLine": 365,
+                    "content": "def resolve_source(store: FilesystemArtifactStore, context: ArtifactContext,                    decision: RetentionDecision | None, artifact: ArtifactReference, *,                    authority: RetentionAuthority | None = None, now: datetime | None = None) -> ResolveResult:     current = now or datetime.now(timezone.utc)     if decision is None: return ResolveResult(ArtifactState.HOLD, \"retention_policy_unavailable\")     policy = _current_policy(decision, authority, current)     if policy: return ResolveResult(*policy)     mismatch = _bound(context, decision, current)     if mismatch: return ResolveResult(ArtifactState.REVIEW, mismatch)     try: body, metadata = store.read(artifact.content_digest, artifact.snapshot_id, expected_length=artifact.byte_length)     except (FileNotFoundError, OSError, ValueError, TypeError, json.JSONDecodeError): return ResolveResult(ArtifactState.REVIEW, \"artifact_missing\")     try:         issued, expiry = datetime.fromisoformat(metadata[\"issued_at\"]), datetime.fromisoformat(metadata[\"expires_at\"])         if not _aware(issued) or not _aware(expiry): raise ValueError     except (KeyError, TypeError, ValueError): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if current >= expiry: return ResolveResult(ArtifactState.REVIEW, \"artifact_expired\")     expected = {\"snapshot_id\": artifact.snapshot_id, \"artifact_id\": artifact.artifact_id,         \"operation_id\": context.operation_id, \"occurrence_id\": context.occurrence_id, \"caller_id\": context.caller_id,         \"scope\": context.scope, \"source_family\": context.source_family, \"origin\": context.origin,         \"requested_url\": context.requested_url, \"final_url\": context.final_url,         \"retrieved_at\": artifact.retrieved_at.isoformat(), \"event_at\": artifact.event_at.isoformat() if artifact.event_at else None,         \"policy_digest\": decision.policy_digest, \"policy_id\": decision.policy_id, \"issuer_id\": decision.issuer_id,         \"reviewer_id\": decision.reviewer_id, \"issued_at\": decision.issued_at.isoformat(),         \"expires_at\": decision.expires_at.isoformat(), \"retain_body\": decision.retain_body,         \"retain_normalized_text\": decision.retain_normalized_text, \"content_digest\": artifact.content_digest,         \"byte_length\": artifact.byte_length}     if any(metadata.get(k) != v for k, v in expected.items()): return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if artifact.origin != context.origin or artifact.requested_url != context.requested_url or artifact.final_url != context.final_url:         return ResolveResult(ArtifactState.REVIEW, \"metadata_mismatch\")     if len(body) != artifact.byte_length or hashlib.sha256(body).hexdigest() != artifact.content_digest:         return ResolveResult(ArtifactState.REVIEW, \"digest_mismatch\")     try: fresh = normalize_html(body)     except ValueError: return ResolveResult(ArtifactState.REVIEW, \"normalized_source_mismatch\")     stored = metadata.get(\"normalized\")     wanted = ({\"text\": fresh.text, \"spans\": [asdict(s) for s in fresh.spans], \"source_digest\": fresh.source_digest}               if decision.retain_normalized_text else None)     if stored is not None and stored != wanted: return ResolveResult(ArtifactState.REVIEW, \"normalized_metadata_mismatch\")     return ResolveResult(ArtifactState.AVAILABLE, \"resolved\", body)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_exact",
+                    "name": "_exact",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 242,
+                    "endLine": 244,
+                    "content": "def _exact(value: dict, expected: set[str], label: str) -> None:     if type(value) is not dict or set(value) != expected:         raise ValueError(f\"invalid {label} fields\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_parse_span",
+                    "name": "_parse_span",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 247,
+                    "endLine": 253,
+                    "content": "def _parse_span(value: object, *, optional: bool) -> RawSpan | None:     if value is None and optional:         return None     if type(value) is not dict:         raise ValueError(\"invalid span\")     _exact(value, {\"start_byte\", \"end_byte\"}, \"span\")     return RawSpan(value[\"start_byte\"], value[\"end_byte\"])"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_verify_artifact",
+                    "name": "_verify_artifact",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 303,
+                    "endLine": 309,
+                    "content": "def _verify_artifact(body: bytes, artifact: ArtifactReference) -> None:     if not isinstance(body, bytes):         raise TypeError(\"body must be bytes\")     if len(body) != artifact.byte_length:         raise ArtifactBindingError(\"artifact byte length mismatch\")     if hashlib.sha256(body).hexdigest() != artifact.content_digest:         raise ArtifactBindingError(\"artifact digest mismatch\")"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:extract_observations",
+                    "name": "extract_observations",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 619,
+                    "endLine": 695,
+                    "content": "def extract_observations(body: bytes, *, artifact: ArtifactReference, occurrence_id: str,                          input_ref: str, final_url: str,                          policy: ExtractionPolicy | None = None,                          cancelled: Callable[[], bool] | None = None) -> ObservedExtractionResult:     selected = policy or ExtractionPolicy()     _verify_artifact(body, artifact)     if _safe_http_url(final_url, None, allow_relative=False) != final_url:         raise ValueError(\"final_url must be an HTTP(S) URL without credentials\")     if artifact.final_url is not None and final_url != artifact.final_url:         raise ArtifactBindingError(\"source final URL does not match artifact final URL\")     if len(body) > selected.max_body_bytes:         raise ValueError(\"retained body exceeds extraction body limit\")     if cancelled is not None and cancelled():         return ObservedExtractionResult(\"\", (), (_diagnostic(\"extraction_cancelled\", \"Extraction was cancelled.\"),), False, 0, 0)     try:         source = body.decode(\"utf-8\")     except UnicodeDecodeError:         return ObservedExtractionResult(\"\", (), (_diagnostic(\"decode_error\", \"Retained source is not valid UTF-8.\"),), False, 0, 0)     line_starts = [0]     for match in re.finditer(\"\\n\", source):         line_starts.append(match.end())     parser = _SourceParser(source, line_starts)     parser.feed(source)     parser.close()     parser.close_open_frames()     if cancelled is not None and cancelled():         return ObservedExtractionResult(\" \".join(parser.readable_parts), (),             (_diagnostic(\"extraction_cancelled\", \"Extraction was cancelled.\"),), False, 0, 0)     byte_offsets = _byte_map(source)     observations: list[Observation] = []     context_used = 0     total = len(parser.candidates)     for candidate in parser.candidates:         value = candidate.value         if candidate.kind in {ObservationKind.LINK, ObservationKind.FORM_CANDIDATE}:             resolved = _safe_http_url(value, final_url, allow_relative=selected.allow_relative_hrefs)             if resolved is None:                 continue             if not selected.allow_external_links and urlsplit(resolved).hostname != urlsplit(final_url).hostname:                 continue             value = resolved             value = disclose_url(value)         if len(value.encode(\"utf-8\")) > selected.max_value_bytes:             continue         raw_span = RawSpan(byte_offsets[candidate.start_char], byte_offsets[candidate.end_char])         context_span = None         person_name = None         if candidate.context is not None:             context_start = candidate.context_start_char             context_end = candidate.context_end_char             if context_start is None or context_end is None:                 context_start = candidate.context.start_char                 context_end = candidate.context.end_char or len(source)             proposed = RawSpan(byte_offsets[context_start], byte_offsets[context_end])             cost = proposed.end_byte - proposed.start_byte             if context_used + cost > selected.max_context_bytes:                 continue             context_used += cost             context_span = proposed             if candidate.kind is ObservationKind.PERSON_ASSOCIATED:                 person_name = candidate.person_name         if len(observations) >= selected.max_observations:             continue         observations.append(Observation(             observation_id=_observation_id(artifact, occurrence_id, candidate.kind, raw_span),             occurrence_id=occurrence_id, kind=candidate.kind, value=value,             artifact_id=artifact.artifact_id, snapshot_id=artifact.snapshot_id,             content_digest=artifact.content_digest, input_ref=input_ref,             source_url=final_url, raw_span=raw_span, context_span=context_span,             anchor_text=candidate.anchor_text, person_name=person_name,         ))     skipped = total - len(observations)     return ObservedExtractionResult(         readable_text=\" \".join(parser.readable_parts), observations=tuple(observations),         diagnostics=(), was_truncated=skipped > 0, observations_skipped=skipped,         total_observations_found=total,     )"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/artifacts.py:FilesystemArtifactStore.read#3",
+                    "name": "read",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Method",
+                    "startLine": 250,
+                    "endLine": 271,
+                    "content": "    def read(self, digest: str, snapshot_id: str, *, expected_length: int | None = None) -> tuple[bytes, dict[str, Any]]:         if not re.fullmatch(_DIGEST, digest) or not re.fullmatch(r\"[a-f0-9]{32}\", snapshot_id): raise FileNotFoundError         if expected_length is None or not 0 <= expected_length <= _MAX_ARTIFACT_BYTES: raise ValueError(\"invalid length\")         root_fd = self._root_fd()         try:             records_fd = self._dir(root_fd, \"records\")             try:                 fd = os.open(f\"{snapshot_id}.json\", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=records_fd)                 try: metadata = json.loads(self._read_bounded(fd, _MAX_METADATA_BYTES))                 finally: os.close(fd)             finally: os.close(records_fd)             objects_fd = self._dir(root_fd, \"objects\")             try:                 prefix_fd = self._dir(objects_fd, digest[:2])                 try:                     fd = os.open(f\"{digest}.body\", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=prefix_fd)                     try: body = self._read_bounded(fd, expected_length)                     finally: os.close(fd)                 finally: os.close(prefix_fd)             finally: os.close(objects_fd)             return body, metadata         finally: os.close(root_fd)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_execution/observed_extraction.py:_SourceParser.close_open_frames#0",
+                    "name": "close_open_frames",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Method",
+                    "startLine": 541,
+                    "endLine": 544,
+                    "content": "    def close_open_frames(self) -> None:         for frame in self.stack:             frame.end_char = len(self.source)         self.stack.clear()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifact_runtime.py:_policy_digest",
+                    "name": "_policy_digest",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifact_runtime.py",
+                    "nodeType": "Function",
+                    "startLine": 108,
+                    "endLine": 111,
+                    "content": "def _policy_digest(policy: dict[str, Any]) -> str:     content = {key: value for key, value in policy.items() if key != \"content_digest\"}     canonical = json.dumps(content, ensure_ascii=True, sort_keys=True, separators=(\",\", \":\"))     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_aware",
+                    "name": "_aware",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 135,
+                    "endLine": 136,
+                    "content": "def _aware(value: datetime) -> bool:     return value.tzinfo is not None and value.utcoffset() is not None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_bound",
+                    "name": "_bound",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 138,
+                    "endLine": 148,
+                    "content": "def _bound(context: ArtifactContext, decision: RetentionDecision, now: datetime) -> str | None:     if not _aware(now) or not _aware(decision.issued_at) or not _aware(decision.expires_at):         return \"malformed_policy_time\"     if now < decision.issued_at:         return \"policy_not_yet_valid\"     if now >= decision.expires_at:         return \"policy_expired\"     if (context.operation_id != decision.operation_id or context.caller_id != decision.caller_id             or context.scope != decision.scope or context.source_family != decision.source_family):         return \"authorization_mismatch\"     return None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:_current_policy",
+                    "name": "_current_policy",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 150,
+                    "endLine": 162,
+                    "content": "def _current_policy(decision: RetentionDecision, authority: RetentionAuthority | None,                     now: datetime) -> tuple[ArtifactState, str] | None:     if authority is None:         return ArtifactState.HOLD, \"current_policy_unavailable\"     if not _aware(authority.expires_at):         return ArtifactState.REVIEW, \"malformed_current_policy\"     if now >= authority.expires_at:         return ArtifactState.REVIEW, \"current_policy_expired\"     fields = (\"issuer_id\", \"reviewer_id\", \"policy_id\", \"policy_digest\", \"caller_id\", \"scope\",               \"source_family\", \"expires_at\", \"retain_body\", \"retain_normalized_text\")     if any(getattr(decision, name) != getattr(authority, name) for name in fields):         return ArtifactState.REVIEW, \"current_policy_mismatch\"     return None"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/artifacts.py:normalize_html",
+                    "name": "normalize_html",
+                    "filePath": "flowsint-core/src/flowsint_execution/artifacts.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 453,
+                    "content": "def normalize_html(body: bytes) -> NormalizedSource:     try: source = body.decode(\"utf-8\", errors=\"strict\")     except UnicodeDecodeError as error: raise ValueError(\"unsupported_source_encoding\") from error     char_to_byte = [0]     for character in source: char_to_byte.append(char_to_byte[-1] + len(character.encode(\"utf-8\")))     parser = _ExactHTMLText(source, char_to_byte)     try: parser.feed(source); parser.close()     except (ValueError, AssertionError) as error: raise ValueError(\"malformed_html_mapping\") from error     spans: list[NormalizedSpan] = []; normalized = \"\"; pending: tuple[int, int] | None = None; previous_end = None     def emit(text: str, raw_start: int, raw_end: int) -> None:         nonlocal normalized         if not text or raw_start >= raw_end: return         start = len(normalized); normalized += text         spans.append(NormalizedSpan(raw_start, raw_end, start, len(normalized), text))     for atom in parser.atoms:         if previous_end is not None and atom.raw_start > previous_end and normalized: pending = (previous_end, atom.raw_start)         # One deterministic mapping per text node is enough even when whitespace is         # normalized.  Entity callbacks remain separate atoms because their raw byte         # ranges differ.  This avoids token/character-scale metadata growth.         value = re.sub(r\"\\s+\", \" \", atom.text, flags=re.UNICODE)         leading = value.startswith(\" \")         trailing = value.endswith(\" \")         content = value.strip(\" \")         if leading and normalized:             pending = (atom.raw_start, atom.raw_end)         if content:             if pending and normalized: emit(\" \", *pending)             pending = None             emit(content, atom.raw_start, atom.raw_end)         if trailing and normalized:             pending = (atom.raw_start, atom.raw_end)         previous_end = atom.raw_end     result = NormalizedSource(normalized, tuple(spans), source_digest=hashlib.sha256(body).hexdigest())     if \"\".join(span.emitted_text for span in spans) != normalized: raise ValueError(\"normalized_mapping_invariant\")     return result"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_safe_http_url",
+                    "name": "_safe_http_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 581,
+                    "endLine": 596,
+                    "content": "def _safe_http_url(value: str, base: str | None, *, allow_relative: bool) -> str | None:     if not value or any(character.isspace() for character in value):         return None     try:         parsed = urlsplit(value)     except ValueError:         return None     if parsed.scheme:         if parsed.scheme.lower() not in {\"http\", \"https\"}:             return None         if not parsed.hostname or parsed.username is not None or parsed.password is not None:             return None         return value     if not allow_relative or value.startswith(\"//\"):         return None     return urljoin(base, value) if base else value"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_byte_map",
+                    "name": "_byte_map",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 599,
+                    "endLine": 605,
+                    "content": "def _byte_map(source: str) -> list[int]:     offsets = [0]     total = 0     for character in source:         total += len(character.encode(\"utf-8\"))         offsets.append(total)     return offsets"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_observation_id",
+                    "name": "_observation_id",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 608,
+                    "endLine": 612,
+                    "content": "def _observation_id(artifact: ArtifactReference, occurrence_id: str,                     kind: ObservationKind, span: RawSpan) -> str:     key = \"\\0\".join((artifact.snapshot_id, artifact.content_digest, occurrence_id,                      kind.value, str(span.start_byte), str(span.end_byte))).encode()     return \"observation-\" + hashlib.sha256(key).hexdigest()[:32]"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_diagnostic",
+                    "name": "_diagnostic",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 615,
+                    "endLine": 616,
+                    "content": "def _diagnostic(code: str, message: str) -> RedactedDiagnostic:     return RedactedDiagnostic(code=code, safe_message=message, retryable=False)"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/url_policy.py:disclose_url",
+                    "name": "disclose_url",
+                    "filePath": "flowsint-core/src/flowsint_execution/url_policy.py",
+                    "nodeType": "Function",
+                    "startLine": 28,
+                    "endLine": 38,
+                    "content": "def disclose_url(url: str) -> str:     \"\"\"Return a report-safe URL, dropping an ambiguous credential-like query.\"\"\"     parts = urlsplit(url)     host = f\"[{parts.hostname}]\" if parts.hostname and \":\" in parts.hostname else parts.hostname     port = f\":{parts.port}\" if parts.port is not None else \"\"     try:         pairs = parse_qsl(parts.query, keep_blank_values=True, strict_parsing=False)         query = urlencode(pairs) if all(_query_name_supported(name) for name, _ in pairs) else \"\"     except (UnicodeError, ValueError):         query = \"\"     return urlunsplit((parts.scheme, f\"{host or ''}{port}\", parts.path or \"/\", query, \"\"))"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/artifact_runtime.py:resolve_persisted_observation",
+        "rootSymbols": 1,
+        "totalSymbols": 24,
+        "totalEdges": 28,
+        "filesMatched": 4,
+        "truncated": false,
+        "direct": 5,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

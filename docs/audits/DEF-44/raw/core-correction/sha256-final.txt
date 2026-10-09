@@ -1,0 +1,3 @@
+aefe4316c15a30a173db4545476a38278e2881bde215ccfe85b593197da0a26a  flowsint-core/src/flowsint_execution/artifacts.py
+7d38d677dee196cf01ff9be33a76329d8198c5c400c6e5796970c8564c9d64a9  flowsint-core/tests/acquisition/test_artifact_capture.py
+132c50b9a7fda711d62ad11d042fda73ef246e00281bbe15ded4b7bffb6bfd9c  /tmp/def44-artifact-contract.md

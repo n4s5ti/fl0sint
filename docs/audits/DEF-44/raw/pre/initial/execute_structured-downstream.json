@@ -1,0 +1,19 @@
+{
+  "command": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "--json",
+    "--no-auto-index",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "downstream",
+    "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:execute_structured"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+  "rc": 0,
+  "seconds": 1.0228698253631592
+}

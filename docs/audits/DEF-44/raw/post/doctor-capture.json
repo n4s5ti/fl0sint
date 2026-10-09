@@ -1,0 +1,13 @@
+{
+  "command": [
+    "pip3r",
+    "doctor",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "--verify-refactor",
+    "capture_source",
+    "--json"
+  ],
+  "rc": 0,
+  "seconds": 2.2993407249450684
+}

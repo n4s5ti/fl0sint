@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+        "name": "SpanReference",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 184,
+        "endLine": 207,
+        "content": "class SpanReference(ContractModel):     span_id: Identifier     artifact_id: Identifier     byte_start: Count | None = None     byte_end: Count | None = None     field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None     @model_validator(mode=\"after\")     def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+            "name": "SpanReference",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 184,
+            "endLine": 207,
+            "content": "class SpanReference(ContractModel):     span_id: Identifier     artifact_id: Identifier     byte_start: Count | None = None     byte_end: Count | None = None     field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None     @model_validator(mode=\"after\")     def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+                    "name": "SpanReference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 184,
+                    "endLine": 207,
+                    "content": "class SpanReference(ContractModel):     span_id: Identifier     artifact_id: Identifier     byte_start: Count | None = None     byte_end: Count | None = None     field_pointer: (         Annotated[str, Field(max_length=2048, pattern=r\"^(?:/(?:[^~]|~[01])*)*$\")]         | None     ) = None     @model_validator(mode=\"after\")     def check_span(self):         if self.field_pointer is not None:             if self.byte_start is not None or self.byte_end is not None:                 raise ValueError(\"field pointer and byte range are mutually exclusive\")         elif (             self.byte_start is None             or self.byte_end is None             or self.byte_start >= self.byte_end         ):             raise ValueError(                 \"span requires a nonempty half-open byte range or JSON pointer\"             )         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:SpanReference",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

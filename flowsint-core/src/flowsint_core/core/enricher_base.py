@@ -128,6 +128,7 @@ class Enricher(ABC):
         vault: Optional[VaultProtocol] = None,
         params: Optional[Dict[str, Any]] = None,
         graph_service: Optional[GraphService] = None,
+        capture_only: bool = False,
     ):
         self.scan_id = scan_id or "default"
         self.sketch_id = sketch_id or "system"
@@ -135,7 +136,6 @@ class Enricher(ABC):
         self.params_schema = params_schema or []
         self.ParamsModel = build_params_model(self.params_schema)
         self.params: Dict[str, Any] = params or {}
-
         # Initialize graph service (uses singleton connection by default)
         if graph_service:
             self._graph_service = graph_service
@@ -143,8 +143,8 @@ class Enricher(ABC):
             self._graph_service = create_graph_service(
                 sketch_id=self.sketch_id,
                 enable_batching=True,
+                capture_only=capture_only,
             )
-
         # Params is filled synchronously by the constructor. This params is generally constructed of
         # vaultSecret references, not the key directly. The idea is that the real key values are resolved after calling
         # async_init(), right before the execution.

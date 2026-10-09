@@ -1,0 +1,37 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__ test_capture_resolves_after_fresh_store_instance_and_denies_other_bindings __
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/pytest-of-n4s5ti/pytest-44/test_capture_resolves_after_fr0')
+
+    def test_capture_resolves_after_fresh_store_instance_and_denies_other_bindings(tmp_path):
+        store = FilesystemArtifactStore(tmp_path)
+        decision = authority().issue("operation-1", now=NOW)
+        captured = capture_source(store, context(), decision, b"source bytes", now=NOW)
+    
+        assert captured.state is ArtifactState.AVAILABLE
+        assert captured.artifact.content_digest == hashlib.sha256(b"source bytes").hexdigest()
+        assert captured.artifact.requested_url == "https://example.test/a"
+        assert captured.artifact.final_url == "https://example.test/b"
+        assert resolve_source(FilesystemArtifactStore(tmp_path), context(), decision, captured.artifact, now=NOW).body == b"source bytes"
+        for changed in (
+            {"operation_id": "other"},
+            {"caller_id": "other"},
+            {"scope": "other"},
+        ):
+            denied = resolve_source(store, context(**changed), decision, captured.artifact, now=NOW)
+            assert denied.state is ArtifactState.REVIEW
+>           assert denied.reason == "authorization_mismatch"
+E           AssertionError: assert 'metadata_mismatch' == 'authorization_mismatch'
+E             
+E             - authorization_mismatch
+E             + metadata_mismatch
+
+test_artifact_capture.py:75: AssertionError
+=========================== short test summary info ============================
+FAILED test_artifact_capture.py::test_capture_resolves_after_fresh_store_instance_and_denies_other_bindings - AssertionError: assert 'metadata_mismatch' == 'authorization_mismatch'
+  
+  - authorization_mismatch
+  + metadata_mismatch
+1 failed in 0.22s
+exit=1

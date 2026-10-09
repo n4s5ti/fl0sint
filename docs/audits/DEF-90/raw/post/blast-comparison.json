@@ -1,0 +1,19 @@
+{
+  "load_manifest_down_identical": true,
+  "load_manifest_up_identical": true,
+  "new_symbol_upstream_files": {
+    "blast-validate_packet-up": [
+      "scripts/audit_packet.py"
+    ],
+    "blast-validate_changed-up": [
+      "scripts/audit_packet.py"
+    ],
+    "blast-main-up": [
+      "scripts/audit_packet.py"
+    ],
+    "blast-observed_status-up": [
+      "scripts/audit_packet.py"
+    ]
+  },
+  "package_src_callers_of_validator": []
+}

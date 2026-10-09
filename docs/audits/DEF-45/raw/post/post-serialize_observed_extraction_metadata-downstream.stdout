@@ -1,0 +1,115 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+        "name": "serialize_observed_extraction_metadata",
+        "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+        "nodeType": "Function",
+        "startLine": 202,
+        "endLine": 239,
+        "content": "def serialize_observed_extraction_metadata(     result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None, ) -> PersistedMetadata:     if type(result) is not ObservedExtractionResult:         raise TypeError(\"result must be ObservedExtractionResult\")     selected = policy or ExtractionPolicy()     payload = {         \"extractor_version\": _EXTRACTOR_VERSION,         \"policy\": {name: getattr(selected, name) for name in selected.__dataclass_fields__},         \"readable_text\": result.readable_text,         \"observations\": [{             \"observation_id\": item.observation_id,             \"occurrence_id\": item.occurrence_id,             \"kind\": item.kind.value,             \"value\": item.value,             \"artifact_id\": item.artifact_id,             \"snapshot_id\": item.snapshot_id,             \"content_digest\": item.content_digest,             \"input_ref\": item.input_ref,             \"source_url\": item.source_url,             \"raw_span\": _span_payload(item.raw_span),             \"context_span\": _span_payload(item.context_span),             \"anchor_text\": item.anchor_text,             \"person_name\": item.person_name,             \"role_name\": item.role_name,             \"company_name\": item.company_name,             \"review_state\": item.review_state.value,             \"execution_state\": item.execution_state.value,         } for item in result.observations],         \"diagnostics\": [item.model_dump(mode=\"json\") for item in result.diagnostics],         \"was_truncated\": result.was_truncated,         \"observations_skipped\": result.observations_skipped,         \"total_observations_found\": result.total_observations_found,     }     metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)     if len(metadata.model_dump_json(warnings=\"error\").encode(\"utf-8\")) > 8 * 1024 * 1024:         raise ValueError(\"observation_result_too_large\")     return metadata"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+            "name": "serialize_observed_extraction_metadata",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 202,
+            "endLine": 239,
+            "content": "def serialize_observed_extraction_metadata(     result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None, ) -> PersistedMetadata:     if type(result) is not ObservedExtractionResult:         raise TypeError(\"result must be ObservedExtractionResult\")     selected = policy or ExtractionPolicy()     payload = {         \"extractor_version\": _EXTRACTOR_VERSION,         \"policy\": {name: getattr(selected, name) for name in selected.__dataclass_fields__},         \"readable_text\": result.readable_text,         \"observations\": [{             \"observation_id\": item.observation_id,             \"occurrence_id\": item.occurrence_id,             \"kind\": item.kind.value,             \"value\": item.value,             \"artifact_id\": item.artifact_id,             \"snapshot_id\": item.snapshot_id,             \"content_digest\": item.content_digest,             \"input_ref\": item.input_ref,             \"source_url\": item.source_url,             \"raw_span\": _span_payload(item.raw_span),             \"context_span\": _span_payload(item.context_span),             \"anchor_text\": item.anchor_text,             \"person_name\": item.person_name,             \"role_name\": item.role_name,             \"company_name\": item.company_name,             \"review_state\": item.review_state.value,             \"execution_state\": item.execution_state.value,         } for item in result.observations],         \"diagnostics\": [item.model_dump(mode=\"json\") for item in result.diagnostics],         \"was_truncated\": result.was_truncated,         \"observations_skipped\": result.observations_skipped,         \"total_observations_found\": result.total_observations_found,     }     metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)     if len(metadata.model_dump_json(warnings=\"error\").encode(\"utf-8\")) > 8 * 1024 * 1024:         raise ValueError(\"observation_result_too_large\")     return metadata"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+            "name": "_span_payload",
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "nodeType": "Function",
+            "startLine": 198,
+            "endLine": 199,
+            "content": "def _span_payload(span: RawSpan | None) -> dict[str, int] | None:     return None if span is None else {\"start_byte\": span.start_byte, \"end_byte\": span.end_byte}"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+            "to": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+                    "name": "serialize_observed_extraction_metadata",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 202,
+                    "endLine": 239,
+                    "content": "def serialize_observed_extraction_metadata(     result: ObservedExtractionResult, *, policy: ExtractionPolicy | None = None, ) -> PersistedMetadata:     if type(result) is not ObservedExtractionResult:         raise TypeError(\"result must be ObservedExtractionResult\")     selected = policy or ExtractionPolicy()     payload = {         \"extractor_version\": _EXTRACTOR_VERSION,         \"policy\": {name: getattr(selected, name) for name in selected.__dataclass_fields__},         \"readable_text\": result.readable_text,         \"observations\": [{             \"observation_id\": item.observation_id,             \"occurrence_id\": item.occurrence_id,             \"kind\": item.kind.value,             \"value\": item.value,             \"artifact_id\": item.artifact_id,             \"snapshot_id\": item.snapshot_id,             \"content_digest\": item.content_digest,             \"input_ref\": item.input_ref,             \"source_url\": item.source_url,             \"raw_span\": _span_payload(item.raw_span),             \"context_span\": _span_payload(item.context_span),             \"anchor_text\": item.anchor_text,             \"person_name\": item.person_name,             \"role_name\": item.role_name,             \"company_name\": item.company_name,             \"review_state\": item.review_state.value,             \"execution_state\": item.execution_state.value,         } for item in result.observations],         \"diagnostics\": [item.model_dump(mode=\"json\") for item in result.diagnostics],         \"was_truncated\": result.was_truncated,         \"observations_skipped\": result.observations_skipped,         \"total_observations_found\": result.total_observations_found,     }     metadata = PersistedMetadata(format_version=_METADATA_VERSION, payload=payload)     if len(metadata.model_dump_json(warnings=\"error\").encode(\"utf-8\")) > 8 * 1024 * 1024:         raise ValueError(\"observation_result_too_large\")     return metadata"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+                    "name": "_span_payload",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 199,
+                    "content": "def _span_payload(span: RawSpan | None) -> dict[str, int] | None:     return None if span is None else {\"start_byte\": span.start_byte, \"end_byte\": span.end_byte}"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/observed_extraction.py:_span_payload",
+                    "name": "_span_payload",
+                    "filePath": "flowsint-core/src/flowsint_execution/observed_extraction.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 199,
+                    "content": "def _span_payload(span: RawSpan | None) -> dict[str, int] | None:     return None if span is None else {\"start_byte\": span.start_byte, \"end_byte\": span.end_byte}"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/observed_extraction.py:serialize_observed_extraction_metadata",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,7 @@
+{
+  "text": "--- committed repair delta (56e5febe..HEAD) ---\n--- working tree names ---\n M docs/audits/DEF-46/acceptance.md\n M docs/audits/DEF-46/baseline.json\n M docs/audits/DEF-46/scope-plan.json\n M flowsint-core/src/flowsint_core/core/enricher_base.py\n M flowsint-core/src/flowsint_core/core/graph/capture_repository.py\n M flowsint-core/src/flowsint_core/core/graph/service.py\n M flowsint-core/tests/test_capture_repository.py\n M flowsint-enrichers/src/flowsint_enrichers/website/to_links.py\n?? docs/audits/DEF-46/raw/\n?? fl0sint-def46-capture-sink/\n?? flowsint-enrichers/tests/enrichers/test_website_to_links_capture.py\n?? jev-ultrafast/\n--- selected code and test hashes ---\nc4df8892ac80d9c60013b1ffa16af5504c4ad7e78238b07faf4687a25b681118  flowsint-core/src/flowsint_core/core/graph/capture_repository.py\nc27140d9b2667295c665fc6cac8815fb4a63e2b88245902265bb2104b7f3bf60  flowsint-core/src/flowsint_core/core/graph/service.py\ne6f4bc2de0f4597bd1011a9605f9ebbcf39653d6543e8e654b1355e3aef49a91  flowsint-core/src/flowsint_core/core/enricher_base.py\na2f06c8f9e25b89d736f741c820cba4d02c72109c50ec884b3cecbfb5ed85487  flowsint-enrichers/src/flowsint_enrichers/website/to_links.py\nab005df68ee17fcae1da71d9aca1bb23bc2c8e70fd91988fd9c5b4d27b8f6095  flowsint-core/tests/test_capture_repository.py\nb587e3edf2d62d0b443bcf8480d0073945ec97c8497d4eebe948c1136c474c42  flowsint-enrichers/tests/enrichers/test_website_to_links_capture.py\n\n\nWall time: 0.11 seconds",
+  "details": {
+    "timeoutSeconds": 60,
+    "wallTimeMs": 110.54686099942774
+  }
+}

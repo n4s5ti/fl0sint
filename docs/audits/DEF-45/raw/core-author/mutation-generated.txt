@@ -1,0 +1,33 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+___________ test_models_reject_string_enums_and_generated_promotion ____________
+
+    def test_models_reject_string_enums_and_generated_promotion():
+        body = b"x"
+        ref = artifact(body)
+        base = dict(observation_id="obs-x", occurrence_id="occ-x", kind=ObservationKind.GENERAL_TEXT,
+            value="x", artifact_id=ref.artifact_id, snapshot_id=ref.snapshot_id,
+            content_digest=ref.content_digest, input_ref="input-x", source_url=ref.final_url,
+            raw_span=RawSpan(0, 1))
+        with pytest.raises(TypeError):
+            Observation(**{**base, "kind": "observed_general_text"})
+        with pytest.raises(TypeError):
+            Observation(**{**base, "review_state": "accepted"})
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+flowsint-core/tests/acquisition/test_observed_extraction.py:158: Failed
+=============================== warnings summary ===============================
+../fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /home/n4s5ti/Documents/dev/fl0sint/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+flowsint-core/src/flowsint_core/core/graph/types.py:16
+  /home/n4s5ti/Documents/dev/fl0sint-def45-extraction/flowsint-core/src/flowsint_core/core/graph/types.py:16: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.12/migration/
+    class NodeMetadata(BaseModel):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED flowsint-core/tests/acquisition/test_observed_extraction.py::test_models_reject_string_enums_and_generated_promotion - Failed: DID NOT RAISE ValueError
+1 failed, 2 warnings in 0.19s

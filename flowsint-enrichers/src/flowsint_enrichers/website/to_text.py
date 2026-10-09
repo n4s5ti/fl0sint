@@ -7,10 +7,10 @@ import hashlib
 import json
 import uuid
 from dataclasses import dataclass
+from os import PathLike
 from typing import Any, Dict, List, Sequence
 from urllib.parse import urlsplit
 
-from bs4 import BeautifulSoup
 from flowsint_core.core.enricher_base import Enricher
 from flowsint_core.core.forensics import legacy_execution_boundary
 from flowsint_core.core.logger import Logger
@@ -24,14 +24,22 @@ from flowsint_execution.fetch import (
     FetchStatus,
     TrustedFetchPolicy,
     admit_fetch,
-    execute_fetch,
+    execute_fetch_with_source_proof,
+)
+from flowsint_execution.artifacts import ArtifactContext, ArtifactState, FilesystemArtifactStore, RetentionAuthority
+from flowsint_execution.artifact_runtime import (
+    PersistedSourceProof, encode_source_proof, load_artifact_runtime,
 )
 from flowsint_execution.models import (
+    EvidenceEnvelope,
     InputOutcome,
     OutcomeStatus,
     RedactedDiagnostic,
     StructuredExecutionResult,
     canonical_input_hash,
+)
+from flowsint_execution.observed_extraction import (
+    ObservedExtractionResult, serialize_observed_extraction_metadata,
 )
 from flowsint_types.phrase import Phrase
 from flowsint_types.website import Website
@@ -40,6 +48,7 @@ from flowsint_enrichers.registry import flowsint_enricher
 _CAPABILITY_DIGEST = hashlib.sha256(b"flowsint.website-to-text.fetch.v1").hexdigest()
 _CALLER_ID = "website-to-text"
 _SCOPE = "local-web-fetch"
+_MAX_OBSERVATION_RESULT_BYTES = 8 * 1024 * 1024
 
 
 class WebsiteFetchError(RuntimeError):
@@ -73,13 +82,39 @@ class WebsiteTextOccurrence:
     diagnostic: RedactedDiagnostic | None = None
     actual_resources: Resources | None = None
     fetch_status: FetchStatus | None = None
+    artifact_reference: object | None = None
+    span_references: tuple[object, ...] = ()
+    source_proof: str | None = None
+    observation_result: ObservedExtractionResult | None = None
 
     def to_input_outcome(self) -> InputOutcome:
+        evidence = ()
+        if self.source_proof is not None and self.artifact_reference is not None:
+            evidence = (EvidenceEnvelope(
+                input_ref=self.input_ref,
+                destination_id="website_to_text",
+                endpoint_id="shared_http_fetch",
+                capability="enrich.read",
+                policy_version="source-proof/1.0",
+                artifact_sha256=self.artifact_reference.content_digest,
+                artifact_reference=self.source_proof,
+                source_rights="reviewed_runtime_policy",
+                schema_version="source-proof/1.0",
+                parser_version="html-normalizer/1",
+                confidence=1.0,
+                verification_state="retained",
+                retrieved_at=self.artifact_reference.retrieved_at,
+                ingested_at=self.artifact_reference.retrieved_at,
+            ),)
         return InputOutcome(
             input_ref=self.input_ref,
             status=self.status,
             outputs=self.outputs,
             diagnostic=self.diagnostic,
+            evidence=evidence,
+            metadata=(() if self.observation_result is None else (
+                serialize_observed_extraction_metadata(self.observation_result),
+            )),
         )
 
 
@@ -89,6 +124,14 @@ class WebsiteToText(Enricher):
 
     InputType = Website
     OutputType = Phrase
+
+    def __init__(self, *args, artifact_store: FilesystemArtifactStore | None = None,
+                 retention_authority: RetentionAuthority | None = None,
+                 runtime_config: str | PathLike[str] | None = None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._artifact_store = artifact_store
+        self._retention_authority = retention_authority
+        self._runtime_config = runtime_config
 
     @classmethod
     def name(cls):
@@ -262,7 +305,24 @@ class WebsiteToText(Enricher):
             )
         try:
             operation = self._build_operation(specs)
-            fetched = await execute_fetch(operation)
+            runtime = None
+            if self._artifact_store is None or self._retention_authority is None:
+                runtime = load_artifact_runtime(
+                    caller_id=_CALLER_ID, scope=_SCOPE, source_family="http",
+                    config_path=self._runtime_config,
+                )
+            store = self._artifact_store or (runtime.store if runtime else None)
+            authority = self._retention_authority or (runtime.authority if runtime else None)
+            decision = (
+                authority.issue(operation.operation_id)
+                if authority is not None
+                else None
+            )
+            fetched = await execute_fetch_with_source_proof(
+                operation,
+                artifact_store=store,
+                retention_decision=decision,
+            )
         except asyncio.CancelledError:
             return tuple(self._cancelled_occurrence(*spec) for spec in specs)
         except Exception:
@@ -298,35 +358,66 @@ class WebsiteToText(Enricher):
         occurrences = []
         for admitted, (index, source, input_ref) in zip(operation.inputs, specs):
             result = outcome_by_id.get(admitted.occurrence_id)
-            if result.status is FetchStatus.SUCCESS:
-                try:
-                    text = self._extract_text(result.text or "")
-                except Exception:
-                    occurrences.append(
-                        self._failed_occurrence(
-                            index,
-                            source,
-                            input_ref,
-                            self._diagnostic(
-                                "parse_error", "The response body could not be parsed."
-                            ),
-                            result.actual_resources,
-                            FetchStatus.TOOL_ERROR,
-                        )
+            if result.fetch_status is FetchStatus.SUCCESS:
+                if result.capture.state is ArtifactState.AVAILABLE and result.normalized is not None:
+                    artifact = result.capture.artifact
+                    context = ArtifactContext(
+                        operation_id=operation.operation_id,
+                        occurrence_id=admitted.occurrence_id,
+                        caller_id=_CALLER_ID,
+                        scope=_SCOPE,
+                        source_family="http",
+                        origin=artifact.origin,
+                        requested_url=artifact.requested_url,
+                        final_url=artifact.final_url,
+                        retrieved_at=artifact.retrieved_at,
+                        event_at=artifact.event_at,
                     )
-                else:
+                    try:
+                        if result.observations is None:
+                            raise ValueError("observation_result_too_large")
+                        observation_metadata = serialize_observed_extraction_metadata(result.observations)
+                        if len(observation_metadata.model_dump_json(warnings="error")) > _MAX_OBSERVATION_RESULT_BYTES:
+                            raise ValueError("observation_result_too_large")
+                        source_proof = encode_source_proof(PersistedSourceProof(
+                            format_version="source-proof/1.0", input_ref=result.input_ref,
+                            context=context, decision=decision, artifact=artifact,
+                            spans=result.spans,
+                        ))
+                    except ValueError:
+                        occurrences.append(self._failed_occurrence(
+                            index, source, input_ref,
+                            self._diagnostic("bounded_result_rejected", "Source proof or observation metadata exceeds the evidence boundary."),
+                            result.actual_resources, FetchStatus.TOOL_ERROR,
+                        ))
+                        continue
                     occurrences.append(
                         WebsiteTextOccurrence(
                             source,
                             index,
                             input_ref,
                             OutcomeStatus.SUCCESS,
-                            self._outputs_from_text(text),
+                            self._outputs_from_text(result.normalized.text),
                             actual_resources=result.actual_resources,
-                            fetch_status=result.status,
+                            fetch_status=result.fetch_status,
+                            artifact_reference=artifact,
+                            span_references=result.spans,
+                            source_proof=source_proof,
+                            observation_result=result.observations,
                         )
                     )
-            elif result.status is FetchStatus.CANCELLED:
+                elif result.capture.state is ArtifactState.HOLD:
+                    occurrences.append(
+                        WebsiteTextOccurrence(
+                            source, index, input_ref, OutcomeStatus.HOLD,
+                            diagnostic=self._diagnostic(result.capture.reason, "Reviewed source retention is unavailable."),
+                            actual_resources=result.actual_resources,
+                            fetch_status=result.fetch_status,
+                        )
+                    )
+                else:
+                    occurrences.append(self._failed_occurrence(index, source, input_ref, self._diagnostic(result.capture.reason, "Source proof requires review and revalidation."), result.actual_resources, FetchStatus.TOOL_ERROR))
+            elif result.fetch_status is FetchStatus.CANCELLED:
                 occurrences.append(
                     self._cancelled_occurrence(
                         index, source, input_ref, result.actual_resources
@@ -340,7 +431,7 @@ class WebsiteToText(Enricher):
                         input_ref,
                         result.diagnostic,
                         result.actual_resources,
-                        result.status,
+                        result.fetch_status,
                     )
                 )
         return tuple(occurrences)
@@ -364,10 +455,6 @@ class WebsiteToText(Enricher):
 
     async def scan(self, data: List[InputType]):
         return list(await self._scan_occurrences(data))
-
-    @staticmethod
-    def _extract_text(html):
-        return BeautifulSoup(html, "html.parser").get_text(separator=" ", strip=True)
 
     def postprocess(self, occurrences):
         retained = tuple(occurrences)

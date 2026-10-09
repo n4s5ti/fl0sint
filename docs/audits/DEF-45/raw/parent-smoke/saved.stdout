@@ -1,0 +1,363 @@
+{
+  "state": "available",
+  "result": {
+    "format_version": "observed-extraction/1.0",
+    "payload": {
+      "extractor_version": "observed-html/1",
+      "policy": {
+        "max_body_bytes": 8388608,
+        "max_observations": 1000,
+        "max_value_bytes": 8192,
+        "max_context_bytes": 1048576,
+        "max_diagnostics": 16,
+        "allow_relative_hrefs": true,
+        "allow_external_links": true
+      },
+      "readable_text": "Controlled team directory Dr Ada Example \u2014 Executive Ada Example Research lead. ada@directory.test +1 202 555 0101 Bo Example Engineering lead. bo@directory.test General office Office: info@directory.test. Press desk: press@directory.test. Caf\u00e9 & source proof. Duplicate: ada@directory.test. First directory page Second directory page External observed lead Your message Malformed but readable contact: malformed@directory.test",
+      "observations": [
+        {
+          "observation_id": "observation-dd71ae7f555733e8fa3692e41203fd42",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "ada@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 273,
+            "end_byte": 291
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 291
+          },
+          "anchor_text": null,
+          "person_name": "Ada Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-6dec5ad95ca355117755ee809b00ae0c",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "ada@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 246,
+            "end_byte": 271
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 271
+          },
+          "anchor_text": "ada@directory.test",
+          "person_name": "Ada Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-3c1b57f6b643c081010541a23055a160",
+          "occurrence_id": "input-0",
+          "kind": "observed_phone_contact",
+          "value": "+1 202 555 0101",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 323,
+            "end_byte": 338
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 338
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-125d326f61ca0562fbfdb5c5a5be9438",
+          "occurrence_id": "input-0",
+          "kind": "observed_phone_contact",
+          "value": "+12025550101",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 305,
+            "end_byte": 321
+          },
+          "context_span": {
+            "start_byte": 199,
+            "end_byte": 321
+          },
+          "anchor_text": "+1 202 555 0101",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-2a2e051651fcc903a3e77a9302b97fae",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "bo@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 456,
+            "end_byte": 473
+          },
+          "context_span": {
+            "start_byte": 381,
+            "end_byte": 473
+          },
+          "anchor_text": null,
+          "person_name": "Bo Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-c7d6c87162625add961767add421e0d3",
+          "occurrence_id": "input-0",
+          "kind": "observed_person_associated",
+          "value": "bo@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 430,
+            "end_byte": 454
+          },
+          "context_span": {
+            "start_byte": 381,
+            "end_byte": 454
+          },
+          "anchor_text": "bo@directory.test",
+          "person_name": "Bo Example",
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-d38ec495abc3c60305a248da34362d56",
+          "occurrence_id": "input-0",
+          "kind": "observed_general_inbox",
+          "value": "info@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 534,
+            "end_byte": 553
+          },
+          "context_span": {
+            "start_byte": 523,
+            "end_byte": 592
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-6d952de11d6bf41b52632ba64341c09f",
+          "occurrence_id": "input-0",
+          "kind": "observed_role_inbox",
+          "value": "press@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 567,
+            "end_byte": 587
+          },
+          "context_span": {
+            "start_byte": 523,
+            "end_byte": 592
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-e1dc7f360873c85c589be1fedead9192",
+          "occurrence_id": "input-0",
+          "kind": "observed_unknown_contact",
+          "value": "ada@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 656,
+            "end_byte": 674
+          },
+          "context_span": {
+            "start_byte": 602,
+            "end_byte": 679
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-1a55245affeacd92bd96d9c8711e1d4b",
+          "occurrence_id": "input-0",
+          "kind": "observed_link",
+          "value": "http://127.0.0.1:33715/directory?page=1",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 694,
+            "end_byte": 713
+          },
+          "context_span": null,
+          "anchor_text": "First directory page",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-d6849dfe063b4f7da0ade8c5f41aeda6",
+          "occurrence_id": "input-0",
+          "kind": "observed_link",
+          "value": "http://127.0.0.1:33715/directory?page=2",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 748,
+            "end_byte": 767
+          },
+          "context_span": null,
+          "anchor_text": "Second directory page",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-bc17f29c4b86d50fbf3b3f159e9f627a",
+          "occurrence_id": "input-0",
+          "kind": "observed_link",
+          "value": "https://outside.test/team?view=full",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 803,
+            "end_byte": 838
+          },
+          "context_span": null,
+          "anchor_text": "External observed lead",
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-f14a6feb3717cfb06cbba10eec89b7ed",
+          "occurrence_id": "input-0",
+          "kind": "observed_form_candidate",
+          "value": "http://127.0.0.1:33715/contact?department=research",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 887,
+            "end_byte": 915
+          },
+          "context_span": null,
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        },
+        {
+          "observation_id": "observation-5df19c7c803b9e9a606507fd2d8ed0f0",
+          "occurrence_id": "input-0",
+          "kind": "observed_unknown_contact",
+          "value": "malformed@directory.test",
+          "artifact_id": "artifact-84997b345e17c16861f7524af45240d5",
+          "snapshot_id": "84997b345e17c16861f7524af45240d5",
+          "content_digest": "ac756ce1480ade18ed745adb467b169861b616aee501de68312cb1319c76843e",
+          "input_ref": "09b6bc69a5fb3fd5ccc35c93a7667fa9cba696274d3fcf52bcb864aea9a184af",
+          "source_url": "http://127.0.0.1:33715/people/team.html?edition=2026",
+          "raw_span": {
+            "start_byte": 1028,
+            "end_byte": 1052
+          },
+          "context_span": {
+            "start_byte": 993,
+            "end_byte": 1058
+          },
+          "anchor_text": null,
+          "person_name": null,
+          "role_name": null,
+          "company_name": null,
+          "review_state": "unreviewed",
+          "execution_state": "not_executable"
+        }
+      ],
+      "diagnostics": [],
+      "was_truncated": false,
+      "observations_skipped": 0,
+      "total_observations_found": 14
+    }
+  }
+}

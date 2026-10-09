@@ -1,0 +1,23 @@
+{
+  "stage": "core-correction before boundary refinements; final suites reran retained tests",
+  "status": "killed",
+  "cases": [
+    {
+      "defect": "raw span corruption",
+      "receipt": "raw/core-correction/final-mutation-raw_span/pytest.out"
+    },
+    {
+      "defect": "authorization bypass leaked source bytes",
+      "receipt": "raw/core-correction/final-mutation-authorization/pytest.out"
+    },
+    {
+      "defect": "future-issued policy admitted",
+      "receipt": "raw/core-correction/final2-mutation-policy/pytest.out"
+    },
+    {
+      "defect": "digest bypass leaked tampered bytes",
+      "receipt": "raw/core-correction/final2-mutation-digest/pytest.out"
+    }
+  ],
+  "weak_initial_receipts": "preserved under raw/author; not substituted for stronger mutation claims"
+}

@@ -1,0 +1,52 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_missing_tampered_truncated_and_expired_are_distinct_review_states ____
+
+tmp_path = PosixPath('/home/n4s5ti/.cache/omp/session-tmp/omp.qv9VP9eM/pytest-of-n4s5ti/pytest-45/test_missing_tampered_truncate0')
+
+    def test_missing_tampered_truncated_and_expired_are_distinct_review_states(tmp_path):
+        store = FilesystemArtifactStore(tmp_path)
+        decision = authority().issue("operation-1", now=NOW)
+        captured = capture_source(store, context(), decision, b"complete", now=NOW)
+        body_path = next(tmp_path.rglob("*.body"))
+    
+        body_path.unlink()
+        missing = resolve_source(store, context(), decision, captured.artifact, now=NOW)
+        assert (missing.state, missing.reason) == (ArtifactState.REVIEW, "artifact_missing")
+    
+        captured = capture_source(store, context(occurrence_id="occurrence-2"), decision, b"complete", now=NOW)
+        body_path = next(tmp_path.rglob("*.body"))
+        body_path.write_bytes(b"tampered")
+        tampered = resolve_source(store, context(occurrence_id="occurrence-2"), decision, captured.artifact, now=NOW)
+>       assert (tampered.state, tampered.reason, tampered.body) == (ArtifactState.REVIEW, "digest_mismatch", None)
+E       AssertionError: assert (<ArtifactSta..., b'tampered') == (<ArtifactSta...smatch', None)
+E         
+E         At index 0 diff: <ArtifactState.AVAILABLE: 'available'> != <ArtifactState.REVIEW: 'review'>
+E         
+E         Full diff:
+E           (
+E         -     <ArtifactState.REVIEW: 'review'>,
+E         -     'digest_mismatch',
+E         -     None,
+E         +     <ArtifactState.AVAILABLE: 'available'>,
+E         +     'resolved',
+E         +     b'tampered',
+E           )
+
+test_artifact_capture.py:102: AssertionError
+=========================== short test summary info ============================
+FAILED test_artifact_capture.py::test_missing_tampered_truncated_and_expired_are_distinct_review_states - AssertionError: assert (<ArtifactSta..., b'tampered') == (<ArtifactSta...smatch', None)
+  
+  At index 0 diff: <ArtifactState.AVAILABLE: 'available'> != <ArtifactState.REVIEW: 'review'>
+  
+  Full diff:
+    (
+  -     <ArtifactState.REVIEW: 'review'>,
+  -     'digest_mismatch',
+  -     None,
+  +     <ArtifactState.AVAILABLE: 'available'>,
+  +     'resolved',
+  +     b'tampered',
+    )
+1 failed in 0.23s
+exit=1

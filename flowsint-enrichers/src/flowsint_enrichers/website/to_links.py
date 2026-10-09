@@ -1,20 +1,35 @@
-from typing import List, Union
+from typing import Any
 from urllib.parse import urlparse
-from flowsint_core.core.enricher_base import Enricher
-from flowsint_enrichers.registry import flowsint_enricher
-from flowsint_types.website import Website
-from flowsint_types.domain import Domain
-from flowsint_core.core.logger import Logger
+
 from reconspread import Crawler
+
+from flowsint_core.core.enricher_base import Enricher
+from flowsint_core.core.graph import CaptureGraphRepository
+from flowsint_core.core.logger import Logger
+from flowsint_enrichers.registry import flowsint_enricher
+from flowsint_types.domain import Domain
+from flowsint_types.website import Website
 
 
 @flowsint_enricher
 class WebsiteToLinks(Enricher):
-    """From website to spread crawler that extracts domains and internal/external links."""
+    """Crawl a website and return unreviewed, capture-only link candidates."""
 
-    # Define types as class attributes - base class handles schema generation automatically
     InputType = Website
     OutputType = Website
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        if kwargs.get("graph_service") is None:
+            kwargs["capture_only"] = True
+        super().__init__(*args, **kwargs)
+        repository = self.graph_service.repository
+        if not isinstance(repository, CaptureGraphRepository):
+            raise ValueError(
+                "WebsiteToLinks requires a capture-only GraphService; "
+                "live graph repositories are not an acquisition fallback."
+            )
+        self._capture_repository = repository
+        self._execution_id = 0
 
     @classmethod
     def name(cls) -> str:
@@ -29,184 +44,193 @@ class WebsiteToLinks(Enricher):
         return "url"
 
     def extract_domain(self, url: str) -> str:
-        """Extract domain from URL."""
+        """Extract the network location from a discovered URL."""
         try:
-            parsed_url = urlparse(url)
-            return parsed_url.netloc
+            return urlparse(url).hostname or ""
         except Exception:
             return ""
 
-    async def scan(self, data: List[InputType]) -> List[OutputType]:
-        """Crawl websites using reconspread to extract internal and external links."""
+    def _candidate_operations(self, lineage: dict[str, Any]) -> list[dict[str, Any]]:
+        return [
+            operation.to_dict()
+            for operation in self._capture_repository.get_captured_candidates()
+            if operation.source_input == lineage
+        ]
+
+    async def scan(self, data: list[Website]) -> list[dict[str, Any]]:
+        """Run the real crawler while retaining only local candidate operations."""
+        self._capture_repository.clear_captures()
+        self._execution_id += 1
+        execution_id = self._execution_id
         results = []
 
-        for website in data:
-            try:
-                Logger.info(
-                    self.sketch_id,
-                    {"message": f"Starting reconspread crawl of {str(website.url)}"},
-                )
+        for input_index, website in enumerate(data):
+            source_url = str(website.url)
+            lineage = {
+                "execution_id": execution_id,
+                "input_index": input_index,
+                "source_url": source_url,
+            }
+            with self._capture_repository.source_context(lineage):
+                try:
+                    Logger.info(
+                        self.sketch_id,
+                        {"message": f"Starting reconspread crawl of {source_url}"},
+                    )
+                    main_domain = self.extract_domain(source_url)
 
-                # Extract main domain from input website (needed in callback)
-                main_domain = self.extract_domain(str(website.url))
-
-                # Create main website and domain nodes upfront
-                if self._graph_service:
                     self.create_node(website)
                     if main_domain:
                         domain_obj = Domain(domain=main_domain)
                         self.create_node(domain_obj)
-                        self.create_relationship(website, domain_obj, "BELONGS_TO_DOMAIN")
+                        self.create_relationship(
+                            website, domain_obj, "BELONGS_TO_DOMAIN"
+                        )
                         self.log_graph_message(
-                            f"Website {str(website.url)} belongs to domain {main_domain}"
+                            f"Website {source_url} belongs to domain {main_domain}"
                         )
 
-                # Store discovered URLs
-                internal_urls = []
-                external_urls = []
-                external_domains = set()
+                    internal_urls = []
+                    external_urls = []
+                    external_domains = set()
 
-                def url_handler(url, is_external=False):
-                    """Custom callback to handle URLs as they're discovered."""
-                    if is_external:
-                        external_urls.append(url)
-                        domain = self.extract_domain(url)
-                        if domain:
-                            external_domains.add(domain)
-                            # Create external website node immediately
-                            if self._graph_service:
+                    def url_handler(url: str, is_external: bool = False) -> None:
+                        """Capture direct crawler discoveries under the current input."""
+                        if is_external:
+                            external_urls.append(url)
+                            domain = self.extract_domain(url)
+                            if domain:
+                                external_domains.add(domain)
                                 url_obj = Website(url=url)
                                 self.create_node(url_obj)
                                 self.create_relationship(website, url_obj, "LINKS_TO")
                                 self.log_graph_message(
-                                    f"Website {str(website.url)} links to external website {url}"
+                                    f"Website {source_url} links to external website {url}"
                                 )
 
-                                # Create external domain node and link external website to its domain
                                 if domain != main_domain:
                                     domain_obj_ext = Domain(domain=domain)
                                     self.create_node(domain_obj_ext)
-                                    self.create_relationship(url_obj, domain_obj_ext, "BELONGS_TO_DOMAIN")
+                                    self.create_relationship(
+                                        url_obj, domain_obj_ext, "BELONGS_TO_DOMAIN"
+                                    )
                                     domain_obj_main = Domain(domain=main_domain)
-                                    self.create_relationship(domain_obj_main, domain_obj_ext, "LINKS_TO")
+                                    self.create_relationship(
+                                        domain_obj_main, domain_obj_ext, "LINKS_TO"
+                                    )
                                     self.log_graph_message(
                                         f"External website {url} belongs to domain {domain}"
                                     )
                                     self.log_graph_message(
-                                        f"Website {str(website.url)} links to external domain {domain}"
+                                        f"Website {source_url} links to external domain {domain}"
                                     )
-                        Logger.info(
-                            self.sketch_id,
-                            {"message": f"[EXTERNAL] Found: {url} -> Domain: {domain}"},
-                        )
-                    else:
-                        internal_urls.append(url)
-                        # Create internal website node immediately
-                        if self._graph_service and url != str(
-                            website.url
-                        ):  # Don't create duplicate of main website
-                            internal_website = Website(url=url)
-                            self.create_node(internal_website)
-                            self.create_relationship(website, internal_website, "LINKS_TO")
-                            self.log_graph_message(
-                                f"Website {str(website.url)} links to internal website {url}"
+                            Logger.info(
+                                self.sketch_id,
+                                {
+                                    "message": f"[EXTERNAL] Found: {url} -> Domain: {domain}"
+                                },
+                            )
+                        else:
+                            internal_urls.append(url)
+                            if url != source_url:
+                                internal_website = Website(url=url)
+                                self.create_node(internal_website)
+                                self.create_relationship(
+                                    website, internal_website, "LINKS_TO"
+                                )
+                                self.log_graph_message(
+                                    f"Website {source_url} links to internal website {url}"
+                                )
+                                if main_domain:
+                                    domain_obj_int = Domain(domain=main_domain)
+                                    self.create_relationship(
+                                        internal_website,
+                                        domain_obj_int,
+                                        "BELONGS_TO_DOMAIN",
+                                    )
+                            Logger.info(
+                                self.sketch_id, {"message": f"[INTERNAL] Found: {url}"}
                             )
 
-                            # Also link internal websites to main domain
-                            if main_domain:
-                                domain_obj_int = Domain(domain=main_domain)
-                                self.create_relationship(internal_website, domain_obj_int, "BELONGS_TO_DOMAIN")
-                        Logger.info(
-                            self.sketch_id, {"message": f"[INTERNAL] Found: {url}"}
-                        )
+                    crawler = Crawler(
+                        url=source_url,
+                        recursive=True,
+                        same_domain_only=False,
+                        verbose=False,
+                        _on_result_callback=url_handler,
+                    )
+                    crawler.fetch()
+                    crawler.extract_urls()
+                    crawl_results = crawler.get_results()
 
-                # Create crawler with custom callback
-                crawler = Crawler(
-                    url=str(website.url),
-                    recursive=True,
-                    same_domain_only=False,
-                    verbose=False,  # Disable default verbose output
-                    _on_result_callback=url_handler,  # Use our custom handler
-                )
+                    for url in crawl_results.internal:
+                        if url not in internal_urls:
+                            internal_urls.append(url)
 
-                # Perform the crawl
-                crawler.fetch()
-                crawler.extract_urls()
+                    for url in crawl_results.external:
+                        if url not in external_urls:
+                            external_urls.append(url)
+                            domain = self.extract_domain(url)
+                            if domain:
+                                external_domains.add(domain)
 
-                # Get final results (backup in case callback missed anything)
-                crawl_results = crawler.get_results()
-
-                # Ensure we have all internal URLs
-                for url in crawl_results.internal:
-                    if url not in internal_urls:
-                        internal_urls.append(url)
-
-                # Ensure we have all external URLs and domains
-                for url in crawl_results.external:
-                    if url not in external_urls:
-                        external_urls.append(url)
-                        domain = self.extract_domain(url)
-                        if domain:
-                            external_domains.add(domain)
-
-                website_result = {
-                    "website": str(website.url),
-                    "main_domain": main_domain,
-                    "internal_urls": internal_urls,
-                    "external_urls": external_urls,
-                    "external_domains": list(external_domains),
-                }
-
-                # Log results
-                Logger.info(
-                    self.sketch_id,
-                    {
-                        "message": f"Spread crawl completed for {str(website.url)}: "
-                        f"Main domain: {main_domain}, "
-                        f"{len(internal_urls)} internal URLs, "
-                        f"{len(external_urls)} external URLs, "
-                        f"{len(external_domains)} external domains found."
-                    },
-                )
-
-                results.append(website_result)
-
-            except Exception as e:
-                # Log error but continue with other websites
-                Logger.error(
-                    self.sketch_id,
-                    {"message": f"Error crawling {str(website.url)}: {str(e)}"},
-                )
-
-                # Still create main website and domain nodes even on error
-                main_domain = self.extract_domain(str(website.url))
-                if self._graph_service:
+                    result = {
+                        "website": source_url,
+                        "execution_id": execution_id,
+                        "input_index": input_index,
+                        "main_domain": main_domain,
+                        "internal_urls": internal_urls,
+                        "external_urls": external_urls,
+                        "external_domains": list(external_domains),
+                    }
+                    Logger.info(
+                        self.sketch_id,
+                        {
+                            "message": (
+                                f"Spread crawl completed for {source_url}: "
+                                f"Main domain: {main_domain}, "
+                                f"{len(internal_urls)} internal URLs, "
+                                f"{len(external_urls)} external URLs, "
+                                f"{len(external_domains)} external domains found."
+                            )
+                        },
+                    )
+                except Exception as error:
+                    Logger.error(
+                        self.sketch_id,
+                        {"message": f"Error crawling {source_url}: {error}"},
+                    )
+                    main_domain = self.extract_domain(source_url)
                     self.create_node(website)
                     if main_domain:
-                        domain_obj_err = Domain(domain=main_domain)
-                        self.create_node(domain_obj_err)
-                        self.create_relationship(website, domain_obj_err, "BELONGS_TO_DOMAIN")
-                        self.log_graph_message(
-                            f"Website {str(website.url)} belongs to domain {main_domain}"
+                        domain_obj = Domain(domain=main_domain)
+                        self.create_node(domain_obj)
+                        self.create_relationship(
+                            website, domain_obj, "BELONGS_TO_DOMAIN"
                         )
-
-                # Add empty result for failed website
-                results.append(
-                    {
-                        "website": str(website.url),
+                        self.log_graph_message(
+                            f"Website {source_url} belongs to domain {main_domain}"
+                        )
+                    result = {
+                        "website": source_url,
+                        "execution_id": execution_id,
+                        "input_index": input_index,
                         "main_domain": main_domain,
                         "internal_urls": [],
                         "external_urls": [],
                         "external_domains": [],
                     }
-                )
-                continue
+
+            result["disposition"] = "unreviewed"
+            result["candidate_operations"] = self._candidate_operations(lineage)
+            results.append(result)
 
         return results
 
-    def postprocess(self, results: List[OutputType], original_input: List[InputType]) -> List[OutputType]:
-        # Neo4j nodes and relationships are created in real-time during the callback
-        # No additional processing needed here
+    def postprocess(
+        self, results: list[dict[str, Any]], original_input: list[Website] | None = None
+    ) -> list[dict[str, Any]]:
+        """Keep captured candidates unreviewed; publication is intentionally absent."""
         return results
 
 

@@ -1,0 +1,70 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+    "repo": "fl0sint-def44-source",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "direction": "upstream",
+    "risk": "UNKNOWN",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+        "name": "ArtifactReference",
+        "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+        "nodeType": "Class",
+        "startLine": 164,
+        "endLine": 181,
+        "content": "class ArtifactReference(ContractModel):     artifact_id: Identifier     snapshot_id: Identifier     content_digest: Digest     byte_length: Count     locator: Annotated[str, Field(min_length=1, max_length=8192)]     source_family: Identifier     origin: Annotated[str, Field(min_length=1, max_length=8192)]     retrieved_at: Timestamp     event_at: Timestamp | None = None     requested_url: URL | None = None     final_url: URL | None = None     @model_validator(mode=\"after\")     def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+            "name": "ArtifactReference",
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "nodeType": "Class",
+            "startLine": 164,
+            "endLine": 181,
+            "content": "class ArtifactReference(ContractModel):     artifact_id: Identifier     snapshot_id: Identifier     content_digest: Digest     byte_length: Count     locator: Annotated[str, Field(min_length=1, max_length=8192)]     source_family: Identifier     origin: Annotated[str, Field(min_length=1, max_length=8192)]     retrieved_at: Timestamp     event_at: Timestamp | None = None     requested_url: URL | None = None     final_url: URL | None = None     @model_validator(mode=\"after\")     def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+                    "name": "ArtifactReference",
+                    "filePath": "flowsint-core/src/flowsint_execution/acquisition.py",
+                    "nodeType": "Class",
+                    "startLine": 164,
+                    "endLine": 181,
+                    "content": "class ArtifactReference(ContractModel):     artifact_id: Identifier     snapshot_id: Identifier     content_digest: Digest     byte_length: Count     locator: Annotated[str, Field(min_length=1, max_length=8192)]     source_family: Identifier     origin: Annotated[str, Field(min_length=1, max_length=8192)]     retrieved_at: Timestamp     event_at: Timestamp | None = None     requested_url: URL | None = None     final_url: URL | None = None     @model_validator(mode=\"after\")     def check_url_pair(self):         if (self.requested_url is None) != (self.final_url is None):             raise ValueError(\"requested_url and final_url must be supplied together\")         return self"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+        "repo": "fl0sint-def44-source",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def44-source/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/acquisition.py:ArtifactReference",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "partial",
+    "completenessReasons": [
+        "no-call-edges"
+    ],
+    "indexStatus": "ready"
+}

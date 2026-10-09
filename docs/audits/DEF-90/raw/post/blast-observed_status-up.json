@@ -1,0 +1,232 @@
+{
+    "symbol": "scripts/audit_packet.py:observed_status",
+    "repo": "fl0sint-def90-packet",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:scripts/audit_packet.py:observed_status",
+        "name": "observed_status",
+        "filePath": "scripts/audit_packet.py",
+        "nodeType": "Function",
+        "startLine": 152,
+        "endLine": 187,
+        "content": "def observed_status(kind, data):     \"\"\"Downgrade implied by a raw pip3r payload, or None when it looks complete.     Rules follow docs/audits/DEF-39/audit-procedure.md section 10. Exit code 0     is never evidence of success on its own.     \"\"\"     if not data.strip():         return \"BLOCKED\", \"artifact is empty\"     payload = _load_json(data)     if kind not in RECOGNIZED:         return None     if not isinstance(payload, dict) or not RECOGNIZED[kind](payload):         return \"UNKNOWN\", f\"artifact is not a recognizable pip3r {kind} payload\"     if kind == \"blast\" and \"risk\" in payload:         reasons = []         if payload.get(\"risk\") == \"UNKNOWN\":             reasons.append(\"risk UNKNOWN\")         if payload.get(\"completeness\") != \"complete\":             reasons.append(f\"completeness {payload.get('completeness')!r}\")         if payload.get(\"indexStatus\") != \"ready\":             reasons.append(f\"indexStatus {payload.get('indexStatus')!r}\")         if payload.get(\"reason\"):             reasons.append(f\"reason {payload['reason']!r}\")         if reasons:             return \"UNKNOWN\", \", \".join(reasons)     if kind == \"drift\" and payload.get(\"mode\") == \"drift\":         total = ((payload.get(\"result\") or {}).get(\"summary\") or {}).get(\"total\")         if total != 0:             return \"UNKNOWN\", f\"drift total {total!r}\"         if payload.get(\"indexStatus\") != \"ready\":             return \"UNKNOWN\", f\"indexStatus {payload.get('indexStatus')!r}\"     if kind in (\"hunt\", \"doctor\") and isinstance(payload.get(\"hunt\"), dict):         coverage = payload[\"hunt\"].get(\"coverage\") or {}         if not coverage.get(\"commandsDiscovered\"):             return \"DEGRADED\", \"hunt coverage.commandsDiscovered is 0\"     return None"
+    },
+    "symbols": [
+        {
+            "id": "Function:scripts/audit_packet.py:observed_status",
+            "name": "observed_status",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Function",
+            "startLine": 152,
+            "endLine": 187,
+            "content": "def observed_status(kind, data):     \"\"\"Downgrade implied by a raw pip3r payload, or None when it looks complete.     Rules follow docs/audits/DEF-39/audit-procedure.md section 10. Exit code 0     is never evidence of success on its own.     \"\"\"     if not data.strip():         return \"BLOCKED\", \"artifact is empty\"     payload = _load_json(data)     if kind not in RECOGNIZED:         return None     if not isinstance(payload, dict) or not RECOGNIZED[kind](payload):         return \"UNKNOWN\", f\"artifact is not a recognizable pip3r {kind} payload\"     if kind == \"blast\" and \"risk\" in payload:         reasons = []         if payload.get(\"risk\") == \"UNKNOWN\":             reasons.append(\"risk UNKNOWN\")         if payload.get(\"completeness\") != \"complete\":             reasons.append(f\"completeness {payload.get('completeness')!r}\")         if payload.get(\"indexStatus\") != \"ready\":             reasons.append(f\"indexStatus {payload.get('indexStatus')!r}\")         if payload.get(\"reason\"):             reasons.append(f\"reason {payload['reason']!r}\")         if reasons:             return \"UNKNOWN\", \", \".join(reasons)     if kind == \"drift\" and payload.get(\"mode\") == \"drift\":         total = ((payload.get(\"result\") or {}).get(\"summary\") or {}).get(\"total\")         if total != 0:             return \"UNKNOWN\", f\"drift total {total!r}\"         if payload.get(\"indexStatus\") != \"ready\":             return \"UNKNOWN\", f\"indexStatus {payload.get('indexStatus')!r}\"     if kind in (\"hunt\", \"doctor\") and isinstance(payload.get(\"hunt\"), dict):         coverage = payload[\"hunt\"].get(\"coverage\") or {}         if not coverage.get(\"commandsDiscovered\"):             return \"DEGRADED\", \"hunt coverage.commandsDiscovered is 0\"     return None"
+        },
+        {
+            "id": "Function:scripts/audit_packet.py:_validate",
+            "name": "_validate",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Function",
+            "startLine": 216,
+            "endLine": 271,
+            "content": "def _validate(c, report):     root, packet_dir = c.root, c.packet_dir     try:         rel_packet = packet_dir.relative_to(root).as_posix()     except ValueError:         c.error(\"E_PACKET_PATH\", f\"{packet_dir} is outside the repository {root}\")         return     report[\"packet\"] = rel_packet     report[\"rev\"] = git(root, \"rev-parse\", \"HEAD\").strip()     manifest_path = packet_dir / PACKET_FILE     if not manifest_path.is_file():         c.error(\"E_PACKET_MISSING\", f\"{rel_packet}/{PACKET_FILE} does not exist\")         return     manifest = _load_json(manifest_path.read_bytes())     if not isinstance(manifest, dict):         c.error(\"E_SCHEMA\", f\"{PACKET_FILE} is not a JSON object\")         return     if manifest.get(\"schema\") != SCHEMA:         c.error(\"E_SCHEMA\", f\"schema must be {SCHEMA!r}\")         return     issue = c.field(manifest, \"issue\", str, \"packet\")     report[\"issue\"] = issue     if issue is not None and (not ISSUE_RE.fullmatch(issue) or issue != packet_dir.name):         c.error(\"E_ISSUE\", f\"issue {issue!r} must be DEF-<n> and equal the directory name {packet_dir.name!r}\")     base, head = _check_revisions(c, manifest)     artifacts = _check_artifacts(c, manifest)     capabilities = _check_capabilities(c, manifest)     versions = c.field(manifest, \"tool_versions\", dict, \"packet\")     if versions is not None and (         not versions or not all(isinstance(v, str) and v.strip() for v in versions.values())     ):         c.error(\"E_SCHEMA\", \"packet.tool_versions: expected non-empty mapping of name to version\")     if head:         _check_configuration(c, manifest, head)     results = {}     _check_analyses(c, manifest, base, head, artifacts, capabilities, results)     _check_commands(c, manifest, artifacts, capabilities, results)     _check_disclosure(c, manifest, results, report)     cases = _check_cases(c, manifest, results, capabilities)     changed = _changed_paths(c, base, head) if base and head else []     _check_scope(c, manifest, changed)     _check_labels(c, manifest, changed, report)     _check_mutations(c, manifest, head, results)     _check_findings(c, manifest)     report[\"baseline_debt\"] = _check_debt(c, manifest, results)     report[\"review\"] = _check_review(c, manifest)     _check_rollback(c, manifest)     report[\"non_pass_results\"] = [         {\"id\": ident, \"source\": \"case\" if ident in cases else \"result\", \"status\": status}         for ident, status in sorted({**results, **cases}.items())         if status != \"PASS\"     ]"
+        },
+        {
+            "id": "Function:scripts/audit_packet.py:_check_result_entry",
+            "name": "_check_result_entry",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Function",
+            "startLine": 402,
+            "endLine": 416,
+            "content": "def _check_result_entry(c, entry, where, artifacts, capabilities, kind=None):     status = _status(c, entry, where, capabilities)     c.field(entry, \"command\", str, where)     exit_code = c.field(entry, \"exit_code\", int, where)     art = c.field(entry, \"artifact\", str, where)     if art is not None and _artifact_ref(c, art, where) and art in artifacts and status == \"PASS\":         observed = observed_status(kind, artifacts[art])         if observed:             c.error(                 \"E_SEMANTIC_MISMATCH\",                 f\"{where}: declared PASS but artifact shows {observed[0]} ({observed[1]})\",             )     if status == \"PASS\" and exit_code is not None and exit_code != 0:         c.error(\"E_EXIT_STATUS\", f\"{where}: declared PASS with exit code {exit_code}\")     return status"
+        },
+        {
+            "id": "Function:scripts/audit_packet.py:_check_analyses",
+            "name": "_check_analyses",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Function",
+            "startLine": 419,
+            "endLine": 465,
+            "content": "def _check_analyses(c, manifest, base, head, artifacts, capabilities, results):     analyses = c.items(manifest, \"analyses\", \"packet\")     present = {\"pre\": set(), \"post\": set()}     by_id = {}     for index, entry in enumerate(analyses):         where = f\"analyses[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         phase = c.field(entry, \"phase\", str, where)         kind = c.field(entry, \"kind\", str, where)         if phase not in (None, \"pre\", \"post\"):             c.error(\"E_SCHEMA\", f\"{where}.phase: expected 'pre' or 'post'\")             phase = None         if kind is not None and kind not in ANALYSIS_KINDS:             c.error(\"E_SCHEMA\", f\"{where}.kind: {kind!r} is not one of {sorted(ANALYSIS_KINDS)}\")             kind = None         analyzed = c.field(entry, \"analyzed_commit\", str, where)         expected = {\"pre\": base, \"post\": head}.get(phase)         if analyzed is not None and expected and analyzed != expected:             c.error(                 \"E_STALE_ANALYSIS\",                 f\"{where}: {phase} analysis ran against {analyzed}, expected {phase == 'pre' and 'base' or 'head'}_commit {expected}\",             )         status = _check_result_entry(c, entry, where, artifacts, capabilities, kind)         if ident is not None and status is not None:             results[ident] = status             by_id[ident] = entry         if phase and kind and status != \"NOT_APPLICABLE\":             present[phase].add(kind)     for phase, kinds in REQUIRED_ANALYSES.items():         for kind in kinds:             if kind not in present[phase]:                 code = \"E_PRE_MISSING\" if phase == \"pre\" else \"E_POST_MISSING\"                 c.error(code, f\"no {phase}-edit {kind} report recorded\")     index = c.field(manifest, \"index\", dict, \"packet\")     if index is not None:         c.field(index, \"mode\", str, \"index\")         analyzed = c.field(index, \"analyzed_commit\", str, \"index\")         if analyzed is not None and head and analyzed != head:             c.error(\"E_STALE_INDEX\", f\"index analyzed_commit {analyzed} != head_commit {head}\")         drift = c.field(index, \"drift\", str, \"index\")         if drift is not None:             entry = by_id.get(drift)             if entry is None or entry.get(\"kind\") != \"drift\" or entry.get(\"phase\") != \"post\":                 c.error(\"E_REF\", f\"index.drift {drift!r} must name a post-edit drift analysis\")             elif results.get(drift) != \"PASS\":                 c.error(\"E_STALE_INDEX\", f\"index freshness drift {drift!r} is {results.get(drift)}, not PASS\")"
+        },
+        {
+            "id": "Function:scripts/audit_packet.py:_check_commands",
+            "name": "_check_commands",
+            "filePath": "scripts/audit_packet.py",
+            "nodeType": "Function",
+            "startLine": 468,
+            "endLine": 476,
+            "content": "def _check_commands(c, manifest, artifacts, capabilities, results):     for index, entry in enumerate(c.items(manifest, \"commands\", \"packet\")):         where = f\"commands[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         status = _check_result_entry(c, entry, where, artifacts, capabilities)         if ident is not None and status is not None:             if ident in results:                 c.error(\"E_SCHEMA\", f\"{where}: id collides with an analysis id\")             results[ident] = status"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:scripts/audit_packet.py:_check_result_entry",
+            "to": "Function:scripts/audit_packet.py:observed_status",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/audit_packet.py:_check_analyses",
+            "to": "Function:scripts/audit_packet.py:_check_result_entry",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/audit_packet.py:_check_commands",
+            "to": "Function:scripts/audit_packet.py:_check_result_entry",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/audit_packet.py:_validate",
+            "to": "Function:scripts/audit_packet.py:_check_commands",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:scripts/audit_packet.py:_validate",
+            "to": "Function:scripts/audit_packet.py:_check_analyses",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "scripts/audit_packet.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Function:scripts/audit_packet.py:observed_status",
+                    "name": "observed_status",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 152,
+                    "endLine": 187,
+                    "content": "def observed_status(kind, data):     \"\"\"Downgrade implied by a raw pip3r payload, or None when it looks complete.     Rules follow docs/audits/DEF-39/audit-procedure.md section 10. Exit code 0     is never evidence of success on its own.     \"\"\"     if not data.strip():         return \"BLOCKED\", \"artifact is empty\"     payload = _load_json(data)     if kind not in RECOGNIZED:         return None     if not isinstance(payload, dict) or not RECOGNIZED[kind](payload):         return \"UNKNOWN\", f\"artifact is not a recognizable pip3r {kind} payload\"     if kind == \"blast\" and \"risk\" in payload:         reasons = []         if payload.get(\"risk\") == \"UNKNOWN\":             reasons.append(\"risk UNKNOWN\")         if payload.get(\"completeness\") != \"complete\":             reasons.append(f\"completeness {payload.get('completeness')!r}\")         if payload.get(\"indexStatus\") != \"ready\":             reasons.append(f\"indexStatus {payload.get('indexStatus')!r}\")         if payload.get(\"reason\"):             reasons.append(f\"reason {payload['reason']!r}\")         if reasons:             return \"UNKNOWN\", \", \".join(reasons)     if kind == \"drift\" and payload.get(\"mode\") == \"drift\":         total = ((payload.get(\"result\") or {}).get(\"summary\") or {}).get(\"total\")         if total != 0:             return \"UNKNOWN\", f\"drift total {total!r}\"         if payload.get(\"indexStatus\") != \"ready\":             return \"UNKNOWN\", f\"indexStatus {payload.get('indexStatus')!r}\"     if kind in (\"hunt\", \"doctor\") and isinstance(payload.get(\"hunt\"), dict):         coverage = payload[\"hunt\"].get(\"coverage\") or {}         if not coverage.get(\"commandsDiscovered\"):             return \"DEGRADED\", \"hunt coverage.commandsDiscovered is 0\"     return None"
+                },
+                {
+                    "id": "Function:scripts/audit_packet.py:_validate",
+                    "name": "_validate",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 216,
+                    "endLine": 271,
+                    "content": "def _validate(c, report):     root, packet_dir = c.root, c.packet_dir     try:         rel_packet = packet_dir.relative_to(root).as_posix()     except ValueError:         c.error(\"E_PACKET_PATH\", f\"{packet_dir} is outside the repository {root}\")         return     report[\"packet\"] = rel_packet     report[\"rev\"] = git(root, \"rev-parse\", \"HEAD\").strip()     manifest_path = packet_dir / PACKET_FILE     if not manifest_path.is_file():         c.error(\"E_PACKET_MISSING\", f\"{rel_packet}/{PACKET_FILE} does not exist\")         return     manifest = _load_json(manifest_path.read_bytes())     if not isinstance(manifest, dict):         c.error(\"E_SCHEMA\", f\"{PACKET_FILE} is not a JSON object\")         return     if manifest.get(\"schema\") != SCHEMA:         c.error(\"E_SCHEMA\", f\"schema must be {SCHEMA!r}\")         return     issue = c.field(manifest, \"issue\", str, \"packet\")     report[\"issue\"] = issue     if issue is not None and (not ISSUE_RE.fullmatch(issue) or issue != packet_dir.name):         c.error(\"E_ISSUE\", f\"issue {issue!r} must be DEF-<n> and equal the directory name {packet_dir.name!r}\")     base, head = _check_revisions(c, manifest)     artifacts = _check_artifacts(c, manifest)     capabilities = _check_capabilities(c, manifest)     versions = c.field(manifest, \"tool_versions\", dict, \"packet\")     if versions is not None and (         not versions or not all(isinstance(v, str) and v.strip() for v in versions.values())     ):         c.error(\"E_SCHEMA\", \"packet.tool_versions: expected non-empty mapping of name to version\")     if head:         _check_configuration(c, manifest, head)     results = {}     _check_analyses(c, manifest, base, head, artifacts, capabilities, results)     _check_commands(c, manifest, artifacts, capabilities, results)     _check_disclosure(c, manifest, results, report)     cases = _check_cases(c, manifest, results, capabilities)     changed = _changed_paths(c, base, head) if base and head else []     _check_scope(c, manifest, changed)     _check_labels(c, manifest, changed, report)     _check_mutations(c, manifest, head, results)     _check_findings(c, manifest)     report[\"baseline_debt\"] = _check_debt(c, manifest, results)     report[\"review\"] = _check_review(c, manifest)     _check_rollback(c, manifest)     report[\"non_pass_results\"] = [         {\"id\": ident, \"source\": \"case\" if ident in cases else \"result\", \"status\": status}         for ident, status in sorted({**results, **cases}.items())         if status != \"PASS\"     ]"
+                },
+                {
+                    "id": "Function:scripts/audit_packet.py:_check_result_entry",
+                    "name": "_check_result_entry",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 402,
+                    "endLine": 416,
+                    "content": "def _check_result_entry(c, entry, where, artifacts, capabilities, kind=None):     status = _status(c, entry, where, capabilities)     c.field(entry, \"command\", str, where)     exit_code = c.field(entry, \"exit_code\", int, where)     art = c.field(entry, \"artifact\", str, where)     if art is not None and _artifact_ref(c, art, where) and art in artifacts and status == \"PASS\":         observed = observed_status(kind, artifacts[art])         if observed:             c.error(                 \"E_SEMANTIC_MISMATCH\",                 f\"{where}: declared PASS but artifact shows {observed[0]} ({observed[1]})\",             )     if status == \"PASS\" and exit_code is not None and exit_code != 0:         c.error(\"E_EXIT_STATUS\", f\"{where}: declared PASS with exit code {exit_code}\")     return status"
+                },
+                {
+                    "id": "Function:scripts/audit_packet.py:_check_analyses",
+                    "name": "_check_analyses",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 465,
+                    "content": "def _check_analyses(c, manifest, base, head, artifacts, capabilities, results):     analyses = c.items(manifest, \"analyses\", \"packet\")     present = {\"pre\": set(), \"post\": set()}     by_id = {}     for index, entry in enumerate(analyses):         where = f\"analyses[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         phase = c.field(entry, \"phase\", str, where)         kind = c.field(entry, \"kind\", str, where)         if phase not in (None, \"pre\", \"post\"):             c.error(\"E_SCHEMA\", f\"{where}.phase: expected 'pre' or 'post'\")             phase = None         if kind is not None and kind not in ANALYSIS_KINDS:             c.error(\"E_SCHEMA\", f\"{where}.kind: {kind!r} is not one of {sorted(ANALYSIS_KINDS)}\")             kind = None         analyzed = c.field(entry, \"analyzed_commit\", str, where)         expected = {\"pre\": base, \"post\": head}.get(phase)         if analyzed is not None and expected and analyzed != expected:             c.error(                 \"E_STALE_ANALYSIS\",                 f\"{where}: {phase} analysis ran against {analyzed}, expected {phase == 'pre' and 'base' or 'head'}_commit {expected}\",             )         status = _check_result_entry(c, entry, where, artifacts, capabilities, kind)         if ident is not None and status is not None:             results[ident] = status             by_id[ident] = entry         if phase and kind and status != \"NOT_APPLICABLE\":             present[phase].add(kind)     for phase, kinds in REQUIRED_ANALYSES.items():         for kind in kinds:             if kind not in present[phase]:                 code = \"E_PRE_MISSING\" if phase == \"pre\" else \"E_POST_MISSING\"                 c.error(code, f\"no {phase}-edit {kind} report recorded\")     index = c.field(manifest, \"index\", dict, \"packet\")     if index is not None:         c.field(index, \"mode\", str, \"index\")         analyzed = c.field(index, \"analyzed_commit\", str, \"index\")         if analyzed is not None and head and analyzed != head:             c.error(\"E_STALE_INDEX\", f\"index analyzed_commit {analyzed} != head_commit {head}\")         drift = c.field(index, \"drift\", str, \"index\")         if drift is not None:             entry = by_id.get(drift)             if entry is None or entry.get(\"kind\") != \"drift\" or entry.get(\"phase\") != \"post\":                 c.error(\"E_REF\", f\"index.drift {drift!r} must name a post-edit drift analysis\")             elif results.get(drift) != \"PASS\":                 c.error(\"E_STALE_INDEX\", f\"index freshness drift {drift!r} is {results.get(drift)}, not PASS\")"
+                },
+                {
+                    "id": "Function:scripts/audit_packet.py:_check_commands",
+                    "name": "_check_commands",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 468,
+                    "endLine": 476,
+                    "content": "def _check_commands(c, manifest, artifacts, capabilities, results):     for index, entry in enumerate(c.items(manifest, \"commands\", \"packet\")):         where = f\"commands[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         status = _check_result_entry(c, entry, where, artifacts, capabilities)         if ident is not None and status is not None:             if ident in results:                 c.error(\"E_SCHEMA\", f\"{where}: id collides with an analysis id\")             results[ident] = status"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "scripts",
+            "direct": true,
+            "symbolCount": 4
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:scripts/audit_packet.py:_check_result_entry",
+                    "name": "_check_result_entry",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 402,
+                    "endLine": 416,
+                    "content": "def _check_result_entry(c, entry, where, artifacts, capabilities, kind=None):     status = _status(c, entry, where, capabilities)     c.field(entry, \"command\", str, where)     exit_code = c.field(entry, \"exit_code\", int, where)     art = c.field(entry, \"artifact\", str, where)     if art is not None and _artifact_ref(c, art, where) and art in artifacts and status == \"PASS\":         observed = observed_status(kind, artifacts[art])         if observed:             c.error(                 \"E_SEMANTIC_MISMATCH\",                 f\"{where}: declared PASS but artifact shows {observed[0]} ({observed[1]})\",             )     if status == \"PASS\" and exit_code is not None and exit_code != 0:         c.error(\"E_EXIT_STATUS\", f\"{where}: declared PASS with exit code {exit_code}\")     return status"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:scripts/audit_packet.py:_check_analyses",
+                    "name": "_check_analyses",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 419,
+                    "endLine": 465,
+                    "content": "def _check_analyses(c, manifest, base, head, artifacts, capabilities, results):     analyses = c.items(manifest, \"analyses\", \"packet\")     present = {\"pre\": set(), \"post\": set()}     by_id = {}     for index, entry in enumerate(analyses):         where = f\"analyses[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         phase = c.field(entry, \"phase\", str, where)         kind = c.field(entry, \"kind\", str, where)         if phase not in (None, \"pre\", \"post\"):             c.error(\"E_SCHEMA\", f\"{where}.phase: expected 'pre' or 'post'\")             phase = None         if kind is not None and kind not in ANALYSIS_KINDS:             c.error(\"E_SCHEMA\", f\"{where}.kind: {kind!r} is not one of {sorted(ANALYSIS_KINDS)}\")             kind = None         analyzed = c.field(entry, \"analyzed_commit\", str, where)         expected = {\"pre\": base, \"post\": head}.get(phase)         if analyzed is not None and expected and analyzed != expected:             c.error(                 \"E_STALE_ANALYSIS\",                 f\"{where}: {phase} analysis ran against {analyzed}, expected {phase == 'pre' and 'base' or 'head'}_commit {expected}\",             )         status = _check_result_entry(c, entry, where, artifacts, capabilities, kind)         if ident is not None and status is not None:             results[ident] = status             by_id[ident] = entry         if phase and kind and status != \"NOT_APPLICABLE\":             present[phase].add(kind)     for phase, kinds in REQUIRED_ANALYSES.items():         for kind in kinds:             if kind not in present[phase]:                 code = \"E_PRE_MISSING\" if phase == \"pre\" else \"E_POST_MISSING\"                 c.error(code, f\"no {phase}-edit {kind} report recorded\")     index = c.field(manifest, \"index\", dict, \"packet\")     if index is not None:         c.field(index, \"mode\", str, \"index\")         analyzed = c.field(index, \"analyzed_commit\", str, \"index\")         if analyzed is not None and head and analyzed != head:             c.error(\"E_STALE_INDEX\", f\"index analyzed_commit {analyzed} != head_commit {head}\")         drift = c.field(index, \"drift\", str, \"index\")         if drift is not None:             entry = by_id.get(drift)             if entry is None or entry.get(\"kind\") != \"drift\" or entry.get(\"phase\") != \"post\":                 c.error(\"E_REF\", f\"index.drift {drift!r} must name a post-edit drift analysis\")             elif results.get(drift) != \"PASS\":                 c.error(\"E_STALE_INDEX\", f\"index freshness drift {drift!r} is {results.get(drift)}, not PASS\")"
+                },
+                {
+                    "id": "Function:scripts/audit_packet.py:_check_commands",
+                    "name": "_check_commands",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 468,
+                    "endLine": 476,
+                    "content": "def _check_commands(c, manifest, artifacts, capabilities, results):     for index, entry in enumerate(c.items(manifest, \"commands\", \"packet\")):         where = f\"commands[{entry.get('id', index)}]\"         ident = c.field(entry, \"id\", str, where)         status = _check_result_entry(c, entry, where, artifacts, capabilities)         if ident is not None and status is not None:             if ident in results:                 c.error(\"E_SCHEMA\", f\"{where}: id collides with an analysis id\")             results[ident] = status"
+                }
+            ]
+        },
+        "d=3": {
+            "depth": 3,
+            "label": "MAY NEED TESTING",
+            "symbols": [
+                {
+                    "id": "Function:scripts/audit_packet.py:_validate",
+                    "name": "_validate",
+                    "filePath": "scripts/audit_packet.py",
+                    "nodeType": "Function",
+                    "startLine": 216,
+                    "endLine": 271,
+                    "content": "def _validate(c, report):     root, packet_dir = c.root, c.packet_dir     try:         rel_packet = packet_dir.relative_to(root).as_posix()     except ValueError:         c.error(\"E_PACKET_PATH\", f\"{packet_dir} is outside the repository {root}\")         return     report[\"packet\"] = rel_packet     report[\"rev\"] = git(root, \"rev-parse\", \"HEAD\").strip()     manifest_path = packet_dir / PACKET_FILE     if not manifest_path.is_file():         c.error(\"E_PACKET_MISSING\", f\"{rel_packet}/{PACKET_FILE} does not exist\")         return     manifest = _load_json(manifest_path.read_bytes())     if not isinstance(manifest, dict):         c.error(\"E_SCHEMA\", f\"{PACKET_FILE} is not a JSON object\")         return     if manifest.get(\"schema\") != SCHEMA:         c.error(\"E_SCHEMA\", f\"schema must be {SCHEMA!r}\")         return     issue = c.field(manifest, \"issue\", str, \"packet\")     report[\"issue\"] = issue     if issue is not None and (not ISSUE_RE.fullmatch(issue) or issue != packet_dir.name):         c.error(\"E_ISSUE\", f\"issue {issue!r} must be DEF-<n> and equal the directory name {packet_dir.name!r}\")     base, head = _check_revisions(c, manifest)     artifacts = _check_artifacts(c, manifest)     capabilities = _check_capabilities(c, manifest)     versions = c.field(manifest, \"tool_versions\", dict, \"packet\")     if versions is not None and (         not versions or not all(isinstance(v, str) and v.strip() for v in versions.values())     ):         c.error(\"E_SCHEMA\", \"packet.tool_versions: expected non-empty mapping of name to version\")     if head:         _check_configuration(c, manifest, head)     results = {}     _check_analyses(c, manifest, base, head, artifacts, capabilities, results)     _check_commands(c, manifest, artifacts, capabilities, results)     _check_disclosure(c, manifest, results, report)     cases = _check_cases(c, manifest, results, capabilities)     changed = _changed_paths(c, base, head) if base and head else []     _check_scope(c, manifest, changed)     _check_labels(c, manifest, changed, report)     _check_mutations(c, manifest, head, results)     _check_findings(c, manifest)     report[\"baseline_debt\"] = _check_debt(c, manifest, results)     report[\"review\"] = _check_review(c, manifest)     _check_rollback(c, manifest)     report[\"non_pass_results\"] = [         {\"id\": ident, \"source\": \"case\" if ident in cases else \"result\", \"status\": status}         for ident, status in sorted({**results, **cases}.items())         if status != \"PASS\"     ]"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet",
+        "repo": "fl0sint-def90-packet",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def90-packet/.gitnexus/lbug",
+        "symbol": "scripts/audit_packet.py:observed_status",
+        "rootSymbols": 1,
+        "totalSymbols": 5,
+        "totalEdges": 5,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

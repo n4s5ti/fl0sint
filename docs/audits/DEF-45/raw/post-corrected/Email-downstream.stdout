@@ -1,0 +1,292 @@
+{
+    "symbol": "flowsint-types/src/flowsint_types/email.py:Email",
+    "repo": "fl0sint-def45-extraction",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+    "direction": "downstream",
+    "risk": "HIGH",
+    "target": {
+        "id": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+        "name": "Email",
+        "filePath": "flowsint-types/src/flowsint_types/email.py",
+        "nodeType": "Class",
+        "startLine": 9,
+        "endLine": 33,
+        "content": "class Email(FlowsintType):     \"\"\"Represents an email address.\"\"\"     email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.email         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "name": "Email",
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "nodeType": "Class",
+            "startLine": 9,
+            "endLine": 33,
+            "content": "class Email(FlowsintType):     \"\"\"Represents an email address.\"\"\"     email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.email         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.compute_label#0",
+            "name": "compute_label",
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "nodeType": "Method",
+            "startLine": 15,
+            "endLine": 17,
+            "content": "    def compute_label(self) -> Self:         self.nodeLabel = self.email         return self"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.from_string#1",
+            "name": "from_string",
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "nodeType": "Method",
+            "startLine": 20,
+            "endLine": 22,
+            "content": "    def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())"
+        },
+        {
+            "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.detect#1",
+            "name": "detect",
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "nodeType": "Method",
+            "startLine": 25,
+            "endLine": 33,
+            "content": "    def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+        },
+        {
+            "id": "Property:flowsint-types/src/flowsint_types/email.py:Email.email",
+            "name": "email",
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "nodeType": "Property",
+            "startLine": 12,
+            "endLine": 12,
+            "content": "    email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})"
+        },
+        {
+            "id": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+            "name": "nodeLabel",
+            "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+            "nodeType": "Property",
+            "startLine": 21,
+            "endLine": 25,
+            "content": "    nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )"
+        },
+        {
+            "id": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+            "name": "FlowsintType",
+            "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+            "nodeType": "Class",
+            "startLine": 6,
+            "endLine": 28,
+            "content": "class FlowsintType(BaseModel):     \"\"\"Base class for all Flowsint entity types with nodeLabel support.     nodeLabel is optional but computed at definition time.     All classes that inherit from FlowsintType must be decorated with @flowsint_type     to be registered in the global TYPE_REGISTRY and accessed by their class name.     Usage:         from flowsint_types.registry import flowsint_type         @flowsint_type         class Domain(FlowsintType):             domain: str     \"\"\"     nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )     # Allow extra keys to support additional properties from the user     model_config = ConfigDict(extra=\"allow\")"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "to": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "to": "Method:flowsint-types/src/flowsint_types/email.py:Email.compute_label#0",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "to": "Method:flowsint-types/src/flowsint_types/email.py:Email.from_string#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "to": "Method:flowsint-types/src/flowsint_types/email.py:Email.detect#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+            "to": "Property:flowsint-types/src/flowsint_types/email.py:Email.email",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+            "to": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-types/src/flowsint_types/email.py",
+            "count": 5,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/email.py:Email",
+                    "name": "Email",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Class",
+                    "startLine": 9,
+                    "endLine": 33,
+                    "content": "class Email(FlowsintType):     \"\"\"Represents an email address.\"\"\"     email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})     @model_validator(mode='after')     def compute_label(self) -> Self:         self.nodeLabel = self.email         return self     @classmethod     def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())     @classmethod     def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.compute_label#0",
+                    "name": "compute_label",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Method",
+                    "startLine": 15,
+                    "endLine": 17,
+                    "content": "    def compute_label(self) -> Self:         self.nodeLabel = self.email         return self"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.from_string#1",
+                    "name": "from_string",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Method",
+                    "startLine": 20,
+                    "endLine": 22,
+                    "content": "    def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.detect#1",
+                    "name": "detect",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Method",
+                    "startLine": 25,
+                    "endLine": 33,
+                    "content": "    def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/email.py:Email.email",
+                    "name": "email",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Property",
+                    "startLine": 12,
+                    "endLine": 12,
+                    "content": "    email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})"
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+                    "name": "nodeLabel",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Property",
+                    "startLine": 21,
+                    "endLine": 25,
+                    "content": "    nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )"
+                },
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+                    "name": "FlowsintType",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Class",
+                    "startLine": 6,
+                    "endLine": 28,
+                    "content": "class FlowsintType(BaseModel):     \"\"\"Base class for all Flowsint entity types with nodeLabel support.     nodeLabel is optional but computed at definition time.     All classes that inherit from FlowsintType must be decorated with @flowsint_type     to be registered in the global TYPE_REGISTRY and accessed by their class name.     Usage:         from flowsint_types.registry import flowsint_type         @flowsint_type         class Domain(FlowsintType):             domain: str     \"\"\"     nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )     # Allow extra keys to support additional properties from the user     model_config = ConfigDict(extra=\"allow\")"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-types",
+            "direct": true,
+            "symbolCount": 6
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Class:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType",
+                    "name": "FlowsintType",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Class",
+                    "startLine": 6,
+                    "endLine": 28,
+                    "content": "class FlowsintType(BaseModel):     \"\"\"Base class for all Flowsint entity types with nodeLabel support.     nodeLabel is optional but computed at definition time.     All classes that inherit from FlowsintType must be decorated with @flowsint_type     to be registered in the global TYPE_REGISTRY and accessed by their class name.     Usage:         from flowsint_types.registry import flowsint_type         @flowsint_type         class Domain(FlowsintType):             domain: str     \"\"\"     nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )     # Allow extra keys to support additional properties from the user     model_config = ConfigDict(extra=\"allow\")"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.compute_label#0",
+                    "name": "compute_label",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Method",
+                    "startLine": 15,
+                    "endLine": 17,
+                    "content": "    def compute_label(self) -> Self:         self.nodeLabel = self.email         return self"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.from_string#1",
+                    "name": "from_string",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Method",
+                    "startLine": 20,
+                    "endLine": 22,
+                    "content": "    def from_string(cls, line: str):         \"\"\"Parse an email from a raw string.\"\"\"         return cls(email=line.strip())"
+                },
+                {
+                    "id": "Method:flowsint-types/src/flowsint_types/email.py:Email.detect#1",
+                    "name": "detect",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Method",
+                    "startLine": 25,
+                    "endLine": 33,
+                    "content": "    def detect(cls, line: str) -> bool:         \"\"\"Detect if a line of text contains an email address.\"\"\"         line = line.strip()         if not line:             return False         # Email regex pattern (RFC 5322 simplified)         email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'         return bool(re.match(email_pattern, line))"
+                },
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/email.py:Email.email",
+                    "name": "email",
+                    "filePath": "flowsint-types/src/flowsint_types/email.py",
+                    "nodeType": "Property",
+                    "startLine": 12,
+                    "endLine": 12,
+                    "content": "    email: EmailStr = Field(..., description=\"Email address\", title=\"Email Address\", json_schema_extra={\"primary\": True})"
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-types/src/flowsint_types/flowsint_base.py:FlowsintType.nodeLabel",
+                    "name": "nodeLabel",
+                    "filePath": "flowsint-types/src/flowsint_types/flowsint_base.py",
+                    "nodeType": "Property",
+                    "startLine": 21,
+                    "endLine": 25,
+                    "content": "    nodeLabel: Optional[str] = Field(         None,         description=\"UI-readable label for this entity, the one used on the graph.\",         title=\"Label\",     )"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction",
+        "repo": "fl0sint-def45-extraction",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def45-extraction/.gitnexus/lbug",
+        "symbol": "flowsint-types/src/flowsint_types/email.py:Email",
+        "rootSymbols": 1,
+        "totalSymbols": 7,
+        "totalEdges": 6,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 5,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "pip3r",
+    "blast",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def44-source",
+    "--no-auto-index",
+    "--json",
+    "--include-tests",
+    "--max-depth",
+    "3",
+    "--direction",
+    "downstream",
+    "flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template"
+  ],
+  "rc": 0,
+  "seconds": 0.9459245204925537
+}

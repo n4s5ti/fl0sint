@@ -85,6 +85,13 @@ A concurrent enricher must carry an immutable per-occurrence record containing t
 
 Network enrichers must not create their own fallback scraper. WebsiteToText constructs a trusted local caller policy for the exact origins of its validated inputs, admits one immutable batch operation through `flowsint_execution.fetch`, and shares one request/byte/time ledger across concurrent occurrences, redirects, and retries. This local policy boundary does not implement hosted authentication or operation replay prevention. Redirects remain same-origin, TLS verification is mandatory, bodies are limited per input and across the batch during streaming, actual delivered overflow remains accounted, and failures remain typed occurrence outcomes. Fetch outcomes are associated to source records by occurrence ID, never tuple position. The legacy list output is produced only after those outcomes have passed through source-owned postprocessing.
 
+WebsiteToText and connector templates require explicit reviewed source-retention runtime
+configuration. Supply a deployment-owned `FilesystemArtifactStore` and
+`RetentionAuthority`; never put the store root, authority, headers, or secrets in params or
+templates. Template `source_rights` is provenance metadata, not retention authority. A
+deployment without valid authority consumes the admitted fetch and returns HOLD with no
+outputs or retained body. REVIEW requires policy revalidation/refetch, not trust in a digest.
+
 ## Creating a simple enricher
 
 Let's walk through creating a complete enricher from scratch. We'll build an enricher that converts domains to IP addresses using DNS resolution.
@@ -719,3 +726,15 @@ Once you've created and registered your enricher, it becomes available through t
 Remember that enrichers are the heart of Fl0sint's intelligence gathering capabilities. Well-designed enrichers that handle errors gracefully, log progress clearly, and create meaningful graph relationships make the entire platform more powerful and user-friendly.
 
 If you create new enrichers that you think can help the community, it's highly appreciated that you open-source them. Help the community as much as it helps you !
+# WebsiteToText observation metadata
+
+`WebsiteToText.scan()` returns occurrence envelopes. Successful retained occurrences
+include `observation_result`, an `ObservedExtractionResult` from the same pure extractor
+used for saved proof replay. `execute_structured()` exposes it in `InputOutcome.metadata`
+with `format_version: observed-extraction/1.0`; Phrase outputs and existing graph
+postprocessing are unchanged. Observation metadata is not an instruction to crawl a
+link, submit a form, accept a contact, or mutate the graph.
+
+Run `flowsint-core/examples/observed_extraction.py --url URL` with a reviewed artifact
+runtime configured for a controlled fetch. Replay uses `--proof`, `--runtime-config`,
+`--operation`, and `--occurrence`. Neither mode requires graph, planner, or LLM keys.

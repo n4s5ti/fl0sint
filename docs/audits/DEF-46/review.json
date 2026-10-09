@@ -1,0 +1,18 @@
+{
+  "issue": "DEF-46",
+  "reviewer": "independent DEF-46 review agent",
+  "independence": "separate read-only session; no edits or indexing",
+  "initial_findings": [
+    {"id":"F1","severity":"P2","finding":"Capture buffer leaked candidates across repeated WebsiteToLinks executions.","resolution":"scan now clears the process-local buffer per execution and adds monotonic execution_id lineage; actual repeated-instance regression added."},
+    {"id":"F2","severity":"P3","finding":"capture_only factory skip did not bypass GraphService forensic fencing.","resolution":"factory fence is unconditional; forensic-case regression asserts LegacyExecutionFenced."},
+    {"id":"F3","severity":"P3","finding":"Acceptance document used nonexistent test names.","resolution":"Corrected to exact test names and updated results to 5/7."},
+    {"id":"F4","severity":"P3","finding":"Logger test patch hid pre-existing PostgreSQL/Redis/Celery external behavior.","resolution":"Acceptance document now limits claim to Neo4j isolation and assigns logger/runtime work to DEF-47."},
+    {"id":"F5","severity":"P3","finding":"Trailing whitespace in enricher_base.py.","resolution":"Removed; reviewer regex check clean."}
+  ],
+  "reverification": {
+    "result":"ACCEPTED",
+    "evidence":"Reviewer reran actual loopback repeated-instance probe and fresh focused suites: run1=9/run2=9 candidates with execution IDs {1}/{2}; core 7 passed; enricher 5 passed; factory fenced within forensic_case_scope.",
+    "residual_non_blocking_note":"clear_captures discards prior-execution unsupported-intent records from the in-memory buffer. Per-execution candidate results remain intact; cross-execution audit retention is not a DEF-46 requirement."
+  },
+  "limitations":"Full Celery run_enricher was not run because it requires DB/broker; registry, celery, and orchestrator construction paths were traced and capture-selected in-process."
+}
