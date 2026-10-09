@@ -209,7 +209,7 @@
     },
     "ci-hosted-run": {
       "path": "raw/post/ci-hosted-run.md",
-      "sha256": "2857c5fb88b7bcbb4f5c288f7774fe2706cfd580d4a29a5788d1587ae65e57e0"
+      "sha256": "ad709d232329e3d15c8e20f56a92c8d3c22ead9597d5e7cd31165fe03002e929"
     },
     "def47-compat": {
       "path": "raw/post/def47-compat.txt",
@@ -229,7 +229,7 @@
     },
     "acceptance": {
       "path": "acceptance.md",
-      "sha256": "317c6288becc1a53e33c7a688e8c43aa601abe2ffb5a5968e2f20ea21100351e"
+      "sha256": "db42afd9aca7b0198608fa0390f60b2e63c3da07de5457c7745155c4d620ae3a"
     },
     "dogfood-negative": {
       "path": "raw/post/dogfood-negative.txt",
@@ -1110,7 +1110,7 @@
     },
     {
       "id": "hosted-python-tests",
-      "description": "Hosted Tests/Python tests job fails at dependency resolution (ghunt httpx<0.28 vs enrichers httpx>=0.28) on main and earlier branches; preexisting and unrelated to DEF-90",
+      "description": "Hosted Tests/Python tests job fails at dependency resolution (ghunt httpx<0.28 vs enrichers httpx>=0.28) on main b0c82d8d (run 36369242551) and def-43 b7a6f28b (run 36369217612), per fetched logs; preexisting and unrelated to DEF-90",
       "evidence": "ci-hosted-run"
     }
   ],

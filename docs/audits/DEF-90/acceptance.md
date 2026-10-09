@@ -51,5 +51,5 @@ An independent `reviewer` subagent reviewed the change over three rounds and acc
 
 ## Open and not claimed
 
-- **T-CI-HOSTED: PASS.** PR #2 run 37883849516: the Audit packet validity job passed. The hosted Python tests job fails on dependency resolution; it fails the same way on `main`, so it is preexisting and recorded as baseline debt.
+- **T-CI-HOSTED: PASS.** PR #2 run 37883849516: the Audit packet validity job passed. The hosted Python tests job fails on dependency resolution; the same dependency error appears in the fetched logs for `main` b0c82d8d and def-43, so it is preexisting and recorded as baseline debt.
 - **Hunt coverage of this change is 0** (DEGRADED/BLOCKED). It is disclosed, not passed.

@@ -5,7 +5,7 @@ https://github.com/n4s5ti/fl0sint/pull/2, run 37883849516 (event pull_request, h
 | Job | Result |
 |---|---|
 | Audit packet validity | **pass**: https://github.com/n4s5ti/fl0sint/actions/runs/37883849516/job/113669335478 |
-| Python tests | fail: dependency resolution (`ghunt>=2.3.4` requires httpx<0.28, while the enrichers package requires httpx>=0.28,<0.29, unsatisfiable for the Python 3.14 split). This is preexisting: `main` at b0c82d8d, 6c21c3a7 and 54e166f6 and `work/def-43-bounded-fetch` fail the same job. DEF-90 changed no dependency file. |
+| Python tests | fail: dependency resolution (`ghunt>=2.3.4` requires httpx<0.28, while the enrichers package requires httpx>=0.28,<0.29, unsatisfiable for the Python 3.14 split). This is preexisting. Fetched logs show the identical httpx resolution error on `main` b0c82d8d (run 36369242551) and `work/def-43-bounded-fetch` b7a6f28b (run 36369217612). The older `main` runs 6c21c3a7 (30680433681) and 54e166f6 (30680082479) failed for a different reason: the pycairo 1.29.0 build could not find the system cairo library. DEF-90 changed no dependency file. |
 
 Raw run JSON:
 ```json
