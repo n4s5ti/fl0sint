@@ -37,10 +37,6 @@ scrapling = [
     "scrapling>=0.4.9",
 ]
 
-ghunt = [
-    "ghunt>=2.3.4",
-]
-
 [dependency-groups]
 dev = [
     "pytest>=9.0.3,<10.0.0",
