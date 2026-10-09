@@ -306,7 +306,7 @@ def _check_revisions(c, manifest):
         c.error("E_STALE_HEAD", f"head_commit {head} is not an ancestor of the packet revision {packet_rev}")
         return base, head
     newer = [
-        p for p in git(c.root, "diff", "--name-only", head, packet_rev).splitlines()
+        p for p in git(c.root, "diff", "--name-only", "--no-renames", head, packet_rev).splitlines()
         if not in_packet_tree(p)
     ]
     if newer:
