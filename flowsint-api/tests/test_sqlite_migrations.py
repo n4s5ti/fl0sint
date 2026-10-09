@@ -40,7 +40,8 @@ from flowsint_core.core.models import (
 )
 
 
-CURRENT_ALEMBIC_HEAD = "e5f6a7b8c9d0"
+# Merge of the stage4 connector-egress chain and the grievances table (both off a1f2b3c4d5e6).
+CURRENT_ALEMBIC_HEAD = "b2ae9121c94c"
 
 
 def _upgrade_sqlite(db_path: Path) -> None:
