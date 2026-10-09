@@ -1,0 +1,26 @@
+{
+  "_provenance": {
+    "core": "Reproduced at base a59bdadf (DEF-90 packet raw/pre/core-pytest-base.stdout): the test needs the uncommitted /tmp/def45-live-fixture.html.",
+    "enrichers": "Reproduced at base a59bdadf (DEF-47 packet raw/namechk-baseline-comparison.json): namechk TestScan mocks.",
+    "api": "Reproduced at base a59bdadf (DEF-90 packet raw/pre/api-pytest-base.stdout): test_events_auth and test_sqlite_migrations.",
+    "policy": "Entries are removed only when the suites report them as baseline_resolved. New failures are never added here to make a release pass."
+  },
+  "types": [],
+  "core": [
+    "tests/acquisition/test_observed_extraction.py::test_live_fixture_exercises_expected_acceptance_surface"
+  ],
+  "enrichers": [
+    "tests/enrichers/test_namechk.py::TestScan::test_hunt_exception_returns_empty",
+    "tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_no_matches",
+    "tests/enrichers/test_namechk.py::TestScan::test_mocked_scan_returns_found_accounts"
+  ],
+  "api": [
+    "tests/test_events_auth.py::test_log_stream_rejects_token_query_param",
+    "tests/test_events_auth.py::test_log_stream_requires_auth_header",
+    "tests/test_events_auth.py::test_status_stream_requires_auth_header",
+    "tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database",
+    "tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models",
+    "tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only",
+    "tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head"
+  ]
+}
