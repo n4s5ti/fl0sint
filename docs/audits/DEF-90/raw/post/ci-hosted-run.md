@@ -1,15 +1,13 @@
-# GitHub-hosted run: not observed
+# GitHub-hosted run (PR #2)
 
-No branch was pushed and no PR was opened for DEF-90, because pushing and merging require
-the user's approval. The hosted **Tests / Audit packet validity** run is therefore UNKNOWN.
+https://github.com/n4s5ti/fl0sint/pull/2, run 37883849516 (event pull_request, head c38b60b4).
 
-The local substitutes, which are not equivalent to a hosted run, are:
-- `raw/post/ci-workflow-trace.json`: a parse of the committed workflow showing the triggers,
-  the checkout ref and history depth, the exact validator command, and report publication.
-- The validator's own tests run through `make test` -> the enrichers pytest, which is the
-  existing `test` job.
-- `raw/post/ci-local-replay.txt` (added in the packet commit): the job's exact `run:` script,
-  executed in a clean clone of the packet commit with `BASE_SHA=a59bdadf`.
+| Job | Result |
+|---|---|
+| Audit packet validity | **pass**: https://github.com/n4s5ti/fl0sint/actions/runs/37883849516/job/113669335478 |
+| Python tests | fail: dependency resolution (`ghunt>=2.3.4` requires httpx<0.28, while the enrichers package requires httpx>=0.28,<0.29, unsatisfiable for the Python 3.14 split). This is preexisting: `main` at b0c82d8d, 6c21c3a7 and 54e166f6 and `work/def-43-bounded-fetch` fail the same job. DEF-90 changed no dependency file. |
 
-To close this item, push the branch or open a PR, then attach the job URL and the
-`audit-packet-report` artifact.
+Raw run JSON:
+```json
+{"event":"pull_request","headSha":"c38b60b4bd5b01d05a154b1095b5f2adc8b8fb74","jobs":[{"completedAt":"2026-10-09T04:26:09Z","conclusion":"success","databaseId":113669335478,"name":"Audit packet validity","startedAt":"2026-10-09T04:26:02Z","status":"completed","steps":[{"completedAt":"2026-10-09T04:26:04Z","conclusion":"success","name":"Set up job","number":1,"startedAt":"2026-10-09T04:26:03Z","status":"completed"},{"completedAt":"2026-10-09T04:26:06Z","conclusion":"success","name":"Checkout repository","number":2,"startedAt":"2026-10-09T04:26:04Z","status":"completed"},{"completedAt":"2026-10-09T04:26:06Z","conclusion":"success","name":"Validate audit packets changed by this push or pull request","number":3,"startedAt":"2026-10-09T04:26:06Z","status":"completed"},{"completedAt":"2026-10-09T04:26:07Z","conclusion":"success","name":"Publish audit packet report","number":4,"startedAt":"2026-10-09T04:26:06Z","status":"completed"},{"completedAt":"2026-10-09T04:26:07Z","conclusion":"success","name":"Post Checkout repository","number":8,"startedAt":"2026-10-09T04:26:07Z","status":"completed"},{"completedAt":"2026-10-09T04:26:07Z","conclusion":"success","name":"Complete job","number":9,"startedAt":"2026-10-09T04:26:07Z","status":"completed"}],"url":"https://github.com/n4s5ti/fl0sint/actions/runs/37883849516/job/113669335478"},{"completedAt":"2026-10-09T04:26:11Z","conclusion":"failure","databaseId":113669335664,"name":"Python tests","startedAt":"2026-10-09T04:26:02Z","status":"completed","steps":[{"completedAt":"2026-10-09T04:26:04Z","conclusion":"success","name":"Set up job","number":1,"startedAt":"2026-10-09T04:26:03Z","status":"completed"},{"completedAt":"2026-10-09T04:26:05Z","conclusion":"success","name":"Checkout repository","number":2,"startedAt":"2026-10-09T04:26:04Z","status":"completed"},{"completedAt":"2026-10-09T04:26:06Z","conclusion":"success","name":"Install uv","number":3,"startedAt":"2026-10-09T04:26:05Z","status":"completed"},{"completedAt":"2026-10-09T04:26:09Z","conclusion":"failure","name":"Run tests","number":4,"startedAt":"2026-10-09T04:26:06Z","status":"completed"},{"completedAt":"2026-10-09T04:26:09Z","conclusion":"skipped","name":"Post Install uv","number":7,"startedAt":"2026-10-09T04:26:09Z","status":"completed"},{"completedAt":"2026-10-09T04:26:09Z","conclusion":"success","name":"Post Checkout repository","number":8,"startedAt":"2026-10-09T04:26:09Z","status":"completed"},{"completedAt":"2026-10-09T04:26:09Z","conclusion":"success","name":"Complete job","number":9,"startedAt":"2026-10-09T04:26:09Z","status":"completed"}],"url":"https://github.com/n4s5ti/fl0sint/actions/runs/37883849516/job/113669335664"}],"url":"https://github.com/n4s5ti/fl0sint/actions/runs/37883849516"}
+```

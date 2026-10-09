@@ -209,7 +209,7 @@
     },
     "ci-hosted-run": {
       "path": "raw/post/ci-hosted-run.md",
-      "sha256": "0006aa87a5f592e088132155511f8ad818adc4784f0e7299958d353e310d9732"
+      "sha256": "2857c5fb88b7bcbb4f5c288f7774fe2706cfd580d4a29a5788d1587ae65e57e0"
     },
     "def47-compat": {
       "path": "raw/post/def47-compat.txt",
@@ -229,7 +229,7 @@
     },
     "acceptance": {
       "path": "acceptance.md",
-      "sha256": "27215b334ffdada4fa333b5939c76f00fc10be0832afa0c02b5ebdd2462d1253"
+      "sha256": "317c6288becc1a53e33c7a688e8c43aa601abe2ffb5a5968e2f20ea21100351e"
     },
     "dogfood-negative": {
       "path": "raw/post/dogfood-negative.txt",
@@ -539,7 +539,7 @@
       "id": "ci-hosted-run",
       "command": "GitHub-hosted Tests workflow run",
       "exit_code": 0,
-      "status": "UNKNOWN",
+      "status": "PASS",
       "artifact": "ci-hosted-run"
     },
     {
@@ -602,10 +602,6 @@
       "description": "pip3r doctor --hunt probes a CLI executable, not --cwd sources; without --hunt-target it exits 1 with empty JSON (DEF-39/DEF-46 known gap)."
     },
     {
-      "ref": "ci-hosted-run",
-      "description": "No push/PR was made (no push/merge without user approval), so the hosted Actions run is unobserved. Local proof is the YAML trace plus the exact run script replayed in a clean clone."
-    },
-    {
       "ref": "post-doctor-hunt",
       "description": "hunt coverage.commandsDiscovered is 0; with --hunt-target the CLI probe ran but discovered no commands for a python script entry, so hunt coverage of this change is 0"
     }
@@ -620,7 +616,8 @@
     "F7",
     "F8",
     "T-MUT",
-    "T-CI-LOCAL"
+    "T-CI-LOCAL",
+    "T-CI-HOSTED"
   ],
   "cases": [
     {
@@ -708,7 +705,7 @@
     {
       "id": "T-CI-HOSTED",
       "title": "Audit packet validity job observed on a GitHub-hosted run",
-      "status": "UNKNOWN",
+      "status": "PASS",
       "evidence": [
         "ci-hosted-run"
       ]
@@ -1110,6 +1107,11 @@
       "id": "api-suite",
       "description": "Preexisting at base a59bdadf (main checkout, same commit) and identical at head (api package unchanged): tests/test_events_auth.py::test_log_stream_requires_auth_header; tests/test_events_auth.py::test_status_stream_requires_auth_header; tests/test_events_auth.py::test_log_stream_rejects_token_query_param; tests/test_sqlite_migrations.py::test_alembic_head_bootstraps_empty_sqlite_database; tests/test_sqlite_migrations.py::test_stage4_is_the_sole_alembic_head; tests/test_sqlite_migrations.py::test_sqlite_evidence_schema_is_append_only; tests/test_sqlite_migrations.py::test_sqlite_baseline_round_trips_core_orm_models",
       "evidence": "api-full"
+    },
+    {
+      "id": "hosted-python-tests",
+      "description": "Hosted Tests/Python tests job fails at dependency resolution (ghunt httpx<0.28 vs enrichers httpx>=0.28) on main and earlier branches; preexisting and unrelated to DEF-90",
+      "evidence": "ci-hosted-run"
     }
   ],
   "label_changes": [],

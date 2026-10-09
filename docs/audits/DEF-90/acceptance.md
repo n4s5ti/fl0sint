@@ -51,5 +51,5 @@ An independent `reviewer` subagent reviewed the change over three rounds and acc
 
 ## Open and not claimed
 
-- **T-CI-HOSTED: UNKNOWN.** Nothing was pushed and no PR was opened. The local proof consists of the YAML trace (8 checks pass) and the job's exact `run:` script replayed in a clean clone (`raw/post/ci-local-replay.txt`). Per the issue, Done requires the hosted CI path.
+- **T-CI-HOSTED: PASS.** PR #2 run 37883849516: the Audit packet validity job passed. The hosted Python tests job fails on dependency resolution; it fails the same way on `main`, so it is preexisting and recorded as baseline debt.
 - **Hunt coverage of this change is 0** (DEGRADED/BLOCKED). It is disclosed, not passed.
