@@ -229,15 +229,15 @@
     },
     "acceptance": {
       "path": "acceptance.md",
-      "sha256": "45be4b4fc34b53c91da3195d27bd61e5b08ade044a47d43e5152595944afa10d"
+      "sha256": "d27f13b7e61a53f5d2a99a562f87c88773a1ea553fca23abf85bf96fd586e966"
     },
     "dogfood-negative": {
       "path": "raw/post/dogfood-negative.txt",
-      "sha256": "e8c7886c60a579add9944f34a5cc00adc3f8a44bf7b98ec7ef38fd307dcbab47"
+      "sha256": "47f0b65fa5338162e46298344e1203b62c83851f28b24695ce7794d320a5774c"
     },
     "ci-local-replay": {
       "path": "raw/post/ci-local-replay.txt",
-      "sha256": "a52d732896bd0fd437bb404279e66344c657f598ae13730ce62b97b19ece799b"
+      "sha256": "f324efdc735570389c2aef0cba539ca457f427a4f343d6b47010561027f801fe"
     },
     "linear-summary": {
       "path": "linear-summary.md",
