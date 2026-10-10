@@ -1,0 +1,127 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+    "repo": "fl0sint-p1gate",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+    "direction": "upstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+        "name": "WebsiteToText",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+        "nodeType": "Class",
+        "startLine": 31,
+        "endLine": 302,
+        "content": "class WebsiteToText(Enricher):     \"\"\"Extract readable text using shared admitted acquisition and graph orchestration.\"\"\"     InputType = Website     OutputType = Phrase     def __init__(         self,         *args,         artifact_store: FilesystemArtifactStore | None = None,         retention_authority: RetentionAuthority | None = None,         runtime_config: str | PathLike[str] | None = None,         **kwargs,     ):         super().__init__(*args, **kwargs)         self._extractor = WebsiteTextExtractor(             params=self.params,             artifact_store=artifact_store,             retention_authority=retention_authority,             runtime_config=runtime_config,             outputs_from_text=self._outputs_from_text,         )     @classmethod     def name(cls):         return \"website_to_text\"     @classmethod     def category(cls):         return \"Website\"     @classmethod     def key(cls):         return \"website\"     @classmethod     def get_params_schema(cls) -> List[Dict[str, Any]]:         return [             {                 \"name\": \"enable_quic\",                 \"type\": \"bool\",                 \"default\": False,                 \"label\": \"Enable QUIC/HTTP3 probe\",                 \"description\": \"Legacy option retained only to reject unsafe QUIC requests explicitly\",             },             {                 \"name\": \"max_concurrency\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Max concurrent connections\",                 \"description\": \"Maximum simultaneous admitted HTTP operations\",             },             {                 \"name\": \"request_timeout\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Total timeout (seconds)\",                 \"description\": \"Deadline covering dispatch, redirects, retries and streaming\",             },             {                 \"name\": \"max_response_bytes\",                 \"type\": \"int\",                 \"default\": 1048576,                 \"label\": \"Maximum bytes per input\",                 \"description\": \"Finite response allocation applied while streaming\",             },             {                 \"name\": \"max_redirects\",                 \"type\": \"int\",                 \"default\": 3,                 \"label\": \"Maximum same-origin redirects\",                 \"description\": \"Destinations are checked before dispatch\",             },             {                 \"name\": \"max_retries\",                 \"type\": \"int\",                 \"default\": 0,                 \"label\": \"Maximum retries\",                 \"description\": \"Retries share the original allocation\",             },         ]     @staticmethod     def _outputs_from_text(text):         return WebsiteTextExtractor._default_outputs_from_text(text)     @staticmethod     def _diagnostic(code, message, retryable=False):         return WebsiteTextExtractor._diagnostic(code, message, retryable)     @staticmethod     def _legacy_outputs(occurrences):         return WebsiteTextExtractor._legacy_outputs(occurrences)     def _sync_extractor(self):         self._extractor.params = self.params         self._extractor._outputs_from_text = self._outputs_from_text         return self._extractor     def _build_operation(self, specs, *, operation_id: str | None = None):         return self._sync_extractor()._build_operation(specs, operation_id=operation_id)     async def _scan_occurrence_specs(self, specs, *, operation_id: str | None = None):         return await self._sync_extractor()._scan_occurrence_specs(specs, operation_id=operation_id)     async def _scan_occurrences(self, data, *, start_index=0, operation_id: str | None = None):         return await self._sync_extractor()._scan_occurrences(             data, start_index=start_index, operation_id=operation_id         )     async def scan(self, data: List[Website], *, operation_id: str | None = None):         return list(await self._scan_occurrences(data, operation_id=operation_id))     def postprocess(self, occurrences):         retained = tuple(occurrences)         if any(not isinstance(item, WebsiteTextOccurrence) for item in retained):             raise TypeError(                 \"WebsiteToText.postprocess requires occurrence envelopes from scan().\"             )         self._postprocess_occurrences(retained)         return self._legacy_outputs(retained)     def _postprocess_occurrences(self, occurrences):         if not self._graph_service:             return         for occurrence in occurrences:             if occurrence.status is not OutcomeStatus.SUCCESS:                 continue             self.create_node(occurrence.source)             for output in occurrence.outputs:                 if output.text:                     self.create_node(output)                     self.create_relationship(                         occurrence.source, output, \"HAS_INNER_TEXT\"                     )                     self.log_graph_message(                      ... [truncated]",
+        "isExported": true
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+            "name": "WebsiteToText",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "nodeType": "Class",
+            "startLine": 31,
+            "endLine": 302,
+            "content": "class WebsiteToText(Enricher):     \"\"\"Extract readable text using shared admitted acquisition and graph orchestration.\"\"\"     InputType = Website     OutputType = Phrase     def __init__(         self,         *args,         artifact_store: FilesystemArtifactStore | None = None,         retention_authority: RetentionAuthority | None = None,         runtime_config: str | PathLike[str] | None = None,         **kwargs,     ):         super().__init__(*args, **kwargs)         self._extractor = WebsiteTextExtractor(             params=self.params,             artifact_store=artifact_store,             retention_authority=retention_authority,             runtime_config=runtime_config,             outputs_from_text=self._outputs_from_text,         )     @classmethod     def name(cls):         return \"website_to_text\"     @classmethod     def category(cls):         return \"Website\"     @classmethod     def key(cls):         return \"website\"     @classmethod     def get_params_schema(cls) -> List[Dict[str, Any]]:         return [             {                 \"name\": \"enable_quic\",                 \"type\": \"bool\",                 \"default\": False,                 \"label\": \"Enable QUIC/HTTP3 probe\",                 \"description\": \"Legacy option retained only to reject unsafe QUIC requests explicitly\",             },             {                 \"name\": \"max_concurrency\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Max concurrent connections\",                 \"description\": \"Maximum simultaneous admitted HTTP operations\",             },             {                 \"name\": \"request_timeout\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Total timeout (seconds)\",                 \"description\": \"Deadline covering dispatch, redirects, retries and streaming\",             },             {                 \"name\": \"max_response_bytes\",                 \"type\": \"int\",                 \"default\": 1048576,                 \"label\": \"Maximum bytes per input\",                 \"description\": \"Finite response allocation applied while streaming\",             },             {                 \"name\": \"max_redirects\",                 \"type\": \"int\",                 \"default\": 3,                 \"label\": \"Maximum same-origin redirects\",                 \"description\": \"Destinations are checked before dispatch\",             },             {                 \"name\": \"max_retries\",                 \"type\": \"int\",                 \"default\": 0,                 \"label\": \"Maximum retries\",                 \"description\": \"Retries share the original allocation\",             },         ]     @staticmethod     def _outputs_from_text(text):         return WebsiteTextExtractor._default_outputs_from_text(text)     @staticmethod     def _diagnostic(code, message, retryable=False):         return WebsiteTextExtractor._diagnostic(code, message, retryable)     @staticmethod     def _legacy_outputs(occurrences):         return WebsiteTextExtractor._legacy_outputs(occurrences)     def _sync_extractor(self):         self._extractor.params = self.params         self._extractor._outputs_from_text = self._outputs_from_text         return self._extractor     def _build_operation(self, specs, *, operation_id: str | None = None):         return self._sync_extractor()._build_operation(specs, operation_id=operation_id)     async def _scan_occurrence_specs(self, specs, *, operation_id: str | None = None):         return await self._sync_extractor()._scan_occurrence_specs(specs, operation_id=operation_id)     async def _scan_occurrences(self, data, *, start_index=0, operation_id: str | None = None):         return await self._sync_extractor()._scan_occurrences(             data, start_index=start_index, operation_id=operation_id         )     async def scan(self, data: List[Website], *, operation_id: str | None = None):         return list(await self._scan_occurrences(data, operation_id=operation_id))     def postprocess(self, occurrences):         retained = tuple(occurrences)         if any(not isinstance(item, WebsiteTextOccurrence) for item in retained):             raise TypeError(                 \"WebsiteToText.postprocess requires occurrence envelopes from scan().\"             )         self._postprocess_occurrences(retained)         return self._legacy_outputs(retained)     def _postprocess_occurrences(self, occurrences):         if not self._graph_service:             return         for occurrence in occurrences:             if occurrence.status is not OutcomeStatus.SUCCESS:                 continue             self.create_node(occurrence.source)             for output in occurrence.outputs:                 if output.text:                     self.create_node(output)                     self.create_relationship(                         occurrence.source, output, \"HAS_INNER_TEXT\"                     )                     self.log_graph_message(                      ... [truncated]",
+            "isExported": true
+        },
+        {
+            "id": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+            "name": "OneToMany",
+            "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+            "nodeType": "Class",
+            "startLine": 38,
+            "endLine": 40,
+            "content": "class OneToMany(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=f\"{text}:1\"), Phrase(text=f\"{text}:2\"))",
+            "isExported": true
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+            "to": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+            "type": "EXTENDS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+                    "name": "WebsiteToText",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py",
+                    "nodeType": "Class",
+                    "startLine": 31,
+                    "endLine": 302,
+                    "content": "class WebsiteToText(Enricher):     \"\"\"Extract readable text using shared admitted acquisition and graph orchestration.\"\"\"     InputType = Website     OutputType = Phrase     def __init__(         self,         *args,         artifact_store: FilesystemArtifactStore | None = None,         retention_authority: RetentionAuthority | None = None,         runtime_config: str | PathLike[str] | None = None,         **kwargs,     ):         super().__init__(*args, **kwargs)         self._extractor = WebsiteTextExtractor(             params=self.params,             artifact_store=artifact_store,             retention_authority=retention_authority,             runtime_config=runtime_config,             outputs_from_text=self._outputs_from_text,         )     @classmethod     def name(cls):         return \"website_to_text\"     @classmethod     def category(cls):         return \"Website\"     @classmethod     def key(cls):         return \"website\"     @classmethod     def get_params_schema(cls) -> List[Dict[str, Any]]:         return [             {                 \"name\": \"enable_quic\",                 \"type\": \"bool\",                 \"default\": False,                 \"label\": \"Enable QUIC/HTTP3 probe\",                 \"description\": \"Legacy option retained only to reject unsafe QUIC requests explicitly\",             },             {                 \"name\": \"max_concurrency\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Max concurrent connections\",                 \"description\": \"Maximum simultaneous admitted HTTP operations\",             },             {                 \"name\": \"request_timeout\",                 \"type\": \"int\",                 \"default\": 10,                 \"label\": \"Total timeout (seconds)\",                 \"description\": \"Deadline covering dispatch, redirects, retries and streaming\",             },             {                 \"name\": \"max_response_bytes\",                 \"type\": \"int\",                 \"default\": 1048576,                 \"label\": \"Maximum bytes per input\",                 \"description\": \"Finite response allocation applied while streaming\",             },             {                 \"name\": \"max_redirects\",                 \"type\": \"int\",                 \"default\": 3,                 \"label\": \"Maximum same-origin redirects\",                 \"description\": \"Destinations are checked before dispatch\",             },             {                 \"name\": \"max_retries\",                 \"type\": \"int\",                 \"default\": 0,                 \"label\": \"Maximum retries\",                 \"description\": \"Retries share the original allocation\",             },         ]     @staticmethod     def _outputs_from_text(text):         return WebsiteTextExtractor._default_outputs_from_text(text)     @staticmethod     def _diagnostic(code, message, retryable=False):         return WebsiteTextExtractor._diagnostic(code, message, retryable)     @staticmethod     def _legacy_outputs(occurrences):         return WebsiteTextExtractor._legacy_outputs(occurrences)     def _sync_extractor(self):         self._extractor.params = self.params         self._extractor._outputs_from_text = self._outputs_from_text         return self._extractor     def _build_operation(self, specs, *, operation_id: str | None = None):         return self._sync_extractor()._build_operation(specs, operation_id=operation_id)     async def _scan_occurrence_specs(self, specs, *, operation_id: str | None = None):         return await self._sync_extractor()._scan_occurrence_specs(specs, operation_id=operation_id)     async def _scan_occurrences(self, data, *, start_index=0, operation_id: str | None = None):         return await self._sync_extractor()._scan_occurrences(             data, start_index=start_index, operation_id=operation_id         )     async def scan(self, data: List[Website], *, operation_id: str | None = None):         return list(await self._scan_occurrences(data, operation_id=operation_id))     def postprocess(self, occurrences):         retained = tuple(occurrences)         if any(not isinstance(item, WebsiteTextOccurrence) for item in retained):             raise TypeError(                 \"WebsiteToText.postprocess requires occurrence envelopes from scan().\"             )         self._postprocess_occurrences(retained)         return self._legacy_outputs(retained)     def _postprocess_occurrences(self, occurrences):         if not self._graph_service:             return         for occurrence in occurrences:             if occurrence.status is not OutcomeStatus.SUCCESS:                 continue             self.create_node(occurrence.source)             for output in occurrence.outputs:                 if output.text:                     self.create_node(output)                     self.create_relationship(                         occurrence.source, output, \"HAS_INNER_TEXT\"                     )                     self.log_graph_message(                      ... [truncated]",
+                    "isExported": true
+                }
+            ]
+        },
+        {
+            "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+                    "name": "OneToMany",
+                    "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+                    "nodeType": "Class",
+                    "startLine": 38,
+                    "endLine": 40,
+                    "content": "class OneToMany(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=f\"{text}:1\"), Phrase(text=f\"{text}:2\"))",
+                    "isExported": true
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "docs",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Class:docs/audits/DEF-42/recovery/review/attack_def42.py:OneToMany",
+                    "name": "OneToMany",
+                    "filePath": "docs/audits/DEF-42/recovery/review/attack_def42.py",
+                    "nodeType": "Class",
+                    "startLine": 38,
+                    "endLine": 40,
+                    "content": "class OneToMany(WebsiteToText):     def _outputs_from_text(self, text):         return (Phrase(text=f\"{text}:1\"), Phrase(text=f\"{text}:2\"))",
+                    "isExported": true
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "repo": "fl0sint-p1gate",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 1,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

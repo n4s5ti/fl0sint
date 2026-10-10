@@ -1,0 +1,71 @@
+{
+    "symbol": "flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+    "repo": "fl0sint-p1gate",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+        "name": "render_markdown_report",
+        "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+        "nodeType": "Function",
+        "startLine": 198,
+        "endLine": 241,
+        "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\"",
+        "isExported": true
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+            "name": "render_markdown_report",
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "nodeType": "Function",
+            "startLine": 198,
+            "endLine": 241,
+            "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\"",
+            "isExported": true
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+                    "name": "render_markdown_report",
+                    "filePath": "flowsint-enrichers/src/flowsint_enrichers/standalone.py",
+                    "nodeType": "Function",
+                    "startLine": 198,
+                    "endLine": 241,
+                    "content": "def render_markdown_report(bundle: Mapping[str, Any]) -> str:     \"\"\"Render the readable report solely from a serialized machine bundle.\"\"\"     lines = [         \"# Standalone scraper report\",         \"\",         f\"- Schema: `{bundle['schema_version']}`\",         f\"- Operation: `{bundle['operation_id']}`\",         f\"- Scope: `{bundle['scope']}`\",         f\"- Extraction: `{bundle['extraction']}`\",         \"- Disposition: all links and candidates are **unreviewed observations**, not accepted contacts.\",     ]     for outcome in bundle[\"outcomes\"]:         lines.extend(             [                 \"\",                 f\"## {outcome['key']} — {outcome['status']}\",                 \"\",                 f\"- Requested URL: `{outcome['requested_url']}`\",                 f\"- Input reference: `{outcome['input_ref']}`\",             ]         )         if outcome[\"diagnostic\"] is not None:             lines.append(                 f\"- Error: `{outcome['diagnostic']['code']}` — {outcome['diagnostic']['safe_message']}\"             )         lines.append(\"- Text:\")         lines.extend([f\"  - {text}\" for text in outcome[\"text\"]] or [\"  - _none_\"])         lines.append(\"- Observed links:\")         lines.extend([f\"  - {item['value']}\" for item in outcome[\"links\"]] or [\"  - _none_\"])         lines.append(\"- Typed candidates (unreviewed):\")         lines.extend(             [f\"  - {item['kind']}: {item['value']}\" for item in outcome[\"candidates\"]]             or [\"  - _none_\"]         )         if outcome[\"source_reference\"] is not None:             artifact = outcome[\"source_reference\"][\"artifact\"]             lines.append(                 \"- Source reference: \"                 f\"`{artifact['artifact_id']}` / `{artifact['content_digest']}`\"             )         else:             lines.append(\"- Source reference: _unavailable for this failed or held occurrence_\")     return \"\\n\".join(lines) + \"\\n\"",
+                    "isExported": true
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "repo": "fl0sint-p1gate",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+        "symbol": "flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

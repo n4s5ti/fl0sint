@@ -1,0 +1,110 @@
+{
+  "extraction": "observed-readable-text",
+  "operation_id": "standalone-website-to-text-e1e99e1542eb4accad7137dd21fa6c86",
+  "options": {
+    "extraction": "observed-readable-text",
+    "max_concurrency": 1,
+    "max_redirects": 3,
+    "max_response_bytes": 1048576,
+    "max_retries": 0,
+    "request_timeout": 2,
+    "scope": "local-web-fetch"
+  },
+  "outcomes": [
+    {
+      "candidates": [],
+      "diagnostic": {
+        "code": "timeout",
+        "retryable": false,
+        "safe_message": "The source-proof operation did not complete within its allocation."
+      },
+      "disposition": "unreviewed",
+      "fetch_status": "timeout",
+      "input_ref": "4404d4157d1ad56ab348cc7ed70cde54f8694054a7796e32eff4dbfbfa036ee6",
+      "key": "t0",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:34583/slow",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 195,
+        "concurrency": null,
+        "elapsed_seconds": 2.1272460719992523,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": null,
+      "status": "failure",
+      "text": []
+    },
+    {
+      "candidates": [],
+      "diagnostic": {
+        "code": "timeout",
+        "retryable": false,
+        "safe_message": "The source-proof operation did not complete within its allocation."
+      },
+      "disposition": "unreviewed",
+      "fetch_status": "timeout",
+      "input_ref": "4404d4157d1ad56ab348cc7ed70cde54f8694054a7796e32eff4dbfbfa036ee6",
+      "key": "t1",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:34583/slow",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 195,
+        "concurrency": null,
+        "elapsed_seconds": 2.1272460719992523,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": null,
+      "status": "failure",
+      "text": []
+    },
+    {
+      "candidates": [],
+      "diagnostic": {
+        "code": "timeout",
+        "retryable": false,
+        "safe_message": "The source-proof operation did not complete within its allocation."
+      },
+      "disposition": "unreviewed",
+      "fetch_status": "timeout",
+      "input_ref": "4404d4157d1ad56ab348cc7ed70cde54f8694054a7796e32eff4dbfbfa036ee6",
+      "key": "t2",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:34583/slow",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 0,
+        "concurrency": null,
+        "elapsed_seconds": 2.1272460719992523,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": null,
+      "status": "failure",
+      "text": []
+    }
+  ],
+  "schema_version": "standalone-scraper/1.0",
+  "scope": "local-web-fetch"
+}

@@ -1,0 +1,169 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+    "repo": "fl0sint-p1gate",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+        "name": "create_graph_service",
+        "filePath": "flowsint-core/src/flowsint_core/core/graph/service.py",
+        "nodeType": "Function",
+        "startLine": 390,
+        "endLine": 436,
+        "content": "def create_graph_service(     sketch_id: str,     enable_batching: bool = True,     type_resolver: Optional[TypeResolver] = None,     mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,     case_reference: str | None = None,     capture_only: bool = False, ) -> GraphService:     \"\"\"     Factory function to create a GraphService instance.     This is the recommended way to create a GraphService.     For isolated acquisition without Neo4j, use capture_only=True.     Args:         sketch_id: Investigation sketch ID         enable_batching: Enable batch operations         type_resolver: Optional callable to resolve custom types by name         capture_only: If True, use CaptureGraphRepository (no Neo4j connection needed)     Returns:         Configured GraphService instance     \"\"\"     require_legacy_graph_access(         mode,         operation=\"graph_service_factory_construction\",         case_reference=case_reference,     )     if capture_only:         repository = CaptureGraphRepository(sketch_id)         logger = None     else:         from flowsint_core.core.logger import Logger         repository = Neo4jGraphRepository()         logger = Logger     return GraphService(         sketch_id=sketch_id,         repository=repository,         logger=logger,         enable_batching=enable_batching,         type_resolver=type_resolver,         mode=mode,         case_reference=case_reference,     )",
+        "isExported": true
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+            "name": "create_graph_service",
+            "filePath": "flowsint-core/src/flowsint_core/core/graph/service.py",
+            "nodeType": "Function",
+            "startLine": 390,
+            "endLine": 436,
+            "content": "def create_graph_service(     sketch_id: str,     enable_batching: bool = True,     type_resolver: Optional[TypeResolver] = None,     mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,     case_reference: str | None = None,     capture_only: bool = False, ) -> GraphService:     \"\"\"     Factory function to create a GraphService instance.     This is the recommended way to create a GraphService.     For isolated acquisition without Neo4j, use capture_only=True.     Args:         sketch_id: Investigation sketch ID         enable_batching: Enable batch operations         type_resolver: Optional callable to resolve custom types by name         capture_only: If True, use CaptureGraphRepository (no Neo4j connection needed)     Returns:         Configured GraphService instance     \"\"\"     require_legacy_graph_access(         mode,         operation=\"graph_service_factory_construction\",         case_reference=case_reference,     )     if capture_only:         repository = CaptureGraphRepository(sketch_id)         logger = None     else:         from flowsint_core.core.logger import Logger         repository = Neo4jGraphRepository()         logger = Logger     return GraphService(         sketch_id=sketch_id,         repository=repository,         logger=logger,         enable_batching=enable_batching,         type_resolver=type_resolver,         mode=mode,         case_reference=case_reference,     )",
+            "isExported": true
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:_effective_legacy_execution",
+            "name": "_effective_legacy_execution",
+            "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+            "nodeType": "Function",
+            "startLine": 125,
+            "endLine": 132,
+            "content": "def _effective_legacy_execution(     mode: LegacyExecutionMode,     case_reference: str | None, ) -> tuple[LegacyExecutionMode, str | None]:     active_case_reference = _FORENSIC_CASE_REFERENCE.get()     if active_case_reference is not None:         return LegacyExecutionMode.FORENSIC_CASE, active_case_reference     return mode, case_reference",
+            "isExported": false
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:require_legacy_graph_access",
+            "name": "require_legacy_graph_access",
+            "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+            "nodeType": "Function",
+            "startLine": 207,
+            "endLine": 230,
+            "content": "def require_legacy_graph_access(     mode: LegacyExecutionMode,     operation: str,     case_reference: str | None = None, ) -> LegacyFenceDecision:     \"\"\"Allow legacy canvas execution only outside a forensic case.\"\"\"     mode, case_reference = _effective_legacy_execution(mode, case_reference)     if mode is not LegacyExecutionMode.LEGACY_CANVAS:         decision = LegacyFenceDecision(             mode=mode,             operation=operation,             case_reference=case_reference,             disposition=LegacyPathDisposition.FENCED,             allowed=False,             code=\"legacy_execution_forensic_case_fenced\",         )         raise LegacyExecutionFenced(decision)     return LegacyFenceDecision(         mode=mode,         operation=operation,         case_reference=case_reference,         disposition=LegacyPathDisposition.OUT_OF_SCOPE,         allowed=True,     )",
+            "isExported": true
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+            "to": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:require_legacy_graph_access",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:require_legacy_graph_access",
+            "to": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:_effective_legacy_execution",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/graph/service.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+                    "name": "create_graph_service",
+                    "filePath": "flowsint-core/src/flowsint_core/core/graph/service.py",
+                    "nodeType": "Function",
+                    "startLine": 390,
+                    "endLine": 436,
+                    "content": "def create_graph_service(     sketch_id: str,     enable_batching: bool = True,     type_resolver: Optional[TypeResolver] = None,     mode: LegacyExecutionMode = LegacyExecutionMode.LEGACY_CANVAS,     case_reference: str | None = None,     capture_only: bool = False, ) -> GraphService:     \"\"\"     Factory function to create a GraphService instance.     This is the recommended way to create a GraphService.     For isolated acquisition without Neo4j, use capture_only=True.     Args:         sketch_id: Investigation sketch ID         enable_batching: Enable batch operations         type_resolver: Optional callable to resolve custom types by name         capture_only: If True, use CaptureGraphRepository (no Neo4j connection needed)     Returns:         Configured GraphService instance     \"\"\"     require_legacy_graph_access(         mode,         operation=\"graph_service_factory_construction\",         case_reference=case_reference,     )     if capture_only:         repository = CaptureGraphRepository(sketch_id)         logger = None     else:         from flowsint_core.core.logger import Logger         repository = Neo4jGraphRepository()         logger = Logger     return GraphService(         sketch_id=sketch_id,         repository=repository,         logger=logger,         enable_batching=enable_batching,         type_resolver=type_resolver,         mode=mode,         case_reference=case_reference,     )",
+                    "isExported": true
+                }
+            ]
+        },
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:_effective_legacy_execution",
+                    "name": "_effective_legacy_execution",
+                    "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+                    "nodeType": "Function",
+                    "startLine": 125,
+                    "endLine": 132,
+                    "content": "def _effective_legacy_execution(     mode: LegacyExecutionMode,     case_reference: str | None, ) -> tuple[LegacyExecutionMode, str | None]:     active_case_reference = _FORENSIC_CASE_REFERENCE.get()     if active_case_reference is not None:         return LegacyExecutionMode.FORENSIC_CASE, active_case_reference     return mode, case_reference",
+                    "isExported": false
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:require_legacy_graph_access",
+                    "name": "require_legacy_graph_access",
+                    "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+                    "nodeType": "Function",
+                    "startLine": 207,
+                    "endLine": 230,
+                    "content": "def require_legacy_graph_access(     mode: LegacyExecutionMode,     operation: str,     case_reference: str | None = None, ) -> LegacyFenceDecision:     \"\"\"Allow legacy canvas execution only outside a forensic case.\"\"\"     mode, case_reference = _effective_legacy_execution(mode, case_reference)     if mode is not LegacyExecutionMode.LEGACY_CANVAS:         decision = LegacyFenceDecision(             mode=mode,             operation=operation,             case_reference=case_reference,             disposition=LegacyPathDisposition.FENCED,             allowed=False,             code=\"legacy_execution_forensic_case_fenced\",         )         raise LegacyExecutionFenced(decision)     return LegacyFenceDecision(         mode=mode,         operation=operation,         case_reference=case_reference,         disposition=LegacyPathDisposition.OUT_OF_SCOPE,         allowed=True,     )",
+                    "isExported": true
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 2
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:require_legacy_graph_access",
+                    "name": "require_legacy_graph_access",
+                    "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+                    "nodeType": "Function",
+                    "startLine": 207,
+                    "endLine": 230,
+                    "content": "def require_legacy_graph_access(     mode: LegacyExecutionMode,     operation: str,     case_reference: str | None = None, ) -> LegacyFenceDecision:     \"\"\"Allow legacy canvas execution only outside a forensic case.\"\"\"     mode, case_reference = _effective_legacy_execution(mode, case_reference)     if mode is not LegacyExecutionMode.LEGACY_CANVAS:         decision = LegacyFenceDecision(             mode=mode,             operation=operation,             case_reference=case_reference,             disposition=LegacyPathDisposition.FENCED,             allowed=False,             code=\"legacy_execution_forensic_case_fenced\",         )         raise LegacyExecutionFenced(decision)     return LegacyFenceDecision(         mode=mode,         operation=operation,         case_reference=case_reference,         disposition=LegacyPathDisposition.OUT_OF_SCOPE,         allowed=True,     )",
+                    "isExported": true
+                }
+            ]
+        },
+        "d=2": {
+            "depth": 2,
+            "label": "LIKELY AFFECTED",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_core/core/forensics/fencing.py:_effective_legacy_execution",
+                    "name": "_effective_legacy_execution",
+                    "filePath": "flowsint-core/src/flowsint_core/core/forensics/fencing.py",
+                    "nodeType": "Function",
+                    "startLine": 125,
+                    "endLine": 132,
+                    "content": "def _effective_legacy_execution(     mode: LegacyExecutionMode,     case_reference: str | None, ) -> tuple[LegacyExecutionMode, str | None]:     active_case_reference = _FORENSIC_CASE_REFERENCE.get()     if active_case_reference is not None:         return LegacyExecutionMode.FORENSIC_CASE, active_case_reference     return mode, case_reference",
+                    "isExported": false
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "repo": "fl0sint-p1gate",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+        "rootSymbols": 1,
+        "totalSymbols": 3,
+        "totalEdges": 2,
+        "filesMatched": 2,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "DEF24-R01",
+    "severity": "medium",
+    "confidence": 0.95,
+    "statement": "Unify outcome and proof input_ref hash bases in the bundle",
+    "evidence": "Within one bundle outcome, outcome.input_ref is canonical_input_hash(Website model) (e.g. 37de1428\u2026) while source_proof.input_ref and every observation's input_ref are canonical_input_hash(url string) (ab64b5ed\u2026), because scrape_websites\u2192_scan_occurrences hashes the typed source object while admit_fetch/extract_observations hash the URL value. A consumer joining outcomes to observations or proofs by input_ref gets zero matches and must fall back to key/occurrence_id; release_smoke verify only cross-checks observation\u2194proof (same basis) so it never detects the divergence. Attribution itself remains correct and each basis is deterministic; impact is consumer confusion and a dead join key, observed empirically on c01/bundle.json at 907e94da.",
+    "source": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:388-393",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-R02",
+    "severity": "medium",
+    "confidence": 0.9,
+    "statement": "Document --request-timeout as the whole-operation deadline",
+    "evidence": "ScrapeOptions.request_timeout feeds allocation.elapsed_seconds, which execute_fetch uses both as the per-request httpx timeout and as the overall waiter deadline, and execute_fetch_with_source_proof extends to the capture phase. A serialized batch (3\u00d7750ms fixtures, --max-concurrency 1, --request-timeout 2) returned failure/timeout for all inputs including fetches that had already completed under the per-request budget, because deadline expiry during capture retroactively replaces completed-but-uncaptured successes with typed timeouts. Behavior is conservative (no false success, resources retained) but the flag name and README imply per-request semantics, so large or serialized batches fail unexpectedly at the default 10s.",
+    "source": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:216-221",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-R03",
+    "severity": "low",
+    "confidence": 0.95,
+    "statement": "Handle relative --work-dir in release_smoke run",
+    "evidence": "release_smoke.py run with a relative --work-dir fails during build_and_install: uv export runs with cwd=source while -o receives the still-relative requirements path, so the subsequent uv pip install reports \"File not found: ../smoke/work/requirements.txt\" and the harness exits 3 without running any case. Reproduced at 907e94da with --work-dir ../smoke/work; an absolute path works. DEF-24's documented command does not require an absolute path, so a reviewer following it can misread the gate as broken.",
+    "source": "scripts/release_smoke.py:410-411",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-R04",
+    "severity": "low",
+    "confidence": 0.9,
+    "statement": "Byte cap charge-then-check allows one-chunk overshoot",
+    "evidence": "_Ledger.charge_bytes adds the chunk size before testing the limits, so a response streamed without Content-Length is read up to one transport chunk past max_bytes_per_input before body_too_large is returned: a 2MiB chunked stream against the 1,048,576-byte default was charged 1,081,291 bytes. The outcome stays a typed failure, the overshoot is bounded by a single chunk and is honestly reported in resources.bytes, so this is informational: actual reads can slightly exceed the advertised cap.",
+    "source": "flowsint-core/src/flowsint_execution/fetch.py:362-369",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-R05",
+    "severity": "low",
+    "confidence": 0.9,
+    "statement": "verify without --python accepts edited report prose",
+    "evidence": "release_smoke.py verify validates bundle/jsonl/artifact integrity but only re-renders report.md when --python is supplied; a copy of a good bundle whose report.md was edited to read \"verified contacts\" still prints VALID in the no-render mode. The tool explicitly prints this limitation and the machine bundle remains tamper-evident (the same edit is caught with --python), so this is informational: consumers of report.md alone should be pointed at the rendered-verification mode.",
+    "source": "scripts/release_smoke.py:617-624",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E01",
+    "severity": "medium",
+    "confidence": 0.95,
+    "statement": "DEF-41 packet at main still records acceptance as BLOCKED/withdrawn",
+    "evidence": "docs/audits/DEF-41/manifest.json records acceptance_status=BLOCKED, blocked_by=DEF-105, review_verdict='BLOCKED: prior contract-only behavioral PASS is not impact-gate acceptance' (lines 274-276), and release.md:3 says 'BLOCKED \u2014 acceptance withdrawn, pending DEF-105'. DEF-105's own packet explicitly does not close DEF-41 (docs/audits/DEF-105/acceptance.md:138-140; linear-summary.md:17). The closure decision exists only in Linear (DEF-41 comment 2026-09-28T00:30:12Z, 'User accepted the DEF-105 recovery evidence... Closing the resolved gate', citing impact evidence c9296e3c/bc89f675; completedAt 2026-09-28T00:30:08Z). An auditor reading only the repository at the release SHA concludes DEF-41 is unaccepted; the in-repo acceptance record is stale and contradicts the final state. Behavior is re-proven at main (test_contract.py passes; DEF-105 impact packet is in-repo).",
+    "source": "docs/audits/DEF-41/manifest.json:274-276",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E02",
+    "severity": "low",
+    "confidence": 0.95,
+    "statement": "DEF-46 acceptance claims '5 passed' but its cited raw artifact records '4 passed'",
+    "evidence": "docs/audits/DEF-46/acceptance.md:28 states 'Observed result after the execution-scope repair: 5 passed. The raw result is raw/runtime-crawler-pytest.stdout', but that file's summary line is '4 passed, 2 warnings in 13.77s' (raw/runtime-crawler-pytest.stdout:12). At main the test file collects 5 tests and all 5 pass (verified by --collect-only and a run), so current behavior is sound, but the packet's claimed number is not corroborated by the artifact it cites \u2014 a fifth test was evidently added after the raw capture without regenerating it. Legacy pre-schema packets are not machine-validated, so this survived review.",
+    "source": "docs/audits/DEF-46/acceptance.md:28-28",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E03",
+    "severity": "low",
+    "confidence": 0.9,
+    "statement": "Pre-edit impact receipts for DEF-42 and DEF-46 are reconstructed, not original",
+    "evidence": "DEF-42's original pre-edit Blast receipt is permanently missing; the packet says the omission 'cannot be repaired or backdated' and a retrospective baseline/head comparison was accepted via explicit user waiver (docs/audits/DEF-42/acceptance.md:50-56; recovery/waiver.md; independent review: functional PASS, evidence gate BLOCKED). DEF-46's before-state was reconstructed from 7f6f3c83 'during repair' (docs/audits/DEF-46/acceptance.md:7). Both are disclosed and user-accepted, but DEF-24 step 3's 'union of pre-edit Blast envelopes' cannot be fully satisfied for these two children; the gate record should carry this residual debt forward rather than treat the union as complete.",
+    "source": "docs/audits/DEF-42/acceptance.md:50-56",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E04",
+    "severity": "low",
+    "confidence": 0.8,
+    "statement": "DEF-41/42/43 impact evidence is structurally stale after the DEF-47 to_text\u2192text_extraction split",
+    "evidence": "DEF-47 moved fetch/occurrence-scan logic out of website/to_text.py into the new website/text_extraction.py (WebsiteTextExtractor; planned at docs/audits/DEF-47/scope-plan.json:10), leaving to_text.py a thin wrapper. DEF-42's and DEF-43's Blast/impact envelopes (baselines cbad468d, cb5cc295) and DEF-41's consumer analysis reference the pre-refactor layout, so the recorded structural evidence no longer describes the code at 907e94da. Behavior is re-proven at main (occurrence/fetch/contract focused suites and full package suites all pass), so 'compatible source versions' per DEF-24 step 1 holds behaviorally but not for the recorded per-child impact envelopes. DEF-130/135/136 (dependency and api test fixes, PR #4) touch no acquisition/extraction surface and do not further invalidate earlier children.",
+    "source": "docs/audits/DEF-47/scope-plan.json:10-10",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E05",
+    "severity": "medium",
+    "confidence": 0.9,
+    "statement": "No P1 release-wide rollback procedure or versioned release manifest exists yet",
+    "evidence": "Every child packet has its own recovery/revert notes (DEF-41 release.md:65-71; DEF-42 manifest.json:20 + recovery/; DEF-43 'revert the two implementation commits together'; DEF-44/45/46/47/48/90 recovery.md), and DEF-48 recovery.md:13-19 covers the harness plus its stacked-branch base. But there is no composite P1 revert procedure (no ordering across the stacked children) and no versioned P1 release manifest with per-criterion PASS/FAIL/UNKNOWN, artifact hashes, reviewer identity and recovery procedure as DEF-24 step 7 requires: docs/release/p1-release-checklist.md has no rollback section, and only DEF-23 (P0) has a release-manifest.json. Expected while DEF-24 is 'scheduled', but the gate cannot be marked Done until this artifact exists.",
+    "source": "docs/release/p1-release-checklist.md:1-16",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E06",
+    "severity": "low",
+    "confidence": 0.85,
+    "statement": "Enabled-capability manifest is distributed across artifacts, not a single named manifest",
+    "evidence": "PRD \u00a719.6 (prd-v3.md:681) requires each release to include 'an explicit input/output example, one successful case, one honest failure case, the enabled capability manifest and relevant test evidence'. In substance all exist: docs/audits/DEF-48/examples/batch/{bundle.json,outcomes.jsonl,report.md} contain explicit inputs/outputs, five successes, a duplicate-URL distinct snapshot, and an honest typed failure ('failure \u2014 failure: http_error', no source proof; report.md:69-80); DEF-48/packet.json:22-27 carries machine capability flags (graph/model/browser/network all false); docs/release/p1-release-checklist.md:43-53 explicitly lists disabled/deferred capabilities with milestones, S1-S8 define the enabled path, and lines 55-69 state unverified-claim boundaries. No single artifact named as the P1 enabled-capability manifest exists; the positive 'enabled' set must be assembled from the checklist plus the packet flags.",
+    "source": "docs/release/p1-release-checklist.md:43-53",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  },
+  {
+    "id": "DEF24-E07",
+    "severity": "low",
+    "confidence": 0.9,
+    "statement": "Hunt/Doctor coverage is N/A-or-degraded for every child; disclosed, never promoted to PASS",
+    "evidence": "Across DEF-23, DEF-41..48 and DEF-90, pip3r Hunt probes a CLI (no Python route; 'no CLI probe target' / zero commands) and Doctor executes no Python tests; every packet records these as UNKNOWN/BLOCKED/DEGRADED/N-A and none relabels them PASS (e.g. DEF-41 release.md:59-60; DEF-105 scope-plan.md:47-55; DEF-48/DEF-90 validator limitation results: pre-doctor-hunt BLOCKED, post-doctor-hunt DEGRADED). This is a residual, honestly-disclosed tooling limitation of the whole P1 evidence base, compensated by test/runtime/consumer evidence; it should be carried into the DEF-24 release record as residual debt rather than closed silently. Additionally the only skipped test across the four packages is api tests/e2e/test_gate0_contract.py:24, env-gated with an explicit reason.",
+    "source": "docs/audits/DEF-41/release.md:55-63",
+    "provenance": "Present at audited main; introduction not independently established",
+    "release_disposition": "Observation; not remediated by this audit"
+  }
+]

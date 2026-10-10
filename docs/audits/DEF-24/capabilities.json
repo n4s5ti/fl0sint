@@ -1,0 +1,33 @@
+{
+  "schema": "fl0sint.release-capabilities/v1",
+  "revision": "907e94dab5292e12d81f4b34094656e22463bdcf",
+  "enabled": [
+    "HTTP(S) standalone CLI and scrape_websites callable",
+    "bounded parallel fetch and explicit retries",
+    "retained source bodies, spans, links and unreviewed contact candidates",
+    "local JSON/JSONL/Markdown output and offline consumption"
+  ],
+  "disabled": [
+    "model inference",
+    "browser automation",
+    "recursive crawling",
+    "graph/database publishing",
+    "planner/Jev services",
+    "canonical import or accepted-truth promotion",
+    "hosted deployment/live contact collection"
+  ],
+  "limits": [
+    "request-timeout is operation-wide including capture, not only per-request",
+    "chunked bodies may exceed byte cap by one charged transport chunk before typed failure",
+    "same-origin redirects only; cross-port denied even if separately admitted",
+    "proof consistency does not cryptographically authenticate remote origin",
+    "report prose requires verify --python",
+    "input_ref differs between typed outcome and URL-based proof; join through occurrence/key instead"
+  ],
+  "storage_policy": "LadybugDB mirrored to SQLite; standalone path requires neither; PostgreSQL is not a deployment target",
+  "scope_exclusions": [
+    "hosted gate0 E2E without FLOWSINT_E2E_BASE_URL",
+    "cross-investigation service authorization",
+    "production rollback"
+  ]
+}

@@ -1,0 +1,1483 @@
+{
+  "extraction": "observed-readable-text",
+  "operation_id": "standalone-website-to-text-0f5a2393ac2349b6ab23ffdf10aa2428",
+  "options": {
+    "extraction": "observed-readable-text",
+    "max_concurrency": 10,
+    "max_redirects": 3,
+    "max_response_bytes": 1048576,
+    "max_retries": 0,
+    "request_timeout": 10,
+    "scope": "local-web-fetch"
+  },
+  "outcomes": [
+    {
+      "candidates": [],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "4404d4157d1ad56ab348cc7ed70cde54f8694054a7796e32eff4dbfbfa036ee6",
+      "key": "slow",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:34583/slow",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 195,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-d4b333be5cba8a8db9a6b65a7ad27225",
+          "byte_length": 195,
+          "content_digest": "56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/slow",
+          "locator": "sha256:56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/slow",
+          "retrieved_at": "2026-10-09T22:45:09.970796Z",
+          "snapshot_id": "d4b333be5cba8a8db9a6b65a7ad27225",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiI3OTgxZjJjN2MwNzdiMTg0MjhjOTkwMDRmMTM1Y2EwZmMwODYwZWYyYmFjY2Y5NGE0YjM4MmRmZTdkYjk3NmY2IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0wIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9zbG93IiwiZmluYWxfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9zbG93IiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMjo0NTowOS45NzA3OTZaIiwiZXZlbnRfYXQiOm51bGx9LCJkZWNpc2lvbiI6eyJpc3N1ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJyZXZpZXdlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInBvbGljeV9pZCI6InN0YW5kYWxvbmUtc291cmNlLXJldGVudGlvbiIsInBvbGljeV9kaWdlc3QiOiJmYmFiZDFmMTllNGY4NzVmZjYxNDhkODIyZTUzYzQ5YWU2MzUxZTE4MWQ1NmEzN2E4YmVhZTMwZmNhZWU3MTA3Iiwib3BlcmF0aW9uX2lkIjoic3RhbmRhbG9uZS13ZWJzaXRlLXRvLXRleHQtMGY1YTIzOTNhYzIzNDliNmFiMjNmZmRmMTBhYTI0MjgiLCJjYWxsZXJfaWQiOiJ3ZWJzaXRlLXRvLXRleHQiLCJzY29wZSI6ImxvY2FsLXdlYi1mZXRjaCIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwiaXNzdWVkX2F0IjoiMjAyNi0xMC0wOVQyMjo0NTowOS4wNjQ1MjdaIiwiZXhwaXJlc19hdCI6IjIwMjYtMTAtMDlUMjM6NDU6MDkuMDYxNTgxWiIsInJldGFpbl9ib2R5Ijp0cnVlLCJyZXRhaW5fbm9ybWFsaXplZF90ZXh0Ijp0cnVlfSwiYXJ0aWZhY3QiOnsiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC1kNGIzMzNiZTVjYmE4YThkYjlhNmI2NWE3YWQyNzIyNSIsInNuYXBzaG90X2lkIjoiZDRiMzMzYmU1Y2JhOGE4ZGI5YTZiNjVhN2FkMjcyMjUiLCJjb250ZW50X2RpZ2VzdCI6IjU2MjU2YjJhMDQwNmRkZTdlOTMyNjRkMTM5Y2ExMjZlMWY1MjU1OTEyOTM3YzBiMTllZDdjZWM2YWYyYzYwMTAiLCJieXRlX2xlbmd0aCI6MTk1LCJsb2NhdG9yIjoic2hhMjU2OjU2MjU2YjJhMDQwNmRkZTdlOTMyNjRkMTM5Y2ExMjZlMWY1MjU1OTEyOTM3YzBiMTllZDdjZWM2YWYyYzYwMTAiLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjA5Ljk3MDc5NloiLCJldmVudF9hdCI6bnVsbCwicmVxdWVzdGVkX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvc2xvdyIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvc2xvdyJ9LCJzcGFucyI6W3sicHJvb2ZfZm9ybWF0X3ZlcnNpb24iOiIxLjAiLCJzcGFuX2lkIjoic3Bhbi1kNGIzMzNiZTVjYmE4YThkYjlhNmI2NWE3YWQyNzIyNS0wIiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC1kNGIzMzNiZTVjYmE4YThkYjlhNmI2NWE3YWQyNzIyNSIsImJ5dGVfc3RhcnQiOjY3LCJieXRlX2VuZCI6NzksIm5vcm1hbGl6ZWRfc3RhcnQiOjAsIm5vcm1hbGl6ZWRfZW5kIjoxMiwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9LHsicHJvb2ZfZm9ybWF0X3ZlcnNpb24iOiIxLjAiLCJzcGFuX2lkIjoic3Bhbi1kNGIzMzNiZTVjYmE4YThkYjlhNmI2NWE3YWQyNzIyNS0xIiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC1kNGIzMzNiZTVjYmE4YThkYjlhNmI2NWE3YWQyNzIyNSIsImJ5dGVfc3RhcnQiOjc5LCJieXRlX2VuZCI6MTAzLCJub3JtYWxpemVkX3N0YXJ0IjoxMiwibm9ybWFsaXplZF9lbmQiOjEzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWQ0YjMzM2JlNWNiYThhOGRiOWE2YjY1YTdhZDI3MjI1LTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWQ0YjMzM2JlNWNiYThhOGRiOWE2YjY1YTdhZDI3MjI1IiwiYnl0ZV9zdGFydCI6MTAzLCJieXRlX2VuZCI6MTc2LCJub3JtYWxpemVkX3N0YXJ0IjoxMywibm9ybWFsaXplZF9lbmQiOjg2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In1dfQ",
+        "spans": [
+          {
+            "artifact_id": "artifact-d4b333be5cba8a8db9a6b65a7ad27225",
+            "byte_end": 79,
+            "byte_start": 67,
+            "normalized_end": 12,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-d4b333be5cba8a8db9a6b65a7ad27225-0"
+          },
+          {
+            "artifact_id": "artifact-d4b333be5cba8a8db9a6b65a7ad27225",
+            "byte_end": 103,
+            "byte_start": 79,
+            "normalized_end": 13,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 12,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-d4b333be5cba8a8db9a6b65a7ad27225-1"
+          },
+          {
+            "artifact_id": "artifact-d4b333be5cba8a8db9a6b65a7ad27225",
+            "byte_end": 176,
+            "byte_start": 103,
+            "normalized_end": 86,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 13,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-d4b333be5cba8a8db9a6b65a7ad27225-2"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Slow fixture This synthetic response is deliberately delayed beyond the case deadline."
+      ]
+    },
+    {
+      "candidates": [],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "6cd56a1f0a2c58c717f416c8d719a4cc1f9304ac1a94cb0499af7417f17f4c4d",
+      "key": "fast",
+      "links": [
+        {
+          "anchor_text": "Lum\u00e9 Lantern contact directory",
+          "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+          "company_name": null,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "context_span": {
+            "end_byte": 272,
+            "start_byte": 110
+          },
+          "execution_state": "not_executable",
+          "input_ref": "2e07da74f3a1a49f7aabcf439d56833160214154cc4fd4dc31a36de5d52cb0f7",
+          "kind": "observed_link",
+          "observation_id": "observation-8e36c61c1355fad50d8bb28f8ec7a9ea",
+          "occurrence_id": "input-1",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 228,
+            "start_byte": 222
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "16cfa9e4153446dc94c27950deb3ef10",
+          "source_url": "http://127.0.0.1:34583/static",
+          "value": "http://127.0.0.1:34583/named"
+        }
+      ],
+      "observations": [
+        {
+          "anchor_text": "Lum\u00e9 Lantern contact directory",
+          "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+          "company_name": null,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "context_span": {
+            "end_byte": 272,
+            "start_byte": 110
+          },
+          "execution_state": "not_executable",
+          "input_ref": "2e07da74f3a1a49f7aabcf439d56833160214154cc4fd4dc31a36de5d52cb0f7",
+          "kind": "observed_link",
+          "observation_id": "observation-8e36c61c1355fad50d8bb28f8ec7a9ea",
+          "occurrence_id": "input-1",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 228,
+            "start_byte": 222
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "16cfa9e4153446dc94c27950deb3ef10",
+          "source_url": "http://127.0.0.1:34583/static",
+          "value": "http://127.0.0.1:34583/named"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/static",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 288,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+          "byte_length": 288,
+          "content_digest": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/static",
+          "locator": "sha256:5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/static",
+          "retrieved_at": "2026-10-09T22:45:09.986982Z",
+          "snapshot_id": "16cfa9e4153446dc94c27950deb3ef10",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiIyZTA3ZGE3NGYzYTFhNDlmN2FhYmNmNDM5ZDU2ODMzMTYwMjE0MTU0Y2M0ZmQ0ZGMzMWEzNmRlNWQ1MmNiMGY3IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0xIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9zdGF0aWMiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL3N0YXRpYyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MDkuOTg2OTgyWiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZmJhYmQxZjE5ZTRmODc1ZmY2MTQ4ZDgyMmU1M2M0OWFlNjM1MWUxODFkNTZhMzdhOGJlYWUzMGZjYWVlNzEwNyIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LTBmNWEyMzkzYWMyMzQ5YjZhYjIzZmZkZjEwYWEyNDI4IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MDkuMDY0NTI3WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIzOjQ1OjA5LjA2MTU4MVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtMTZjZmE5ZTQxNTM0NDZkYzk0YzI3OTUwZGViM2VmMTAiLCJzbmFwc2hvdF9pZCI6IjE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiY29udGVudF9kaWdlc3QiOiI1ZTMzZWRlZDRhMmI5NjE5NDIwYjdmMzlkNDkyMzlkNzc4ODlhYjliODcyN2NjMmNjYzBiZmIwNWI0M2M4NmZhIiwiYnl0ZV9sZW5ndGgiOjI4OCwibG9jYXRvciI6InNoYTI1Njo1ZTMzZWRlZDRhMmI5NjE5NDIwYjdmMzlkNDkyMzlkNzc4ODlhYjliODcyN2NjMmNjYzBiZmIwNWI0M2M4NmZhIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMjo0NTowOS45ODY5ODJaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL3N0YXRpYyIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvc3RhdGljIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4OCwibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6MTEwLCJieXRlX2VuZCI6MTIwLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6MTIwLCJieXRlX2VuZCI6MTMzLCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjMzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6MTMzLCJieXRlX2VuZCI6MTQxLCJub3JtYWxpemVkX3N0YXJ0IjozMywibm9ybWFsaXplZF9lbmQiOjM0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6MTQxLCJieXRlX2VuZCI6MjA5LCJub3JtYWxpemVkX3N0YXJ0IjozNCwibm9ybWFsaXplZF9lbmQiOjk2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6MjA5LCJieXRlX2VuZCI6MjMwLCJub3JtYWxpemVkX3N0YXJ0Ijo5Niwibm9ybWFsaXplZF9lbmQiOjk3LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwLTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTE2Y2ZhOWU0MTUzNDQ2ZGM5NGMyNzk1MGRlYjNlZjEwIiwiYnl0ZV9zdGFydCI6MjMwLCJieXRlX2VuZCI6MjYxLCJub3JtYWxpemVkX3N0YXJ0Ijo5Nywibm9ybWFsaXplZF9lbmQiOjEyNywicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-0"
+          },
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-1"
+          },
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-2"
+          },
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 141,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-3"
+          },
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 209,
+            "byte_start": 141,
+            "normalized_end": 96,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-4"
+          },
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 230,
+            "byte_start": 209,
+            "normalized_end": 97,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 96,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-5"
+          },
+          {
+            "artifact_id": "artifact-16cfa9e4153446dc94c27950deb3ef10",
+            "byte_end": 261,
+            "byte_start": 230,
+            "normalized_end": 127,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 97,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-16cfa9e4153446dc94c27950deb3ef10-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern archive Lum\u00e9 Lantern Lum\u00e9 Lantern publishes caf\u00e9 lighting notes \u2014 r\u00e9sum\u00e9 available. Lum\u00e9 Lantern contact directory"
+      ]
+    },
+    {
+      "candidates": [],
+      "diagnostic": {
+        "code": "http_error",
+        "retryable": false,
+        "safe_message": "The server returned an unsuccessful HTTP status."
+      },
+      "disposition": "unreviewed",
+      "fetch_status": "http_error",
+      "input_ref": "177cb3e4f4ad0d23d0b2d92124b1685bda4326695d4212376e761ece1025b81a",
+      "key": "fail",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:34583/failure",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 0,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": null,
+      "status": "failure",
+      "text": []
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "ab64b5ed0a02b2245f321289422fd0ee11edf5027c77300e63326e35a7cf6da7",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-f30aa1dd42ba63d7253992de92ac7361",
+          "occurrence_id": "input-3",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "924dc6fd60c136ca24236248fb9989b9",
+          "source_url": "http://127.0.0.1:34583/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "37de142807bdc6910879e93ea76817b0d636bdc2b4f06bccde38630f2afa5de7",
+      "key": "dup-1",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "ab64b5ed0a02b2245f321289422fd0ee11edf5027c77300e63326e35a7cf6da7",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-f30aa1dd42ba63d7253992de92ac7361",
+          "occurrence_id": "input-3",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "924dc6fd60c136ca24236248fb9989b9",
+          "source_url": "http://127.0.0.1:34583/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/named",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/named",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/named",
+          "retrieved_at": "2026-10-09T22:45:09.996746Z",
+          "snapshot_id": "924dc6fd60c136ca24236248fb9989b9",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJhYjY0YjVlZDBhMDJiMjI0NWYzMjEyODk0MjJmZDBlZTExZWRmNTAyN2M3NzMwMGU2MzMyNmUzNWE3Y2Y2ZGE3IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC0zIiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9uYW1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbmFtZWQiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjA5Ljk5Njc0NloiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImZiYWJkMWYxOWU0Zjg3NWZmNjE0OGQ4MjJlNTNjNDlhZTYzNTFlMTgxZDU2YTM3YThiZWFlMzBmY2FlZTcxMDciLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjA5LjA2NDUyN1oiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMzo0NTowOS4wNjE1ODFaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTkyNGRjNmZkNjBjMTM2Y2EyNDIzNjI0OGZiOTk4OWI5Iiwic25hcHNob3RfaWQiOiI5MjRkYzZmZDYwYzEzNmNhMjQyMzYyNDhmYjk5ODliOSIsImNvbnRlbnRfZGlnZXN0IjoiZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsImJ5dGVfbGVuZ3RoIjozODEsImxvY2F0b3IiOiJzaGEyNTY6ZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4MyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MDkuOTk2NzQ2WiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9uYW1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbmFtZWQifSwic3BhbnMiOlt7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjktMCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjkiLCJieXRlX3N0YXJ0Ijo2NywiYnl0ZV9lbmQiOjg4LCJub3JtYWxpemVkX3N0YXJ0IjowLCJub3JtYWxpemVkX2VuZCI6MjAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjktMSIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjkiLCJieXRlX3N0YXJ0IjoxMTAsImJ5dGVfZW5kIjoxMjAsIm5vcm1hbGl6ZWRfc3RhcnQiOjIwLCJub3JtYWxpemVkX2VuZCI6MjEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjktMiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjkiLCJieXRlX3N0YXJ0IjoxMjAsImJ5dGVfZW5kIjoxMzMsIm5vcm1hbGl6ZWRfc3RhcnQiOjIxLCJub3JtYWxpemVkX2VuZCI6MzMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjktMyIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjkiLCJieXRlX3N0YXJ0IjoxMzMsImJ5dGVfZW5kIjoxNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjMzLCJub3JtYWxpemVkX2VuZCI6MzQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjktNCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjkiLCJieXRlX3N0YXJ0IjoxNTQsImJ5dGVfZW5kIjoyNjMsIm5vcm1hbGl6ZWRfc3RhcnQiOjM0LCJub3JtYWxpemVkX2VuZCI6MTQxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTkyNGRjNmZkNjBjMTM2Y2EyNDIzNjI0OGZiOTk4OWI5LTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTkyNGRjNmZkNjBjMTM2Y2EyNDIzNjI0OGZiOTk4OWI5IiwiYnl0ZV9zdGFydCI6MjYzLCJieXRlX2VuZCI6MjcwLCJub3JtYWxpemVkX3N0YXJ0IjoxNDEsIm5vcm1hbGl6ZWRfZW5kIjoxNDIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjktNiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtOTI0ZGM2ZmQ2MGMxMzZjYTI0MjM2MjQ4ZmI5OTg5YjkiLCJieXRlX3N0YXJ0IjoyNzAsImJ5dGVfZW5kIjozNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjE0Miwibm9ybWFsaXplZF9lbmQiOjIyNiwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-0"
+          },
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-1"
+          },
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-2"
+          },
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-3"
+          },
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-4"
+          },
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-5"
+          },
+          {
+            "artifact_id": "artifact-924dc6fd60c136ca24236248fb9989b9",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-924dc6fd60c136ca24236248fb9989b9-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "ab64b5ed0a02b2245f321289422fd0ee11edf5027c77300e63326e35a7cf6da7",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-7d11170f3d5cec0eeb58dc514a8060ff",
+          "occurrence_id": "input-4",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "b5064a771d6d04f47f64f9b1ee645822",
+          "source_url": "http://127.0.0.1:34583/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "37de142807bdc6910879e93ea76817b0d636bdc2b4f06bccde38630f2afa5de7",
+      "key": "dup-2",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "ab64b5ed0a02b2245f321289422fd0ee11edf5027c77300e63326e35a7cf6da7",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-7d11170f3d5cec0eeb58dc514a8060ff",
+          "occurrence_id": "input-4",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "b5064a771d6d04f47f64f9b1ee645822",
+          "source_url": "http://127.0.0.1:34583/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/named",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/named",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/named",
+          "retrieved_at": "2026-10-09T22:45:10.007068Z",
+          "snapshot_id": "b5064a771d6d04f47f64f9b1ee645822",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJhYjY0YjVlZDBhMDJiMjI0NWYzMjEyODk0MjJmZDBlZTExZWRmNTAyN2M3NzMwMGU2MzMyNmUzNWE3Y2Y2ZGE3IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC00IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9uYW1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbmFtZWQiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjEwLjAwNzA2OFoiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImZiYWJkMWYxOWU0Zjg3NWZmNjE0OGQ4MjJlNTNjNDlhZTYzNTFlMTgxZDU2YTM3YThiZWFlMzBmY2FlZTcxMDciLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjA5LjA2NDUyN1oiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMzo0NTowOS4wNjE1ODFaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWI1MDY0YTc3MWQ2ZDA0ZjQ3ZjY0ZjliMWVlNjQ1ODIyIiwic25hcHNob3RfaWQiOiJiNTA2NGE3NzFkNmQwNGY0N2Y2NGY5YjFlZTY0NTgyMiIsImNvbnRlbnRfZGlnZXN0IjoiZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsImJ5dGVfbGVuZ3RoIjozODEsImxvY2F0b3IiOiJzaGEyNTY6ZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4MyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MTAuMDA3MDY4WiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9uYW1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbmFtZWQifSwic3BhbnMiOlt7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjItMCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjIiLCJieXRlX3N0YXJ0Ijo2NywiYnl0ZV9lbmQiOjg4LCJub3JtYWxpemVkX3N0YXJ0IjowLCJub3JtYWxpemVkX2VuZCI6MjAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjItMSIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjIiLCJieXRlX3N0YXJ0IjoxMTAsImJ5dGVfZW5kIjoxMjAsIm5vcm1hbGl6ZWRfc3RhcnQiOjIwLCJub3JtYWxpemVkX2VuZCI6MjEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjItMiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjIiLCJieXRlX3N0YXJ0IjoxMjAsImJ5dGVfZW5kIjoxMzMsIm5vcm1hbGl6ZWRfc3RhcnQiOjIxLCJub3JtYWxpemVkX2VuZCI6MzMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjItMyIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjIiLCJieXRlX3N0YXJ0IjoxMzMsImJ5dGVfZW5kIjoxNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjMzLCJub3JtYWxpemVkX2VuZCI6MzQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjItNCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjIiLCJieXRlX3N0YXJ0IjoxNTQsImJ5dGVfZW5kIjoyNjMsIm5vcm1hbGl6ZWRfc3RhcnQiOjM0LCJub3JtYWxpemVkX2VuZCI6MTQxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWI1MDY0YTc3MWQ2ZDA0ZjQ3ZjY0ZjliMWVlNjQ1ODIyLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWI1MDY0YTc3MWQ2ZDA0ZjQ3ZjY0ZjliMWVlNjQ1ODIyIiwiYnl0ZV9zdGFydCI6MjYzLCJieXRlX2VuZCI6MjcwLCJub3JtYWxpemVkX3N0YXJ0IjoxNDEsIm5vcm1hbGl6ZWRfZW5kIjoxNDIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjItNiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYjUwNjRhNzcxZDZkMDRmNDdmNjRmOWIxZWU2NDU4MjIiLCJieXRlX3N0YXJ0IjoyNzAsImJ5dGVfZW5kIjozNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjE0Miwibm9ybWFsaXplZF9lbmQiOjIyNiwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-0"
+          },
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-1"
+          },
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-2"
+          },
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-3"
+          },
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-4"
+          },
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-5"
+          },
+          {
+            "artifact_id": "artifact-b5064a771d6d04f47f64f9b1ee645822",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-b5064a771d6d04f47f64f9b1ee645822-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "7f19fee30475d54a2ff31245393e388b30e14ad80a8cc02817b4c216c9568c79",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-13df0882cd81f902c6a65fe9fb73de73",
+          "occurrence_id": "input-5",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "c649ab3d3cae67ab7e8231f24f8c72d5",
+          "source_url": "http://127.0.0.1:34583/copy-a",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "bf08a3106f0f3adf986680e1a9c2cabc728058bdc3e67bee80681322597a56b0",
+      "key": "copy-a",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "7f19fee30475d54a2ff31245393e388b30e14ad80a8cc02817b4c216c9568c79",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-13df0882cd81f902c6a65fe9fb73de73",
+          "occurrence_id": "input-5",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "c649ab3d3cae67ab7e8231f24f8c72d5",
+          "source_url": "http://127.0.0.1:34583/copy-a",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/copy-a",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/copy-a",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/copy-a",
+          "retrieved_at": "2026-10-09T22:45:10.017095Z",
+          "snapshot_id": "c649ab3d3cae67ab7e8231f24f8c72d5",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiI3ZjE5ZmVlMzA0NzVkNTRhMmZmMzEyNDUzOTNlMzg4YjMwZTE0YWQ4MGE4Y2MwMjgxN2I0YzIxNmM5NTY4Yzc5IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC01IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9jb3B5LWEiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL2NvcHktYSIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MTAuMDE3MDk1WiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZmJhYmQxZjE5ZTRmODc1ZmY2MTQ4ZDgyMmU1M2M0OWFlNjM1MWUxODFkNTZhMzdhOGJlYWUzMGZjYWVlNzEwNyIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LTBmNWEyMzkzYWMyMzQ5YjZhYjIzZmZkZjEwYWEyNDI4IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MDkuMDY0NTI3WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIzOjQ1OjA5LjA2MTU4MVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtYzY0OWFiM2QzY2FlNjdhYjdlODIzMWYyNGY4YzcyZDUiLCJzbmFwc2hvdF9pZCI6ImM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiY29udGVudF9kaWdlc3QiOiJkNzVmNTU3MTFhOTk2YzNmODc4ZmE0ZjZiMGY5NTAzN2FlNzRlMTkyMzdhODQ0ZmUxMmFlMjI1NzMxNjIxNjFhIiwiYnl0ZV9sZW5ndGgiOjM4MSwibG9jYXRvciI6InNoYTI1NjpkNzVmNTU3MTFhOTk2YzNmODc4ZmE0ZjZiMGY5NTAzN2FlNzRlMTkyMzdhODQ0ZmUxMmFlMjI1NzMxNjIxNjFhIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMjo0NToxMC4wMTcwOTVaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL2NvcHktYSIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvY29weS1hIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1LTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4OCwibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1LTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiYnl0ZV9zdGFydCI6MTEwLCJieXRlX2VuZCI6MTIwLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1LTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiYnl0ZV9zdGFydCI6MTIwLCJieXRlX2VuZCI6MTMzLCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjMzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1LTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiYnl0ZV9zdGFydCI6MTMzLCJieXRlX2VuZCI6MTU0LCJub3JtYWxpemVkX3N0YXJ0IjozMywibm9ybWFsaXplZF9lbmQiOjM0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1LTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiYnl0ZV9zdGFydCI6MTU0LCJieXRlX2VuZCI6MjYzLCJub3JtYWxpemVkX3N0YXJ0IjozNCwibm9ybWFsaXplZF9lbmQiOjE0MSwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9LHsicHJvb2ZfZm9ybWF0X3ZlcnNpb24iOiIxLjAiLCJzcGFuX2lkIjoic3Bhbi1jNjQ5YWIzZDNjYWU2N2FiN2U4MjMxZjI0ZjhjNzJkNS01IiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC1jNjQ5YWIzZDNjYWU2N2FiN2U4MjMxZjI0ZjhjNzJkNSIsImJ5dGVfc3RhcnQiOjI2MywiYnl0ZV9lbmQiOjI3MCwibm9ybWFsaXplZF9zdGFydCI6MTQxLCJub3JtYWxpemVkX2VuZCI6MTQyLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1LTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWM2NDlhYjNkM2NhZTY3YWI3ZTgyMzFmMjRmOGM3MmQ1IiwiYnl0ZV9zdGFydCI6MjcwLCJieXRlX2VuZCI6MzU0LCJub3JtYWxpemVkX3N0YXJ0IjoxNDIsIm5vcm1hbGl6ZWRfZW5kIjoyMjYsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifV19",
+        "spans": [
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-0"
+          },
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-1"
+          },
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-2"
+          },
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-3"
+          },
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-4"
+          },
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-5"
+          },
+          {
+            "artifact_id": "artifact-c649ab3d3cae67ab7e8231f24f8c72d5",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-c649ab3d3cae67ab7e8231f24f8c72d5-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "fe3aa0352bcccceaaeffdbb182c7f0f44cdc31cdfa175829fa652d248dee7600",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-334db0541aeb493048818f403e0835a3",
+          "occurrence_id": "input-6",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "44b83dc5e5b01ade6fdcc7b40c4b6869",
+          "source_url": "http://127.0.0.1:34583/copy-b",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "268aea27120bf59d1f6e25e46456a24a61f4ca24c0f9cd6538a0bd35c19337bc",
+      "key": "copy-b",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "fe3aa0352bcccceaaeffdbb182c7f0f44cdc31cdfa175829fa652d248dee7600",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-334db0541aeb493048818f403e0835a3",
+          "occurrence_id": "input-6",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "44b83dc5e5b01ade6fdcc7b40c4b6869",
+          "source_url": "http://127.0.0.1:34583/copy-b",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/copy-b",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/copy-b",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/copy-b",
+          "retrieved_at": "2026-10-09T22:45:10.027326Z",
+          "snapshot_id": "44b83dc5e5b01ade6fdcc7b40c4b6869",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJmZTNhYTAzNTJiY2NjY2VhYWVmZmRiYjE4MmM3ZjBmNDRjZGMzMWNkZmExNzU4MjlmYTY1MmQyNDhkZWU3NjAwIiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC02IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9jb3B5LWIiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL2NvcHktYiIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MTAuMDI3MzI2WiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZmJhYmQxZjE5ZTRmODc1ZmY2MTQ4ZDgyMmU1M2M0OWFlNjM1MWUxODFkNTZhMzdhOGJlYWUzMGZjYWVlNzEwNyIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LTBmNWEyMzkzYWMyMzQ5YjZhYjIzZmZkZjEwYWEyNDI4IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MDkuMDY0NTI3WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIzOjQ1OjA5LjA2MTU4MVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDRiODNkYzVlNWIwMWFkZTZmZGNjN2I0MGM0YjY4NjkiLCJzbmFwc2hvdF9pZCI6IjQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiY29udGVudF9kaWdlc3QiOiJkNzVmNTU3MTFhOTk2YzNmODc4ZmE0ZjZiMGY5NTAzN2FlNzRlMTkyMzdhODQ0ZmUxMmFlMjI1NzMxNjIxNjFhIiwiYnl0ZV9sZW5ndGgiOjM4MSwibG9jYXRvciI6InNoYTI1NjpkNzVmNTU3MTFhOTk2YzNmODc4ZmE0ZjZiMGY5NTAzN2FlNzRlMTkyMzdhODQ0ZmUxMmFlMjI1NzMxNjIxNjFhIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMjo0NToxMC4wMjczMjZaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL2NvcHktYiIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvY29weS1iIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5LTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4OCwibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5LTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiYnl0ZV9zdGFydCI6MTEwLCJieXRlX2VuZCI6MTIwLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5LTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiYnl0ZV9zdGFydCI6MTIwLCJieXRlX2VuZCI6MTMzLCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjMzLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5LTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiYnl0ZV9zdGFydCI6MTMzLCJieXRlX2VuZCI6MTU0LCJub3JtYWxpemVkX3N0YXJ0IjozMywibm9ybWFsaXplZF9lbmQiOjM0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5LTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiYnl0ZV9zdGFydCI6MTU0LCJieXRlX2VuZCI6MjYzLCJub3JtYWxpemVkX3N0YXJ0IjozNCwibm9ybWFsaXplZF9lbmQiOjE0MSwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9LHsicHJvb2ZfZm9ybWF0X3ZlcnNpb24iOiIxLjAiLCJzcGFuX2lkIjoic3Bhbi00NGI4M2RjNWU1YjAxYWRlNmZkY2M3YjQwYzRiNjg2OS01IiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC00NGI4M2RjNWU1YjAxYWRlNmZkY2M3YjQwYzRiNjg2OSIsImJ5dGVfc3RhcnQiOjI2MywiYnl0ZV9lbmQiOjI3MCwibm9ybWFsaXplZF9zdGFydCI6MTQxLCJub3JtYWxpemVkX2VuZCI6MTQyLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5LTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQ0YjgzZGM1ZTViMDFhZGU2ZmRjYzdiNDBjNGI2ODY5IiwiYnl0ZV9zdGFydCI6MjcwLCJieXRlX2VuZCI6MzU0LCJub3JtYWxpemVkX3N0YXJ0IjoxNDIsIm5vcm1hbGl6ZWRfZW5kIjoyMjYsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifV19",
+        "spans": [
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-0"
+          },
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-1"
+          },
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-2"
+          },
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-3"
+          },
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-4"
+          },
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-5"
+          },
+          {
+            "artifact_id": "artifact-44b83dc5e5b01ade6fdcc7b40c4b6869",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-44b83dc5e5b01ade6fdcc7b40c4b6869-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "c520cacb0901018044fe7bd07c7b20e5619663f2f1477d904a23d6d5126853d2",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-d64e0dac31582fdd536c80f6eee1dc5f",
+          "occurrence_id": "input-7",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "5a8b47ac9a18d7cc10e0febf89ebd059",
+          "source_url": "http://127.0.0.1:34583/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "e317cd99ea8b4c9d1aa7c5727d5c8d03cef0fcad3cc4b6ed4b9e65e20b899e9d",
+      "key": "redir",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+          "company_name": null,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "context_span": {
+            "end_byte": 267,
+            "start_byte": 138
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "c520cacb0901018044fe7bd07c7b20e5619663f2f1477d904a23d6d5126853d2",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-d64e0dac31582fdd536c80f6eee1dc5f",
+          "occurrence_id": "input-7",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 262,
+            "start_byte": 232
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "5a8b47ac9a18d7cc10e0febf89ebd059",
+          "source_url": "http://127.0.0.1:34583/named",
+          "value": "nera.vale@lume-lantern.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/redirect",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 381,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 2
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+          "byte_length": 381,
+          "content_digest": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/named",
+          "locator": "sha256:d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/redirect",
+          "retrieved_at": "2026-10-09T22:45:10.037981Z",
+          "snapshot_id": "5a8b47ac9a18d7cc10e0febf89ebd059",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJjNTIwY2FjYjA5MDEwMTgwNDRmZTdiZDA3YzdiMjBlNTYxOTY2M2YyZjE0NzdkOTA0YTIzZDZkNTEyNjg1M2QyIiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC03IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9yZWRpcmVjdCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbmFtZWQiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjEwLjAzNzk4MVoiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImZiYWJkMWYxOWU0Zjg3NWZmNjE0OGQ4MjJlNTNjNDlhZTYzNTFlMTgxZDU2YTM3YThiZWFlMzBmY2FlZTcxMDciLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjA5LjA2NDUyN1oiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMzo0NTowOS4wNjE1ODFaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTVhOGI0N2FjOWExOGQ3Y2MxMGUwZmViZjg5ZWJkMDU5Iiwic25hcHNob3RfaWQiOiI1YThiNDdhYzlhMThkN2NjMTBlMGZlYmY4OWViZDA1OSIsImNvbnRlbnRfZGlnZXN0IjoiZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsImJ5dGVfbGVuZ3RoIjozODEsImxvY2F0b3IiOiJzaGEyNTY6ZDc1ZjU1NzExYTk5NmMzZjg3OGZhNGY2YjBmOTUwMzdhZTc0ZTE5MjM3YTg0NGZlMTJhZTIyNTczMTYyMTYxYSIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4MyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MTAuMDM3OTgxWiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9yZWRpcmVjdCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbmFtZWQifSwic3BhbnMiOlt7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTktMCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTkiLCJieXRlX3N0YXJ0Ijo2NywiYnl0ZV9lbmQiOjg4LCJub3JtYWxpemVkX3N0YXJ0IjowLCJub3JtYWxpemVkX2VuZCI6MjAsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTktMSIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTkiLCJieXRlX3N0YXJ0IjoxMTAsImJ5dGVfZW5kIjoxMjAsIm5vcm1hbGl6ZWRfc3RhcnQiOjIwLCJub3JtYWxpemVkX2VuZCI6MjEsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTktMiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTkiLCJieXRlX3N0YXJ0IjoxMjAsImJ5dGVfZW5kIjoxMzMsIm5vcm1hbGl6ZWRfc3RhcnQiOjIxLCJub3JtYWxpemVkX2VuZCI6MzMsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTktMyIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTkiLCJieXRlX3N0YXJ0IjoxMzMsImJ5dGVfZW5kIjoxNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjMzLCJub3JtYWxpemVkX2VuZCI6MzQsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTktNCIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTkiLCJieXRlX3N0YXJ0IjoxNTQsImJ5dGVfZW5kIjoyNjMsIm5vcm1hbGl6ZWRfc3RhcnQiOjM0LCJub3JtYWxpemVkX2VuZCI6MTQxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTVhOGI0N2FjOWExOGQ3Y2MxMGUwZmViZjg5ZWJkMDU5LTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTVhOGI0N2FjOWExOGQ3Y2MxMGUwZmViZjg5ZWJkMDU5IiwiYnl0ZV9zdGFydCI6MjYzLCJieXRlX2VuZCI6MjcwLCJub3JtYWxpemVkX3N0YXJ0IjoxNDEsIm5vcm1hbGl6ZWRfZW5kIjoxNDIsInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifSx7InByb29mX2Zvcm1hdF92ZXJzaW9uIjoiMS4wIiwic3Bhbl9pZCI6InNwYW4tNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTktNiIsImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNWE4YjQ3YWM5YTE4ZDdjYzEwZTBmZWJmODllYmQwNTkiLCJieXRlX3N0YXJ0IjoyNzAsImJ5dGVfZW5kIjozNTQsIm5vcm1hbGl6ZWRfc3RhcnQiOjE0Miwibm9ybWFsaXplZF9lbmQiOjIyNiwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9XX0",
+        "spans": [
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 88,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-0"
+          },
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 120,
+            "byte_start": 110,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-1"
+          },
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 133,
+            "byte_start": 120,
+            "normalized_end": 33,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-2"
+          },
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 154,
+            "byte_start": 133,
+            "normalized_end": 34,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 33,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-3"
+          },
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 263,
+            "byte_start": 154,
+            "normalized_end": 141,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 34,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-4"
+          },
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 270,
+            "byte_start": 263,
+            "normalized_end": 142,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 141,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-5"
+          },
+          {
+            "artifact_id": "artifact-5a8b47ac9a18d7cc10e0febf89ebd059",
+            "byte_end": 354,
+            "byte_start": 270,
+            "normalized_end": 226,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 142,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-5a8b47ac9a18d7cc10e0febf89ebd059-6"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Lum\u00e9 Lantern contact Lum\u00e9 Lantern N\u00e9ra Vale is the design lead at Lum\u00e9 Lantern. Her published work contact is nera.vale@lume-lantern.example. Directory effective 2026-09-01. All people and companies on this page are fictional."
+      ]
+    },
+    {
+      "candidates": [],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "a97c887c0ff782d4b28abab7a3fe26afd17e3df97c721a750eb2c8a026e655d4",
+      "key": "empty",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:34583/empty",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 103,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-c004e5ab1ff18d1cf85587ec4640288c",
+          "byte_length": 103,
+          "content_digest": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/empty",
+          "locator": "sha256:ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/empty",
+          "retrieved_at": "2026-10-09T22:45:10.048026Z",
+          "snapshot_id": "c004e5ab1ff18d1cf85587ec4640288c",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJlYTA4ZjdmYWUxMjhiMTM0MjYwYjNkMzg2OTI2ZGMyNzk1NTM2OTU4N2MxZWQ1MWZmNDQ1MTgzMGY2NzgzZWI0IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC04IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9lbXB0eSIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvZW1wdHkiLCJyZXRyaWV2ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjEwLjA0ODAyNloiLCJldmVudF9hdCI6bnVsbH0sImRlY2lzaW9uIjp7Imlzc3Vlcl9pZCI6InN0YW5kYWxvbmUtc2NyYXBlciIsInJldmlld2VyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicG9saWN5X2lkIjoic3RhbmRhbG9uZS1zb3VyY2UtcmV0ZW50aW9uIiwicG9saWN5X2RpZ2VzdCI6ImZiYWJkMWYxOWU0Zjg3NWZmNjE0OGQ4MjJlNTNjNDlhZTYzNTFlMTgxZDU2YTM3YThiZWFlMzBmY2FlZTcxMDciLCJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsImNhbGxlcl9pZCI6IndlYnNpdGUtdG8tdGV4dCIsInNjb3BlIjoibG9jYWwtd2ViLWZldGNoIiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJpc3N1ZWRfYXQiOiIyMDI2LTEwLTA5VDIyOjQ1OjA5LjA2NDUyN1oiLCJleHBpcmVzX2F0IjoiMjAyNi0xMC0wOVQyMzo0NTowOS4wNjE1ODFaIiwicmV0YWluX2JvZHkiOnRydWUsInJldGFpbl9ub3JtYWxpemVkX3RleHQiOnRydWV9LCJhcnRpZmFjdCI6eyJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LWMwMDRlNWFiMWZmMThkMWNmODU1ODdlYzQ2NDAyODhjIiwic25hcHNob3RfaWQiOiJjMDA0ZTVhYjFmZjE4ZDFjZjg1NTg3ZWM0NjQwMjg4YyIsImNvbnRlbnRfZGlnZXN0IjoiZWMwMjI3ZjNmNTgxNGE2OWM3NjMzMWRmZWNjZDgzMTVmMjA1ZTE4ZjQ5ZDUwY2RhYzdlZjEzZTMwNmE4MDA2YyIsImJ5dGVfbGVuZ3RoIjoxMDMsImxvY2F0b3IiOiJzaGEyNTY6ZWMwMjI3ZjNmNTgxNGE2OWM3NjMzMWRmZWNjZDgzMTVmMjA1ZTE4ZjQ5ZDUwY2RhYzdlZjEzZTMwNmE4MDA2YyIsInNvdXJjZV9mYW1pbHkiOiJodHRwIiwib3JpZ2luIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4MyIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MTAuMDQ4MDI2WiIsImV2ZW50X2F0IjpudWxsLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9lbXB0eSIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvZW1wdHkifSwic3BhbnMiOltdfQ",
+        "spans": []
+      },
+      "status": "success",
+      "text": []
+    },
+    {
+      "candidates": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+          "company_name": null,
+          "content_digest": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "context_span": {
+            "end_byte": 305,
+            "start_byte": 181
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "a2268e6ae3e72471c48a52bd1b88eee4f339674853a18908789a465d6b44f068",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-90c36ee9d7c6c13ee1f0a9c0e6bf10b4",
+          "occurrence_id": "input-9",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 265,
+            "start_byte": 237
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "40476f5e12890e73d3ecfbacdccd9d6c",
+          "source_url": "http://127.0.0.1:34583/malformed",
+          "value": "oren.fenn@amber-loom.example"
+        }
+      ],
+      "diagnostic": null,
+      "disposition": "unreviewed",
+      "fetch_status": "success",
+      "input_ref": "3620654936827ccc1c7f1139573cffeb2c08c3214887207599af536afe3d5ee3",
+      "key": "malformed",
+      "links": [],
+      "observations": [
+        {
+          "anchor_text": null,
+          "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+          "company_name": null,
+          "content_digest": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "context_span": {
+            "end_byte": 305,
+            "start_byte": 181
+          },
+          "disposition": "unreviewed",
+          "execution_state": "not_executable",
+          "input_ref": "a2268e6ae3e72471c48a52bd1b88eee4f339674853a18908789a465d6b44f068",
+          "kind": "observed_unknown_contact",
+          "observation_id": "observation-90c36ee9d7c6c13ee1f0a9c0e6bf10b4",
+          "occurrence_id": "input-9",
+          "person_name": null,
+          "raw_span": {
+            "end_byte": 265,
+            "start_byte": 237
+          },
+          "review_state": "unreviewed",
+          "role_name": null,
+          "snapshot_id": "40476f5e12890e73d3ecfbacdccd9d6c",
+          "source_url": "http://127.0.0.1:34583/malformed",
+          "value": "oren.fenn@amber-loom.example"
+        }
+      ],
+      "requested_url": "http://127.0.0.1:34583/malformed",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 305,
+        "concurrency": null,
+        "elapsed_seconds": 1.0056285069986188,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": {
+        "artifact": {
+          "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+          "byte_length": 305,
+          "content_digest": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "event_at": null,
+          "final_url": "http://127.0.0.1:34583/malformed",
+          "locator": "sha256:8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889",
+          "origin": "http://127.0.0.1:34583",
+          "requested_url": "http://127.0.0.1:34583/malformed",
+          "retrieved_at": "2026-10-09T22:45:10.057295Z",
+          "snapshot_id": "40476f5e12890e73d3ecfbacdccd9d6c",
+          "source_family": "http"
+        },
+        "source_proof": "sp1.eyJmb3JtYXRfdmVyc2lvbiI6InNvdXJjZS1wcm9vZi8xLjAiLCJpbnB1dF9yZWYiOiJhMjI2OGU2YWUzZTcyNDcxYzQ4YTUyYmQxYjg4ZWVlNGYzMzk2NzQ4NTNhMTg5MDg3ODlhNDY1ZDZiNDRmMDY4IiwiY29udGV4dCI6eyJvcGVyYXRpb25faWQiOiJzdGFuZGFsb25lLXdlYnNpdGUtdG8tdGV4dC0wZjVhMjM5M2FjMjM0OWI2YWIyM2ZmZGYxMGFhMjQyOCIsIm9jY3VycmVuY2VfaWQiOiJpbnB1dC05IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsIm9yaWdpbiI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMiLCJyZXF1ZXN0ZWRfdXJsIjoiaHR0cDovLzEyNy4wLjAuMTozNDU4My9tYWxmb3JtZWQiLCJmaW5hbF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL21hbGZvcm1lZCIsInJldHJpZXZlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MTAuMDU3Mjk1WiIsImV2ZW50X2F0IjpudWxsfSwiZGVjaXNpb24iOnsiaXNzdWVyX2lkIjoic3RhbmRhbG9uZS1zY3JhcGVyIiwicmV2aWV3ZXJfaWQiOiJzdGFuZGFsb25lLXNjcmFwZXIiLCJwb2xpY3lfaWQiOiJzdGFuZGFsb25lLXNvdXJjZS1yZXRlbnRpb24iLCJwb2xpY3lfZGlnZXN0IjoiZmJhYmQxZjE5ZTRmODc1ZmY2MTQ4ZDgyMmU1M2M0OWFlNjM1MWUxODFkNTZhMzdhOGJlYWUzMGZjYWVlNzEwNyIsIm9wZXJhdGlvbl9pZCI6InN0YW5kYWxvbmUtd2Vic2l0ZS10by10ZXh0LTBmNWEyMzkzYWMyMzQ5YjZhYjIzZmZkZjEwYWEyNDI4IiwiY2FsbGVyX2lkIjoid2Vic2l0ZS10by10ZXh0Iiwic2NvcGUiOiJsb2NhbC13ZWItZmV0Y2giLCJzb3VyY2VfZmFtaWx5IjoiaHR0cCIsImlzc3VlZF9hdCI6IjIwMjYtMTAtMDlUMjI6NDU6MDkuMDY0NTI3WiIsImV4cGlyZXNfYXQiOiIyMDI2LTEwLTA5VDIzOjQ1OjA5LjA2MTU4MVoiLCJyZXRhaW5fYm9keSI6dHJ1ZSwicmV0YWluX25vcm1hbGl6ZWRfdGV4dCI6dHJ1ZX0sImFydGlmYWN0Ijp7ImFydGlmYWN0X2lkIjoiYXJ0aWZhY3QtNDA0NzZmNWUxMjg5MGU3M2QzZWNmYmFjZGNjZDlkNmMiLCJzbmFwc2hvdF9pZCI6IjQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiY29udGVudF9kaWdlc3QiOiI4YzFhZTE4MWFlMWRlMDQ4ZDRkMDY4Y2E4MTQ4NDQ0M2ZmOTk5NGQ2ZjNjNzU2N2Y1Njg1YjQ2NWEwZDFkODg5IiwiYnl0ZV9sZW5ndGgiOjMwNSwibG9jYXRvciI6InNoYTI1Njo4YzFhZTE4MWFlMWRlMDQ4ZDRkMDY4Y2E4MTQ4NDQ0M2ZmOTk5NGQ2ZjNjNzU2N2Y1Njg1YjQ2NWEwZDFkODg5Iiwic291cmNlX2ZhbWlseSI6Imh0dHAiLCJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzIiwicmV0cmlldmVkX2F0IjoiMjAyNi0xMC0wOVQyMjo0NToxMC4wNTcyOTVaIiwiZXZlbnRfYXQiOm51bGwsInJlcXVlc3RlZF91cmwiOiJodHRwOi8vMTI3LjAuMC4xOjM0NTgzL21hbGZvcm1lZCIsImZpbmFsX3VybCI6Imh0dHA6Ly8xMjcuMC4wLjE6MzQ1ODMvbWFsZm9ybWVkIn0sInNwYW5zIjpbeyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTAiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6NjcsImJ5dGVfZW5kIjo4Nywibm9ybWFsaXplZF9zdGFydCI6MCwibm9ybWFsaXplZF9lbmQiOjIwLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTEiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6MTA5LCJieXRlX2VuZCI6MTEyLCJub3JtYWxpemVkX3N0YXJ0IjoyMCwibm9ybWFsaXplZF9lbmQiOjIxLCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTIiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6MTEyLCJieXRlX2VuZCI6MTU4LCJub3JtYWxpemVkX3N0YXJ0IjoyMSwibm9ybWFsaXplZF9lbmQiOjY0LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTMiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6MTU4LCJieXRlX2VuZCI6MTcxLCJub3JtYWxpemVkX3N0YXJ0Ijo2NCwibm9ybWFsaXplZF9lbmQiOjY1LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTQiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6MTcxLCJieXRlX2VuZCI6MTgxLCJub3JtYWxpemVkX3N0YXJ0Ijo2NSwibm9ybWFsaXplZF9lbmQiOjc1LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTUiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6MTgxLCJieXRlX2VuZCI6MTg0LCJub3JtYWxpemVkX3N0YXJ0Ijo3NSwibm9ybWFsaXplZF9lbmQiOjc2LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTYiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6MTg0LCJieXRlX2VuZCI6MjY2LCJub3JtYWxpemVkX3N0YXJ0Ijo3Niwibm9ybWFsaXplZF9lbmQiOjE1OCwicmF3X29mZnNldF91bml0IjoiYnl0ZSIsIm5vcm1hbGl6ZWRfb2Zmc2V0X3VuaXQiOiJ1bmljb2RlX2NvZGVfcG9pbnQiLCJzb3VyY2VfZW5jb2RpbmciOiJ1dGYtOCJ9LHsicHJvb2ZfZm9ybWF0X3ZlcnNpb24iOiIxLjAiLCJzcGFuX2lkIjoic3Bhbi00MDQ3NmY1ZTEyODkwZTczZDNlY2ZiYWNkY2NkOWQ2Yy03IiwiYXJ0aWZhY3RfaWQiOiJhcnRpZmFjdC00MDQ3NmY1ZTEyODkwZTczZDNlY2ZiYWNkY2NkOWQ2YyIsImJ5dGVfc3RhcnQiOjI2NiwiYnl0ZV9lbmQiOjI3NCwibm9ybWFsaXplZF9zdGFydCI6MTU4LCJub3JtYWxpemVkX2VuZCI6MTU5LCJyYXdfb2Zmc2V0X3VuaXQiOiJieXRlIiwibm9ybWFsaXplZF9vZmZzZXRfdW5pdCI6InVuaWNvZGVfY29kZV9wb2ludCIsInNvdXJjZV9lbmNvZGluZyI6InV0Zi04In0seyJwcm9vZl9mb3JtYXRfdmVyc2lvbiI6IjEuMCIsInNwYW5faWQiOiJzcGFuLTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjLTgiLCJhcnRpZmFjdF9pZCI6ImFydGlmYWN0LTQwNDc2ZjVlMTI4OTBlNzNkM2VjZmJhY2RjY2Q5ZDZjIiwiYnl0ZV9zdGFydCI6Mjc0LCJieXRlX2VuZCI6MzA1LCJub3JtYWxpemVkX3N0YXJ0IjoxNTksIm5vcm1hbGl6ZWRfZW5kIjoxODksInJhd19vZmZzZXRfdW5pdCI6ImJ5dGUiLCJub3JtYWxpemVkX29mZnNldF91bml0IjoidW5pY29kZV9jb2RlX3BvaW50Iiwic291cmNlX2VuY29kaW5nIjoidXRmLTgifV19",
+        "spans": [
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 87,
+            "byte_start": 67,
+            "normalized_end": 20,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 0,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-0"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 112,
+            "byte_start": 109,
+            "normalized_end": 21,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 20,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-1"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 158,
+            "byte_start": 112,
+            "normalized_end": 64,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 21,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-2"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 171,
+            "byte_start": 158,
+            "normalized_end": 65,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 64,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-3"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 181,
+            "byte_start": 171,
+            "normalized_end": 75,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 65,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-4"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 184,
+            "byte_start": 181,
+            "normalized_end": 76,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 75,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-5"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 266,
+            "byte_start": 184,
+            "normalized_end": 158,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 76,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-6"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 274,
+            "byte_start": 266,
+            "normalized_end": 159,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 158,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-7"
+          },
+          {
+            "artifact_id": "artifact-40476f5e12890e73d3ecfbacdccd9d6c",
+            "byte_end": 305,
+            "byte_start": 274,
+            "normalized_end": 189,
+            "normalized_offset_unit": "unicode_code_point",
+            "normalized_start": 159,
+            "proof_format_version": "1.0",
+            "raw_offset_unit": "byte",
+            "source_encoding": "utf-8",
+            "span_id": "span-40476f5e12890e73d3ecfbacdccd9d6c-8"
+          }
+        ]
+      },
+      "status": "success",
+      "text": [
+        "Amber Loom directory Fictional directory \u2014 unclosed tags follow. Amber Loom Oren Fenn works for Amber Loom. Contact Oren Fenn at oren.fenn@amber-loom.example. Directory effective 2026-09-01"
+      ]
+    }
+  ],
+  "schema_version": "standalone-scraper/1.0",
+  "scope": "local-web-fetch"
+}

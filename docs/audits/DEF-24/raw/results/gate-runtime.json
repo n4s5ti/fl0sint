@@ -1,0 +1,52 @@
+{
+  "overall_correctness": "correct",
+  "confidence": 0.92,
+  "explanation": "DEF-24 steps 2/4/5 (checklist 2/4/5) at pinned main 907e94dab5292e12d81f4b34094656e22463bdcf: the packaged console script and the documented scrape_websites callable deliver C01/C02 end-to-end on loopback fixtures with byte-exact source proof, correct attribution under concurrency/retries/duplicates, typed statuses, enforced transport/byte/redirect/deadline bounds, offline bundle reuse, and rejection of all nine doctored-bundle tampers; no graph/model/browser/crawler module is imported and the only socket contact is the admitted loopback fixture. Slice verdict: pass_with_observations — five non-blocking findings (dual input_ref hash spaces inside one outcome, operation-wide semantics of --request-timeout, harness relative --work-dir failure, one-chunk byte-cap overshoot, verify-without-render prose gap). PER-CRITERION: C01 PASS [python3 scripts/release_smoke.py --report r.json run --revision 907e94da… --work-dir <abs empty> → S1–S8 PASS; env -i PATH=/usr/bin:/bin PYTHONPATH=hook <venv>/bin/*-standalone-scraper --url http://127.0.0.1:34583/named --output-dir c01 → exit 0; retained sha==fixture d75f5571…, 7/7 record spans reproduce emitted text, candidate value inside raw span bytes, proof context bound to operation/occurrence/URLs, zero acceptance language, only 127.0.0.1:34583 connect, no forbidden imports]. C02 PASS [--batch {slow,fast,fail,dup-1,dup-2,copy-a,copy-b,redir,empty,malformed} --max-concurrency 2..10 → exit 2; per-key digests match per-route fixture shas; duplicates share input_ref but get distinct snapshots; failure row typed http_error with no content/proof; second stdlib-only caller consumed bundle.json+retained bytes with 0 socket connects; release_smoke.py verify <dir> --python <venv python> → VALID]. TA01 PASS [same batch at conc 10/1/3 and --max-retries 1: identical key→content attribution (slow→56256b2a…, static→5e33eded…, malformed→8c1ae181…), observations owned by input-<i>, redirect=2 reqs, retried failure=2 reqs; 6×/slow wall 4.72s@conc1 vs 0.97s@conc6 proves the semaphore]. TA04 PASS [AUTH_SECRET=x REDIS_URL=redis://127.0.0.1:1 uv run --no-sync pytest -q …/tests/enrichers/test_website_to_links_capture.py → 5 passed: capture_batch_flush overflow without writes, callback exception keeps partial candidates, explicit NotImplementedError for graph reads, poisoned Neo4jConnection never touched, execution-scoped candidates; standalone import trace never loads to_links/to_crawler]. TA05 PASS [/empty → exit 0 success with empty text plus source proof; /failure → failure/http_error; invalid-only and mixed invalid batches → exit 64 before admission, no output dir, 0 server hits; SIGINT mid-/slow → exit 2, hold/cancelled with requests=1 retained; serialized 3×/slow vs --request-timeout 2 → typed failure/timeout; tampered error-as-empty-success rejected E_SOURCE_PROOF_MISSING; ambiguity surfaces as failure+diagnostic (bundle schema is success/failure/hold; acquisition-layer UNKNOWN_OUTCOME is not part of this surface)]. TA08 PASS [proof+span resolved offline from bundle alone (byte-exact, operation/occurrence-bound sp1 token); deleted body (hash-only) → INVALID E_SOURCE_PROOF_MISSING; doctored proof context → E_LINEAGE; retention authority is fixed trusted code (issuer/reviewer standalone-scraper, 1h expiry) bound by capture_source to operation/caller/scope/source_family with no CLI/env override; cross-investigation access control N/A for the local standalone scope]. TA12 PASS [self-signed TLS loopback → failure/transport_error (httpx verify=True, trust_env=False), no observation; cross-port redirect → redirect_denied/policy_denied with 0 hits on target even when the target origin was co-admitted in the batch; same-origin chain vs --max-redirects 2 → redirect_limit at 3 requests; 2MiB Content-Length → body_too_large with 0 bytes read; 2MiB chunked stream → body_too_large at 1,081,291 bytes; SIGINT → hold/cancelled]. RESOURCE ACCOUNTING: instrumented fixture server saw exactly the reported request counts (11 vs 11; 12 vs 12 with retry; /named×3 = dup-1+dup-2+redirect-follow, links never fetched); success bytes equal exact retained body bytes; failure bytes=0 reflect client-read semantics (body never read), per-occurrence elapsed_seconds is the operation elapsed, not per-request. FALSIFICATION LOG (attempt → expected → observed): swapped outputs→reject→E_SPAN+E_REPORT; flipped retained byte→reject→E_SOURCE_DIGEST; wrong input credited (requested_url swap)→reject→E_LINEAGE; error-as-empty-success→reject→E_SOURCE_PROOF_MISSING; report prose edit→reject→E_REPORT (with --python); body deletion→reject→E_SOURCE_PROOF_MISSING; stolen observation ownership→reject→E_LINEAGE; shifted record span→reject→E_SPAN; doctored proof context→reject→E_LINEAGE; scope escape via redirect/links→denied/never fetched; invalid scope via library→InvocationError. Disabled capabilities are explicit and unreachable: argparse exposes only the five bounded limits, scope/extraction pinned by ScrapeOptions.validate, enable_quic unreachable (and internally policy-denied), import tracing shows only standalone+website.text_extraction+_execution modules. CLAIM VERIFICATION: confirmed — harness S1–S8 pass at the pinned SHA (re-run), README exit-code/operation-id/unreviewed-only/report-from-bundle claims, FIX-01/04/05/08/12 behavior on the enabled path, baseline-debt file lists zero entries; unverifiable in this slice — the recorded claim that suites showed 0 failures at an older merge commit (full suites, Blast/Hunt/Doctor and the packet validator are outside this slice). LIMITATIONS: loopback fixtures only (per policy); browser/render (C04) paths disabled and untested by design; multi-tenant proof-access denial untestable locally; per-run server concurrency peaks measured via wall-time scaling rather than connection counting. Scratch evidence under /home/n4s5ti/.cache/fl0sint-audit/p1/runtime/ (smoke/report.json sha256 234e0d37…, b10/bundle.json 592d6c0b…, c01/bundle.json 424bf2f5…).",
+  "findings": [
+    {
+      "title": "Unify outcome and proof input_ref hash bases in the bundle",
+      "body": "Within one bundle outcome, outcome.input_ref is canonical_input_hash(Website model) (e.g. 37de1428…) while source_proof.input_ref and every observation's input_ref are canonical_input_hash(url string) (ab64b5ed…), because scrape_websites→_scan_occurrences hashes the typed source object while admit_fetch/extract_observations hash the URL value. A consumer joining outcomes to observations or proofs by input_ref gets zero matches and must fall back to key/occurrence_id; release_smoke verify only cross-checks observation↔proof (same basis) so it never detects the divergence. Attribution itself remains correct and each basis is deterministic; impact is consumer confusion and a dead join key, observed empirically on c01/bundle.json at 907e94da.",
+      "priority": 2,
+      "confidence": 0.95,
+      "file_path": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+      "line_start": 388,
+      "line_end": 393
+    },
+    {
+      "title": "Document --request-timeout as the whole-operation deadline",
+      "body": "ScrapeOptions.request_timeout feeds allocation.elapsed_seconds, which execute_fetch uses both as the per-request httpx timeout and as the overall waiter deadline, and execute_fetch_with_source_proof extends to the capture phase. A serialized batch (3×750ms fixtures, --max-concurrency 1, --request-timeout 2) returned failure/timeout for all inputs including fetches that had already completed under the per-request budget, because deadline expiry during capture retroactively replaces completed-but-uncaptured successes with typed timeouts. Behavior is conservative (no false success, resources retained) but the flag name and README imply per-request semantics, so large or serialized batches fail unexpectedly at the default 10s.",
+      "priority": 2,
+      "confidence": 0.9,
+      "file_path": "flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py",
+      "line_start": 216,
+      "line_end": 221
+    },
+    {
+      "title": "Handle relative --work-dir in release_smoke run",
+      "body": "release_smoke.py run with a relative --work-dir fails during build_and_install: uv export runs with cwd=source while -o receives the still-relative requirements path, so the subsequent uv pip install reports \"File not found: ../smoke/work/requirements.txt\" and the harness exits 3 without running any case. Reproduced at 907e94da with --work-dir ../smoke/work; an absolute path works. DEF-24's documented command does not require an absolute path, so a reviewer following it can misread the gate as broken.",
+      "priority": 3,
+      "confidence": 0.95,
+      "file_path": "scripts/release_smoke.py",
+      "line_start": 410,
+      "line_end": 411
+    },
+    {
+      "title": "Byte cap charge-then-check allows one-chunk overshoot",
+      "body": "_Ledger.charge_bytes adds the chunk size before testing the limits, so a response streamed without Content-Length is read up to one transport chunk past max_bytes_per_input before body_too_large is returned: a 2MiB chunked stream against the 1,048,576-byte default was charged 1,081,291 bytes. The outcome stays a typed failure, the overshoot is bounded by a single chunk and is honestly reported in resources.bytes, so this is informational: actual reads can slightly exceed the advertised cap.",
+      "priority": 3,
+      "confidence": 0.9,
+      "file_path": "flowsint-core/src/flowsint_execution/fetch.py",
+      "line_start": 362,
+      "line_end": 369
+    },
+    {
+      "title": "verify without --python accepts edited report prose",
+      "body": "release_smoke.py verify validates bundle/jsonl/artifact integrity but only re-renders report.md when --python is supplied; a copy of a good bundle whose report.md was edited to read \"verified contacts\" still prints VALID in the no-render mode. The tool explicitly prints this limitation and the machine bundle remains tamper-evident (the same edit is caught with --python), so this is informational: consumers of report.md alone should be pointed at the rendered-verification mode.",
+      "priority": 3,
+      "confidence": 0.9,
+      "file_path": "scripts/release_smoke.py",
+      "line_start": 617,
+      "line_end": 624
+    }
+  ]
+}
