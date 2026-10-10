@@ -1,0 +1,48 @@
+{
+  "extraction": "observed-readable-text",
+  "operation_id": "standalone-website-to-text-567159e5fe4743b6ac260e7a4422dff6",
+  "options": {
+    "extraction": "observed-readable-text",
+    "max_concurrency": 10,
+    "max_redirects": 3,
+    "max_response_bytes": 1048576,
+    "max_retries": 0,
+    "request_timeout": 10,
+    "scope": "local-web-fetch"
+  },
+  "outcomes": [
+    {
+      "candidates": [],
+      "diagnostic": {
+        "code": "body_too_large",
+        "retryable": false,
+        "safe_message": "The response exceeded the byte allocation."
+      },
+      "disposition": "unreviewed",
+      "fetch_status": "tool_error",
+      "input_ref": "9b5e9423ad8558111ec72413bcec56380d1ac9558d1a933fd75bd462bff595ef",
+      "key": "input-0",
+      "links": [],
+      "observations": [],
+      "requested_url": "http://127.0.0.1:40655/big-stream",
+      "resources": {
+        "browser_actions": null,
+        "bytes": 1081291,
+        "concurrency": null,
+        "elapsed_seconds": 0.12267321500075923,
+        "fanout": null,
+        "input_tokens": null,
+        "model_calls": null,
+        "money_usd": null,
+        "output_tokens": null,
+        "pages": null,
+        "requests": 1
+      },
+      "source_reference": null,
+      "status": "failure",
+      "text": []
+    }
+  ],
+  "schema_version": "standalone-scraper/1.0",
+  "scope": "local-web-fetch"
+}

@@ -1,0 +1,130 @@
+{"t": 12279.0238257, "event": "request", "path": "/named"}
+{"t": 12279.024109044, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 1}
+{"t": 12332.508260504, "event": "request", "path": "/slow"}
+{"t": 12332.508344632, "event": "request", "path": "/static"}
+{"t": 12332.508447997, "event": "request", "path": "/failure"}
+{"t": 12332.508538, "event": "request", "path": "/named"}
+{"t": 12332.50882585, "event": "request", "path": "/copy-b"}
+{"t": 12332.508930837, "event": "request", "path": "/named"}
+{"t": 12332.509087371, "event": "request", "path": "/copy-a"}
+{"t": 12332.509209064, "event": "request", "path": "/redirect"}
+{"t": 12332.509312748, "event": "request", "path": "/malformed"}
+{"t": 12332.510402048, "event": "connection_closed", "bytes_out": 353, "peak_concurrency": 10}
+{"t": 12332.510487167, "event": "connection_closed", "bytes_out": 483, "peak_concurrency": 10}
+{"t": 12332.509419376, "event": "request", "path": "/empty"}
+{"t": 12332.512072783, "event": "connection_closed", "bytes_out": 356, "peak_concurrency": 10}
+{"t": 12332.511331023, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12332.51139746, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12332.511404101, "event": "connection_closed", "bytes_out": 466, "peak_concurrency": 10}
+{"t": 12332.511411552, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12332.511323397, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12332.514467071, "event": "connection_closed", "bytes_out": 281, "peak_concurrency": 10}
+{"t": 12332.514869694, "event": "request", "path": "/named"}
+{"t": 12332.515151742, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12333.258931733, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12334.238099195, "event": "request", "path": "/slow"}
+{"t": 12334.988434034, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12334.990950525, "event": "request", "path": "/static"}
+{"t": 12334.991277536, "event": "connection_closed", "bytes_out": 466, "peak_concurrency": 10}
+{"t": 12334.994012719, "event": "request", "path": "/failure"}
+{"t": 12334.994228136, "event": "connection_closed", "bytes_out": 356, "peak_concurrency": 10}
+{"t": 12334.996032483, "event": "request", "path": "/named"}
+{"t": 12334.996286139, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12334.998021849, "event": "request", "path": "/named"}
+{"t": 12334.998188984, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12334.999565219, "event": "request", "path": "/copy-a"}
+{"t": 12334.999711508, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.001277731, "event": "request", "path": "/copy-b"}
+{"t": 12335.001654438, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.00358102, "event": "request", "path": "/redirect"}
+{"t": 12335.003732123, "event": "connection_closed", "bytes_out": 353, "peak_concurrency": 10}
+{"t": 12335.004995553, "event": "request", "path": "/named"}
+{"t": 12335.005135201, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.006401602, "event": "request", "path": "/empty"}
+{"t": 12335.006543238, "event": "connection_closed", "bytes_out": 281, "peak_concurrency": 10}
+{"t": 12335.008246051, "event": "request", "path": "/malformed"}
+{"t": 12335.008408602, "event": "connection_closed", "bytes_out": 483, "peak_concurrency": 10}
+{"t": 12335.896267413, "event": "request", "path": "/slow"}
+{"t": 12335.896381167, "event": "request", "path": "/static"}
+{"t": 12335.896512497, "event": "request", "path": "/failure"}
+{"t": 12335.896751645, "event": "connection_closed", "bytes_out": 466, "peak_concurrency": 10}
+{"t": 12335.896821285, "event": "connection_closed", "bytes_out": 356, "peak_concurrency": 10}
+{"t": 12335.900525599, "event": "request", "path": "/named"}
+{"t": 12335.900725365, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.901564737, "event": "request", "path": "/named"}
+{"t": 12335.901943252, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.904121678, "event": "request", "path": "/copy-a"}
+{"t": 12335.904398885, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.905753684, "event": "request", "path": "/copy-b"}
+{"t": 12335.906099773, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.908051817, "event": "request", "path": "/redirect"}
+{"t": 12335.908279107, "event": "connection_closed", "bytes_out": 353, "peak_concurrency": 10}
+{"t": 12335.909174995, "event": "request", "path": "/empty"}
+{"t": 12335.909463824, "event": "connection_closed", "bytes_out": 281, "peak_concurrency": 10}
+{"t": 12335.911668767, "event": "request", "path": "/named"}
+{"t": 12335.911850843, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12335.912703372, "event": "request", "path": "/malformed"}
+{"t": 12335.912965456, "event": "connection_closed", "bytes_out": 483, "peak_concurrency": 10}
+{"t": 12336.646802034, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12337.524087448, "event": "request", "path": "/slow"}
+{"t": 12337.524283003, "event": "request", "path": "/static"}
+{"t": 12337.524512206, "event": "request", "path": "/failure"}
+{"t": 12337.524823273, "event": "connection_closed", "bytes_out": 466, "peak_concurrency": 10}
+{"t": 12337.524903705, "event": "connection_closed", "bytes_out": 356, "peak_concurrency": 10}
+{"t": 12337.524671356, "event": "request", "path": "/named"}
+{"t": 12337.526618762, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12337.528593989, "event": "request", "path": "/named"}
+{"t": 12337.52874683, "event": "request", "path": "/failure"}
+{"t": 12337.52896378, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12337.529102363, "event": "request", "path": "/copy-a"}
+{"t": 12337.530426313, "event": "connection_closed", "bytes_out": 356, "peak_concurrency": 10}
+{"t": 12337.530861954, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12337.532867717, "event": "request", "path": "/copy-b"}
+{"t": 12337.533240795, "event": "request", "path": "/redirect"}
+{"t": 12337.533478, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12337.533551146, "event": "connection_closed", "bytes_out": 353, "peak_concurrency": 10}
+{"t": 12337.535535301, "event": "request", "path": "/empty"}
+{"t": 12337.535809942, "event": "connection_closed", "bytes_out": 281, "peak_concurrency": 10}
+{"t": 12337.53742736, "event": "request", "path": "/named"}
+{"t": 12337.537548703, "event": "request", "path": "/malformed"}
+{"t": 12337.537805612, "event": "connection_closed", "bytes_out": 559, "peak_concurrency": 10}
+{"t": 12337.537900526, "event": "connection_closed", "bytes_out": 483, "peak_concurrency": 10}
+{"t": 12338.274422067, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12403.661461012, "event": "request", "path": "/slow"}
+{"t": 12404.41177085, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12404.413691557, "event": "request", "path": "/slow"}
+{"t": 12405.164019914, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12405.165546996, "event": "request", "path": "/slow"}
+{"t": 12405.916694924, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12405.919429015, "event": "request", "path": "/slow"}
+{"t": 12406.669720624, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12406.671196545, "event": "request", "path": "/slow"}
+{"t": 12407.42150429, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12407.423087735, "event": "request", "path": "/slow"}
+{"t": 12408.173643298, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12409.060925916, "event": "request", "path": "/slow"}
+{"t": 12409.061630509, "event": "request", "path": "/slow"}
+{"t": 12409.061308889, "event": "request", "path": "/slow"}
+{"t": 12409.061380664, "event": "request", "path": "/slow"}
+{"t": 12409.061481718, "event": "request", "path": "/slow"}
+{"t": 12409.061990701, "event": "request", "path": "/slow"}
+{"t": 12409.811836834, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12409.812145325, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12409.813213856, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12409.813417224, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12409.813568717, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12409.813550855, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12441.828830501, "event": "request", "path": "/empty"}
+{"t": 12441.82903116, "event": "connection_closed", "bytes_out": 281, "peak_concurrency": 10}
+{"t": 12458.930092649, "event": "request", "path": "/slow"}
+{"t": 12459.680383571, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12459.683018944, "event": "request", "path": "/slow"}
+{"t": 12460.43331074, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12460.434757721, "event": "request", "path": "/slow"}
+{"t": 12461.185051874, "event": "connection_closed", "bytes_out": 373, "peak_concurrency": 10}
+{"t": 12520.045691659, "event": "request", "path": "/static"}
+{"t": 12520.04586346, "event": "connection_closed", "bytes_out": 466, "peak_concurrency": 10}
+{"t": 12804.844892853, "event": "request", "path": "/static"}
+{"t": 12804.845042652, "event": "request", "path": "/failure"}
+{"t": 12804.845255883, "event": "connection_closed", "bytes_out": 466, "peak_concurrency": 10}
+{"t": 12804.845341917, "event": "connection_closed", "bytes_out": 356, "peak_concurrency": 10}

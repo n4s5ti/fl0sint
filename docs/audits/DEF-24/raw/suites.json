@@ -1,0 +1,61 @@
+{
+  "schema": "release-smoke/1",
+  "mode": "suites",
+  "runs": {
+    "types": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-types",
+      "exit_code": 0,
+      "summary": "54 passed in 0.41s",
+      "wall_seconds": 1.27
+    },
+    "core": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-core",
+      "exit_code": 0,
+      "summary": "1036 passed, 2 warnings in 27.25s",
+      "wall_seconds": 30.98
+    },
+    "enrichers": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-enrichers",
+      "exit_code": 0,
+      "summary": "245 passed, 2 warnings in 35.97s",
+      "wall_seconds": 38.84
+    },
+    "api": {
+      "command": "uv run --no-sync pytest -q -p no:cacheprovider -rfE",
+      "cwd": "flowsint-api",
+      "exit_code": 0,
+      "summary": "15 passed, 1 skipped, 8 warnings in 19.55s",
+      "wall_seconds": 24.42
+    }
+  },
+  "comparison": {
+    "types": {
+      "new_failures": [],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "PASS"
+    },
+    "core": {
+      "new_failures": [],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "PASS"
+    },
+    "enrichers": {
+      "new_failures": [],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "PASS"
+    },
+    "api": {
+      "new_failures": [],
+      "baseline_debt": [],
+      "baseline_resolved": [],
+      "status": "PASS"
+    }
+  },
+  "valid": true
+}

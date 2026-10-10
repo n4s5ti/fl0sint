@@ -1,0 +1,20 @@
+{
+    "mode": "index",
+    "result": {
+        "targetPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+        "success": true,
+        "warnings": [
+            "No workspace packages with recognised entry files — sidecar will be empty"
+        ],
+        "generation": "sha256:6ea0eab046234fb6477fc221318531246933c5aab171d7362af87abd03857afa",
+        "planAction": "rebuild",
+        "deltaAdded": 0,
+        "deltaModified": 0,
+        "deltaDeleted": 0,
+        "deltaRenamed": 0,
+        "deltaUnreadable": 0,
+        "indexLatencyMs": 75476,
+        "filesParsed": 2807
+    }
+}

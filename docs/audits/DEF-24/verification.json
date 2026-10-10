@@ -1,0 +1,26 @@
+{
+  "schema": "fl0sint.audit-verification/v1",
+  "revision": "907e94dab5292e12d81f4b34094656e22463bdcf",
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+  "runs": [
+    {
+      "command": "python3 scripts/audit_packet.py --report /home/n4s5ti/.cache/fl0sint-audit/p1/packet-validation.json validate docs/audits/DEF-24",
+      "exit_code": 1,
+      "status": "FAIL",
+      "result": "Only E_CASE_NOT_PASS remains: AC1, AC3, AC5, AC7 UNKNOWN. No schema, artifact, revision or reference errors. This is a blocked release, not a release-ready packet."
+    },
+    {
+      "command": "python3 scripts/release_smoke.py verify docs/audits/DEF-24/raw/runtime/c01 --python /home/n4s5ti/.cache/fl0sint-audit/p1/runtime/smoke/work/venv/bin/python",
+      "exit_code": 0,
+      "status": "PASS",
+      "result": "VALID docs/audits/DEF-24/raw/runtime/c01"
+    },
+    {
+      "command": "python3 scripts/release_smoke.py verify docs/audits/DEF-24/raw/runtime/b3 --python /home/n4s5ti/.cache/fl0sint-audit/p1/runtime/smoke/work/venv/bin/python",
+      "exit_code": 0,
+      "status": "PASS",
+      "result": "VALID docs/audits/DEF-24/raw/runtime/b3"
+    }
+  ],
+  "independence": "These are coordinator checks of assembled artifacts; not independent packet review. GateEvidence/GateRuntime independently audited source beforehand. GatePacketAssembly, GateArchivalAddenda and scout GateVerdictCheck failed immediately with provider HTTP 429 and produced no review."
+}

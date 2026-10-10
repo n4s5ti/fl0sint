@@ -1,0 +1,78 @@
+{
+    "cwd": "/home/n4s5ti/Documents/dev/fl0sint-p1gate",
+    "packageName": "flowsint",
+    "packageManager": "npm",
+    "requestedChecks": [],
+    "results": [],
+    "graph": {
+        "status": "passed",
+        "repo": "fl0sint-p1gate",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/.gitnexus/lbug",
+        "isOpen": true,
+        "discoveredTables": [
+            "Variable",
+            "Const",
+            "Namespace",
+            "File",
+            "Template",
+            "Class",
+            "Property",
+            "Struct",
+            "Section",
+            "Method",
+            "CodeElement",
+            "Record",
+            "Macro",
+            "Impl",
+            "BasicBlock",
+            "Annotation",
+            "Category",
+            "TypeAlias",
+            "Function",
+            "Union",
+            "Static",
+            "Trait",
+            "Constructor",
+            "Enum",
+            "Tool",
+            "Destination",
+            "Route",
+            "Protocol",
+            "Delegate",
+            "Interface",
+            "Community",
+            "Typedef",
+            "Folder",
+            "Process",
+            "Module"
+        ],
+        "fileCount": 2807,
+        "indexStatus": "ready",
+        "warnings": []
+    },
+    "hunt": {
+        "findings": [],
+        "counts": {
+            "total": 0,
+            "critical": 0,
+            "high": 0,
+            "medium": 0,
+            "low": 0,
+            "info": 0
+        },
+        "durationMs": 121,
+        "coverage": {
+            "commandsDiscovered": 0,
+            "commandsProbed": 0,
+            "jsonContractsExercised": 0,
+            "delegatedSurfacesCaptured": 0,
+            "spawns": 1,
+            "discoveryCap": null,
+            "commands": [],
+            "target": {
+                "command": "/home/n4s5ti/Documents/dev/fl0sint-p1gate/scripts/release_smoke.py",
+                "argv": []
+            }
+        }
+    }
+}

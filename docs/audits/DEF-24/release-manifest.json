@@ -1,0 +1,190 @@
+{
+  "schema": "fl0sint.release-manifest/v1",
+  "issue": "DEF-24",
+  "revision": "907e94dab5292e12d81f4b34094656e22463bdcf",
+  "route": "change-audit",
+  "scope": "Standalone P1 implementation DEF41-48 and DEF90; no product edits",
+  "runtime_verdict": "pass_with_observations",
+  "release_verdict": "inconclusive",
+  "gate_status": "incomplete",
+  "criteria": [
+    {
+      "id": "AC1",
+      "title": "Every prerequisite has complete reproducible evidence",
+      "status": "UNKNOWN",
+      "evidence": [],
+      "reason": "Child runtime green; DEF42 original pre-edit Blast absent; archived DEF41 acceptance stale."
+    },
+    {
+      "id": "AC2",
+      "title": "Public independent interface works",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "S1-S8 packaged smoke and GateRuntime loopback probes."
+    },
+    {
+      "id": "AC3",
+      "title": "Impact/Hunt/Doctor evidence complete",
+      "status": "UNKNOWN",
+      "evidence": [],
+      "reason": "Fresh drift0 and scoped Blast; Hunt DEGRADED with 0 commands; dynamic/class edges partial."
+    },
+    {
+      "id": "AC4",
+      "title": "Negative cases and blocking runtime findings",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "Nine bundle tampers rejected; runtime reviewer reports no blocking defect; five observations remain."
+    },
+    {
+      "id": "AC5",
+      "title": "Identity/source/scope/truth/resources remain correct",
+      "status": "UNKNOWN",
+      "evidence": [],
+      "reason": "Occurrence attribution passed but outcome/proof input_ref bases differ; strict byte cap overshoots by one chunk. Unqualified integrity claim withheld."
+    },
+    {
+      "id": "AC6",
+      "title": "Capabilities and limits explicit",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "capabilities.json; disabled paths absent in observed standalone imports."
+    },
+    {
+      "id": "AC7",
+      "title": "Separate assembled review and recovery",
+      "status": "UNKNOWN",
+      "evidence": [],
+      "reason": "Two independent source reviews exist; final packet independent review unavailable: three provider429 failures. Recovery documented, not deployed."
+    },
+    {
+      "id": "C01",
+      "title": "C01 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "C02-local",
+      "title": "C02-local enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA01",
+      "title": "TA01 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA04",
+      "title": "TA04 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA05",
+      "title": "TA05 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA08",
+      "title": "TA08 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA12",
+      "title": "TA12 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    }
+  ],
+  "ordered_audit": [
+    {
+      "step": 1,
+      "status": "UNKNOWN",
+      "reason": "Historical evidence gaps despite child completion"
+    },
+    {
+      "step": 2,
+      "status": "PASS",
+      "reason": "Public entrypoint exercised"
+    },
+    {
+      "step": 3,
+      "status": "UNKNOWN",
+      "reason": "Partial static coverage and degraded Hunt"
+    },
+    {
+      "step": 4,
+      "status": "PASS",
+      "reason": "Applicable local milestone cases exercised"
+    },
+    {
+      "step": 5,
+      "status": "PASS",
+      "reason": "Falsification performed; observations disclosed"
+    },
+    {
+      "step": 6,
+      "status": "UNKNOWN",
+      "reason": "Child packets validated; final packet review unavailable and required gate cases unknown"
+    },
+    {
+      "step": 7,
+      "status": "PASS",
+      "reason": "Versioned manifest, hashes, reviewer identities, debt and recovery assembled"
+    },
+    {
+      "step": 8,
+      "status": "UNKNOWN",
+      "reason": "Done deliberately withheld"
+    }
+  ],
+  "reviewers": [
+    "GateEvidence",
+    "GateRuntime"
+  ],
+  "assembly_review": "Coordinator self-check only; task/scout assembly-review attempts failed with provider429",
+  "residual_debt": [
+    "Hunt discovered zero commands, DEGRADED is not PASS",
+    "DEF42 missing original pre-edit Blast, previously accepted retrospective waiver is not recovered evidence",
+    "Static graph lacks dynamic import/registry/class edges",
+    "63 nonpacket changed files lexically attributed, not proof of original planned envelope",
+    "One API hosted E2E skipped; no deployment target tested",
+    "Five runtime observations and archival evidence mismatches remain visible"
+  ],
+  "recovery": "recovery.md",
+  "capabilities": "capabilities.json",
+  "findings": "findings.json",
+  "hosted_source_ci": "https://github.com/n4s5ti/fl0sint/actions/runs/37999132140",
+  "hosted_packet_ci": "UNKNOWN: packet not pushed"
+}

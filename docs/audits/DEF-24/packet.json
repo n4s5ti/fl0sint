@@ -1,0 +1,903 @@
+{
+  "schema": "fl0sint.audit-packet/v1",
+  "issue": "DEF-24",
+  "base_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+  "head_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+  "source_tree": "7db19e947660b766ef5d1423987cf5b795f7958e",
+  "configuration": {
+    "uv.lock": "e62c316447022773fcbeb958615be3fe8eec149f57771746ed52e692e28bbb4f"
+  },
+  "tool_versions": {
+    "python": "3.14.5",
+    "audit_packet": "source 907e94dab5292e12d81f4b34094656e22463bdcf"
+  },
+  "capabilities": {
+    "graph": false,
+    "model": false,
+    "browser": false,
+    "network": true
+  },
+  "artifacts": {
+    "recovery.md": {
+      "path": "recovery.md",
+      "sha256": "c585a48c42717495569f274d6b8849571231ec1c571aae6b86cb509b4a1b6fa5"
+    },
+    "findings.json": {
+      "path": "findings.json",
+      "sha256": "efa9859ad7f469baba752f61bad4a697d98ff43702c86778f90fd40b7851ea9b"
+    },
+    "capabilities.json": {
+      "path": "capabilities.json",
+      "sha256": "294d3b1d49f72681e690414012b351d9129f5fa8dc6b3c1715c23f8d17bc9e03"
+    },
+    "release-manifest.json": {
+      "path": "release-manifest.json",
+      "sha256": "68f2d5bdfc52800f30449f7cf15c26fc1eed4166a68e6bbf14a31fbf35af73de"
+    },
+    "acceptance.md": {
+      "path": "acceptance.md",
+      "sha256": "b506b1b79c7b585d83b7dd657d5197f75b0e2197b8735cc29690a6147b9f83ac"
+    },
+    "smoke.json": {
+      "path": "raw/smoke.json",
+      "sha256": "234e0d371c43d7d5fae21f03c015b601e73f112606e2ef279f6681fed0830b0b"
+    },
+    "suites.json": {
+      "path": "raw/suites.json",
+      "sha256": "290be76d3a9fba18d6569bfae2656e39f95dd2465152c6c310fabb597925a164"
+    },
+    "issue-spec.md": {
+      "path": "raw/issue-spec.md",
+      "sha256": "c91f1057f4636cd244e03b43d8b3a995f8d9333050cd3e7e4dbab561e2068b5c"
+    },
+    "blast/runlog.tsv": {
+      "path": "raw/blast/runlog.tsv",
+      "sha256": "9114248fac2ab768492f753ecd7d846975afb8592874680fe23e03864becd5c1"
+    },
+    "blast/index.json": {
+      "path": "raw/blast/index.json",
+      "sha256": "498099b438f27b4480ddc5950ec046442cdaea10820c7b79820bd959552d5d7e"
+    },
+    "blast/index.stderr": {
+      "path": "raw/blast/index.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/drift.json": {
+      "path": "raw/blast/drift.json",
+      "sha256": "28659297fe055a2cb535d0e8a9b0062cadddb84c9e2683c6f40e60353a5142f4"
+    },
+    "blast/drift.stderr": {
+      "path": "raw/blast/drift.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-scrape_websites-up.json": {
+      "path": "raw/blast/blast-scrape_websites-up.json",
+      "sha256": "2673c622c358d0805cd40fcc2eb0a9a538e6b9b0b5fa2c90168922feb25ecc41"
+    },
+    "blast/blast-scrape_websites-up.stderr": {
+      "path": "raw/blast/blast-scrape_websites-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-scrape_websites-down.json": {
+      "path": "raw/blast/blast-scrape_websites-down.json",
+      "sha256": "3986d9c4415531ff216eeb02cdfc67a411f244a5c50b0b2d765f71913c165830"
+    },
+    "blast/blast-scrape_websites-down.stderr": {
+      "path": "raw/blast/blast-scrape_websites-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-main-up.json": {
+      "path": "raw/blast/blast-main-up.json",
+      "sha256": "3eae26be7ee496f1104456b2a0ae208b2201189fbf38d8a0f6c2aace6d80320b"
+    },
+    "blast/blast-main-up.stderr": {
+      "path": "raw/blast/blast-main-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-main-down.json": {
+      "path": "raw/blast/blast-main-down.json",
+      "sha256": "97994cf0c25771383747b995100ae7990075d90f41e0c25dc2852c8ea6216362"
+    },
+    "blast/blast-main-down.stderr": {
+      "path": "raw/blast/blast-main-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-render_markdown_report-up.json": {
+      "path": "raw/blast/blast-render_markdown_report-up.json",
+      "sha256": "a47fc07083e06e9491ae68b36460b5e0c965d04d5b3b3f32f122583f81bfa5b8"
+    },
+    "blast/blast-render_markdown_report-up.stderr": {
+      "path": "raw/blast/blast-render_markdown_report-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-render_markdown_report-down.json": {
+      "path": "raw/blast/blast-render_markdown_report-down.json",
+      "sha256": "51f302e55a672333f193700f8477a84f94d74904e41f397d6ec1052e2d7a2e46"
+    },
+    "blast/blast-render_markdown_report-down.stderr": {
+      "path": "raw/blast/blast-render_markdown_report-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-WebsiteTextExtractor-up.json": {
+      "path": "raw/blast/blast-WebsiteTextExtractor-up.json",
+      "sha256": "280918408881a47d00493a3e610595521638f7d341ccf8f44c2f5fbe44a5fe98"
+    },
+    "blast/blast-WebsiteTextExtractor-up.stderr": {
+      "path": "raw/blast/blast-WebsiteTextExtractor-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-WebsiteTextExtractor-down.json": {
+      "path": "raw/blast/blast-WebsiteTextExtractor-down.json",
+      "sha256": "81a5db6aab3ed6eb9ee731ddd160d6a675d2c3610cb5475128b9eb613ed67b39"
+    },
+    "blast/blast-WebsiteTextExtractor-down.stderr": {
+      "path": "raw/blast/blast-WebsiteTextExtractor-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-WebsiteToLinks-up.json": {
+      "path": "raw/blast/blast-WebsiteToLinks-up.json",
+      "sha256": "9af2c2a969660bb70f46fa5cf0dee16b4f1f0f76a9403364979543e74fcd3fb4"
+    },
+    "blast/blast-WebsiteToLinks-up.stderr": {
+      "path": "raw/blast/blast-WebsiteToLinks-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-WebsiteToLinks-down.json": {
+      "path": "raw/blast/blast-WebsiteToLinks-down.json",
+      "sha256": "6aaa4c45b147c479aafa22b6b4a1492ccb79b9d25989f30d98c9b2a21b6c1634"
+    },
+    "blast/blast-WebsiteToLinks-down.stderr": {
+      "path": "raw/blast/blast-WebsiteToLinks-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-WebsiteToText-up.json": {
+      "path": "raw/blast/blast-WebsiteToText-up.json",
+      "sha256": "06c1b4d67f910a40a0aed2ff1448b91e77adf9d221d079072461ae4db6ed78bf"
+    },
+    "blast/blast-WebsiteToText-up.stderr": {
+      "path": "raw/blast/blast-WebsiteToText-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-WebsiteToText-down.json": {
+      "path": "raw/blast/blast-WebsiteToText-down.json",
+      "sha256": "dd90ce57f61a9d44f2ba8d3b7848be8095ec601de608750bca985112641e2bee"
+    },
+    "blast/blast-WebsiteToText-down.stderr": {
+      "path": "raw/blast/blast-WebsiteToText-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-CaptureGraphRepository-up.json": {
+      "path": "raw/blast/blast-CaptureGraphRepository-up.json",
+      "sha256": "eac9441d88b771733b0405ebd827d2fe283481f429e308f42e1a9421d5e3d4a7"
+    },
+    "blast/blast-CaptureGraphRepository-up.stderr": {
+      "path": "raw/blast/blast-CaptureGraphRepository-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-CaptureGraphRepository-down.json": {
+      "path": "raw/blast/blast-CaptureGraphRepository-down.json",
+      "sha256": "e6b57096a8814a4246299e8412a49450e992dfa62937708581c0590571f5a15a"
+    },
+    "blast/blast-CaptureGraphRepository-down.stderr": {
+      "path": "raw/blast/blast-CaptureGraphRepository-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-create_graph_service-up.json": {
+      "path": "raw/blast/blast-create_graph_service-up.json",
+      "sha256": "35914fdafcbb814afc338173360a22a0cc575f77021f3cd94a63411e407d4264"
+    },
+    "blast/blast-create_graph_service-up.stderr": {
+      "path": "raw/blast/blast-create_graph_service-up.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/blast-create_graph_service-down.json": {
+      "path": "raw/blast/blast-create_graph_service-down.json",
+      "sha256": "f608e5c126aa3656507f48d8debd6b25bfc6b249533336c1578667caea80c7c5"
+    },
+    "blast/blast-create_graph_service-down.stderr": {
+      "path": "raw/blast/blast-create_graph_service-down.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/doctor-hunt.json": {
+      "path": "raw/blast/doctor-hunt.json",
+      "sha256": "e8221442fe2873784d193ae6892d4e36737d5a2076d813f6bcc6d7d1e0593801"
+    },
+    "blast/doctor-hunt.stderr": {
+      "path": "raw/blast/doctor-hunt.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "blast/drift-final.json": {
+      "path": "raw/blast/drift-final.json",
+      "sha256": "28659297fe055a2cb535d0e8a9b0062cadddb84c9e2683c6f40e60353a5142f4"
+    },
+    "blast/drift-final.stderr": {
+      "path": "raw/blast/drift-final.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/gate-evidence.json": {
+      "path": "raw/results/gate-evidence.json",
+      "sha256": "e2a9b68edb33cb40afa78d04bf37e95809ecfa9bece07aaafbc88a0ece0d67ea"
+    },
+    "results/gate-runtime.json": {
+      "path": "raw/results/gate-runtime.json",
+      "sha256": "5b3618980e8ee991ced610ae2d9b0b04519ab3af1883b38c0997868327d2b3c1"
+    },
+    "runtime/second_caller.py": {
+      "path": "raw/runtime/second_caller.py",
+      "sha256": "9e14a2a2f4b546213ee0321b21575c8ec65a755fcb7d47a189ed7525e4e4ff00"
+    },
+    "runtime/consumer.audit.jsonl": {
+      "path": "raw/runtime/consumer.audit.jsonl",
+      "sha256": "200a3ee384736eed45f4666f91505d56e2a9e59fe5f466897926807d54e1aa5d"
+    },
+    "runtime/server.log.jsonl": {
+      "path": "raw/runtime/server.log.jsonl",
+      "sha256": "5da03c1e89c1ec4500d6a39b23fc66f732b7af2469c1030a6bb4c38e5ab70938"
+    },
+    "runtime/serve_counting.py": {
+      "path": "raw/runtime/serve_counting.py",
+      "sha256": "a3300928c5be60520e2c7bc98726daf832881849f8a12253d642e953dfb13ea3"
+    },
+    "runtime/ta12_servers.py": {
+      "path": "raw/runtime/ta12_servers.py",
+      "sha256": "7ae1823dc1d5fd9bac9beb4079c5bb368f87fdecbd4455bc382c6b3f5812d8c4"
+    },
+    "runtime/c01/bundle.json": {
+      "path": "raw/runtime/c01/bundle.json",
+      "sha256": "424bf2f516dc93c8612245c8dc8b1b803a736d24b5a5e37767145b5c1ac93e13"
+    },
+    "runtime/c01/outcomes.jsonl": {
+      "path": "raw/runtime/c01/outcomes.jsonl",
+      "sha256": "2d365a1cbd3be2cb94e620ff6308f7314d2bd3e484317f1d1a6fc9359829c4ef"
+    },
+    "runtime/c01/report.md": {
+      "path": "raw/runtime/c01/report.md",
+      "sha256": "7396c276944365c9413fddc9d391e1948762d20bf9c8e69dcb0e91af4a17e578"
+    },
+    "runtime/b3/bundle.json": {
+      "path": "raw/runtime/b3/bundle.json",
+      "sha256": "11f8005fd2bfc3c9bdc7f077521af445e5e561073f6195dc0e55d2f38e530c1e"
+    },
+    "runtime/b3/outcomes.jsonl": {
+      "path": "raw/runtime/b3/outcomes.jsonl",
+      "sha256": "6b2cd14b5f316d4b4c6f1ac82238a0dfbfc73ef8894f8ba32c855a256d4a22d2"
+    },
+    "runtime/b3/report.md": {
+      "path": "raw/runtime/b3/report.md",
+      "sha256": "fd475bb7b87479db1e82db34b944e2e17541c468f942b797b48810fc11a67ccf"
+    },
+    "runtime/tmo/bundle.json": {
+      "path": "raw/runtime/tmo/bundle.json",
+      "sha256": "1556b1279c202fcf2a68f3fffbea890825ef0f2d089ae90f1cb7603b5895d87f"
+    },
+    "runtime/tmo/outcomes.jsonl": {
+      "path": "raw/runtime/tmo/outcomes.jsonl",
+      "sha256": "feb4c95ff2a3d6ed4400e8e3f173ea98361f20820d49a7945427765cf0b73c91"
+    },
+    "runtime/tmo/report.md": {
+      "path": "raw/runtime/tmo/report.md",
+      "sha256": "9020ea2a79f474bf9ecedb01376471ce5e0c000f1f5674c2b2c64b3dc74db858"
+    },
+    "runtime/t12d/bundle.json": {
+      "path": "raw/runtime/t12d/bundle.json",
+      "sha256": "e772aec9a60a4874d39cd0645d655d4fbe368e0945f61fad4697f5b295170813"
+    },
+    "runtime/t12d/outcomes.jsonl": {
+      "path": "raw/runtime/t12d/outcomes.jsonl",
+      "sha256": "6d369b8969aa06d315339ff506850ceedafdcb28162cfe7e9466882ae9e05015"
+    },
+    "runtime/t12d/report.md": {
+      "path": "raw/runtime/t12d/report.md",
+      "sha256": "0ca7fdea31076270cdff1eb5a1667c5d29d9c3a67f89fb6e914f14fbe2868641"
+    },
+    "runtime/t12e/bundle.json": {
+      "path": "raw/runtime/t12e/bundle.json",
+      "sha256": "07c1bf2348f499ca0d757dcf453984b2f5912e7d57c59edeadaff670d36dde53"
+    },
+    "runtime/t12e/outcomes.jsonl": {
+      "path": "raw/runtime/t12e/outcomes.jsonl",
+      "sha256": "2f397963cf0cded8fa41d411b958bfc9e58f9de082b188b76a7a061090822680"
+    },
+    "runtime/t12e/report.md": {
+      "path": "raw/runtime/t12e/report.md",
+      "sha256": "7fa6a886f3d5b71f8ff3b676df40be6f36e2df638033d26fb2d192212f6f3f50"
+    },
+    "runtime/tamper-report-edit-no-render/bundle.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/bundle.json",
+      "sha256": "592d6c0bbb7a67ab4ea35c74abe158abd282568c1fe2e46c67c50f62b2156858"
+    },
+    "runtime/tamper-report-edit-no-render/outcomes.jsonl": {
+      "path": "raw/runtime/tamper-report-edit-no-render/outcomes.jsonl",
+      "sha256": "080daf024614060ca725235e8bf1e0e9191628880775668bbc2b9775f8721e84"
+    },
+    "runtime/tamper-report-edit-no-render/report.md": {
+      "path": "raw/runtime/tamper-report-edit-no-render/report.md",
+      "sha256": "16ccff463596bcea59fb0f574d8b4ab1651e4a56a1647d04f944c9d90c3bd6cf"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/lineage.jsonl": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/lineage.jsonl",
+      "sha256": "ac9da0681505a86d0b281fff5b9bd78cb0d79b3dd42a7d2ca0be75e1076edfa4"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/d4b333be5cba8a8db9a6b65a7ad27225.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/d4b333be5cba8a8db9a6b65a7ad27225.json",
+      "sha256": "82d019c88a29f028adfa1128870ed7f2571071d1f68c53810d6cd975d0c02820"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/16cfa9e4153446dc94c27950deb3ef10.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/16cfa9e4153446dc94c27950deb3ef10.json",
+      "sha256": "fe2ac4d6aab9e925096c861e65e81a0b747353783e2379ac7f5b2b3e4ebe8cdc"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/924dc6fd60c136ca24236248fb9989b9.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/924dc6fd60c136ca24236248fb9989b9.json",
+      "sha256": "5b4b6821bfd51b6a90eaea33f30f689837d2211cb0af8d72a644d80dfe955054"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/b5064a771d6d04f47f64f9b1ee645822.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/b5064a771d6d04f47f64f9b1ee645822.json",
+      "sha256": "a93d13fb1a485fa68e64fd482a6c41aac68122e05e638450ddc658301e8559a9"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/c649ab3d3cae67ab7e8231f24f8c72d5.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/c649ab3d3cae67ab7e8231f24f8c72d5.json",
+      "sha256": "da558e0332cb6ad88a4dd750874121df5bfaaaf4554af7d81349b0e706356572"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/44b83dc5e5b01ade6fdcc7b40c4b6869.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/44b83dc5e5b01ade6fdcc7b40c4b6869.json",
+      "sha256": "225b960c8ec4f968cd183564ab8f82b95c852044c9148ac4aff46fc583ff9cd2"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/5a8b47ac9a18d7cc10e0febf89ebd059.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/5a8b47ac9a18d7cc10e0febf89ebd059.json",
+      "sha256": "4f23626b02a0a4886ebedf9d82df7879ba6b902cac7b21f2eea85a99aa7cf6fd"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/c004e5ab1ff18d1cf85587ec4640288c.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/c004e5ab1ff18d1cf85587ec4640288c.json",
+      "sha256": "031a9228d98fcb9d63dfc76bbe583bbfc6035146bba2bab3286674b7087b79a4"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/records/40476f5e12890e73d3ecfbacdccd9d6c.json": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/records/40476f5e12890e73d3ecfbacdccd9d6c.json",
+      "sha256": "0283975350647f14b628914172902e66c4629dad2e1bbfb245bd04855ef69aba"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/objects/56/56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010.body": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/objects/56/56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010.body",
+      "sha256": "56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/objects/5e/5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa.body": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/objects/5e/5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa.body",
+      "sha256": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/objects/d7/d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a.body": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/objects/d7/d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a.body",
+      "sha256": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/objects/ec/ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c.body": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/objects/ec/ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c.body",
+      "sha256": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c"
+    },
+    "runtime/tamper-report-edit-no-render/source-artifacts/objects/8c/8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889.body": {
+      "path": "raw/runtime/tamper-report-edit-no-render/source-artifacts/objects/8c/8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889.body",
+      "sha256": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889"
+    },
+    "runtime/b3/source-artifacts/lineage.jsonl": {
+      "path": "raw/runtime/b3/source-artifacts/lineage.jsonl",
+      "sha256": "d38f3285f9bf81e1aed2c93f56a5311024e031d20a6d824da0f007e9f6cdf824"
+    },
+    "runtime/b3/source-artifacts/records/6439a0398f9d53712bd7d5b27d04157d.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/6439a0398f9d53712bd7d5b27d04157d.json",
+      "sha256": "57dd5dbf5d450e4edb619d1642b8146673875cc3bb4b8f610ad2fe42c9c65ef2"
+    },
+    "runtime/b3/source-artifacts/records/edd6179aeb392470ecc96c76a063fdda.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/edd6179aeb392470ecc96c76a063fdda.json",
+      "sha256": "250ac3ce3e0fda10aad21da6bc39bb74a27197c2bcc2c45add92c3ba97828e5e"
+    },
+    "runtime/b3/source-artifacts/records/ba626c119409f549b3be595590d6741c.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/ba626c119409f549b3be595590d6741c.json",
+      "sha256": "d3af25407d9f9141290d22cb11dce80c99d1e7b2f30d00b34799f0adf5ff8e45"
+    },
+    "runtime/b3/source-artifacts/records/38e3cc7fc4db5c30a54a31040db7f897.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/38e3cc7fc4db5c30a54a31040db7f897.json",
+      "sha256": "0a3cc7be961bc4d2ed0c77c6e91c46bc22f4c538473528965258f14338587c57"
+    },
+    "runtime/b3/source-artifacts/records/0b9557ee3911b90d0ffa6c71c5b61c51.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/0b9557ee3911b90d0ffa6c71c5b61c51.json",
+      "sha256": "9624bbf862043b82e188c10e82b40af808a5dbc91fce79798fdbc90a1036e1f3"
+    },
+    "runtime/b3/source-artifacts/records/69185b9ed3651f6035832258de600fca.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/69185b9ed3651f6035832258de600fca.json",
+      "sha256": "70591d67eb665668113e7f79e06d9f601dbecb41913f5c02adbf16782671eca4"
+    },
+    "runtime/b3/source-artifacts/records/7402f5618aab278a8d4dacab1fa72321.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/7402f5618aab278a8d4dacab1fa72321.json",
+      "sha256": "1027f2a768d4d3857911f6a62948553f82de6abbdd22fdbf7353602e778203fd"
+    },
+    "runtime/b3/source-artifacts/records/ed1e28d67d6db5b8c36f65efb44d0947.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/ed1e28d67d6db5b8c36f65efb44d0947.json",
+      "sha256": "69c29e59765cfcf0370f28612058a8635c42dfb11441111bb0c0cdb125e62c97"
+    },
+    "runtime/b3/source-artifacts/records/13ea0d678b6b93b20cdc6705fd310ceb.json": {
+      "path": "raw/runtime/b3/source-artifacts/records/13ea0d678b6b93b20cdc6705fd310ceb.json",
+      "sha256": "1e7bc08a82f449b5072cee97e8a6dd5addb37b08cb2ec8e4f156bd96a99137e2"
+    },
+    "runtime/b3/source-artifacts/objects/56/56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010.body": {
+      "path": "raw/runtime/b3/source-artifacts/objects/56/56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010.body",
+      "sha256": "56256b2a0406dde7e93264d139ca126e1f5255912937c0b19ed7cec6af2c6010"
+    },
+    "runtime/b3/source-artifacts/objects/5e/5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa.body": {
+      "path": "raw/runtime/b3/source-artifacts/objects/5e/5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa.body",
+      "sha256": "5e33eded4a2b9619420b7f39d49239d77889ab9b8727cc2ccc0bfb05b43c86fa"
+    },
+    "runtime/b3/source-artifacts/objects/d7/d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a.body": {
+      "path": "raw/runtime/b3/source-artifacts/objects/d7/d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a.body",
+      "sha256": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a"
+    },
+    "runtime/b3/source-artifacts/objects/ec/ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c.body": {
+      "path": "raw/runtime/b3/source-artifacts/objects/ec/ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c.body",
+      "sha256": "ec0227f3f5814a69c76331dfeccd8315f205e18f49d50cdac7ef13e306a8006c"
+    },
+    "runtime/b3/source-artifacts/objects/8c/8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889.body": {
+      "path": "raw/runtime/b3/source-artifacts/objects/8c/8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889.body",
+      "sha256": "8c1ae181ae1de048d4d068ca81484443ff9994d6f3c7567f5685b465a0d1d889"
+    },
+    "runtime/c01/source-artifacts/lineage.jsonl": {
+      "path": "raw/runtime/c01/source-artifacts/lineage.jsonl",
+      "sha256": "35731de705d66a86e4c08ba84cb42153587b07aa196356c152d54321fee65819"
+    },
+    "runtime/c01/source-artifacts/records/ae6ab00772039c559aeda78e59eacf57.json": {
+      "path": "raw/runtime/c01/source-artifacts/records/ae6ab00772039c559aeda78e59eacf57.json",
+      "sha256": "280c859eb9b91de53c12cf6b35c6cff0f28871b10edfd40fb9079f10df280957"
+    },
+    "runtime/c01/source-artifacts/objects/d7/d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a.body": {
+      "path": "raw/runtime/c01/source-artifacts/objects/d7/d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a.body",
+      "sha256": "d75f55711a996c3f878fa4f6b0f95037ae74e19237a844fe12ae22573162161a"
+    },
+    "runtime-review": {
+      "path": "raw/results/gate-runtime.json",
+      "sha256": "5b3618980e8ee991ced610ae2d9b0b04519ab3af1883b38c0997868327d2b3c1"
+    },
+    "recovery": {
+      "path": "recovery.md",
+      "sha256": "c585a48c42717495569f274d6b8849571231ec1c571aae6b86cb509b4a1b6fa5"
+    },
+    "verification": {
+      "path": "verification.json",
+      "sha256": "a33369c6ffd7685343d69951348d019be3e4d417dbea071ac91826f1b7a9581e"
+    }
+  },
+  "index": {
+    "mode": "isolated source index before documentation-only assembly",
+    "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+    "drift": "drift-final"
+  },
+  "analyses": [
+    {
+      "id": "index",
+      "phase": "post",
+      "kind": "index",
+      "target": "index",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r graphos --index --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/index.json"
+    },
+    {
+      "id": "drift",
+      "phase": "post",
+      "kind": "drift",
+      "target": "drift",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/drift.json"
+    },
+    {
+      "id": "blast-scrape_websites-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-scrape_websites-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-scrape_websites-up.json"
+    },
+    {
+      "id": "blast-scrape_websites-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-scrape_websites-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-scrape_websites-down.json"
+    },
+    {
+      "id": "blast-main-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-main-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/standalone.py:main",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-main-up.json"
+    },
+    {
+      "id": "blast-main-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-main-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-enrichers/src/flowsint_enrichers/standalone.py:main",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-main-down.json"
+    },
+    {
+      "id": "blast-render_markdown_report-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-render_markdown_report-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-render_markdown_report-up.json"
+    },
+    {
+      "id": "blast-render_markdown_report-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-render_markdown_report-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-enrichers/src/flowsint_enrichers/standalone.py:render_markdown_report",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-render_markdown_report-down.json"
+    },
+    {
+      "id": "blast-WebsiteTextExtractor-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-WebsiteTextExtractor-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor",
+      "exit_code": 0,
+      "status": "UNKNOWN",
+      "artifact": "blast/blast-WebsiteTextExtractor-up.json"
+    },
+    {
+      "id": "blast-WebsiteTextExtractor-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-WebsiteTextExtractor-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-enrichers/src/flowsint_enrichers/website/text_extraction.py:WebsiteTextExtractor",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-WebsiteTextExtractor-down.json"
+    },
+    {
+      "id": "blast-WebsiteToLinks-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-WebsiteToLinks-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+      "exit_code": 0,
+      "status": "UNKNOWN",
+      "artifact": "blast/blast-WebsiteToLinks-up.json"
+    },
+    {
+      "id": "blast-WebsiteToLinks-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-WebsiteToLinks-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-enrichers/src/flowsint_enrichers/website/to_links.py:WebsiteToLinks",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-WebsiteToLinks-down.json"
+    },
+    {
+      "id": "blast-WebsiteToText-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-WebsiteToText-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-WebsiteToText-up.json"
+    },
+    {
+      "id": "blast-WebsiteToText-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-WebsiteToText-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-enrichers/src/flowsint_enrichers/website/to_text.py:WebsiteToText",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-WebsiteToText-down.json"
+    },
+    {
+      "id": "blast-CaptureGraphRepository-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-CaptureGraphRepository-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-core/src/flowsint_core/core/graph/capture_repository.py:CaptureGraphRepository",
+      "exit_code": 0,
+      "status": "UNKNOWN",
+      "artifact": "blast/blast-CaptureGraphRepository-up.json"
+    },
+    {
+      "id": "blast-CaptureGraphRepository-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-CaptureGraphRepository-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-core/src/flowsint_core/core/graph/capture_repository.py:CaptureGraphRepository",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-CaptureGraphRepository-down.json"
+    },
+    {
+      "id": "blast-create_graph_service-up",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-create_graph_service-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-create_graph_service-up.json"
+    },
+    {
+      "id": "blast-create_graph_service-down",
+      "phase": "post",
+      "kind": "blast",
+      "target": "blast-create_graph_service-down",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json --direction downstream flowsint-core/src/flowsint_core/core/graph/service.py:create_graph_service",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-create_graph_service-down.json"
+    },
+    {
+      "id": "doctor-hunt",
+      "phase": "post",
+      "kind": "hunt",
+      "target": "doctor-hunt",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r doctor --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --hunt --hunt-target /home/n4s5ti/Documents/dev/fl0sint-p1gate/scripts/release_smoke.py --json",
+      "exit_code": 0,
+      "status": "DEGRADED",
+      "artifact": "blast/doctor-hunt.json"
+    },
+    {
+      "id": "drift-final",
+      "phase": "post",
+      "kind": "drift",
+      "target": "drift-final",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r graphos --drift --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/drift-final.json"
+    },
+    {
+      "id": "pre-docs-blast",
+      "phase": "pre",
+      "kind": "blast",
+      "target": "blast-scrape_websites-up",
+      "analyzed_commit": "907e94dab5292e12d81f4b34094656e22463bdcf",
+      "command": "pip3r blast --cwd /home/n4s5ti/Documents/dev/fl0sint-p1gate --no-auto-index --json flowsint-enrichers/src/flowsint_enrichers/standalone.py:scrape_websites",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "blast/blast-scrape_websites-up.json"
+    }
+  ],
+  "commands": [
+    {
+      "id": "runtime-review",
+      "command": "GateRuntime source audit; reported executed command inventory in raw/results/gate-runtime.json (review receipt, not a subprocess command)",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "runtime-review"
+    },
+    {
+      "id": "assembled-replay",
+      "command": "python3 scripts/release_smoke.py verify docs/audits/DEF-24/raw/runtime/b3 --python /home/n4s5ti/.cache/fl0sint-audit/p1/runtime/smoke/work/venv/bin/python",
+      "exit_code": 0,
+      "status": "PASS",
+      "artifact": "verification"
+    }
+  ],
+  "coverage_limitations": [
+    {
+      "ref": "blast-WebsiteTextExtractor-up",
+      "description": "Tool coverage remains non-pass; runtime checks do not upgrade it."
+    },
+    {
+      "ref": "blast-WebsiteToLinks-up",
+      "description": "Tool coverage remains non-pass; runtime checks do not upgrade it."
+    },
+    {
+      "ref": "blast-CaptureGraphRepository-up",
+      "description": "Tool coverage remains non-pass; runtime checks do not upgrade it."
+    },
+    {
+      "ref": "doctor-hunt",
+      "description": "Tool coverage remains non-pass; runtime checks do not upgrade it."
+    }
+  ],
+  "required_cases": [
+    "AC1",
+    "AC2",
+    "AC3",
+    "AC4",
+    "AC5",
+    "AC6",
+    "AC7",
+    "C01",
+    "C02-local",
+    "TA01",
+    "TA04",
+    "TA05",
+    "TA08",
+    "TA12"
+  ],
+  "cases": [
+    {
+      "id": "AC1",
+      "title": "Every prerequisite has complete reproducible evidence",
+      "status": "UNKNOWN",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "Child runtime green; DEF42 original pre-edit Blast absent; archived DEF41 acceptance stale."
+    },
+    {
+      "id": "AC2",
+      "title": "Public independent interface works",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "S1-S8 packaged smoke and GateRuntime loopback probes."
+    },
+    {
+      "id": "AC3",
+      "title": "Impact/Hunt/Doctor evidence complete",
+      "status": "UNKNOWN",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "Fresh drift0 and scoped Blast; Hunt DEGRADED with 0 commands; dynamic/class edges partial."
+    },
+    {
+      "id": "AC4",
+      "title": "Negative cases and blocking runtime findings",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "Nine bundle tampers rejected; runtime reviewer reports no blocking defect; five observations remain."
+    },
+    {
+      "id": "AC5",
+      "title": "Identity/source/scope/truth/resources remain correct",
+      "status": "UNKNOWN",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "Occurrence attribution passed but outcome/proof input_ref bases differ; strict byte cap overshoots by one chunk. Unqualified integrity claim withheld."
+    },
+    {
+      "id": "AC6",
+      "title": "Capabilities and limits explicit",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "capabilities.json; disabled paths absent in observed standalone imports."
+    },
+    {
+      "id": "AC7",
+      "title": "Separate assembled review and recovery",
+      "status": "UNKNOWN",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "Two independent source reviews exist; final packet independent review unavailable: three provider429 failures. Recovery documented, not deployed."
+    },
+    {
+      "id": "C01",
+      "title": "C01 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "C02-local",
+      "title": "C02-local enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA01",
+      "title": "TA01 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA04",
+      "title": "TA04 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA05",
+      "title": "TA05 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA08",
+      "title": "TA08 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    },
+    {
+      "id": "TA12",
+      "title": "TA12 enabled local path",
+      "status": "PASS",
+      "evidence": [
+        "runtime-review"
+      ],
+      "reason": "GateRuntime scoped execution; limitations in findings.json apply, not an unlimited contract pass."
+    }
+  ],
+  "scope": {
+    "predicted_paths": [
+      "docs/audits/DEF-24/",
+      "docs/audits/DEF-41/p1-gate-addendum.md",
+      "docs/audits/DEF-46/p1-gate-addendum.md"
+    ],
+    "predicted_symbols": [],
+    "actual_symbols": [],
+    "explained_changes": []
+  },
+  "mutations": [],
+  "findings": [],
+  "baseline_debt": [],
+  "label_changes": [],
+  "review": {
+    "status": "pending",
+    "reviewer": "GateEvidence and GateRuntime (source); coordinator (assembly)",
+    "independent": false,
+    "limitation": "Source slices independently reviewed; final assembly not independently reviewed because provider429. Gate incomplete.",
+    "evidence": "runtime-review"
+  },
+  "rollback": {
+    "procedure": "Quarantine evidence; stop new runs; restore only an approved app environment without database changes.",
+    "document": "recovery"
+  }
+}
