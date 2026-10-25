@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--cypher",
+    "MATCH (a)-[r]->(b) WHERE b.name IN ['InputOutcome','EvidenceEnvelope','StructuredExecutionResult','canonical_input_hash','build_bundle'] RETURN a.id,a.filePath,r.type,b.id,b.filePath",
+    "--limit",
+    "200",
+    "--json",
+    "--no-auto-index"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {
+    "PIP3R_DISCLOSURE": "off"
+  },
+  "started_at": 1790479033.8176906,
+  "elapsed_seconds": 0.6949431896209717,
+  "returncode": 0
+}

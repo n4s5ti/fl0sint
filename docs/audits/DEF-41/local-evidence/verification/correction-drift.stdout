@@ -1,0 +1,63 @@
+{
+    "mode": "drift",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "changed_symbols": [
+            {
+                "symbol": "manifest.json",
+                "filePath": "docs/audits/DEF-41/manifest.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "post-summary.json",
+                "filePath": "docs/audits/DEF-41/raw/post-summary.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "drift-after-packet.json",
+                "filePath": "docs/audits/DEF-41/raw/post/drift-after-packet.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "drift-after-refresh.json",
+                "filePath": "docs/audits/DEF-41/raw/post/drift-after-refresh.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "shared-index-comparison.json",
+                "filePath": "docs/audits/DEF-41/raw/post/shared-index-comparison.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "pure-environment-freeze.json",
+                "filePath": "docs/audits/DEF-41/raw/verification/pure-environment-freeze.json",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "pure-environment-freeze.stderr",
+                "filePath": "docs/audits/DEF-41/raw/verification/pure-environment-freeze.stderr",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "pure-environment-freeze.stdout",
+                "filePath": "docs/audits/DEF-41/raw/verification/pure-environment-freeze.stdout",
+                "category": "file_unindexed"
+            },
+            {
+                "symbol": "release.md",
+                "filePath": "docs/audits/DEF-41/release.md",
+                "category": "file_unindexed"
+            }
+        ],
+        "summary": {
+            "total": 9,
+            "file_modified": 0,
+            "file_removed": 0,
+            "file_unindexed": 9,
+            "symbol_stale": 0
+        }
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

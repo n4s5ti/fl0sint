@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "mpg-batch",
+    "--",
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/acquisition",
+    "--confcutdir=tests/acquisition",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core",
+  "environment_overrides": {
+    "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "started_at": 1790477445.0941136,
+  "elapsed_seconds": 0.835493803024292,
+  "returncode": 0
+}

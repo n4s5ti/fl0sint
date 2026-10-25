@@ -1,0 +1,1285 @@
+..F.FFFFFFFFFFFFFFFFFFFFFFFFF.....F........                              [100%]
+=================================== FAILURES ===================================
+__ test_serializer_rejects_mutated_digest_instead_of_emitting_corrupt_bundle ___
+
+    def test_serializer_rejects_mutated_digest_instead_of_emitting_corrupt_bundle():
+>       bundle = a.build_bundle(request=request(), outcomes=(unknown(),), bundle_id="bundle_1",
+                                created_at=NOW, actual_resources=a.Resources())
+
+tests/acquisition/test_contract.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..."evidence_list":[],"candidates":[],"origin_digest":"fcbd60e292272d5c434d2c4bedec3885093083f91f76eb7f0205ce8343d92622"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_________ test_zero_one_many_and_duplicate_content_roundtrip[counts1] __________
+
+counts = (0,)
+
+    @pytest.mark.parametrize("counts", [(), (0,), (1,), (2,), (0, 1, 2)])
+    def test_zero_one_many_and_duplicate_content_roundtrip(counts):
+>       bundle = a.build_bundle(**fields(counts))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..."evidence_list":[],"candidates":[],"origin_digest":"9fde7a4ce8951b1380b905d2d77706b04584df8f83971cf7eba836d487be21e4"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_________ test_zero_one_many_and_duplicate_content_roundtrip[counts2] __________
+
+counts = (1,)
+
+    @pytest.mark.parametrize("counts", [(), (0,), (1,), (2,), (0, 1, 2)])
+    def test_zero_one_many_and_duplicate_content_roundtrip(counts):
+>       bundle = a.build_bundle(**fields(counts))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._0_0","disposition":"unreviewed"}],"origin_digest":"253af50e8567cce706445fe5d34616751245f43cd3ba5b3e89f78e6c7deb104e"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_________ test_zero_one_many_and_duplicate_content_roundtrip[counts3] __________
+
+counts = (2,)
+
+    @pytest.mark.parametrize("counts", [(), (0,), (1,), (2,), (0, 1, 2)])
+    def test_zero_one_many_and_duplicate_content_roundtrip(counts):
+>       bundle = a.build_bundle(**fields(counts))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._0_1","disposition":"unreviewed"}],"origin_digest":"6a9cda05ad44ec8f820d477e36283212ef0c6a9763cdae653389449c470939d5"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_________ test_zero_one_many_and_duplicate_content_roundtrip[counts4] __________
+
+counts = (0, 1, 2)
+
+    @pytest.mark.parametrize("counts", [(), (0,), (1,), (2,), (0, 1, 2)])
+    def test_zero_one_many_and_duplicate_content_roundtrip(counts):
+>       bundle = a.build_bundle(**fields(counts))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_______________ test_completion_order_does_not_change_ownership ________________
+
+    def test_completion_order_does_not_change_ownership():
+        data = fields()
+        data["outcomes"] = tuple(reversed(data["outcomes"]))
+>       restored = a.parse_bundle(a.serialize_bundle(a.build_bundle(**data)))
+                                                     ^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:104: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"651e85cb4bd5742f55be1d00903f43159887f36b21c6c3bc7240cdddbe83f432"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>0] ________
+
+mutation = <function <lambda> at 0x7401f4dd2700>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>1] ________
+
+mutation = <function <lambda> at 0x7401f4dd27a0>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>2] ________
+
+mutation = <function <lambda> at 0x7401f4dd2840>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>3] ________
+
+mutation = <function <lambda> at 0x7401f4dd28e0>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>4] ________
+
+mutation = <function <lambda> at 0x7401f4dd2980>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>5] ________
+
+mutation = <function <lambda> at 0x7401f4dd2a20>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>6] ________
+
+mutation = <function <lambda> at 0x7401f4dd2ac0>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>7] ________
+
+mutation = <function <lambda> at 0x7401f4dd2b60>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>8] ________
+
+mutation = <function <lambda> at 0x7401f4dd2c00>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+________ test_malformed_reference_graph_and_scalars_rejected[<lambda>9] ________
+
+mutation = <function <lambda> at 0x7401f4dd2ca0>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_______ test_malformed_reference_graph_and_scalars_rejected[<lambda>10] ________
+
+mutation = <function <lambda> at 0x7401f4dd2d40>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_______ test_malformed_reference_graph_and_scalars_rejected[<lambda>11] ________
+
+mutation = <function <lambda> at 0x7401f4dd2de0>
+
+    @pytest.mark.parametrize("mutation", [
+        lambda d: d["candidates"][0].update(disposition="accepted"),
+        lambda d: d["candidates"][0].update(occurrence_id="ocr_0"),
+        lambda d: d["spans"][0].update(byte_end=11),
+        lambda d: d["spans"][0].update(byte_start=5, byte_end=5),
+        lambda d: d["evidence_list"][0].update(span_id="missing"),
+        lambda d: d["outcomes"].pop(),
+        lambda d: d["outcomes"].append(d["outcomes"][0]),
+        lambda d: d["artifacts"].append(dict(d["artifacts"][0], artifact_id="orphan")),
+        lambda d: d["request"]["inputs"][0].update(input_ref="d" * 64),
+        lambda d: d["request"]["inputs"][0]["lineage"].pop("seed_entity_id"),
+        lambda d: d["actual_resources"].update(requests=True),
+        lambda d: d.update(created_at="2026-09-26T00:00:00"),
+    ])
+    def test_malformed_reference_graph_and_scalars_rejected(mutation):
+>       data = json.loads(a.serialize_bundle(a.build_bundle(**fields())))
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._2_1","disposition":"unreviewed"}],"origin_digest":"5753bdf14c4dfdcd71e270b0d4e51515165624ff822c4f14dd454003bbd811c8"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_ test_non_success_preserves_reason_underlying_status_and_spend[invalid_input] _
+
+status = <OutcomeStatus.INVALID_INPUT: 'invalid_input'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"72f808c5504d8a0daa0703f322d71af90e1b7ad64bc9b652335dd667bb0ecbcc"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_ test_non_success_preserves_reason_underlying_status_and_spend[rate_limited] __
+
+status = <OutcomeStatus.RATE_LIMITED: 'rate_limited'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"b96f1cba53f9f8a0fc0dfe95145ac833567ed18e29387f44315b6b45d8c33815"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_ test_non_success_preserves_reason_underlying_status_and_spend[policy_denied] _
+
+status = <OutcomeStatus.POLICY_DENIED: 'policy_denied'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"e055c6408831a79700df76d47d21e517b9a94784bcad09685deaab922ce1f58c"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+____ test_non_success_preserves_reason_underlying_status_and_spend[timeout] ____
+
+status = <OutcomeStatus.TIMEOUT: 'timeout'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"66aca5b28311037b468d1756f82e141ba8cd9e99a93b0f781659511ab464794c"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+__ test_non_success_preserves_reason_underlying_status_and_spend[tool_error] ___
+
+status = <OutcomeStatus.TOOL_ERROR: 'tool_error'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"a766d51c0121a3a9b0ca23c071c53f8d6dd5602b5a77cf767ba6cc83a5e6e47d"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_ test_non_success_preserves_reason_underlying_status_and_spend[unknown_outcome] _
+
+status = <OutcomeStatus.UNKNOWN_OUTCOME: 'unknown_outcome'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"90aee69da0ad4241b3df5411dec1f62e9e8b8570cacaa7f49a21ef3272d3afbf"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_ test_non_success_preserves_reason_underlying_status_and_spend[retention_hold] _
+
+status = <OutcomeStatus.RETENTION_HOLD: 'retention_hold'>
+
+    @pytest.mark.parametrize("status", list(a._FAILURE) + [a.OutcomeStatus.UNKNOWN_OUTCOME, a.OutcomeStatus.RETENTION_HOLD])
+    def test_non_success_preserves_reason_underlying_status_and_spend(status):
+        underlying = CanonicalStatus.HOLD if status == a.OutcomeStatus.RETENTION_HOLD else CanonicalStatus.FAILURE
+        result = a.OccurrenceOutcome(occurrence_id="ocr_1", status=status, underlying_status=underlying,
+                                     diagnostic=diagnostic("source_rights_unspecified"))
+>       bundle = a.build_bundle(request=request(), outcomes=(result,), bundle_id="failed", created_at=NOW,
+                                actual_resources=a.Resources(bytes=52, elapsed_seconds=0.5))
+
+tests/acquisition/test_contract.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"failed","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"loc..."evidence_list":[],"candidates":[],"origin_digest":"83ec2b4704477fe0d4bbeb0a8b088a9b810255d8bc67b84e38abdde237ac938d"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+_______ test_partial_preserves_child_failures_and_exact_success_outputs ________
+
+    def test_partial_preserves_child_failures_and_exact_success_outputs():
+        data = fields((1,))
+        success = data["outcomes"][0]
+        good = a.Suboutcome(child_id="fetch", **success.model_dump(exclude={"occurrence_id", "suboutcomes"}))
+        bad = a.Suboutcome(child_id="second_fetch", status=a.OutcomeStatus.TIMEOUT,
+                           underlying_status=CanonicalStatus.FAILURE, diagnostic=diagnostic("timeout"))
+        data["outcomes"] = (a.OccurrenceOutcome(occurrence_id="ocr_0", status=a.OutcomeStatus.PARTIAL,
+            candidate_ids=success.candidate_ids, diagnostic=diagnostic("partial"), suboutcomes=(good, bad)),)
+>       restored = a.parse_bundle(a.serialize_bundle(a.build_bundle(**data)))
+                                                     ^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._0_0","disposition":"unreviewed"}],"origin_digest":"9c4cb6c94180f6b79bb5c98766bccb880ba534d714f9e92719f0d29cc765b33e"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+______ test_nested_mutation_and_copy_cannot_publish_accepted_disposition _______
+
+    def test_nested_mutation_and_copy_cannot_publish_accepted_disposition():
+>       bundle = a.build_bundle(**fields((1,)))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/acquisition/test_contract.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/flowsint_execution/acquisition.py:454: in build_bundle
+    return parse_bundle(serialize_bundle(bundle))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:439: in serialize_bundle
+    return _serialize(bundle, parse_bundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:430: in _serialize
+    validated = parser(wire)
+                ^^^^^^^^^^^^
+src/flowsint_execution/acquisition.py:422: in parse_bundle
+    return _parse(raw, AcquisitionBundle)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+raw = '{"format_version":"1.0","bundle_id":"bundle_1","request":{"format_version":"1.0","operation_id":"op_1","caller_id":"l..._0_0","disposition":"unreviewed"}],"origin_digest":"253af50e8567cce706445fe5d34616751245f43cd3ba5b3e89f78e6c7deb104e"}'
+model = <class 'flowsint_execution.acquisition.AcquisitionBundle'>
+
+    def _parse(raw, model):
+        obj = _load(raw)
+        if model is AcquisitionBundle and isinstance(obj.get("request"), dict):
+            if obj["request"].get("format_version") != FORMAT_VERSION:
+                raise ContractError("unsupported_format_version", ("request.format_version",))
+        try:
+            return model.model_validate_json(_canonical(obj))
+        except ValidationError as exc:
+>           raise _error(exc) from None
+E           flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+
+src/flowsint_execution/acquisition.py:412: ContractError
+=========================== short test summary info ============================
+FAILED tests/acquisition/test_contract.py::test_serializer_rejects_mutated_digest_instead_of_emitting_corrupt_bundle - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_zero_one_many_and_duplicate_content_roundtrip[counts1] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_zero_one_many_and_duplicate_content_roundtrip[counts2] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_zero_one_many_and_duplicate_content_roundtrip[counts3] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_zero_one_many_and_duplicate_content_roundtrip[counts4] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_completion_order_does_not_change_ownership - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>0] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>1] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>2] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>3] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>4] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>5] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>6] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>7] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>8] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>9] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>10] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_malformed_reference_graph_and_scalars_rejected[<lambda>11] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes, outcomes.1.candidate_ids, outcomes.1.artifact_ids, outcomes.1.completion_witness.completed_at, outcomes.1.suboutcomes, outcomes.2.candidate_ids, outcomes.2.artifact_ids, outcomes.2.completion_witness.completed_at, outcomes.2.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[invalid_input] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[rate_limited] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[policy_denied] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[timeout] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[tool_error] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[unknown_outcome] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_non_success_preserves_reason_underlying_status_and_spend[retention_hold] - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_partial_preserves_child_failures_and_exact_success_outputs - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.suboutcomes
+FAILED tests/acquisition/test_contract.py::test_nested_mutation_and_copy_cannot_publish_accepted_disposition - flowsint_execution.acquisition.ContractError: malformed_contract: outcomes.0.candidate_ids, outcomes.0.artifact_ids, outcomes.0.completion_witness.completed_at, outcomes.0.suboutcomes
+27 failed, 16 passed in 0.81s

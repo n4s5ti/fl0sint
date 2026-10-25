@@ -1,0 +1,121 @@
+{
+    "symbol": "flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+        "name": "canonical_input_hash",
+        "filePath": "flowsint-core/src/flowsint_execution/models.py",
+        "nodeType": "Function",
+        "startLine": 139,
+        "endLine": 149,
+        "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+    },
+    "symbols": [
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "name": "canonical_input_hash",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 139,
+            "endLine": 149,
+            "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+        },
+        {
+            "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "name": "_canonicalize_input",
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "nodeType": "Function",
+            "startLine": 96,
+            "endLine": 136,
+            "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "type": "CALLS",
+            "confidence": 0.85
+        },
+        {
+            "from": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "to": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+            "type": "CALLS",
+            "confidence": 0.85
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_execution/models.py",
+            "count": 2,
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+                    "name": "canonical_input_hash",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 139,
+                    "endLine": 149,
+                    "content": "def canonical_input_hash(value: Any) -> str:     \"\"\"Return the stable SHA-256 reference for an input without retaining it.\"\"\"     canonical = json.dumps(         _canonicalize_input(value),         ensure_ascii=False,         separators=(\",\", \":\"),         sort_keys=True,         allow_nan=False,     )     return hashlib.sha256(canonical.encode(\"utf-8\")).hexdigest()"
+                },
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                    "name": "_canonicalize_input",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 96,
+                    "endLine": 136,
+                    "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 1
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Function:flowsint-core/src/flowsint_execution/models.py:_canonicalize_input",
+                    "name": "_canonicalize_input",
+                    "filePath": "flowsint-core/src/flowsint_execution/models.py",
+                    "nodeType": "Function",
+                    "startLine": 96,
+                    "endLine": 136,
+                    "content": "def _canonicalize_input(value: Any) -> Any:     \"\"\"Convert supported input values to a deterministic JSON-compatible shape.\"\"\"     if isinstance(value, BaseModel):         return _canonicalize_input(             value.model_dump(mode=\"json\", by_alias=True, exclude_none=False)         )     if isinstance(value, Mapping):         return {             str(key): _canonicalize_input(item)             for key, item in sorted(value.items(), key=lambda item: str(item[0]))         }     if isinstance(value, (list, tuple)):         return [_canonicalize_input(item) for item in value]     if isinstance(value, (set, frozenset)):         canonical_items = [_canonicalize_input(item) for item in value]         return sorted(             canonical_items,             key=lambda item: json.dumps(                 item, ensure_ascii=False, separators=(\",\", \":\"), sort_keys=True             ),         )     if isinstance(value, float):         if math.isnan(value):             return {\"float\": \"nan\"}         if math.isinf(value):             return {\"float\": \"infinity\" if value > 0 else \"-infinity\"}         return value     if isinstance(value, Enum):         return _canonicalize_input(value.value)     if isinstance(value, datetime):         if value.tzinfo is not None and value.utcoffset() is not None:             value = value.astimezone(timezone.utc)         return value.isoformat()     if isinstance(value, bytes):         return {\"bytes_base64\": base64.b64encode(value).decode(\"ascii\")}     if value is None or isinstance(value, (bool, int, str)):         return value     if hasattr(value, \"model_dump\"):         return _canonicalize_input(value.model_dump(mode=\"json\"))     return {\"type\": f\"{type(value).__module__}.{type(value).__qualname__}\"}"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_execution/models.py:canonical_input_hash",
+        "rootSymbols": 1,
+        "totalSymbols": 2,
+        "totalEdges": 2,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 1,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

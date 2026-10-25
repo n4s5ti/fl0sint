@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "uv",
+    "pip",
+    "install",
+    "--python",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python",
+    "--no-deps",
+    "/home/n4s5ti/Documents/dev/def41-evidence/wheels/flowsint_core-1.2.8-py3-none-any.whl"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {},
+  "started_at": 1790477124.5499747,
+  "elapsed_seconds": 0.04181218147277832,
+  "returncode": 0
+}

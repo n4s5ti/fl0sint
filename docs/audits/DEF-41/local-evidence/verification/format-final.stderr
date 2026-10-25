@@ -1,0 +1,7 @@
+mpg-batch: running 1 command(s)
+mpg-batch: step 1/1: /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python -m black src/flowsint_execution/acquisition.py tests/acquisition/test_contract.py
+reformatted tests/acquisition/test_contract.py
+reformatted src/flowsint_execution/acquisition.py
+
+All done! ✨ 🍰 ✨
+2 files reformatted.

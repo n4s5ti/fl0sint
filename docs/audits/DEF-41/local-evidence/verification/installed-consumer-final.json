@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "env",
+    "-i",
+    "PATH=/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python",
+    "/home/n4s5ti/Documents/dev/def41-evidence/verify_installed.py",
+    "/home/n4s5ti/Documents/dev/def41-evidence/example-final"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/def41-evidence",
+  "environment_overrides": {},
+  "started_at": 1790477467.13269,
+  "elapsed_seconds": 0.2180476188659668,
+  "returncode": 0
+}

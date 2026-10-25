@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--cypher",
+    "MATCH (a)-[r]->(b) WHERE (a.filePath CONTAINS 'services/execution_service.py' OR b.filePath CONTAINS 'services/execution_service.py') AND r.type='CALLS' RETURN a.id,r.type,b.id",
+    "--limit",
+    "300",
+    "--json",
+    "--no-auto-index"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {
+    "PIP3R_DISCLOSURE": "off"
+  },
+  "started_at": 1790479096.5347102,
+  "elapsed_seconds": 0.8783025741577148,
+  "returncode": 0
+}

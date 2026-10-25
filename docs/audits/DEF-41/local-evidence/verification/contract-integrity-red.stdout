@@ -1,0 +1,33 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+______ test_duplicate_input_occurrences_cannot_collapse_in_set_comparison ______
+
+    def test_duplicate_input_occurrences_cannot_collapse_in_set_comparison():
+>       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationError
+
+tests/acquisition/test_contract.py:31: Failed
+__________ test_duplicate_outcomes_cannot_collapse_in_set_comparison ___________
+
+    def test_duplicate_outcomes_cannot_collapse_in_set_comparison():
+>       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationError
+
+tests/acquisition/test_contract.py:36: Failed
+__ test_serializer_rejects_mutated_digest_instead_of_emitting_corrupt_bundle ___
+
+    def test_serializer_rejects_mutated_digest_instead_of_emitting_corrupt_bundle():
+        bundle = a.build_bundle(request=request(), outcomes=(unknown(),), bundle_id="bundle_1",
+                                origin_digest="a" * 64, created_at=NOW)
+>       with pytest.raises(a.ContractError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ContractError
+
+tests/acquisition/test_contract.py:44: Failed
+=========================== short test summary info ============================
+FAILED tests/acquisition/test_contract.py::test_duplicate_input_occurrences_cannot_collapse_in_set_comparison - Failed: DID NOT RAISE ValidationError
+FAILED tests/acquisition/test_contract.py::test_duplicate_outcomes_cannot_collapse_in_set_comparison - Failed: DID NOT RAISE ValidationError
+FAILED tests/acquisition/test_contract.py::test_serializer_rejects_mutated_digest_instead_of_emitting_corrupt_bundle - Failed: DID NOT RAISE ContractError
+3 failed in 0.14s

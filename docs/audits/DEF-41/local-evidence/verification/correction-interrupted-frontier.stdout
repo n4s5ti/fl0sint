@@ -1,0 +1,126 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "columns": [
+            "fromId",
+            "toId",
+            "type",
+            "confidence"
+        ],
+        "rows": [
+            {
+                "fromId": "Function:flowsint-api/app/api/routes/enricher_templates.py:test_template",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Function:flowsint-core/tests/core/test_structured_execution.py:test_structured_execution_keeps_input_cardinality_and_output_groups",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Function:flowsint-core/tests/core/test_structured_execution.py:test_structured_execution_distinguishes_empty_success_from_failure",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._execute_structured_input#4",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.scan#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/tests/templates/test_template_enricher.py:TestRegistryBackedTemplateEnricher.test_approved_enrichment_succeeds#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/tests/templates/test_template_enricher.py:TestRegistryBackedTemplateEnricher.test_unknown_supplied_input_field_never_reaches_http#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/tests/templates/test_template_enricher.py:TestRegistryBackedTemplateEnricher.test_redirect_is_not_followed#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/tests/templates/test_template_enricher.py:TestRegistryBackedTemplateEnricher.test_response_over_policy_limit_is_rejected#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/tests/templates/test_template_enricher.py:TestRegistryBackedTemplateEnricher.test_total_response_deadline_covers_full_streamed_body#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Method:flowsint-core/tests/templates/test_template_enricher.py:TestRegistryBackedTemplateEnricher.test_secret_and_raw_response_are_not_in_diagnostics_or_logs#1",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "CALLS",
+                "confidence": 0.85
+            },
+            {
+                "fromId": "Class:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "type": "HAS_METHOD",
+                "confidence": 1
+            },
+            {
+                "fromId": "Class:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._execute_structured_input#4",
+                "type": "HAS_METHOD",
+                "confidence": 1
+            },
+            {
+                "fromId": "Class:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1",
+                "type": "HAS_METHOD",
+                "confidence": 1
+            },
+            {
+                "fromId": "Class:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher",
+                "toId": "Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1",
+                "type": "METHOD_OVERRIDES",
+                "confidence": 0.9
+            },
+            {
+                "fromId": "Class:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence",
+                "toId": "Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0",
+                "type": "HAS_METHOD",
+                "confidence": 1
+            },
+            {
+                "fromId": "File:flowsint-core/src/flowsint_core/tasks/enricher.py",
+                "toId": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "type": "DEFINES",
+                "confidence": 1
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

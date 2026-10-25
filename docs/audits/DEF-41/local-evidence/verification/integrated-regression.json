@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "mpg-batch",
+    "--",
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "pytest",
+    "tests/core/test_structured_execution.py",
+    "tests/services/test_execution_service.py",
+    "tests/services/test_graph_projection_service.py",
+    "tests/services/test_template_execution_task.py",
+    "tests/templates/test_template_enricher.py",
+    "-q",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core",
+  "environment_overrides": {
+    "PYTHONPATH": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src:/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-types/src:/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-enrichers/src:/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-api",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "AUTH_SECRET": "fixture-only-not-production",
+    "REDIS_URL": "redis://127.0.0.1:1/0",
+    "DATABASE_URL": "sqlite:///:memory:",
+    "PYTHON_DOTENV_DISABLED": "1"
+  },
+  "started_at": 1790476956.8992982,
+  "elapsed_seconds": 10.871450662612915,
+  "returncode": 0
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "mpg-batch",
+    "--",
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-m",
+    "black",
+    "src/flowsint_execution/acquisition.py",
+    "tests/acquisition/test_contract.py",
+    "examples/acquisition_contract.py"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core",
+  "environment_overrides": {},
+  "started_at": 1790477171.9695203,
+  "elapsed_seconds": 0.5785119533538818,
+  "returncode": 0
+}

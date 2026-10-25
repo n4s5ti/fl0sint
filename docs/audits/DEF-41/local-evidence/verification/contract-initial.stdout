@@ -1,0 +1,263 @@
+........FF.....................F...FFFFFF..                              [100%]
+=================================== FAILURES ===================================
+_________________ TestAcquisitionRequest.test_minimal_request __________________
+
+self = <tests.acquisition.test_contract.TestAcquisitionRequest object at 0x73e3d906ecf0>
+
+    def test_minimal_request(self):
+        """AcquisitionRequest with required fields."""
+        from flowsint_execution.acquisition import (
+            AcquisitionRequest,
+            InputOccurrence,
+        )
+    
+>       req = AcquisitionRequest(
+            operation_id="op_acq_123",
+            capability_digest="capdigest_" + "0" * 54,  # 64 chars
+            caller_id="my_service",
+            scope="read_urls",
+            format_version="1.0",
+            inputs=(
+                InputOccurrence(
+                    occurrence_id="ocr_1",
+                    input_ref="a" * 64,
+                    type_tag="url",
+                    value="https://example.com",
+                ),
+            ),
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for AcquisitionRequest
+E       capability_digest
+E         String should match pattern '^[a-f0-9]{64}$' [type=string_pattern_mismatch, input_value='capdigest_00000000000000...00000000000000000000000', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.12/v/string_pattern_mismatch
+
+tests/acquisition/test_contract.py:136: ValidationError
+_________ TestAcquisitionRequest.test_request_format_version_exact_1_0 _________
+
+self = <tests.acquisition.test_contract.TestAcquisitionRequest object at 0x73e3d906ef90>
+
+    def test_request_format_version_exact_1_0(self):
+        """Request format_version must be exactly '1.0'."""
+        from flowsint_execution.acquisition import AcquisitionRequest, InputOccurrence
+    
+        # Valid
+        AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+>           inputs=(InputOccurrence("ocr_1", "a" * 64, "url", "https://x"),),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:166: TypeError
+_____________ TestOccurrenceOutcome.test_partial_with_suboutcomes ______________
+
+self = <tests.acquisition.test_contract.TestOccurrenceOutcome object at 0x73e3d906dee0>
+
+    def test_partial_with_suboutcomes(self):
+        """PARTIAL outcome with suboutcomes preserving details."""
+        from flowsint_execution.acquisition import (
+            OccurrenceOutcome,
+            OutcomeStatus,
+            Suboutcome,
+        )
+    
+>       outcome = OccurrenceOutcome(
+            occurrence_id="ocr_1",
+            status=OutcomeStatus.PARTIAL,
+            candidate_ids=("cand_1",),
+            suboutcomes=(
+                Suboutcome(
+                    suboutcome_id="sub_1",
+                    status=OutcomeStatus.SUCCESS_WITH_OUTPUT,
+                    candidate_ids=("cand_1",),
+                ),
+            ),
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for OccurrenceOutcome
+E         Value error, PARTIAL requires diagnostic [type=value_error, input_value={'occurrence_id': 'ocr_1'...',), diagnostic=None),)}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.12/v/value_error
+
+tests/acquisition/test_contract.py:532: ValidationError
+__________________ TestAcquisitionBundle.test_minimal_bundle ___________________
+
+self = <tests.acquisition.test_contract.TestAcquisitionBundle object at 0x73e3d9231070>
+
+    def test_minimal_bundle(self):
+        """Bundle with single occurrence outcome."""
+        from flowsint_execution.acquisition import (
+            AcquisitionRequest,
+            AcquisitionBundle,
+            InputOccurrence,
+            OccurrenceOutcome,
+            OutcomeStatus,
+        )
+    
+        req = AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+>           inputs=(InputOccurrence("ocr_1", "a" * 64, "url", "https://x"),),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:613: TypeError
+___________ TestAcquisitionBundle.test_bundle_origin_digest_computed ___________
+
+self = <tests.acquisition.test_contract.TestAcquisitionBundle object at 0x73e3d9230e60>
+
+    def test_bundle_origin_digest_computed(self):
+        """Origin digest is actual computed SHA256 (not placeholder)."""
+        from flowsint_execution.acquisition import (
+            AcquisitionRequest,
+            AcquisitionBundle,
+            InputOccurrence,
+            OccurrenceOutcome,
+            OutcomeStatus,
+        )
+    
+        req = AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+>           inputs=(InputOccurrence("ocr_1", "a" * 64, "url", "https://x"),),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:650: TypeError
+_____ TestAcquisitionBundle.test_bundle_outcomes_match_request_occurrences _____
+
+self = <tests.acquisition.test_contract.TestAcquisitionBundle object at 0x73e3d92306e0>
+
+    def test_bundle_outcomes_match_request_occurrences(self):
+        """Bundle outcomes must exactly match request input occurrences."""
+        from flowsint_execution.acquisition import (
+            AcquisitionRequest,
+            AcquisitionBundle,
+            InputOccurrence,
+            OccurrenceOutcome,
+            OutcomeStatus,
+        )
+    
+        # Request with 2 inputs
+        req = AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+            inputs=(
+>               InputOccurrence("ocr_1", "a" * 64, "url", "https://x1"),
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                InputOccurrence("ocr_2", "b" * 64, "url", "https://x2"),
+            ),
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:695: TypeError
+__________ TestAcquisitionBundle.test_bundle_format_version_1_0_only ___________
+
+self = <tests.acquisition.test_contract.TestAcquisitionBundle object at 0x73e3d92301a0>
+
+    def test_bundle_format_version_1_0_only(self):
+        """Bundle format_version must be exactly '1.0'."""
+        from flowsint_execution.acquisition import (
+            AcquisitionRequest,
+            AcquisitionBundle,
+            InputOccurrence,
+            OccurrenceOutcome,
+            OutcomeStatus,
+        )
+    
+        req = AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+>           inputs=(InputOccurrence("ocr_1", "a" * 64, "url", "https://x"),),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:741: TypeError
+______________ TestPublicAPIFunctions.test_parse_bundle_function _______________
+
+self = <tests.acquisition.test_contract.TestPublicAPIFunctions object at 0x73e3d92316a0>
+
+    def test_parse_bundle_function(self):
+        """parse_bundle(json_string) -> AcquisitionBundle with revalidation."""
+        from flowsint_execution.acquisition import (
+            parse_bundle,
+            serialize_bundle,
+            AcquisitionRequest,
+            AcquisitionBundle,
+            InputOccurrence,
+            OccurrenceOutcome,
+            OutcomeStatus,
+        )
+    
+        req = AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+>           inputs=(InputOccurrence("ocr_1", "a" * 64, "url", "https://x"),),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:783: TypeError
+__________ TestPublicAPIFunctions.test_serialize_bundle_deterministic __________
+
+self = <tests.acquisition.test_contract.TestPublicAPIFunctions object at 0x73e3d92319a0>
+
+    def test_serialize_bundle_deterministic(self):
+        """serialize_bundle produces deterministic JSON."""
+        from flowsint_execution.acquisition import (
+            serialize_bundle,
+            AcquisitionRequest,
+            AcquisitionBundle,
+            InputOccurrence,
+            OccurrenceOutcome,
+            OutcomeStatus,
+        )
+    
+        req = AcquisitionRequest(
+            operation_id="op_1",
+            capability_digest="a" * 64,
+            caller_id="caller",
+            scope="read",
+            format_version="1.0",
+>           inputs=(InputOccurrence("ocr_1", "a" * 64, "url", "https://x"),),
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        )
+E       TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+
+tests/acquisition/test_contract.py:823: TypeError
+=========================== short test summary info ============================
+FAILED tests/acquisition/test_contract.py::TestAcquisitionRequest::test_minimal_request - pydantic_core._pydantic_core.ValidationError: 1 validation error for AcquisitionRequest
+capability_digest
+  String should match pattern '^[a-f0-9]{64}$' [type=string_pattern_mismatch, input_value='capdigest_00000000000000...00000000000000000000000', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.12/v/string_pattern_mismatch
+FAILED tests/acquisition/test_contract.py::TestAcquisitionRequest::test_request_format_version_exact_1_0 - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+FAILED tests/acquisition/test_contract.py::TestOccurrenceOutcome::test_partial_with_suboutcomes - pydantic_core._pydantic_core.ValidationError: 1 validation error for OccurrenceOutcome
+  Value error, PARTIAL requires diagnostic [type=value_error, input_value={'occurrence_id': 'ocr_1'...',), diagnostic=None),)}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.12/v/value_error
+FAILED tests/acquisition/test_contract.py::TestAcquisitionBundle::test_minimal_bundle - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+FAILED tests/acquisition/test_contract.py::TestAcquisitionBundle::test_bundle_origin_digest_computed - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+FAILED tests/acquisition/test_contract.py::TestAcquisitionBundle::test_bundle_outcomes_match_request_occurrences - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+FAILED tests/acquisition/test_contract.py::TestAcquisitionBundle::test_bundle_format_version_1_0_only - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+FAILED tests/acquisition/test_contract.py::TestPublicAPIFunctions::test_parse_bundle_function - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+FAILED tests/acquisition/test_contract.py::TestPublicAPIFunctions::test_serialize_bundle_deterministic - TypeError: BaseModel.__init__() takes 1 positional argument but 5 were given
+9 failed, 34 passed in 0.29s

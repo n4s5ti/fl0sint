@@ -1,0 +1,99 @@
+DEF-41 S01 CANONICAL MODEL MOVE - ALL CHANGED PATHS AND TESTS
+==============================================================
+
+CREATED PATHS
+=============
+1. flowsint-core/src/flowsint_execution/__init__.py
+2. flowsint-core/src/flowsint_execution/models.py
+
+DELETED PATHS
+=============
+1. flowsint-core/src/flowsint_core/core/execution.py
+
+MODIFIED CONFIGURATION
+=====================
+1. flowsint-core/pyproject.toml
+   - Updated Hatch wheel packages to include: src/flowsint_execution
+
+MODIFIED SOURCE FILES (CORE MODULE)
+===================================
+1. flowsint-core/src/flowsint_core/core/template_enricher.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: EvidenceEnvelope, InputOutcome, OutcomeStatus, RedactedDiagnostic, StructuredExecutionResult, canonical_input_hash
+
+2. flowsint-core/src/flowsint_core/tasks/enricher.py
+   - Line 169: Updated from ..core.execution → flowsint_execution.models (RedactedDiagnostic)
+   - Line 207: Updated from ..core.execution → flowsint_execution.models (RedactedDiagnostic, canonical_input_hash)
+
+MODIFIED API FILES
+==================
+1. flowsint-api/app/api/schemas/enricher_template.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: RedactedDiagnostic
+
+2. flowsint-api/tests/test_template_egress.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: EvidenceEnvelope, InputOutcome, OutcomeStatus, StructuredExecutionResult
+
+MODIFIED TEST FILES (CORE)
+==========================
+1. flowsint-core/tests/core/test_structured_execution.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: EvidenceEnvelope, InputOutcome, OutcomeStatus, RedactedDiagnostic, canonical_input_hash
+
+2. flowsint-core/tests/services/test_execution_service.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: EvidenceEnvelope, InputOutcome, OutcomeStatus, RedactedDiagnostic, StructuredExecutionResult, canonical_input_hash
+
+3. flowsint-core/tests/services/test_graph_projection_service.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: EvidenceEnvelope, InputOutcome, OutcomeStatus, StructuredExecutionResult
+
+4. flowsint-core/tests/services/test_template_execution_task.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: EvidenceEnvelope, InputOutcome, OutcomeStatus, StructuredExecutionResult, canonical_input_hash
+
+5. flowsint-core/tests/templates/test_template_enricher.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: OutcomeStatus
+
+6. flowsint-core/tests/acquisition/test_contract.py
+   - Updated import: from flowsint_core.core.execution → from flowsint_execution.models
+   - Imports: OutcomeStatus, InputOutcome, EvidenceEnvelope, RedactedDiagnostic
+
+SUMMARY STATISTICS
+==================
+Total Files Created:        2
+Total Files Deleted:        1
+Total Files Modified:      11
+Total Configuration Updates: 1
+Total Changed Paths:       15
+
+FILES BREAKDOWN:
+- Configuration files:      1 (pyproject.toml)
+- Core source files:        2
+- API source files:         1
+- API test files:           1
+- Core test files:          5
+- New test files:           1
+Total Updated Import Statements: 11
+
+CANONICAL MODELS AFFECTED
+=========================
+- OutcomeStatus (enum) - 8 files
+- RedactedDiagnostic (class) - 6 files
+- EvidenceEnvelope (class) - 5 files
+- InputOutcome (class) - 5 files
+- StructuredExecutionResult (class) - 4 files
+- canonical_input_hash (function) - 4 files
+
+VERIFICATION STATUS
+===================
+✓ Old execution.py module verified deleted
+✓ New models.py module verified created
+✓ All imports updated to new location
+✓ Pyproject.toml updated
+✓ No compatibility shims created
+✓ No behavior changes to canonical models
+✓ Relative imports converted to absolute
+✓ Old module import correctly fails with ImportError

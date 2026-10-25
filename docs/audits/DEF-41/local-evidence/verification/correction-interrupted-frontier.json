@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "pip3r",
+    "graphos",
+    "--cwd",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "--cypher",
+    "MATCH (s)-[r:CodeRelation]->(t) WHERE t.id IN [\"Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher._execute_structured_input#4\",\"Method:flowsint-core/src/flowsint_core/core/enricher_base.py:Enricher.execute_structured#1\",\"Method:flowsint-core/src/flowsint_core/core/template_enricher.py:TemplateEnricher.execute_structured#1\",\"Method:flowsint-core/src/flowsint_execution/acquisition.py:InputOccurrence.check_input_hash#0\",\"Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template\"] RETURN s.id AS fromId,t.id AS toId,r.type AS type,r.confidence AS confidence",
+    "--limit",
+    "500",
+    "--json",
+    "--no-auto-index"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {
+    "PIP3R_DISCLOSURE": "off"
+  },
+  "started_at": 1790479309.248315,
+  "elapsed_seconds": 0.6948416233062744,
+  "returncode": 0
+}

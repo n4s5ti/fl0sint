@@ -1,0 +1,35 @@
+{
+  "module": "file:///home/n4s5ti/Documents/dev/pip3r/packages/graphos/dist/index.js",
+  "name": "ZodError",
+  "issues": [
+    {
+      "received": "METHOD_OVERRIDES",
+      "code": "invalid_enum_value",
+      "options": [
+        "CONTAINS",
+        "DEFINES",
+        "IMPORTS",
+        "CALLS",
+        "INHERITS",
+        "USES",
+        "DECORATES",
+        "EXTENDS",
+        "IMPLEMENTS",
+        "HAS_METHOD",
+        "HAS_PROPERTY",
+        "ACCESSES",
+        "OVERRIDES",
+        "MEMBER_OF",
+        "STEP_IN_PROCESS",
+        "BRANCHES_ON",
+        "THROWS",
+        "FAILS_WITH"
+      ],
+      "path": [
+        "type"
+      ],
+      "message": "Invalid enum value. Expected 'CONTAINS' | 'DEFINES' | 'IMPORTS' | 'CALLS' | 'INHERITS' | 'USES' | 'DECORATES' | 'EXTENDS' | 'IMPLEMENTS' | 'HAS_METHOD' | 'HAS_PROPERTY' | 'ACCESSES' | 'OVERRIDES' | 'MEMBER_OF' | 'STEP_IN_PROCESS' | 'BRANCHES_ON' | 'THROWS' | 'FAILS_WITH', received 'METHOD_OVERRIDES'"
+    }
+  ],
+  "message": "[\n  {\n    \"received\": \"METHOD_OVERRIDES\",\n    \"code\": \"invalid_enum_value\",\n    \"options\": [\n      \"CONTAINS\",\n      \"DEFINES\",\n      \"IMPORTS\",\n      \"CALLS\",\n      \"INHERITS\",\n      \"USES\",\n      \"DECORATES\",\n      \"EXTENDS\",\n      \"IMPLEMENTS\",\n      \"HAS_METHOD\",\n      \"HAS_PROPERTY\",\n      \"ACCESSES\",\n      \"OVERRIDES\",\n      \"MEMBER_OF\",\n      \"STEP_IN_PROCESS\",\n      \"BRANCHES_ON\",\n      \"THROWS\",\n      \"FAILS_WITH\"\n    ],\n    \"path\": [\n      \"type\"\n    ],\n    \"message\": \"Invalid enum value. Expected 'CONTAINS' | 'DEFINES' | 'IMPORTS' | 'CALLS' | 'INHERITS' | 'USES' | 'DECORATES' | 'EXTENDS' | 'IMPLEMENTS' | 'HAS_METHOD' | 'HAS_PROPERTY' | 'ACCESSES' | 'OVERRIDES' | 'MEMBER_OF' | 'STEP_IN_PROCESS' | 'BRANCHES_ON' | 'THROWS' | 'FAILS_WITH', received 'METHOD_OVERRIDES'\"\n  }\n]"
+}

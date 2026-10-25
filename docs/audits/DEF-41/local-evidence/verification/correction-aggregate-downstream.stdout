@@ -1,0 +1,68 @@
+{
+    "symbol": "flowsint-core/src/flowsint_core/core/services/execution_service.py:aggregate_status",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "LOW",
+    "target": {
+        "id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.aggregate_status#1",
+        "name": "aggregate_status",
+        "filePath": "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+        "nodeType": "Method",
+        "startLine": 231,
+        "endLine": 239,
+        "content": "    def aggregate_status(outcomes: tuple[InputOutcome, ...]) -> str:         statuses = {outcome.status for outcome in outcomes}         if not outcomes or statuses == {OutcomeStatus.SUCCESS}:             return \"completed\"         if OutcomeStatus.SUCCESS in statuses:             return \"partial\"         if OutcomeStatus.HOLD in statuses:             return \"hold\"         return \"failed\""
+    },
+    "symbols": [
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.aggregate_status#1",
+            "name": "aggregate_status",
+            "filePath": "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+            "nodeType": "Method",
+            "startLine": 231,
+            "endLine": 239,
+            "content": "    def aggregate_status(outcomes: tuple[InputOutcome, ...]) -> str:         statuses = {outcome.status for outcome in outcomes}         if not outcomes or statuses == {OutcomeStatus.SUCCESS}:             return \"completed\"         if OutcomeStatus.SUCCESS in statuses:             return \"partial\"         if OutcomeStatus.HOLD in statuses:             return \"hold\"         return \"failed\""
+        }
+    ],
+    "edges": [],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+            "count": 1,
+            "symbols": [
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.aggregate_status#1",
+                    "name": "aggregate_status",
+                    "filePath": "flowsint-core/src/flowsint_core/core/services/execution_service.py",
+                    "nodeType": "Method",
+                    "startLine": 231,
+                    "endLine": 239,
+                    "content": "    def aggregate_status(outcomes: tuple[InputOutcome, ...]) -> str:         statuses = {outcome.status for outcome in outcomes}         if not outcomes or statuses == {OutcomeStatus.SUCCESS}:             return \"completed\"         if OutcomeStatus.SUCCESS in statuses:             return \"partial\"         if OutcomeStatus.HOLD in statuses:             return \"hold\"         return \"failed\""
+                }
+            ]
+        }
+    ],
+    "affected_modules": [],
+    "affected_processes": [],
+    "byDepth": {},
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "flowsint-core/src/flowsint_core/core/services/execution_service.py:aggregate_status",
+        "rootSymbols": 1,
+        "totalSymbols": 1,
+        "totalEdges": 0,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 0,
+        "processes": 0,
+        "modules": 0
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

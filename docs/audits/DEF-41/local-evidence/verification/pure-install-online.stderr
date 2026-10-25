@@ -1,0 +1,8 @@
+Using Python 3.12.13 environment at: /home/n4s5ti/Documents/dev/def41-evidence/pure-venv
+Resolved 5 packages in 442ms
+Installed 5 packages in 21ms
+ + annotated-types==0.8.0
+ + pydantic==2.12.5
+ + pydantic-core==2.41.5
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.4

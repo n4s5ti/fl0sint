@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "env",
+    "-i",
+    "PATH=/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python",
+    "-c",
+    "import sys,importlib.util; from flowsint_execution.models import InputOutcome, OutcomeStatus; r=InputOutcome(input_ref='a'*64,status=OutcomeStatus.SUCCESS,outputs=('retained',)); assert r.outputs==('retained',); absent={m:importlib.util.find_spec(m) is None for m in ('neo4j','celery','sqlalchemy')}; assert all(absent.values()); assert 'flowsint_core' not in sys.modules; print({'result':r.model_dump(mode='json'),'absent':absent})"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {},
+  "started_at": 1790476118.7936795,
+  "elapsed_seconds": 0.26224708557128906,
+  "returncode": 0
+}

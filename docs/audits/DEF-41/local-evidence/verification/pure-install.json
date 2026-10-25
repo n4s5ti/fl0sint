@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "uv",
+    "pip",
+    "install",
+    "--python",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python",
+    "--offline",
+    "pydantic==2.12.5"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+  "environment_overrides": {},
+  "started_at": 1790475845.013448,
+  "elapsed_seconds": 0.08883428573608398,
+  "returncode": 1
+}

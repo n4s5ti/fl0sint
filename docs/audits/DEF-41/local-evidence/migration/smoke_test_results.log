@@ -1,0 +1,59 @@
+
+======================================================================
+Test: Canonical public import with worktree src PYTHONPATH
+Status: ✗ FAIL
+Stderr: Traceback (most recent call last):
+  File "<string>", line 4, in <module>
+    from flowsint_execution.models import OutcomeStatus, InputOutcome, EvidenceEnvelope, RedactedDiagnostic, StructuredExecutionResult, canonical_input_hash
+  File "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src/flowsint_execution/models.py", line 13, in <module>
+    from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/__init__.py", line 5, in <module>
+    from ._migration import getattr_migration
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/_migration.py", line 4, in <module>
+    from pydantic.warnings import PydanticDeprecatedSince20
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/warnings.py", line 5, in <module>
+    from .version import version_short
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/version.py", line 7, in <module>
+    from pydantic_core import __version__ as __pydantic_core_version__
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic_core/__init__.py", line 6, in <module>
+    from typing_extensions import Sentinel
+ModuleNotFoundError: No module named 'typing_extensions'
+
+Return code: 1
+
+======================================================================
+Test: Verify old core.execution module is deleted
+Status: ✓ PASS
+Output: SUCCESS: Old module correctly removed
+Error: No module named 'passlib'
+
+
+======================================================================
+Test: API schema import using relocated models
+Status: ✗ FAIL
+Stderr: Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+    from flowsint_execution.models import RedactedDiagnostic
+  File "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src/flowsint_execution/models.py", line 13, in <module>
+    from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/__init__.py", line 5, in <module>
+    from ._migration import getattr_migration
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/_migration.py", line 4, in <module>
+    from pydantic.warnings import PydanticDeprecatedSince20
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/warnings.py", line 5, in <module>
+    from .version import version_short
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic/version.py", line 7, in <module>
+    from pydantic_core import __version__ as __pydantic_core_version__
+  File "/home/n4s5ti/.local/lib/python3.14/site-packages/pydantic_core/__init__.py", line 6, in <module>
+    from typing_extensions import Sentinel
+ModuleNotFoundError: No module named 'typing_extensions'
+
+Return code: 1
+
+======================================================================
+SUMMARY
+======================================================================
+Tests passed: 1/3
+✗ Canonical public import with worktree src PYTHONPATH
+✓ Verify old core.execution module is deleted
+✗ API schema import using relocated models

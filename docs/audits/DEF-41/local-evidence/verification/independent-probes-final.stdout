@@ -1,0 +1,23 @@
+roundtrip: True True ['o1', 'o2'] ['106c4202d3d02a3ff34000f19889ac489e6a40f2ee68ea9e3984633ab059dd4d', '106c4202d3d02a3ff34000f19889ac489e6a40f2ee68ea9e3984633ab059dd4d'] unreviewed https://example.test/final parent need seed
+origin_digest: cddcce212486d427adf451a202a68868a1cca3de408f0f5f63e1b928a04bc44f
+public_wire_prefix: {"actual_resources":{"browser_actions":null,"bytes":10,"concurrency":null,"elapsed_seconds":null,"fanout":null,"input_to
+missing_allocation: RAISED ValidationError code=None secret_echo=False
+duplicate_occurrence: RAISED ValidationError code=None secret_echo=False
+cross_owner_candidate: RAISED ContractError code='malformed_contract' secret_echo=False
+duplicate_candidate_id: RAISED ContractError code='malformed_contract' secret_echo=False
+candidate_accepted: RAISED ContractError code='malformed_contract' secret_echo=False
+orphan_artifact: RAISED ContractError code='malformed_contract' secret_echo=False
+one_sided_url: RAISED ContractError code='malformed_contract' secret_echo=False
+wrong_input_hash: RAISED ContractError code='malformed_contract' secret_echo=False
+bad_utf8: RAISED ContractError code='invalid_json' secret_echo=False
+duplicate_json_key: RAISED ContractError code='duplicate_json_key' secret_echo=False
+unsupported_version: RAISED ContractError code='unsupported_format_version' secret_echo=False
+secret_extra: RAISED ContractError code='malformed_contract' secret_echo=False
+nested_unsupported_version: RAISED ContractError code='unsupported_format_version' secret_echo=False
+raw_nonfinite_json: RAISED ContractError code='invalid_json' secret_echo=False
+copy_bypass_disposition: RAISED ContractError code='malformed_contract' secret_echo=False
+nested_mutation_hash: RAISED ContractError code='malformed_contract' secret_echo=False
+construct_bypass_disposition: RAISED ContractError code='malformed_contract' secret_echo=False
+construct_bypass_request: RAISED ContractError code='malformed_contract' secret_echo=False
+retention_hold: retention_hold hold () () 5
+partial: [('good', 'success_with_output', 'success'), ('held', 'retention_hold', 'hold')] ('candidate',) ('artifact',)

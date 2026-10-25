@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "node",
+    "--input-type=module",
+    "-e",
+    "import {graphosEdgeSchema} from '@pip3r/graphos-schemas'; import fs from 'node:fs'; const rows=JSON.parse(fs.readFileSync('/home/n4s5ti/Documents/dev/def41-evidence/verification/correction-interrupted-frontier.stdout','utf8')).result.rows;const failures=[];for(const r of rows){const p=graphosEdgeSchema.safeParse({from:r.fromId,to:r.toId,type:r.type,confidence:r.confidence});if(!p.success)failures.push({edge:r,issues:p.error.issues});}console.log(JSON.stringify({schema:import.meta.resolve('@pip3r/graphos-schemas'),rows:rows.length,failures},null,2));if(failures.length!==1||failures[0].edge.type!=='METHOD_OVERRIDES')process.exit(1);"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/pip3r",
+  "environment_overrides": {},
+  "started_at": 1790479357.5670364,
+  "elapsed_seconds": 0.04426169395446777,
+  "returncode": 0
+}

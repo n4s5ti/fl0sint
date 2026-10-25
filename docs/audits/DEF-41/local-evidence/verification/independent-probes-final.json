@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "env",
+    "-i",
+    "PATH=/usr/bin:/bin",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src",
+    "/home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python",
+    "/home/n4s5ti/Documents/dev/def41-evidence/review/adversarial_review.py"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/def41-evidence",
+  "environment_overrides": {},
+  "started_at": 1790477640.8166487,
+  "elapsed_seconds": 0.18286538124084473,
+  "returncode": 0
+}

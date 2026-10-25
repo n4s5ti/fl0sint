@@ -1,0 +1,9 @@
+Using Python 3.12.13 environment at: /home/n4s5ti/Documents/dev/def41-evidence/pure-venv
+  × No solution found when resolving dependencies:
+  ╰─▶ Because pydantic-core==2.41.5 needs to be downloaded from a registry and
+      pydantic==2.12.5 depends on pydantic-core==2.41.5, we can conclude that
+      pydantic==2.12.5 cannot be used.
+      And because you require pydantic==2.12.5, we can conclude that your
+      requirements are unsatisfiable.
+
+hint: Packages were unavailable because the network was disabled. When the network is disabled, registry packages may only be read from the cache.

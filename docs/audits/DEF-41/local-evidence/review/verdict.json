@@ -1,0 +1,80 @@
+{
+  "reviewer": "S01AdversarialReview — independent, read-only adversarial review",
+  "route": "change audit",
+  "scope": "DEF-41 acquisition interchange at baseline commit 1b48c428e2e32a5179005df288ac669bdae82409; reviewed uncommitted target source pinned by SHA-256: acquisition.py faaec3e705ac4db321053e292d34bc6fc58b3d1d05585ca14ee8435433b1d10c; models.py dfbff64db850c5c99b0cd619571244f11e6a1081d261793f475b1fed7ece65d4.",
+  "files": [
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src/flowsint_execution/acquisition.py — strict request/bundle validation, reference graph, canonical wire parsing/serialization, digest, and public builders.",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src/flowsint_execution/models.py — moved canonical status, redacted diagnostic, and input-hash definitions.",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/tests/acquisition/test_contract.py — focused behavioral coverage inspected; not relied on as sole evidence.",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/examples/acquisition_contract.py — documented public caller exercised in the pure environment.",
+    "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/docs/developers/acquisition-contract.md — explicit data-validation-only, no-admission/authenticity contract.",
+    "/home/n4s5ti/Documents/dev/def41-evidence/review/adversarial_review.py — reviewer-created executable adversarial repro."
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "status": "resolved_before_verdict",
+      "severity": "medium",
+      "confidence": "high",
+      "statement": "Nested RedactedDiagnostic model_construct/model_copy corruption originally emitted a secret-bearing Pydantic warning and escaped as PydanticSerializationError from build_bundle. Parent remediated it before final review.",
+      "original_evidence": "At the pre-fix source, both bypasses produced PydanticSerializationError with input-secret in the exception and warning.",
+      "falsification_and_final_evidence": "At final target, public-boundary probes corrupt a valid outcome via nested model_construct and model_copy, then call build_bundle. Actual output for both: ContractError code=malformed_contract, secret_in_exc=False, secret_in_warning=False, warnings=0. Source now strictly revalidates the nested diagnostic and build_bundle uses warning-as-error serialization and normalizes ValueError-family failures.",
+      "provenance": "Introduced in the reviewed uncommitted implementation, reported to Main immediately, then fixed and independently re-tested."
+    }
+  ],
+  "blocking": "None outstanding.",
+  "debt_or_limitations": [
+    "Direct Pydantic model constructors intentionally expose ordinary ValidationError and may include supplied input. This is not the untrusted public boundary: docs explicitly require parse_*/build_bundle/serialize_* at that boundary and prohibit logging raw Pydantic errors. Public-boundary probes confirmed no secret echo.",
+    "Python LSP symbols/references were unavailable because pyright-langserver is absent; focused source reads, structural/text searches, and executable probes supplied the audit evidence instead.",
+    "The audited implementation is uncommitted. The file hashes above, rather than a target commit, identify the reviewed state."
+  ],
+  "acceptance_table": [
+    {
+      "criterion": "Required request allocation; optional integrated parent/Need; imported lineage",
+      "result": "PASS",
+      "evidence": "Adversarial round-trip output retained parent, need, and seed lineage; omission of allocation raised ValidationError."
+    },
+    {
+      "criterion": "Duplicate occurrences, 0/1/many cardinality, and cross-owner candidates",
+      "result": "PASS",
+      "evidence": "Independent cardinality call output: cardinality=[0, 1, 2], occurrences=['ocr_0','ocr_1','ocr_2'], candidate owners=['ocr_1','ocr_2','ocr_2']. Duplicate occurrence, duplicate candidate ID, and cross-owner candidate each rejected; cross-owner output was ContractError malformed_contract."
+    },
+    {
+      "criterion": "Malformed scalars, nested nonfinite JSON, UTF-8, duplicate keys, and versions",
+      "result": "PASS",
+      "evidence": "Final repro: bad UTF-8 -> invalid_json; duplicate key -> duplicate_json_key; raw nested NaN -> invalid_json; unsupported root and nested versions -> unsupported_format_version; malformed allocation -> malformed_contract. Wire errors contained no injected secret."
+    },
+    {
+      "criterion": "Complete round-trip digest, provenance, disposition, and artifact references",
+      "result": "PASS",
+      "evidence": "Final repro printed roundtrip True, equal origin digest, duplicate-content input refs retained independently by occurrence, disposition unreviewed, final retrieval URL, parent/Need, and lineage. Candidate acceptance, orphan artifact, one-sided URL, and hash mutation were rejected."
+    },
+    {
+      "criterion": "model_construct/model_copy mutation bypass and safe diagnostics",
+      "result": "PASS after F1 remediation",
+      "evidence": "Final exact public-boundary construct and copy probes each returned ContractError malformed_contract with zero warnings and no secret in error. Candidate disposition, request construction, and nested value-mutation bypasses were also rejected in final repro."
+    },
+    {
+      "criterion": "PARTIAL / underlying statuses and RETENTION_HOLD material/resource rules",
+      "result": "PASS",
+      "evidence": "Final repro printed partial children [('good','success_with_output','success'), ('held','retention_hold','hold')] with only successful material; direct hold printed retention_hold hold () () 5."
+    },
+    {
+      "criterion": "Validation-only scope; no importer/scraper/DB/admission/authenticity",
+      "result": "PASS",
+      "evidence": "Source/doc boundary states no fetch, authorization, admission, retrieval, authenticity verification, assertion acceptance, or graph/database writes. Pure-Pydantic environment import output: PURE_IMPORT_OK 1.0."
+    },
+    {
+      "criterion": "Public build/serialize/parse caller",
+      "result": "PASS",
+      "evidence": "Pure environment executed /flowsint-core/examples/acquisition_contract.py. It emitted success.json: success_with_output, candidates ['unreviewed']; failed.json: invalid_input, candidates []; produced request.json, success.json, failed.json, source.json."
+    }
+  ],
+  "relationships": "AcquisitionRequest binds independently identified input occurrences and optional imported lineage. AcquisitionBundle binds each outcome to an occurrence and validates artifact → span → evidence → candidate ownership and reachability. build_bundle computes origin_digest; serialize_bundle revalidates model state through the parse boundary; parse_bundle rechecks wire version, duplicate JSON keys, schema, graph, and digest. The moved models module supplies canonical underlying statuses and redacted diagnostics; it remains service-free.",
+  "verdict": "pass",
+  "verification_commands": [
+    "PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src /home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python /home/n4s5ti/Documents/dev/def41-evidence/review/adversarial_review.py",
+    "PYTHONPATH=/home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/src /home/n4s5ti/Documents/dev/def41-evidence/pure-venv/bin/python /home/n4s5ti/Documents/dev/fl0sint-def41-s01/flowsint-core/examples/acquisition_contract.py /home/n4s5ti/Documents/dev/def41-evidence/review/example-contract-output-29497",
+    "Public nested model_construct/model_copy bypass probe against build_bundle (both ContractError malformed_contract; no warning/secret echo)."
+  ]
+}

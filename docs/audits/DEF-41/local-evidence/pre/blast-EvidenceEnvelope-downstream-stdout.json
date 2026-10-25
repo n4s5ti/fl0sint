@@ -1,0 +1,610 @@
+{
+    "symbol": "EvidenceEnvelope",
+    "repo": "fl0sint-def41-s01",
+    "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+    "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+    "direction": "downstream",
+    "risk": "CRITICAL",
+    "target": {
+        "id": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+        "name": "EvidenceEnvelope",
+        "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+        "nodeType": "Class",
+        "startLine": 34,
+        "endLine": 62,
+        "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+    },
+    "symbols": [
+        {
+            "id": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "name": "EvidenceEnvelope",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Class",
+            "startLine": 34,
+            "endLine": 62,
+            "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+        },
+        {
+            "id": "Method:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.normalize_timestamp#1",
+            "name": "normalize_timestamp",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Method",
+            "startLine": 57,
+            "endLine": 62,
+            "content": "    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.input_ref",
+            "name": "input_ref",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 39,
+            "endLine": 39,
+            "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.destination_id",
+            "name": "destination_id",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 40,
+            "endLine": 40,
+            "content": "    destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.endpoint_id",
+            "name": "endpoint_id",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 41,
+            "endLine": 41,
+            "content": "    endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.capability",
+            "name": "capability",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 42,
+            "endLine": 42,
+            "content": "    capability: str = Field(pattern=r\"^enrich\\.read$\")"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.policy_version",
+            "name": "policy_version",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 43,
+            "endLine": 43,
+            "content": "    policy_version: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_sha256",
+            "name": "artifact_sha256",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 44,
+            "endLine": 44,
+            "content": "    artifact_sha256: str | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_reference",
+            "name": "artifact_reference",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 45,
+            "endLine": 45,
+            "content": "    artifact_reference: str | None = Field(default=None, max_length=256)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.source_rights",
+            "name": "source_rights",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 46,
+            "endLine": 46,
+            "content": "    source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.schema_version",
+            "name": "schema_version",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 47,
+            "endLine": 47,
+            "content": "    schema_version: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.parser_version",
+            "name": "parser_version",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 48,
+            "endLine": 48,
+            "content": "    parser_version: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.confidence",
+            "name": "confidence",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 49,
+            "endLine": 49,
+            "content": "    confidence: float = Field(ge=0.0, le=1.0)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.verification_state",
+            "name": "verification_state",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 50,
+            "endLine": 50,
+            "content": "    verification_state: str = Field(min_length=1, max_length=64)"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.event_at",
+            "name": "event_at",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 51,
+            "endLine": 51,
+            "content": "    event_at: datetime | None = None"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.retrieved_at",
+            "name": "retrieved_at",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 52,
+            "endLine": 52,
+            "content": "    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+        },
+        {
+            "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.ingested_at",
+            "name": "ingested_at",
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "nodeType": "Property",
+            "startLine": 53,
+            "endLine": 53,
+            "content": "    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+        }
+    ],
+    "edges": [
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.input_ref",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.destination_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.endpoint_id",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.capability",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.policy_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_sha256",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_reference",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.source_rights",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.schema_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.parser_version",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.confidence",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.verification_state",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.event_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.retrieved_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.ingested_at",
+            "type": "HAS_PROPERTY",
+            "confidence": 1
+        },
+        {
+            "from": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+            "to": "Method:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.normalize_timestamp#1",
+            "type": "HAS_METHOD",
+            "confidence": 1
+        }
+    ],
+    "files": [
+        {
+            "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+            "count": 17,
+            "symbols": [
+                {
+                    "id": "Class:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope",
+                    "name": "EvidenceEnvelope",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Class",
+                    "startLine": 34,
+                    "endLine": 62,
+                    "content": "class EvidenceEnvelope(BaseModel):     \"\"\"Retainable evidence metadata without a response body or rendered URL.\"\"\"     model_config = ConfigDict(extra=\"forbid\", frozen=True)     input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")     destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")     capability: str = Field(pattern=r\"^enrich\\.read$\")     policy_version: str = Field(min_length=1, max_length=64)     artifact_sha256: str | None = None     artifact_reference: str | None = Field(default=None, max_length=256)     source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)     schema_version: str = Field(min_length=1, max_length=64)     parser_version: str = Field(min_length=1, max_length=64)     confidence: float = Field(ge=0.0, le=1.0)     verification_state: str = Field(min_length=1, max_length=64)     event_at: datetime | None = None     retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))     @field_validator(\"event_at\", \"retrieved_at\", \"ingested_at\")     @classmethod     def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.normalize_timestamp#1",
+                    "name": "normalize_timestamp",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Method",
+                    "startLine": 57,
+                    "endLine": 62,
+                    "content": "    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 39,
+                    "endLine": 39,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.destination_id",
+                    "name": "destination_id",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 40,
+                    "endLine": 40,
+                    "content": "    destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.endpoint_id",
+                    "name": "endpoint_id",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 41,
+                    "endLine": 41,
+                    "content": "    endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.capability",
+                    "name": "capability",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 42,
+                    "endLine": 42,
+                    "content": "    capability: str = Field(pattern=r\"^enrich\\.read$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.policy_version",
+                    "name": "policy_version",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 43,
+                    "endLine": 43,
+                    "content": "    policy_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_sha256",
+                    "name": "artifact_sha256",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 44,
+                    "endLine": 44,
+                    "content": "    artifact_sha256: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_reference",
+                    "name": "artifact_reference",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 45,
+                    "endLine": 45,
+                    "content": "    artifact_reference: str | None = Field(default=None, max_length=256)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.source_rights",
+                    "name": "source_rights",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 46,
+                    "endLine": 46,
+                    "content": "    source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.schema_version",
+                    "name": "schema_version",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 47,
+                    "endLine": 47,
+                    "content": "    schema_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.parser_version",
+                    "name": "parser_version",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 48,
+                    "endLine": 48,
+                    "content": "    parser_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.confidence",
+                    "name": "confidence",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 49,
+                    "endLine": 49,
+                    "content": "    confidence: float = Field(ge=0.0, le=1.0)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.verification_state",
+                    "name": "verification_state",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 50,
+                    "endLine": 50,
+                    "content": "    verification_state: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.event_at",
+                    "name": "event_at",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 51,
+                    "endLine": 51,
+                    "content": "    event_at: datetime | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.retrieved_at",
+                    "name": "retrieved_at",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 52,
+                    "endLine": 52,
+                    "content": "    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.ingested_at",
+                    "name": "ingested_at",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 53,
+                    "endLine": 53,
+                    "content": "    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                }
+            ]
+        }
+    ],
+    "affected_modules": [
+        {
+            "name": "flowsint-core",
+            "direct": true,
+            "symbolCount": 16
+        }
+    ],
+    "affected_processes": [],
+    "byDepth": {
+        "d=1": {
+            "depth": 1,
+            "label": "WILL BREAK",
+            "symbols": [
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.input_ref",
+                    "name": "input_ref",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 39,
+                    "endLine": 39,
+                    "content": "    input_ref: str = Field(pattern=r\"^[a-f0-9]{64}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.destination_id",
+                    "name": "destination_id",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 40,
+                    "endLine": 40,
+                    "content": "    destination_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.endpoint_id",
+                    "name": "endpoint_id",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 41,
+                    "endLine": 41,
+                    "content": "    endpoint_id: str = Field(pattern=r\"^[a-z][a-z0-9_-]{0,127}$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.capability",
+                    "name": "capability",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 42,
+                    "endLine": 42,
+                    "content": "    capability: str = Field(pattern=r\"^enrich\\.read$\")"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.policy_version",
+                    "name": "policy_version",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 43,
+                    "endLine": 43,
+                    "content": "    policy_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_sha256",
+                    "name": "artifact_sha256",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 44,
+                    "endLine": 44,
+                    "content": "    artifact_sha256: str | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.artifact_reference",
+                    "name": "artifact_reference",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 45,
+                    "endLine": 45,
+                    "content": "    artifact_reference: str | None = Field(default=None, max_length=256)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.source_rights",
+                    "name": "source_rights",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 46,
+                    "endLine": 46,
+                    "content": "    source_rights: str = Field(default=\"unspecified\", min_length=1, max_length=128)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.schema_version",
+                    "name": "schema_version",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 47,
+                    "endLine": 47,
+                    "content": "    schema_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.parser_version",
+                    "name": "parser_version",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 48,
+                    "endLine": 48,
+                    "content": "    parser_version: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.confidence",
+                    "name": "confidence",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 49,
+                    "endLine": 49,
+                    "content": "    confidence: float = Field(ge=0.0, le=1.0)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.verification_state",
+                    "name": "verification_state",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 50,
+                    "endLine": 50,
+                    "content": "    verification_state: str = Field(min_length=1, max_length=64)"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.event_at",
+                    "name": "event_at",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 51,
+                    "endLine": 51,
+                    "content": "    event_at: datetime | None = None"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.retrieved_at",
+                    "name": "retrieved_at",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 52,
+                    "endLine": 52,
+                    "content": "    retrieved_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                },
+                {
+                    "id": "Property:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.ingested_at",
+                    "name": "ingested_at",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Property",
+                    "startLine": 53,
+                    "endLine": 53,
+                    "content": "    ingested_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))"
+                },
+                {
+                    "id": "Method:flowsint-core/src/flowsint_core/core/execution.py:EvidenceEnvelope.normalize_timestamp#1",
+                    "name": "normalize_timestamp",
+                    "filePath": "flowsint-core/src/flowsint_core/core/execution.py",
+                    "nodeType": "Method",
+                    "startLine": 57,
+                    "endLine": 62,
+                    "content": "    def normalize_timestamp(cls, value: datetime | None) -> datetime | None:         if value is None:             return None         if value.tzinfo is None or value.utcoffset() is None:             raise ValueError(\"evidence timestamps must be timezone-aware\")         return value.astimezone(timezone.utc)"
+                }
+            ]
+        }
+    },
+    "summary": {
+        "cwd": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "rootPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01",
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "symbol": "EvidenceEnvelope",
+        "rootSymbols": 1,
+        "totalSymbols": 17,
+        "totalEdges": 16,
+        "filesMatched": 1,
+        "truncated": false,
+        "direct": 16,
+        "processes": 0,
+        "modules": 1
+    },
+    "warnings": [],
+    "completeness": "complete",
+    "completenessReasons": [],
+    "indexStatus": "ready"
+}

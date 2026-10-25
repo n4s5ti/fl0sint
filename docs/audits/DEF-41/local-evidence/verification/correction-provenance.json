@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/home/n4s5ti/Documents/dev/fl0sint/.venv/bin/python",
+    "-c",
+    "import pathlib,json,hashlib,subprocess\nr=pathlib.Path('/home/n4s5ti/Documents/dev/fl0sint')\nm=json.loads((r/'docs/audits/DEF-41/manifest.json').read_text())\nchecks={}\nfor key in ['source_sha256','configuration_sha256']:\n checks[key]={p:hashlib.sha256((r/p).read_bytes()).hexdigest()==h for p,h in m[key].items()}\nshared={}\nfor line in (r/'docs/audits/DEF-41/raw/pre/main-gitnexus-hashes.txt').read_text().splitlines():\n h,p=line.removeprefix('SHA256=').split(' FILE=',1)\n shared[p]=hashlib.sha256((r/p).read_bytes()).hexdigest()==h\nchecks['shared_index']=shared\nchecks['git_head']=subprocess.check_output(['git','rev-parse','HEAD'],cwd=r,text=True).strip()\nchecks['working_delta']=subprocess.check_output(['git','status','--porcelain=v1','--untracked-files=all'],cwd=r,text=True)\nchecks['pip3r_runtime_sha256']=hashlib.sha256(pathlib.Path('/home/n4s5ti/Documents/dev/pip3r/packages/runtime/dist/bin/pip3r.js').read_bytes()).hexdigest()\nchecks['pip3r_version']=subprocess.check_output(['pip3r','--version'],text=True).strip()\nassert all(all(v.values()) for k,v in checks.items() if isinstance(v,dict))\nprint(json.dumps(checks,indent=2))"
+  ],
+  "cwd": "/home/n4s5ti/Documents/dev/fl0sint",
+  "environment_overrides": {},
+  "started_at": 1790479234.2960324,
+  "elapsed_seconds": 0.9486081600189209,
+  "returncode": 0
+}

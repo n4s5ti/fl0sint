@@ -1,0 +1,247 @@
+{
+    "mode": "cypher",
+    "result": {
+        "repo": "fl0sint-def41-s01",
+        "lbugPath": "/home/n4s5ti/Documents/dev/fl0sint-def41-s01/.gitnexus/lbug",
+        "columns": [
+            "a.id",
+            "r.type",
+            "b.id"
+        ],
+        "rows": [
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._record_for_outcome#8",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_utcnow"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.fail_run#3",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_utcnow"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_utcnow"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.begin_or_resume_step#4",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_utcnow"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_utcnow"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.claim_run#3",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_utcnow"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._record_for_outcome#8",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_json_value"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_step_checkpoint#4",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_json_value"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_run_checkpoint#3",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_json_value"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_json_value",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:_json_value"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._envelope_from_record#1",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.utc_timestamp#1"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Function:flowsint-core/src/flowsint_core/core/services/execution_service.py:create_execution_service"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.__init__",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService.__init__"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.append_superseding_evidence#4",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.fail_run#3",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_step_checkpoint#4",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_run_checkpoint#3",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.begin_or_resume_step#4",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.claim_run#3",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.create_or_reuse_run#8",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._commit#0"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/base.py:BaseService._rollback#0"
+            },
+            {
+                "a.id": "Function:flowsint-core/tests/services/test_graph_projection_service.py:test_evidence_persistence_commits_projection_job_in_the_same_transaction",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.create_or_reuse_run#8"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:replay_or_attach",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.create_or_reuse_run#8"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.create_or_reuse_run#8"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.claim_run#3",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.claim_run#3"
+            },
+            {
+                "a.id": "Function:flowsint-core/tests/services/test_graph_projection_service.py:test_evidence_persistence_commits_projection_job_in_the_same_transaction",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.claim_run#3"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.claim_run#3"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.begin_or_resume_step#4",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.get_step#2"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.get_step#2",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.get_step#2"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:replay_or_attach",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.get_step#2"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.fail_run#3",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_step_checkpoint#4",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_run_checkpoint#3",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.begin_or_resume_step#4",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._fence_run#2"
+            },
+            {
+                "a.id": "Function:flowsint-core/tests/services/test_graph_projection_service.py:test_evidence_persistence_commits_projection_job_in_the_same_transaction",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.begin_or_resume_step#4"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.begin_or_resume_step#4"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.update_step_checkpoint#4"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.aggregate_status#1"
+            },
+            {
+                "a.id": "Function:flowsint-core/tests/services/test_graph_projection_service.py:test_evidence_persistence_commits_projection_job_in_the_same_transaction",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:run_connector_template",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.fail_run#3"
+            },
+            {
+                "a.id": "Function:flowsint-core/src/flowsint_core/tasks/enricher.py:replay_or_attach",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.reconstruct_structured_result#1"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.persist_structured_result#5",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._record_for_outcome#8"
+            },
+            {
+                "a.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService.reconstruct_structured_result#1",
+                "r.type": "CALLS",
+                "b.id": "Method:flowsint-core/src/flowsint_core/core/services/execution_service.py:ExecutionService._envelope_from_record#1"
+            }
+        ],
+        "truncated": false
+    },
+    "indexStatus": "ready",
+    "warnings": []
+}

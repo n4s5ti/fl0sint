@@ -1,0 +1,4 @@
+mpg-batch: running 1 command(s)
+mpg-batch: step 1/1: uv build --wheel --out-dir /home/n4s5ti/Documents/dev/def41-evidence/wheels-final
+Building wheel...
+Successfully built /home/n4s5ti/Documents/dev/def41-evidence/wheels-final/flowsint_core-1.2.8-py3-none-any.whl
